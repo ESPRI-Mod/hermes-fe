@@ -1,0 +1,36 @@
+ul.pagination {
+	margin: -7px 0 0 0;
+}
+
+div.alert, div.panel {
+	margin-bottom: 8px;
+}
+
+.app-header {
+	margin-bottom: 10px;
+}
+
+.app-header img {
+	cursor: pointer;
+}
+
+.app-header .btn-group {
+	margin-top: 24px;
+}
+
+.app-header .btn-group .btn {
+	width: 120px;
+	font-weight: bold;
+}
+
+.app-header .btn-group .btn-app-support {
+	width: 80px;
+}
+
+.app-header nav li {
+	font-weight: bold;
+}
+
+.app-content {
+	margin-bottom: 8px;
+}
