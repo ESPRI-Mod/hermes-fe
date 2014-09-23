@@ -12,7 +12,6 @@
 		var mainView, 
 			moduleName, 
 			moduleAliases = {
-				metrics: "metric",
 				monitor: "monitoring"
 			};
 

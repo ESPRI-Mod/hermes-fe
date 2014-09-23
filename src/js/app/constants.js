@@ -47,8 +47,7 @@
 		// URLS.
 		urls: {
 			MONITORING_SETUP: 'monitoring/fe/setup',
-			MONITORING_WS: 'monitoring/fe/ws',
-			METRIC_SETUP: 'metric/fe/setup',
+			MONITORING_WS: 'monitoring/fe/ws'
 		},
 
 		// Images.

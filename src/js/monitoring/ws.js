@@ -8,13 +8,13 @@
 	"use strict";
 
 	// Forward declare variables.
-	var ws, 
-		log, 
-		notify, 
-		onOpen, 
-		onClosed, 
-		onMessage, 
-		buffering = true, 
+	var ws,
+		log,
+		dispatch,
+		onOpen,
+		onClosed,
+		onMessage,
+		buffering = true,
 		buffer = [];
 
 	// Logging helper function.
@@ -23,7 +23,7 @@
 	};
 
 	// Send a ws event module notification.
-	notify = function (ei) {
+	dispatch = function (ei) {
 		// Format event info where appropriate.
 		if (ei.eventType === "ws:stateChange") {
 			ei.state = ei.state.toUpperCase();
@@ -31,7 +31,7 @@
 
 		// Fire event.
 		log("triggering event :: " + ei.eventType);
-		MOD.events.trigger(ei.eventType, ei);			
+		MOD.events.trigger(ei.eventType, ei);
 	};
 
 	// On ws connection opened event handler.
@@ -55,11 +55,11 @@
 		ei = JSON.parse(e.data);
 		ei.eventType = "ws:" + ei.eventType;
 
-		// Send module notifcation.		
+		// Send module notifcation.
 		if (buffering) {
 			buffer.push(ei);
 		} else {
-			notify(ei);
+			dispatch(ei);
 		}
 	};
 
@@ -69,7 +69,7 @@
 		buffering = false;
 
 		// Empty buffer.
-		_.each(buffer, notify);
+		_.each(buffer, dispatch);
 		buffer = [];
 	});
 

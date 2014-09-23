@@ -199,6 +199,7 @@
 		s.executionStateID = es.id;
 
         // Fire event.
+        MOD.log("state:simulationStatusUpdated: " + es.id + "::" + es.name);
         MOD.events.trigger("state:simulationStatusUpdated", ei);
 	});
 
@@ -222,6 +223,7 @@
 		setPagingState(state.paging.current);
 
         // Fire event.
+        MOD.log("state:newSimulation :: " + ei.simulation.name)
         MOD.events.trigger("state:newSimulation", ei);
 	});
 

@@ -29,7 +29,7 @@
 			"COMPLETE" : 'success',
 			"ROLLBACK" : 'warning',
 			"ERROR" : 'danger',
-		},		
+		},
 
 		// Set of supported filters.
 		filters: [
@@ -65,7 +65,7 @@
 				typeName: 'space',
 				displayName: 'Space'
 			},
-		]		
+		]
 	});
 
 	// Websocket initialized event handler.

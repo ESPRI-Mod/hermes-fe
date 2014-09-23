@@ -24,7 +24,7 @@ window.$ = window.$jq = jQuery.noConflict();
 			longName: "Institut Pierre Simon Laplace",
 
 			// Home page.
-			homePage: "http://ipsl.fr",			
+			homePage: "http://ipsl.fr",
 		},
 
 		// App title.
@@ -74,7 +74,7 @@ window.$ = window.$jq = jQuery.noConflict();
 			_.defaults(module, {
 				// Module key aliases.
 				keyAliases: [],
-				
+
 				// Flag indicating whether module is active.
 				isActive: true,
 
@@ -118,7 +118,7 @@ window.$ = window.$jq = jQuery.noConflict();
 			this.message = message;
 			this.name = "AppException";
 		}
-	};	
+	};
 
 	// Module loading event handler.
 	// @m 	New module being loaded.
@@ -153,6 +153,6 @@ window.$ = window.$jq = jQuery.noConflict();
 
         // Fire event.
 		APP.events.trigger("module:loaded", mod);
-	});	
+	});
 
 }(this));
