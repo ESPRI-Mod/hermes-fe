@@ -2,6 +2,7 @@
 <html lang="en">
 
 <!-- Document head -->
+
 <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
@@ -10,73 +11,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
-    <link href="app.css" rel="stylesheet" media="screen">
     <link href="ext/bootstrap-3.1.1/css/bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="ext/bootstrap-sortable/bootstrap-sortable.css" rel="stylesheet" media="screen">
+
+    <style>
+        body {
+            width: 980px;
+            margin:auto;
+        }
+
+        body > header img {
+            margin-top: 10px;
+        }
+        body > header h1 {
+            margin-top: 25px;
+        }
+        body > header h1 small b {
+            color: black;
+        }
+    </style>
 </head>
 
 <!-- Document body -->
+
 <body>
 
-    <!-- HTML - Inline page html. -->
-    <div>
-        <label>Enter group ID: </label>
-        <input type="text" id="groupID" value="test_metric_group_01"></div>
+    <!-- Header -->
+    <header class="clearfix">
+        <img src="img/site-logo-ipsl.png" alt="IPSL" title="IPSL" class="pull-left" />
+        <h1 class="pull-right">
+            <small><b>Metric API Demo</b>
+            </small>
+            <b class="h6"> v0.1</b>
+        </h1>
+    </header>
+
+    <!-- Overview -->
+    <div class="panel panel-primary" style="margin-top: 10px;">
+        <div class="panel-heading">
+            <h3 class="panel-title">Metric API Request</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12">
+                    The Metric API supports several functions - this page demonstrates fetch related functions. It uses an <a href="js/metric/api.proxy.js">API proxy javascript file</a> that can be embedded into any web page. Select a Metric API function,&nbsp;select a metric group, then press the Invoke API button.  The Metric API response is displayed below.
+                </div>
+            </div>
+            <div class="row">
+                <br/>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="endpointList">Select Metric API Function:</label>
+                    <select id="endpointList" class="form-control"></select>
+                </div>
+                <div class="col-md-4">
+                    <label for="groupList">Select Metric Group:</label>
+                    <select id="groupList" class="form-control"></select>
+                </div>
+                <div class="col-md-4 pull-right">
+                    <button id="invokeAPI" class="btn btn-success" disabled="disabled" style="margin-top: 22px; width: 100%;">Invoke API</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <button class="btn btn-primary" id="fetch">Fetch</button>
-        <button class="btn btn-primary" id="fetchList">Fetch List</button>
-        <button class="btn btn-primary" id="fetchCount">Fetch Count</button>
-        <button class="btn btn-primary" id="fetchColumns">Fetch Columns</button>
-        <button class="btn btn-primary" id="fetchSetup">Fetch Setup</button>
-    </div>
-    <div>
-        <textarea rows=35 cols=120 id="apiResponse">Select an aPI method ... response wil be displayed here</textarea>
+
+    <div class="panel panel-primary hidden" id="apiResponse">
+        <div class="panel-heading">
+            <h3 class="panel-title">Metric API Response</h3>
+        </div>
+        <div class="panel-body">
+                <pre/>
+        </div>
     </div>
 
     <!-- JS - 3rd party libraries -->
     <script src="ext/jquery-2.1.0.min.js"></script>
     <script src="ext/underscore.1.6.0.min.js"></script>
-    <script src="ext/backbone.1.1.1.min.js"></script>
-    <script src="ext/backbone.1.1.1-options-patch.js"></script>
+    <script src="ext/backbone.1.1.2.min.js"></script>
+    <script src="ext/backbone.1.1.2-options-patch.js"></script>
     <script src="ext/bootstrap-3.1.1/js/bootstrap.min.js"></script>
     <script src="ext/bootstrap-sortable/bootstrap-sortable.js"></script>
     <script src="ext/d3-v3.4.4.min.js"></script>
     <script src="ext/json2.js"></script>
 
     <!-- JS - Metric API. -->
-    <script src="metric/api.proxy.js"></script>
+    <script src="js/metric/api.proxy.js"></script>
 
-    <!-- JS - Inline page script. -->
-    <script type="text/javascript">
-        (function ($, api) {
-
-            // ECMAScript 5 Strict Mode
-            "use strict";
-
-            // Callback to invoke when a fetch APi operation completes.
-            var onFetch = function (data) {
-                $("#apiResponse").val(JSON.stringify(data, null, "    "));
-            };
-
-            $("#fetch").click(function () {
-                api.fetch($("#groupID").val(), false, onFetch);
-            });
-            $("#fetchList").click(function () {
-                api.fetchList(onFetch);
-            });
-            $("#fetchCount").click(function () {
-                api.fetchCount($("#groupID").val(), onFetch);
-            });
-            $("#fetchColumns").click(function () {
-                api.fetchColumns($("#groupID").val(), false, onFetch);
-            });
-            $("#fetchSetup").click(function () {
-                api.fetchSetup($("#groupID").val(), onFetch);
-            });
-
-        }(this.$, this.METRIC_API));
-    </script>
+    <!-- JS - Page scripts. -->
+    <script src="js/metric/api.test.js"></script>
+    <script src="js/metric/api.test.views.js"></script>
 
 </body>
 

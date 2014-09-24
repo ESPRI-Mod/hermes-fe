@@ -1,6 +1,24 @@
 // --------------------------------------------------------
-// metric/api.js
-// API interface.
+// api.proxy.js - Metric API proxy.
+// To use this script do the following:
+//      1.  Embed it into your web page.
+//      2.  Call one of the following methods with the relevant parameters:
+//          2.1 METRIC_API.fetch
+//              2.1.1   group - id of metric group to be retrieved;
+//              2.1.2   includeDBCols - flag indicating whether metric columns will also be returned;
+//              2.1.3   callback - function to invoke whent he API response is received.
+//          2.2 METRIC_API.fetchCount (group, includeDBCols, callback)
+//              2.2.1   group - id of metric group to be retrieved;
+//              2.2.2   callback - function to invoke whent he API response is received.
+//          2.3 METRIC_API.fetchColumns (group, includeDBCols, callback)
+//              2.3.1   group - id of metric group to be retrieved;
+//              2.3.2   includeDBCols - flag indicating whether metric columns will also be returned;
+//              2.3.3   callback - function to invoke whent he API response is received.
+//          2.4 METRIC_API.fetchList
+//              2.4.1   callback - function to invoke whent he API response is received.
+//          2.5 METRIC_API.fetchSetup
+//              2.5.1   group - id of metric group to be retrieved;
+//              2.5.2   callback - function to invoke whent he API response is received.
 // --------------------------------------------------------
 (function (root, $, _) {
 
@@ -8,7 +26,7 @@
     "use strict";
 
     // Declare vars.
-    var api = {},
+    var api = root.METRIC_API = {},
 
         // API URL's.
         URLS = {
@@ -104,8 +122,5 @@
         // Invoke API.
         invokeAPI(url, callback);
     };
-
-    // Expose to container.
-    root.METRIC_API = api;
 
 }(this, this.$, this._));
