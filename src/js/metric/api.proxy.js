@@ -20,7 +20,7 @@
 //              2.5.1   group - id of metric group to be retrieved;
 //              2.5.2   callback - function to invoke whent he API response is received.
 // --------------------------------------------------------
-(function (root, $, _) {
+(function (root, window, $, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -28,19 +28,45 @@
     // Declare vars.
     var api = root.METRIC_API = {},
 
-        // API URL's.
-        URLS = {
-            base: 'http://localhost:8888/api/1/metric/',
-            fetch: 'fetch?group={0}&include_db_id={1}',
-            fetchColumns: 'fetch_columns?group={0}&include_db_id={1}',
-            fetchCount: 'fetch_count?group={0}',
-            fetchList: 'fetch_list',
-            fetchSetup: 'fetch_setup?group={0}'
+        // Set of constants.
+        constants = {
+            // HTTP protocol.
+            HTTP_PROTOCOL: "http",
+
+            // API URL's.
+            URLS = {
+                fetch: 'fetch?group={0}&include_db_id={1}',
+                fetchColumns: 'fetch_columns?group={0}&include_db_id={1}',
+                fetchCount: 'fetch_count?group={0}',
+                fetchList: 'fetch_list',
+                fetchSetup: 'fetch_setup?group={0}'
+            }
+        },
+
+        // Returns an endpoint address.
+        // @ep          Endpoint to be invoked.
+        // @protocol    Communications protocol (ws | http).
+        getEndPoint = function (ep, protocol) {
+            // Set default protocol.
+            if (_.isUndefined(protocol)) {
+                protocol = constants.HTTP_PROTOCOL;
+            }
+
+            // Append protocol suffix for secure endpoints.
+            if (window.location.protocol.indexOf("s") !== -1) {
+                protocol += "s";
+            }
+
+            // Derive endpoint.
+            return "{0}://{1}/api/1/metric/{2}"
+                .replace("{0}", protocol)
+                .replace("{1}", window.location.host)
+                .replace("{2}", ep);
         },
 
         // Invokes remote API.
         invokeAPI = function (url, callback) {
-            url = URLS.base + url;
+            url = getEndPoint(url);
 
             $.getJSON(url, callback);
         };
@@ -56,7 +82,7 @@
         includeDBCols = includeDBCols || false;
 
         // Set target URL.
-        url = URLS.fetch;
+        url = constants.URLS.fetch;
         url = url.replace("{0}", group);
         url = url.replace("{1}", includeDBCols);
 
@@ -71,7 +97,7 @@
         var url;
 
         // Set target URL.
-        url = URLS.fetchCount;
+        url = constants.URLS.fetchCount;
         url = url.replace("{0}", group);
 
         // Invoke API.
@@ -89,7 +115,7 @@
         includeDBCols = includeDBCols || false;
 
         // Set target URL.
-        url = URLS.fetchColumns;
+        url = constants.URLS.fetchColumns;
         url = url.replace("{0}", group);
         url = url.replace("{1}", includeDBCols);
 
@@ -103,7 +129,7 @@
         var url;
 
         // Set target URL.
-        url = URLS.fetchList;
+        url = constants.URLS.fetchList;
 
         // Invoke API.
         invokeAPI(url, callback);
@@ -116,11 +142,11 @@
         var url;
 
         // Set target URL.
-        url = URLS.fetchSetup;
+        url = constants.URLS.fetchSetup;
         url = url.replace("{0}", group);
 
         // Invoke API.
         invokeAPI(url, callback);
     };
 
-}(this, this.$, this._));
+}(this, this.window, this.$, this._));
