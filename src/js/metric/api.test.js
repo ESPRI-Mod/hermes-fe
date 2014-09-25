@@ -37,7 +37,8 @@
                     uiName: "Fetch Setup"
                 }
             ],
-            endpoint: undefined
+            endpoint: undefined,
+            query: undefined
         }
     };
 
@@ -88,6 +89,14 @@
         });
         view.render();
 
+        // Wire upto query filter change event.
+        $("#query").change(function () {
+            APP.state.query = $(this).val().trim();
+            if (APP.state.query.length === 0) {
+                APP.state.query = undefined;
+            }
+        });
+
         // Trigger event.
         APP.events.trigger("state:initialized");
     };
@@ -117,11 +126,11 @@
         switch (APP.state.endpoint.name)
         {
             case "fetch":
-                api.fetch(APP.state.group, false, APP.setAPIResponse);
+                api.fetch(APP.state.group, false, APP.state.query, APP.setAPIResponse);
                 break;
 
             case "fetchCount":
-                api.fetchCount(APP.state.group, APP.setAPIResponse);
+                api.fetchCount(APP.state.group, APP.state.query, APP.setAPIResponse);
                 break;
 
             case "fetchColumns":
@@ -129,10 +138,17 @@
                 break;
 
             case "fetchSetup":
-                api.fetchSetup(APP.state.group, APP.setAPIResponse);
+                api.fetchSetup(APP.state.group, APP.state.query, APP.setAPIResponse);
                 break;
         }
     });
+
+    // Helper string method.
+    if (typeof(String.prototype.trim) === "undefined") {
+        String.prototype.trim = function() {
+            return String(this).replace(/^\s+|\s+$/g, '');
+        };
+    }
 
     // Document ready event handler.
     $(document).ready(function() {

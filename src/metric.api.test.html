@@ -54,7 +54,7 @@
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-12">
-                    The Metric API supports several functions - this page demonstrates fetch related functions. It uses an <a href="js/metric/api.proxy.js">API proxy javascript file</a> that can be embedded into any web page. Select a Metric API function,&nbsp;select a metric group, then press the Invoke API button.  The Metric API response is displayed below.
+                    This page uses an <a href="js/metric/api.proxy.js">API proxy javascript file</a> that can be embedded into any web page and permits you to test the Prodiguer Metrics API fetch functions. Select an API function,&nbsp;select a metric group, optionally specify <a href="https://raw.githubusercontent.com/Prodiguer/prodiguer-docs/master/api/metric/TEST_METRIC_GROUP_FILTER_01.json">a query filter</a>, press the Invoke API button.  The Metric API response is displayed below.
                 </div>
             </div>
             <div class="row">
@@ -71,6 +71,15 @@
                 </div>
                 <div class="col-md-4 pull-right">
                     <button id="invokeAPI" class="btn btn-success" disabled="disabled" style="margin-top: 22px; width: 100%;">Invoke API</button>
+                </div>
+            </div>
+            <div class="row">
+                <br/>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="query">Paste your query filter here:</label>
+                    <textarea id="query" class="form-control" rows="12"></textarea>
                 </div>
             </div>
         </div>

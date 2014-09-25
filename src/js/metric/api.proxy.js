@@ -65,17 +65,34 @@
         },
 
         // Invokes remote API.
-        invokeAPI = function (url, callback) {
-            url = getEndPoint(url);
+        invokeAPI = function (url, callback, payload) {
+            var ajaxOptions;
 
-            $.getJSON(url, callback);
+            // Initialize ajax request options.
+            ajaxOptions = {
+                dataType: "json",
+                success: callback,
+                url: getEndPoint(url)
+            };
+            if (payload) {
+                _.extend(ajaxOptions, {
+                    type: "POST",
+                    contentType: "application/json",
+                    data: payload
+                })
+            }
+
+            $.ajax(ajaxOptions);
+
+            // $.getJSON(url, callback);
         };
 
     // Fetches a group of metrics.
     // @group           ID of a metrics group.
     // @includeDBCols   Flag indicating whether to include db columns.
+    // @query           Metrics query filter.
     // @callback        Function to invoke when API returns.
-    api.fetch = function (group, includeDBCols, callback) {
+    api.fetch = function (group, includeDBCols, query, callback) {
         var url;
 
         // Parse inputs.
@@ -87,13 +104,14 @@
         url = url.replace("{1}", includeDBCols);
 
         // Invoke API.
-        invokeAPI(url, callback);
+        invokeAPI(url, callback, query);
     };
 
     // Fetches count of lines within a group of metrics.
-    // @group      ID of a metrics group.
+    // @group           ID of a metrics group.
+    // @query           Metrics query filter.
     // @callback        Function to invoke when API returns.
-    api.fetchCount = function (group, callback) {
+    api.fetchCount = function (group, query, callback) {
         var url;
 
         // Set target URL.
@@ -101,7 +119,7 @@
         url = url.replace("{0}", group);
 
         // Invoke API.
-        invokeAPI(url, callback);
+        invokeAPI(url, callback, query);
     };
 
     // Fetches list of columns within a group of metrics.
@@ -136,9 +154,10 @@
     };
 
     // Fetches list of columns within a group of metrics.
-    // @group      ID of a metrics group.
+    // @group           ID of a metrics group.
+    // @query           Metrics query filter.
     // @callback        Function to invoke when API returns.
-    api.fetchSetup = function (group, callback) {
+    api.fetchSetup = function (group, query, callback) {
         var url;
 
         // Set target URL.
@@ -146,7 +165,7 @@
         url = url.replace("{0}", group);
 
         // Invoke API.
-        invokeAPI(url, callback);
+        invokeAPI(url, callback, query);
     };
 
 }(this, this.window, this.$, this._));
