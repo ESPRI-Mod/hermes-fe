@@ -34,7 +34,7 @@
             HTTP_PROTOCOL: "http",
 
             // API URL's.
-            URLS = {
+            URLS: {
                 fetch: 'fetch?group={0}&include_db_id={1}',
                 fetchColumns: 'fetch_columns?group={0}&include_db_id={1}',
                 fetchCount: 'fetch_count?group={0}',
