@@ -174,7 +174,7 @@
 
         // Get existing simulation.
         s = _.find(state.simulationList, function (s) {
-            return s.id === ei.id;
+            return s.uid === ei.uid;
         });
         if (_.isUndefined(s) || s.executionState === ei.state) {
             return;

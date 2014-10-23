@@ -14,7 +14,7 @@
 				MOD.views.InfoView,
 				MOD.views.GridView
 			];
-			
+
 			APP.utils.render(subViews, {}, this)
 
 			return this;
@@ -22,6 +22,6 @@
 	});
 
 	// Extend module.
-	MOD.views.MainView = View;	
+	MOD.views.MainView = View;
 
 }(this.APP, this.APP.modules.monitoring, this.$jq, this._, this.Backbone));

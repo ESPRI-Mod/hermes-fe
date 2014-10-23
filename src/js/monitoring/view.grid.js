@@ -26,7 +26,7 @@
         tagName : "tr",
 
         id : function () {
-            return 'simulation-' + this.model.id;
+            return 'simulation-' + this.model.uid;
         },
 
         className : function () {
@@ -83,7 +83,7 @@
         // @ei      Event information.
         _onSimulationStateChange: function (ei) {
             // Get row.
-            var $s = this.$('#simulation-' + ei.id);
+            var $s = this.$('#simulation-' + ei.uid);
 
             // Update row css.
             $s.removeClass(MOD.statesCSS[ei.statePrevious]);
@@ -138,10 +138,6 @@
         _onSimulationListNull: function () {
             this.$el.hide();
         }
-    });
-
-    var NullView = Backbone.View.extend({
-
     });
 
     // Extend module.
