@@ -136,7 +136,7 @@
 
         // Simulation list null event handler.
         _onSimulationListNull: function () {
-            this.$el.hide();
+            this.$el.show();
         }
     });
 

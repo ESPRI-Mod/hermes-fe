@@ -94,24 +94,24 @@
 
         initialize : function () {
             MOD.events.on("state:newSimulation", this._onNewSimulation, this);
-            MOD.events.on("state:simulationListFiltered", this._onFiltered, this);
-            MOD.events.on("state:simulationListNull", this._onNullFilter, this);
+            MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
+            MOD.events.on("state:simulationListNull", this._onSimulationListNull, this);
             MOD.events.on("ui:pagination", this._onPagination, this);
         },
 
         render : function () {
-            this._onFiltered();
+            this._onSimulationListFiltered();
 
             return this;
         },
 
         // Null filter event handler.
-        _onNullFilter: function () {
+        _onSimulationListNull: function () {
             this.$('li').remove();
         },
 
         // Filtered event handler.
-        _onFiltered : function () {
+        _onSimulationListFiltered : function () {
             // Delete previous.
             this.$('li').remove();
 
@@ -137,7 +137,7 @@
         // New simulation event handler.
         // @ei      Event information.
         _onNewSimulation: function () {
-            this._onFiltered();
+            this._onSimulationListFiltered();
         }
     });
 

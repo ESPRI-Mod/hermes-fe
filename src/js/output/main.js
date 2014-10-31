@@ -4,41 +4,44 @@
 // --------------------------------------------------------
 (function(APP, utils, constants, $) {
 
-	// ECMAScript 5 Strict Mode
-	"use strict";
+    // ECMAScript 5 Strict Mode
+    "use strict";
 
-	// Declare module.
-	var MOD = APP.registerModule("output", {
-		// Module title.
-		title: "Simulation Output",
+    // Declare module.
+    var MOD = APP.registerModule("output", {
+        // Activation status.
+        isActive: false,
 
-		// Module short title.
-		shortTitle: "Output",
+        // Module title.
+        title: "Simulation Output",
 
-		// Module version.
-		version : "0.1.0",
+        // Module short title.
+        shortTitle: "Output",
 
-		// Module key aliases.
-		keyAliases: ["search"]
-	});
+        // Module version.
+        version : "0.1.0",
 
-	// Module ready event handler.
-	MOD.events.on("module:ready", function () {
-		// TODO Load setup data & fire event.
-		MOD.events.trigger("state:setupDataLoaded", {});
-	});
+        // Module key aliases.
+        keyAliases: ["search"]
+    });
 
-	// State initialization event handler.
-	MOD.events.on("state:initialized", function () {
-		// Render view.
-		MOD.view = new MOD.views.MainView();
-		MOD.view.render();
+    // Module ready event handler.
+    MOD.events.on("module:ready", function () {
+        // TODO Load setup data & fire event.
+        MOD.events.trigger("state:setupDataLoaded", {});
+    });
 
-		// Update DOM.
+    // State initialization event handler.
+    MOD.events.on("state:initialized", function () {
+        // Render view.
+        MOD.view = new MOD.views.MainView();
+        MOD.view.render();
+
+        // Update DOM.
         $(".app-content").append(MOD.view.$el);
 
         // Fire event.
-		MOD.events.trigger("ui:initialized");		
-	});
+        MOD.events.trigger("ui:initialized");
+    });
 
 }(this.APP, this.APP.utils, this.APP.constants, this.$jq));

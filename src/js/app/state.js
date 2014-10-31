@@ -2,18 +2,23 @@
 // app/state.js
 // Manages application level state.
 // --------------------------------------------------------
-(function(APP) {
+(function(APP, _) {
 
-	// ECMAScript 5 Strict Mode
-	"use strict";
+    // ECMAScript 5 Strict Mode
+    "use strict";
 
-	// Module state.
-	var state = APP.state = {
-		// Current module.
-		module: undefined,
+    // Module state.
+    var state = APP.state = {
+        // Current module.
+        module: undefined,
 
-		// List of modules.
-		moduleList: []
-	};
+        // List of modules.
+        moduleList: [],
 
-}(this.APP));
+        // Returns set of active modules.
+        getActiveModules: function () {
+            return _.where(state.moduleList, { "isActive": true });
+        }
+    };
+
+}(this.APP, this._));

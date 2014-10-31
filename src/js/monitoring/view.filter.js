@@ -24,6 +24,9 @@
 
         render: function () {
             this.$el.text(this.model.name);
+            if (this.model.isDefault) {
+                this.$el.attr('selected', 'true');
+            }
 
             return this;
         }

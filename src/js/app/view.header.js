@@ -14,11 +14,11 @@
 	var LogoView = Backbone.View.extend({
 		className: "pull-left",
 
-		tagName: "img",	
+		tagName: "img",
 
 		events: {
 			"click": APP.utils.openInstituteHomePage
-		},		
+		},
 
 		render : function () {
 			this.$el.attr("lang", "EN");
@@ -34,7 +34,7 @@
 	var TitleView = Backbone.View.extend({
 		className: "pull-left",
 
-		tagName: "h1",	
+		tagName: "h1",
 
 		render : function () {
 			APP.utils.renderHTML(templates.title, APP, this);
@@ -46,7 +46,7 @@
 	// View over application menu item label.
 	var MenuItemView = Backbone.View.extend({
 		className: "btn btn-primary",
-		tagName: "label",	
+		tagName: "label",
 
 		initialize: function () {
 			this._module = this.options.model;
@@ -82,9 +82,9 @@
 			this.$el.attr("type", "button");
 			this.$el.text("Support");
 
-			return this;	
-		},		
-	});	
+			return this;
+		},
+	});
 
 	// View over application menu.
 	var MenuView = Backbone.View.extend({
@@ -97,24 +97,25 @@
 		render: function () {
 			this.$el.attr("data-toggle", "buttons");
 
-			return this;			
+			return this;
 		},
 
 		_renderMenu: function () {
-			_.each(APP.state.moduleList, function (module) {
-				if (module.isActive) {
+			var activeModules;
+
+			activeModules = APP.state.getActiveModules();
+			if (activeModules.length > 1) {
+				_.each(activeModules, function (module) {
 					APP.utils.render(MenuItemView, {
 						model: module
-					}, this);					
-				}
-			}, this);
+					}, this);
+				}, this);
+			}
 			APP.utils.render(SupportButtonView, {}, this);
 
 			return this;
 		}
 	});
-
-	
 
 	var View = Backbone.View.extend({
 		className: "container app-header",
@@ -125,7 +126,7 @@
 				TitleView,
 				MenuView
 			];
-			
+
 			APP.utils.render(subViews, {}, this)
 
 			return this;
