@@ -60,6 +60,7 @@
     MOD.events.on("state:setupDataLoaded", function (data) {
         // Cache simulations.
         state.simulationList = data.simulationList;
+        delete data.simulationList;
 
         // Cache filters.
         _.each(_.keys(data), function(key) {
@@ -67,7 +68,7 @@
                 item,
                 itemKey = key.substr(0, key.length - 4);
 
-            if (key !== 'simulationList' && _.has(state, key)) {
+            if (_.has(state, key)) {
                 // Set collection.
                 collection = [{
                     id: 0,
@@ -159,6 +160,46 @@
         MOD.events.trigger("state:simulationStatusUpdated", ei);
     });
 
+    // Simulation termination event handler.
+    // @ei      Event information.
+    MOD.events.on("ws:simulationTermination", function (ei) {
+        var s, es;
+
+        // Get existing simulation.
+        s = _.find(state.simulationList, function (s) {
+            return s.uid === ei.uid;
+        });
+        if (_.isUndefined(s) || s.executionState === ei.state) {
+            return;
+        }
+
+        // Get existing execution state.
+        es = _.find(state.executionStateList, function (es) {
+            return es.name === ei.state;
+        });
+        if (_.isUndefined(es)) {
+            throw new APP.Exception("Unknown simulation status");
+        }
+
+        // Update event information.
+        ei.s = s;
+        ei.stateID = es.id;
+        ei.statePrevious = s.executionState;
+        ei.statePreviousID = s.executionStateID;
+
+        // Update simulation.
+        s.executionState = es.name;
+        s.executionStateID = es.id;
+        s.executionEndDate = ei.ended;
+
+        // Fire events.
+        MOD.log("state:simulationTermination: " + s.name);
+        MOD.events.trigger("state:simulationStatusUpdated", ei);
+        MOD.events.trigger("state:simulationTermination", ei);
+    });
+
+    // New simulation event handler.
+    // @ei      Event information.
     MOD.events.on("ws:new", function (ei) {
         var s, current;
 

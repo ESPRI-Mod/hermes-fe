@@ -2,20 +2,21 @@
 // Simulation monitor - ws.js
 // Monitoring websocket handler.
 // --------------------------------------------------------
-(function (APP, MOD) {
+(function (APP, MOD, WebSocket) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Forward declare variables.
-    var ws,
+    var buffering = true,
+        buffer = [],
+        dispatchEvent,
+        ws,
         log,
-        dispatch,
-        onOpen,
         onClosed,
+        onError,
         onMessage,
-        buffering = true,
-        buffer = [];
+        onOpen;
 
     // Logging helper function.
     log = function (msg) {
@@ -23,7 +24,7 @@
     };
 
     // Send a ws event module notification.
-    dispatch = function (ei) {
+    dispatchEvent = function (ei) {
         // Format event info where appropriate.
         if (ei.eventType === "ws:stateChange") {
             ei.state = ei.state.toUpperCase();
@@ -36,17 +37,22 @@
 
     // On ws connection opened event handler.
     onOpen = function (e) {
-        log("connection opened");
+        log("connection opened @ " + new Date());
     };
 
     // On ws connection closed event handler.
     onClosed = function (e) {
-        log("connection closed");
+        log("connection closed @ " + new Date());
     };
 
     // On ws message received event handler.
     onMessage = function (e) {
-        var ei, msg, s, fire=true;
+        var ei;
+
+        // Filter out keep-alive pongs.
+        if (e.data === "pong") {
+            return;
+        }
 
         // Log.
         log("message received :: {0}".replace("{0}", e.data));
@@ -59,8 +65,13 @@
         if (buffering) {
             buffer.push(ei);
         } else {
-            dispatch(ei);
+            dispatchEvent(ei);
         }
+    };
+
+    // On ws error event handler.
+    onError = function (e) {
+        log("ws error :: {0}".replace("{0}", e.data));
     };
 
     // UI initialized event handler.
@@ -69,7 +80,7 @@
         buffering = false;
 
         // Empty buffer.
-        _.each(buffer, dispatch);
+        _.each(buffer, dispatchEvent);
         buffer = [];
     });
 
@@ -83,6 +94,7 @@
         ws = new WebSocket(ep);
 
         // Bind socket event listeners.
+        ws.onerror = onError;
         ws.onopen = onOpen;
         ws.onclose = onClosed;
         ws.onmessage = onMessage;
@@ -91,4 +103,4 @@
         MOD.events.trigger("ws:initialized");
     });
 
-}(this.APP, this.APP.modules.monitoring));
+}(this.APP, this.APP.modules.monitoring, this.WebSocket));

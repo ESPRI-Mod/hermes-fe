@@ -25,6 +25,13 @@
     var GridTableRowView = Backbone.View.extend({
         tagName : "tr",
 
+        // View events.
+        events : {
+            'click > td' : function () {
+                MOD.events.trigger("intermonitoring:open-monitoring", this.model);
+            }
+        },
+
         id : function () {
             return 'simulation-' + this.model.uid;
         },
@@ -49,6 +56,7 @@
             MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
             MOD.events.on("state:simulationListNull", this._onSimulationListNull, this);
             MOD.events.on("state:simulationStatusUpdated", this._onSimulationStateChange, this);
+            MOD.events.on("state:simulationTermination", this._onSimulationTermination, this);
             MOD.events.on("ui:pagination", this._renderPage, this);
         },
 
@@ -88,6 +96,20 @@
             // Update row css.
             $s.removeClass(MOD.statesCSS[ei.statePrevious]);
             $s.addClass(MOD.statesCSS[ei.state]);
+        },
+
+        // Simulation termination event handler.
+        // @ei      Event information.
+        _onSimulationTermination: function (ei) {
+            // Get row.
+            var $s = this.$('#simulation-' + ei.uid);
+
+            // Update row css.
+            $s.removeClass(MOD.statesCSS[ei.statePrevious]);
+            $s.addClass(MOD.statesCSS[ei.state]);
+
+            // Update row fields.
+            $s.find(".executionEndDate").text(ei.s.executionEndDate);
         },
 
         // New simulation event handler.

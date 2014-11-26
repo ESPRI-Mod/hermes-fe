@@ -18,6 +18,7 @@
         initialize : function () {
             MOD.events.on("state:newSimulation", this._onNewSimulation, this);
             MOD.events.on("state:simulationStatusUpdated", this._onSimulationStateChange, this);
+            MOD.events.on("state:simulationTermination", this._onSimulationTermination, this);
         },
 
         render : function () {
@@ -32,6 +33,20 @@
             var text;
 
             text = "STATUS CHANGE @ {0} :: {1} changed from {2} to {3}";
+            text = text.replace("{0}", ei.eventTimestamp.slice(0, 19));
+            text = text.replace("{1}", ei.s.name);
+            text = text.replace("{2}", ei.statePrevious);
+            text = text.replace("{3}", ei.state);
+
+            this.$el.text(text);
+        },
+
+        // Simulation termination event handler.
+        // @ei      Event information.
+        _onSimulationTermination: function (ei) {
+            var text;
+
+            text = "SIMULATION TERMINATED @ {0} :: {1} changed from {2} to {3}";
             text = text.replace("{0}", ei.eventTimestamp.slice(0, 19));
             text = text.replace("{1}", ei.s.name);
             text = text.replace("{2}", ei.statePrevious);
@@ -146,8 +161,9 @@
         className : "alert alert-info",
 
         initialize : function () {
-            MOD.events.on("state:simulationStatusUpdated", this._onSimulationStateChange, this);
             MOD.events.on("state:newSimulation", this._onNewSimulation, this);
+            MOD.events.on("state:simulationStatusUpdated", this._onSimulationStateChange, this);
+            MOD.events.on("state:simulationTermination", this._onSimulationTermination, this);
         },
 
         render : function () {
@@ -164,6 +180,12 @@
         // Simulation state change event handler.
         // @ei      Event information.
         _onSimulationStateChange: function (ei) {
+            this.$el.attr("class", "alert alert-" + MOD.statesCSS[ei.state]);
+        },
+
+        // Simulation termination event handler.
+        // @ei      Event information.
+        _onSimulationTermination: function (ei) {
             this.$el.attr("class", "alert alert-" + MOD.statesCSS[ei.state]);
         },
 
