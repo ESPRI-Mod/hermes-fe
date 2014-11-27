@@ -20,27 +20,28 @@
 
     // Event handler: open inter-monitoring link.
     MOD.events.on("intermonitoring:open-monitoring", function (simulation) {
-        var url, parts = [];
+        var serverURL, url = [];
 
         // Get server URL.
-        url = getDodsServerURL(simulation);
-        alert(url);
-        if (_.isUndefined(url)) {
+        serverURL = getDodsServerURL(simulation);
+        if (_.isUndefined(serverURL)) {
             // TODO - inform user.
             return;
         }
 
         // Construct monitoring link.
-        parts.push(url);
-        parts.push(simulation.computeNodeLogin[0]);
-        parts.push(simulation.model);
-        parts.push(simulation.space);
-        parts.push(simulation.experiment);
-        parts.push(simulation.name);
-        parts.push("MONITORING");
+        url.push(serverURL);
+        url.push(simulation.computeNodeLogin[0]);
+        url.push(simulation.model);
+        url.push(simulation.space);
+        url.push(simulation.experiment);
+        url.push(simulation.name);
+        url.push("MONITORING/index.html");
+        url = url.join("/");
+        MOD.log("UI :: open monitoring hyperlink: " + url);
 
         // Open link in new window.
-        APP.utils.openURL(parts.join("/"), true);
+        APP.utils.openURL(url, true);
     });
 
 }(this.APP, this.APP.modules.monitoring, this._));
