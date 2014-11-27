@@ -22,10 +22,9 @@
     MOD.events.on("intermonitoring:open-monitoring", function (simulation) {
         var serverURL, url = [];
 
-        // Get server URL.
+        // Escape if server URL is unspecified.
         serverURL = getDodsServerURL(simulation);
         if (_.isUndefined(serverURL)) {
-            // TODO - inform user.
             return;
         }
 

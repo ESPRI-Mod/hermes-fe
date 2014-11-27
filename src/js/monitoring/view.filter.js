@@ -41,7 +41,11 @@
         attributes: function () {
             return {
                 id: this.options.typeName + "-list"
-            }
+            };
+        },
+
+        initialize: function () {
+            MOD.events.on("filter:refresh", this._refresh, this);
         },
 
         events : {
@@ -64,6 +68,26 @@
             this.$el.width('55%');
 
             return this;
+        },
+
+        _refresh: function (data) {
+            // Escape if not dealing with same filters.
+            if (this.options.typeName !== data.typeName) {
+                return;
+            }
+
+            // Remove existing.
+            this.$("option").remove();
+
+            // Build anew.
+            _.each(MOD.state[this.options.typeName + "List"], function (i) {
+                var itemView = APP.utils.render(FilterOptionView, _.defaults({
+                    model: i,
+                }, this.options), this);
+                if (i.id === MOD.state[this.options.typeName].id) {
+                    itemView.$el.attr('selected', true);
+                }
+            }, this);
         },
 
         _filter: function (id) {
@@ -118,7 +142,7 @@
     var InnerView = Backbone.View.extend({
         className : "panel-body",
 
-        render : function () {
+        render: function () {
             _.each(MOD.filters, function (filter) {
                 APP.utils.render(FilterView, filter, this);
             }, this);
