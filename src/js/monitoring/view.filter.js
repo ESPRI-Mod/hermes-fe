@@ -1,30 +1,39 @@
-// --------------------------------------------------------
-// monitoring/view.filter.js
-// View over the simulation monitoring search filter.
-// --------------------------------------------------------
-(function(APP, MOD, $, _, Backbone) {
+(function (APP, MOD, _, Backbone) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // View of a filter option item.
-    var FilterOptionView = Backbone.View.extend({
+    // Module vars.
+    var FilterOptionView,
+        FilterSelectView,
+        FilterLabelView,
+        FilterView,
+        InnerView;
+
+    // Filter option view.
+    FilterOptionView = Backbone.View.extend({
+        // Backbone: view DOM element type.
         tagName: "option",
 
+        // Backbone: view CSS class.
         className: function () {
-            this.options.typeName
+            return this.options.typeName;
         },
 
+        // Backbone: view DOM attributes.
         attributes: function () {
             return {
                 id: this.options.typeName + '-' + this.model.id,
                 value: this.model.id
-            }
+            };
         },
 
+        // Backbone: view renderer.
         render: function () {
             this.$el.text(this.model.name);
             if (this.model.isDefault) {
+                this.$el.attr('selected', 'true');
+            } else if (this.model.id === MOD.state[this.options.typeName].id) {
                 this.$el.attr('selected', 'true');
             }
 
@@ -32,47 +41,45 @@
         }
     });
 
-    // View of a filterable list.
-    var FilterSelectView = Backbone.View.extend({
+    // Filter select view.
+    FilterSelectView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className: "filter-select",
 
+        // Backbone: view DOM element type.
         tagName: "select",
 
+        // Backbone: view DOM attributes.
         attributes: function () {
             return {
                 id: this.options.typeName + "-list"
             };
         },
 
+        // Backbone: view initializer.
         initialize: function () {
             MOD.events.on("filter:refresh", this._refresh, this);
         },
 
+        // Backbone: view event handlers.
         events : {
             'change' : function () {
                 this._filter(parseInt(this.$el.val()));
             },
         },
 
+        // Backbone: view renderer.
         render: function () {
-            var data = MOD.state[this.options.typeName + "List"];
-
-            _.each(data, function (i) {
-                var itemView = APP.utils.render(FilterOptionView, _.defaults({
-                    model: i,
-                }, this.options), this);
-                if (i.id === MOD.state[this.options.typeName].id) {
-                    itemView.$el.attr('selected', true);
-                }
-            }, this);
+            this._build();
             this.$el.width('55%');
 
             return this;
         },
 
-        _refresh: function (data) {
+        // Refresh filter when server pushes new CV terms.
+        _refresh: function (filter) {
             // Escape if not dealing with same filters.
-            if (this.options.typeName !== data.typeName) {
+            if (this.options.typeName !== filter.typeName) {
                 return;
             }
 
@@ -80,22 +87,28 @@
             this.$("option").remove();
 
             // Build anew.
-            _.each(MOD.state[this.options.typeName + "List"], function (i) {
-                var itemView = APP.utils.render(FilterOptionView, _.defaults({
+            this._build();
+        },
+
+        // Buils view.
+        _build: function () {
+            var data;
+
+            data = MOD.state[this.options.typeName + "List"];
+            _.each(data, function (i) {
+                APP.utils.render(FilterOptionView, _.defaults({
                     model: i,
                 }, this.options), this);
-                if (i.id === MOD.state[this.options.typeName].id) {
-                    itemView.$el.attr('selected', true);
-                }
             }, this);
         },
 
+        // Set filtered item.
         _filter: function (id) {
             var data, item;
 
             // Filter by item ID.
             data = MOD.state[this.options.typeName + "List"];
-            item = _.find(data, function(i){
+            item = _.find(data, function (i) {
                 return i.id === id;
             });
 
@@ -108,12 +121,15 @@
         }
     });
 
-    // View over a filter label.
-    var FilterLabelView = Backbone.View.extend({
+    // Filter label view.
+    FilterLabelView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className: "filter-label",
 
+        // Backbone: view DOM element type.
         tagName: "label",
 
+        // Backbone: view renderer.
         render: function () {
             this.$el.text(this.options.displayName);
             this.$el.width('40%');
@@ -122,26 +138,28 @@
         }
     });
 
-    // View over a filter.
-    var FilterView = Backbone.View.extend({
+    // Filter view.
+    FilterView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className: "col-md-3",
 
+        // Backbone: view renderer.
         render: function () {
-            var subViews = [
+            APP.utils.render([
                 FilterLabelView,
                 FilterSelectView
-            ];
-
-            APP.utils.render(subViews, this.options, this);
+            ], this.options, this);
 
             return this;
         }
     });
 
     // Inner view.
-    var InnerView = Backbone.View.extend({
+    InnerView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className : "panel-body",
 
+        // Backbone: view renderer.
         render: function () {
             _.each(MOD.filters, function (filter) {
                 APP.utils.render(FilterView, filter, this);
@@ -152,9 +170,11 @@
     });
 
     // Outer view.
-    var OuterView = Backbone.View.extend({
+    MOD.views.FilterView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className : "panel panel-info bg-info",
 
+        // Backbone: view renderer.
         render : function () {
             APP.utils.render(InnerView, this.options, this);
 
@@ -162,7 +182,4 @@
         }
     });
 
-    // Extend module.
-    MOD.views.FilterView = OuterView;
-
-}(this.APP, this.APP.modules.monitoring, this.$jq, this._, this.Backbone));
+}(this.APP, this.APP.modules.monitoring, this._, this.Backbone));

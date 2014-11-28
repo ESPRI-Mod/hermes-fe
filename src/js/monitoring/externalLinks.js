@@ -1,8 +1,4 @@
-// --------------------------------------------------------
-// monitoring/externalLinks.js
-// Manages external linking from monitoring page.
-// --------------------------------------------------------
-(function(APP, MOD, _) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";

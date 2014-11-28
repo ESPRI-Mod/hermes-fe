@@ -2,7 +2,7 @@
 // app/init.js
 // Application initializer.
 // --------------------------------------------------------
-(function(APP) {
+(function (APP) {
 
     // ECMAScript 5 Strict Mode
     "use strict";

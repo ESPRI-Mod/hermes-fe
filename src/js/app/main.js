@@ -102,19 +102,19 @@ window.$ = window.$jq = jQuery.noConflict();
                 },
 
                 // Module logger.
-                log: function(msg) {
+                log: function (msg) {
                     APP.utils.log(key.toUpperCase() + ' :: ' + msg);
                 }
             });
 
-            // Update state.
+            // Cache.
             APP.state.moduleList.push(module);
 
             return module;
         },
 
         // Application exception.
-        Exception : function(message) {
+        Exception : function (message) {
             this.message = message;
             this.name = "AppException";
         }

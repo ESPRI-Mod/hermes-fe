@@ -1,19 +1,20 @@
-// --------------------------------------------------------
-// monitoring/view.grid.js
-// View over the simulation monitoring search results.
-// --------------------------------------------------------
-(function(APP, MOD, $, _, Backbone) {
+(function (APP, MOD, _, Backbone) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Module helper vars.
-    var templates = MOD.templates.grid;
+    var templates = MOD.templates.grid,
+        GridTableHeaderView,
+        GridTableRowView,
+        GridTableBodyView;
 
     // View over the grid table header.
-    var GridTableHeaderView = Backbone.View.extend({
+    GridTableHeaderView = Backbone.View.extend({
+        // Backbone: view DOM element type.
         tagName : "thead",
 
+        // Backbone: view renderer.
         render : function () {
             APP.utils.renderHTML(templates.header, {}, this);
 
@@ -22,24 +23,30 @@
     });
 
     // View over a grid table row.
-    var GridTableRowView = Backbone.View.extend({
+    GridTableRowView = Backbone.View.extend({
+        // Backbone: view DOM element type.
         tagName : "tr",
 
-        // View events.
+        // Backbone: view CSS class.
+        className : function () {
+            return MOD.statesCSS[this.model.executionState];
+        },
+
+        // Backbone: view DOM attributes.
+        attributes: function () {
+            return {
+                id: 'simulation-' + this.model.uid
+            };
+        },
+
+        // Backbone: view event handlers.
         events : {
             'click > td' : function () {
                 MOD.events.trigger("intermonitoring:open-monitoring", this.model);
             }
         },
 
-        id : function () {
-            return 'simulation-' + this.model.uid;
-        },
-
-        className : function () {
-            return MOD.statesCSS[this.model.executionState];
-        },
-
+        // Backbone: view renderer.
         render : function () {
             APP.utils.renderHTML(templates.row, this.model, this);
 
@@ -48,9 +55,11 @@
     });
 
     // View over the grid table body.
-    var GridTableBodyView = Backbone.View.extend({
+    GridTableBodyView = Backbone.View.extend({
+        // Backbone: view DOM element type.
         tagName : "tbody",
 
+        // Backbone: view initializer.
         initialize: function () {
             // MOD.events.on("state:newSimulation", this._onNewSimulation, this);
             MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
@@ -60,6 +69,7 @@
             MOD.events.on("ui:pagination", this._renderPage, this);
         },
 
+        // Backbone: view renderer.
         render : function () {
             this._renderPage();
 
@@ -84,7 +94,7 @@
         _renderRow : function (s) {
             APP.utils.render(GridTableRowView, {
                 model : s
-            }, this)
+            }, this);
         },
 
         // Simulation state change event handler.
@@ -130,23 +140,27 @@
     });
 
     // View over the grid table.
-    var GridTableView = Backbone.View.extend({
-        tagName : "table",
-
+    MOD.views.GridView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className : "table table-hover table-bordered",
 
+        // Backbone: view DOM element type.
+        tagName : "table",
+
+        // Backbone: view initializer.
         initialize: function () {
             MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
             MOD.events.on("state:simulationListNull", this._onSimulationListNull, this);
         },
 
+        // Backbone: view renderer.
         render : function () {
             var subViews = [
                 GridTableHeaderView,
                 GridTableBodyView
             ];
 
-            APP.utils.render(subViews, {}, this)
+            APP.utils.render(subViews, {}, this);
 
             return this;
         },
@@ -162,7 +176,4 @@
         }
     });
 
-    // Extend module.
-    MOD.views.GridView = GridTableView;
-
-}(this.APP, this.APP.modules.monitoring, this.$jq, this._, this.Backbone));
+}(this.APP, this.APP.modules.monitoring, this._, this.Backbone));

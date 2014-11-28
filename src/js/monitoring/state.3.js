@@ -1,8 +1,4 @@
-// --------------------------------------------------------
-// momitoring/state.js
-// Manages module level state.
-// --------------------------------------------------------
-(function(APP, MOD, constants, _) {
+(function (APP, MOD, constants, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -13,13 +9,13 @@
     // New simulation event handler.
     // @ei      Event information.
     MOD.events.on("ws:new", function (ei) {
-        var s, current;
+        var simulation;
 
-        // Escape if already received.
-        s = _.find(state.simulationList, function (s) {
+        // Escape if event already received.
+        simulation = _.find(MOD.state.simulationList, function (s) {
             return s.id === ei.simulation.id;
         });
-        if (s) {
+        if (simulation) {
             return;
         }
 
@@ -28,7 +24,7 @@
             _.each(MOD.filters, function (filter) {
                 var existing, refreshed, diff, updated;
 
-                existing = state[filter.typeName + "List"];
+                existing = MOD.state[filter.typeName + "List"];
                 refreshed = ei[filter.typeName + "List"];
                 diff = _.difference(_.pluck(refreshed, 'id'),
                                     _.pluck(existing.slice(1), 'id'));
@@ -44,18 +40,17 @@
         // Update event information.
         ei.simulation.state = ei.simulation.execution_state;
 
-        // Update state.
-        state.simulationList.push(ei.simulation);
-        state.setFilteredSimulationList();
-        state.setPagingState(state.paging.current);
+        // Set simulation.
+        MOD.state.simulationList.push(ei.simulation);
+
+        // Set filtered.
+        MOD.state.setFilteredSimulationList();
+
+        // Set paging.
+        MOD.state.setPagingState(state.paging.current);
 
         // Fire events.
-        MOD.log("state:newSimulation :: " + ei.simulation.name);
-        if (state.simulationListFiltered.length) {
-            MOD.events.trigger("state:simulationListFiltered", this);
-        } else {
-            MOD.events.trigger("state:simulationListNull", this);
-        }
+        MOD.state.triggerSimulationFilterEvent();
         MOD.events.trigger("state:newSimulation", ei);
     });
 

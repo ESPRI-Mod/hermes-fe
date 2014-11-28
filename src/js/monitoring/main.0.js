@@ -1,14 +1,10 @@
-// --------------------------------------------------------
-// momitoring/main.js
-// Module entry point.
-// --------------------------------------------------------
-(function(APP, utils, constants, $) {
+(function (APP) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Declare module.
-    var MOD = APP.registerModule("monitoring", {
+    APP.registerModule("monitoring", {
         // Module title.
         title: "Simulation Monitor",
 
@@ -21,7 +17,13 @@
         // Module key aliases.
         keyAliases: ["monitor"],
 
-        // Map of simulation states to bootstrap css classes.
+        // Monitoring relation URLs.
+        urls: {
+            MONITORING_SETUP: 'monitoring/fe/setup',
+            MONITORING_WS: 'monitoring/fe/ws'
+        },
+
+        // Map of simulation states to css classes.
         statesCSS : {
             "QUEUED" : 'info',
             "RUNNING" : 'info',
@@ -68,28 +70,4 @@
         ]
     });
 
-    // Websocket initialized event handler.
-    MOD.events.on("ws:initialized", function () {
-        var ep;
-
-        // Load setup data & fire event.
-        ep = utils.getEndPoint(constants.urls.MONITORING_SETUP);
-        $.getJSON(ep, function (setupData) {
-            MOD.events.trigger("state:setupDataLoaded", setupData);
-        });
-    });
-
-    // State initialization event handler.
-    MOD.events.on("state:initialized", function () {
-        // Render view.
-        MOD.view = new MOD.views.MainView();
-        MOD.view.render();
-
-        // Update DOM.
-        $(".app-content").append(MOD.view.$el);
-
-        // Fire event.
-        MOD.events.trigger("ui:initialized");
-    });
-
-}(this.APP, this.APP.utils, this.APP.constants, this.$jq));
+}(this.APP));

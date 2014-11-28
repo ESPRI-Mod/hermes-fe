@@ -1,26 +1,29 @@
-// --------------------------------------------------------
-// monitoring/view.info.js
-// View over the simulation monitoring search information/paging.
-// --------------------------------------------------------
-(function(APP, MOD, $, _, Backbone) {
+(function (APP, MOD, $, _, Backbone) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Module helper vars.
     var paging = MOD.state.paging,
-        templates = MOD.templates.info;
+        NotificationsView,
+        PagerItemView,
+        PagerView,
+        PrimaryView,
+        SecondaryView;
 
     // View over notifications being received from server.
-    var NotificationsView = Backbone.View.extend({
+    NotificationsView = Backbone.View.extend({
+        // Backbone: view DOM element type.
         tagName: "b",
 
+        // Backbone: view initializer.
         initialize : function () {
             MOD.events.on("state:newSimulation", this._onNewSimulation, this);
             MOD.events.on("state:simulationStatusUpdated", this._onSimulationStateChange, this);
             MOD.events.on("state:simulationTermination", this._onSimulationTermination, this);
         },
 
+        // Backbone: view renderer.
         render : function () {
             this.$el.text("Awaiting simulation events ...");
 
@@ -70,21 +73,24 @@
     });
 
     // View over a pager item.
-    var PagerItemView = Backbone.View.extend({
+    PagerItemView = Backbone.View.extend({
+        // Backbone: view DOM element type.
         tagName : 'li',
 
+        // Backbone: view CSS class.
         className: function () {
             return 'page-' + this.model.id;
         },
 
+        // Backbone: view event handlers.
         events : {
             'click a' : "_onPaging"
         },
 
+        // Backbone: view renderer.
         render : function () {
-            this.$el.append(templates.pagerItem(this.model));
-            if (paging.current &&
-                paging.current.id === this.model.id) {
+            this.$el.append(MOD.templates.info.pagerItem(this.model));
+            if (paging.current && paging.current.id === this.model.id) {
                 this.$el.addClass('active');
             }
 
@@ -102,11 +108,14 @@
     });
 
     // View over the pager.
-    var PagerView = Backbone.View.extend({
+    PagerView = Backbone.View.extend({
+        // Backbone: view DOM element type.
         tagName : 'ul',
 
+        // Backbone: view CSS class.
         className : 'pagination pull-right',
 
+        // Backbone: view initializer.
         initialize : function () {
             MOD.events.on("state:newSimulation", this._onNewSimulation, this);
             MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
@@ -114,6 +123,7 @@
             MOD.events.on("ui:pagination", this._onPagination, this);
         },
 
+        // Backbone: view renderer.
         render : function () {
             this._onSimulationListFiltered();
 
@@ -131,7 +141,9 @@
             this.$('li').remove();
 
             // Escape if not required.
-            if (paging.count < 2) return;
+            if (paging.count < 2) {
+                return;
+            }
 
             // Append pages.
             _.each(paging.pages, function (page) {
@@ -157,22 +169,22 @@
     });
 
     // Primary view.
-    var PrimaryView = Backbone.View.extend({
+    PrimaryView = Backbone.View.extend({
         className : "alert alert-info",
 
+        // Backbone: view initializer.
         initialize : function () {
             MOD.events.on("state:newSimulation", this._onNewSimulation, this);
             MOD.events.on("state:simulationStatusUpdated", this._onSimulationStateChange, this);
             MOD.events.on("state:simulationTermination", this._onSimulationTermination, this);
         },
 
+        // Backbone: view renderer.
         render : function () {
-            var subViews = [
+            APP.utils.render([
                 NotificationsView,
                 PagerView,
-            ];
-
-            APP.utils.render(subViews, {}, this)
+            ], {}, this);
 
             return this;
         },
@@ -197,14 +209,17 @@
     });
 
     // Secondary view.
-    var SecondaryView = Backbone.View.extend({
+    SecondaryView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className : "alert alert-warning",
 
+        // Backbone: view initializer.
         initialize : function () {
             MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
             MOD.events.on("state:simulationListNull", this._onSimulationListNull, this);
         },
 
+        // Backbone: view renderer.
         render : function () {
             this.$el.text("Filter returned no records - please refine");
             this.$el.hide();
@@ -223,20 +238,17 @@
         }
     });
 
-    var View = Backbone.View.extend({
+    // Information panel view.
+    MOD.views.InfoView = Backbone.View.extend({
+        // Backbone: view renderer.
         render : function () {
-            var subViews = [
+            APP.utils.render([
                 PrimaryView,
                 SecondaryView
-            ];
-
-            APP.utils.render(subViews, {}, this)
+            ], {}, this);
 
             return this;
         }
     });
-
-    // Extend module.
-    MOD.views.InfoView = View;
 
 }(this.APP, this.APP.modules.monitoring, this.$jq, this._, this.Backbone));

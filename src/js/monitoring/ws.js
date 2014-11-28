@@ -1,8 +1,4 @@
-// --------------------------------------------------------
-// Simulation monitor - ws.js
-// Monitoring websocket handler.
-// --------------------------------------------------------
-(function (APP, MOD, WebSocket) {
+(function (APP, MOD, WebSocket, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -36,12 +32,12 @@
     };
 
     // On ws connection opened event handler.
-    onOpen = function (e) {
+    onOpen = function () {
         log("connection opened @ " + new Date());
     };
 
     // On ws connection closed event handler.
-    onClosed = function (e) {
+    onClosed = function () {
         log("connection closed @ " + new Date());
     };
 
@@ -75,7 +71,7 @@
     };
 
     // UI initialized event handler.
-    MOD.events.on("ui:initialized", function() {
+    MOD.events.on("ui:initialized", function () {
         // Stop buffering.
         buffering = false;
 
@@ -85,11 +81,11 @@
     });
 
     // UI ready event handler.
-    MOD.events.on("module:ready", function() {
+    MOD.events.on("module:ready", function () {
         var ep;
 
         // Create socket.
-        ep = APP.utils.getEndPoint(APP.constants.urls.MONITORING_WS, APP.constants.protocols.WS);
+        ep = APP.utils.getEndPoint(MOD.urls.MONITORING_WS, APP.constants.protocols.WS);
         log("binding to :: {0}.".replace('{0}', ep));
         ws = new WebSocket(ep);
 
@@ -103,4 +99,4 @@
         MOD.events.trigger("ws:initialized");
     });
 
-}(this.APP, this.APP.modules.monitoring, this.WebSocket));
+}(this.APP, this.APP.modules.monitoring, this.WebSocket, this._));
