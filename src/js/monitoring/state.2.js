@@ -9,19 +9,23 @@
     // Setup data loaded event handler.
     // @data    Setup data loaded from remote server.
     MOD.events.on("state:setupDataLoaded", function (data) {
-        // Cache simulations.
+        // Cache setup data.
         state.simulationList = data.simulationList;
+        state.cvTerms = data.cvTerms;
 
-        // Initialise filter data.
+        // Initialise filter data from cv terms.
         _.each(MOD.filters, function (filter) {
             var collection, item;
 
             // Set collection.
-            collection = data[filter.typeName + "List"];
+            collection = _.filter(data.cvTerms, function (term) {
+                return term.cvType === filter.cvType;
+            });
             collection.unshift({
+                cvType: filter.cvType,
                 id: 0,
-                name: "*",
-                isDefault: false
+                isDefault: false,
+                name: "*"
             });
 
             // Set active item.

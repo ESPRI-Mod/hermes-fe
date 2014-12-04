@@ -21,12 +21,12 @@
                         <th title='End'>End</th>\n\
                     </tr>",
 
-            row: "<td class='activity' title='<%= activity %>'><%= activity %></td>\n\
+            row: "<td class='activity' title='<%= activity.toUpperCase() %>'><%= activity.toUpperCase() %></td>\n\
                   <td class='name' title='<%= name %>'><%= name %></td>\n\
-                  <td class='computeNodeMachine' title='<%= computeNodeMachine %>'><%= computeNodeMachine %></td>\n\
+                  <td class='computeNodeMachine' title='<%= computeNodeMachine.toUpperCase() %>'><%= computeNodeMachine.toUpperCase() %></td>\n\
                   <td class='computeNodeLogin' title='<%= computeNodeLogin %>'><%= computeNodeLogin %></td>\n\
-                  <td class='model' title='<%= model %>'><%= model %></td>\n\
-                  <td class='space' title='<%= space %>'><%= space %></td>\n\
+                  <td class='model' title='<%= model.toUpperCase() %>'><%= model.toUpperCase() %></td>\n\
+                  <td class='space' title='<%= space.toUpperCase() %>'><%= space.toUpperCase() %></td>\n\
                   <td class='experiment' title='<%= experiment %>'><%= experiment %></td>\n\
                   <td class='executionStartDate' title='<%= executionStartDate %>'><%= executionStartDate %></td>\n\
                   <td class='executionEndDate' title='<%= executionEndDate %>'><%= executionEndDate %></td>"

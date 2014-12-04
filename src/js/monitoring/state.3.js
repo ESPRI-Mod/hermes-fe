@@ -13,7 +13,7 @@
 
         // Escape if event already received.
         simulation = _.find(MOD.state.simulationList, function (s) {
-            return s.id === ei.simulation.id;
+            return s.uid === ei.simulation.uid;
         });
         if (simulation) {
             return;

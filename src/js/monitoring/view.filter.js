@@ -23,8 +23,8 @@
         // Backbone: view DOM attributes.
         attributes: function () {
             return {
-                id: this.options.typeName + '-' + this.model.id,
-                value: this.model.id
+                id: this.options.typeName + '-' + this.model.name,
+                value: this.model.name
             };
         },
 
@@ -33,7 +33,7 @@
             this.$el.text(this.model.name);
             if (this.model.isDefault) {
                 this.$el.attr('selected', 'true');
-            } else if (this.model.id === MOD.state[this.options.typeName].id) {
+            } else if (this.model.name === MOD.state[this.options.typeName].name) {
                 this.$el.attr('selected', 'true');
             }
 
@@ -64,7 +64,7 @@
         // Backbone: view event handlers.
         events : {
             'change' : function () {
-                this._filter(parseInt(this.$el.val()));
+                this._filter(this.$el.val());
             },
         },
 
@@ -103,13 +103,13 @@
         },
 
         // Set filtered item.
-        _filter: function (id) {
+        _filter: function (name) {
             var data, item;
 
             // Filter by item ID.
             data = MOD.state[this.options.typeName + "List"];
             item = _.find(data, function (i) {
-                return i.id === id;
+                return i.name === name;
             });
 
             // Update state & fire event.

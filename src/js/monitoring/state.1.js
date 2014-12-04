@@ -13,9 +13,9 @@
             var item;
 
             item = MOD.state[f.typeName];
-            if (item.id > 0) {
+            if (item.name !== "*") {
                 filtered = _.filter(filtered, function (s) {
-                    return s[f.typeName + "ID"] === item.id;
+                    return s[f.typeName].toLowerCase() === item.name.toLowerCase();
                 });
             }
         });
