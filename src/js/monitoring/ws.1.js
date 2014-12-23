@@ -16,11 +16,18 @@
             return;
         }
 
-        // Update filters.
-        console.log("TODO - update filters when new simulation recieved");
+        // Parse simulation.
+        MOD.parseSimulation(eventData.simulation);
 
         // Update simulations.
         MOD.state.simulationList.push(eventData.simulation);
+
+        // Update filters.
+        _.each(MOD.filters, function (filter) {
+            MOD.state.updateFilterData(filter, eventData.simulation[filter.key]);
+        });
+
+        // Update simulations.
         MOD.state.setFilteredSimulationList();
 
         // Update paging.

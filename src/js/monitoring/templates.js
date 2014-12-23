@@ -32,8 +32,8 @@
                   <td class='experiment' title='<%= experiment %>'><%= experiment %></td>\n\
                   <td class='executionStartDate' title='<%= executionStartDate %>'><%= executionStartDate.substring(0, 10) %></td>\n\
                   <td class='executionEndDate' title='<%= executionEndDate %>'><%= executionEndDate.substring(0, 10) %></td>\n\
-                  <td class='linkToMonitoring' title='monitoring hyperlink'><span class='glyphicon glyphicon-random'></span></td>\n\
-                  <td class='linkToInterMonitoring' title='inter-monitoring hyperlink'>IM</td>"
+                  <td class='linkToMonitoring' title='Hyperlink to monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\
+                  <td class='linkToInterMonitoring' title='Hyperlink to inter-monitoring'><input type='checkbox'></input></td>"
         },
     };
 
