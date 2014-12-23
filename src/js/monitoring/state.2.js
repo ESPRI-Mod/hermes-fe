@@ -3,49 +3,37 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Helper vars.
-    var state = MOD.state;
-
     // Setup data loaded event handler.
     // @data    Setup data loaded from remote server.
     MOD.events.on("state:setupDataLoaded", function (data) {
-        // Cache setup data.
-        state.simulationList = data.simulationList;
-        state.cvTerms = data.cvTerms;
+        // Cache simulation list.
+        MOD.state.simulationList = data.simulationList;
+        MOD.state.cvTerms = data.cvTerms;
 
-        // Initialise filter data from cv terms.
+        // Initialise filter data.
         _.each(MOD.filters, function (filter) {
-            var collection, item;
+            var values;
 
-            // Set collection.
-            collection = _.filter(data.cvTerms, function (term) {
-                return term.cvType === filter.cvType;
+            // Set values.
+            values = _.map(data.simulationList, function (s) {
+                return s[filter.key];
             });
-            collection.unshift({
-                cvType: filter.cvType,
-                id: 0,
-                isDefault: false,
-                name: "*"
-            });
-
-            // Set active item.
-            item = _.find(collection, function (i) {
-                return _.has(i, "isDefault") ? i.isDefault : false;
-            });
-            if (_.isObject(item) === false) {
-                item = collection[0];
+            if (filter.defaultValue) {
+                values.push(filter.defaultValue);
             }
+            values = _.uniq(values).sort();
+            values.unshift("*");
 
-            // Update state.
-            state[filter.typeName + "List"] = collection;
-            state[filter.typeName] = item;
+            // Update module state.
+            MOD.state[filter.key + "List"] = values;
+            MOD.state[filter.key] = filter.defaultValue || values[0];
         });
 
         // Set filtered simulations.
-        state.setFilteredSimulationList();
+        MOD.state.setFilteredSimulationList();
 
         // Set paging.
-        state.setPagingState();
+        MOD.state.setPagingState();
 
         // Fire event.
         MOD.events.trigger("state:initialized", this);

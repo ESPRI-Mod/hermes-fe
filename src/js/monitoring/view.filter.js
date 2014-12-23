@@ -15,25 +15,27 @@
         // Backbone: view DOM element type.
         tagName: "option",
 
-        // Backbone: view CSS class.
-        className: function () {
-            return this.options.typeName;
-        },
-
         // Backbone: view DOM attributes.
         attributes: function () {
             return {
-                id: this.options.typeName + '-' + this.model.name,
-                value: this.model.name
+                value: this.model
             };
         },
 
         // Backbone: view renderer.
         render: function () {
-            this.$el.text(this.model.name);
-            if (this.model.isDefault) {
-                this.$el.attr('selected', 'true');
-            } else if (this.model.name === MOD.state[this.options.typeName].name) {
+            var displayText, displayFormatter;
+
+            // Set display text.
+            displayText = this.model;
+            displayFormatter = this.options.displayFormatter;
+            if (displayFormatter) {
+                displayText = displayText[displayFormatter]();
+            }
+            this.$el.text(displayText);
+
+            // Set selected attribute.
+            if (this.model === MOD.state[this.options.key]) {
                 this.$el.attr('selected', 'true');
             }
 
@@ -48,13 +50,6 @@
 
         // Backbone: view DOM element type.
         tagName: "select",
-
-        // Backbone: view DOM attributes.
-        attributes: function () {
-            return {
-                id: this.options.typeName + "-list"
-            };
-        },
 
         // Backbone: view initializer.
         initialize: function () {
@@ -79,7 +74,7 @@
         // Refresh filter when server pushes new CV terms.
         _refresh: function (filter) {
             // Escape if not dealing with same filters.
-            if (this.options.typeName !== filter.typeName) {
+            if (this.options.key !== filter.key) {
                 return;
             }
 
@@ -94,7 +89,7 @@
         _build: function () {
             var data;
 
-            data = MOD.state[this.options.typeName + "List"];
+            data = MOD.state[this.options.key + "List"];
             _.each(data, function (i) {
                 APP.utils.render(FilterOptionView, _.defaults({
                     model: i,
@@ -107,15 +102,15 @@
             var data, item;
 
             // Filter by item ID.
-            data = MOD.state[this.options.typeName + "List"];
-            item = _.find(data, function (i) {
-                return i.name === name;
+            data = MOD.state[this.options.key + "List"];
+            item = _.find(data, function (value) {
+                return value === name;
             });
 
             // Update state & fire event.
             if (item) {
-                MOD.state[this.options.typeName + "Previous"] = MOD.state[this.options.typeName];
-                MOD.state[this.options.typeName] = item;
+                MOD.state[this.options.key + "Previous"] = MOD.state[this.options.key];
+                MOD.state[this.options.key] = item;
                 MOD.events.trigger('ui:applyFilter');
             }
         }

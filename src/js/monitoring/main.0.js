@@ -1,10 +1,10 @@
-(function (APP) {
+(function (APP, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Declare module.
-    APP.registerModule("monitoring", {
+    var MOD = APP.registerModule("monitoring", {
         // Module title.
         title: "Simulation Monitor",
 
@@ -12,15 +12,15 @@
         shortTitle: "Monitor",
 
         // Module version.
-        version : "0.1.0",
+        version : "0.2.0",
 
         // Module key aliases.
         keyAliases: ["monitor"],
 
         // Monitoring relation URLs.
         urls: {
-            MONITORING_SETUP: 'monitoring/fe/setup',
-            MONITORING_WS: 'monitoring/fe/ws'
+            SETUP: 'monitoring/fe/setup',
+            WS: 'monitoring/fe/ws'
         },
 
         // Map of simulation states to css classes.
@@ -36,46 +36,53 @@
         // Set of supported filters.
         filters: [
             {
-                cvType: 'activity',
-                typeName: 'activity',
-                displayName: 'Activity'
+                key: 'activity',
+                defaultValue: 'ipsl'
             },
             {
-                cvType: 'compute_node',
-                typeName: 'computeNode',
+                key: 'computeNode',
                 displayName: 'Node'
             },
             {
-                cvType: 'compute_node_machine',
-                typeName: 'computeNodeMachine',
+                key: 'computeNodeMachine',
                 displayName: 'Machine'
             },
             {
-                cvType: 'compute_node_login',
-                typeName: 'computeNodeLogin',
-                displayName: 'Login',
+                key: 'computeNodeLogin',
+                displayName: 'Login'
             },
             {
-                cvType: 'experiment',
-                typeName: 'experiment',
-                displayName: 'Experiment'
+                key: 'experiment'
             },
             {
-                cvType: 'model',
-                typeName: 'model',
+                key: 'model',
                 displayName: 'Tag / Model'
             },
             {
-                cvType: 'simulation_state',
-                typeName: 'executionState',
+                cvType: 'simulationState',
+                key: 'executionState',
                 displayName: 'State'
             },
             {
-                cvType: 'simulation_space',
-                typeName: 'space',
+                cvType: 'simulationSpace',
+                key: 'space',
                 displayName: 'Space'
             },
         ]
     });
 
-}(this.APP));
+    // Set filter defaults.
+    _.each(MOD.filters, function (filter) {
+        if (!_.has(filter, "cvType")) {
+            filter.cvType = filter.key;
+        }
+        if (!_.has(filter, "displayName")) {
+            filter.displayName = filter.key.substring(0, 1).toUpperCase() +
+                                 filter.key.substring(1);
+        }
+        if (!_.contains(['experiment', 'computeNodeLogin'], filter.key)) {
+            filter.displayFormatter = "toUpperCase";
+        }
+    });
+
+}(this.APP, this._));

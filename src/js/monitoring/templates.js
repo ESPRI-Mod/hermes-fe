@@ -19,17 +19,21 @@
                         <th title='Experiment' class='col-md-2'>Experiment</th>\n\
                         <th title='Start'>Start</th>\n\
                         <th title='End'>End</th>\n\
+                        <th title='monitoring'>M</th>\n\
+                        <th title='inter-monitoring'>IM</th>\n\
                     </tr>",
 
-            row: "<td class='activity' title='<%= activity.toUpperCase() %>'><%= activity.toUpperCase() %></td>\n\
+            row: "<td class='activity text-uppercase' title='<%= activity %>'><%= activity %></td>\n\
                   <td class='name' title='<%= name %>'><%= name %></td>\n\
-                  <td class='computeNodeMachine' title='<%= computeNodeMachine.toUpperCase() %>'><%= computeNodeMachine.toUpperCase() %></td>\n\
+                  <td class='computeNodeMachine text-uppercase' title='<%= computeNodeMachine %>'><%= computeNodeMachine %></td>\n\
                   <td class='computeNodeLogin' title='<%= computeNodeLogin %>'><%= computeNodeLogin %></td>\n\
-                  <td class='model' title='<%= model.toUpperCase() %>'><%= model.toUpperCase() %></td>\n\
-                  <td class='space' title='<%= space.toUpperCase() %>'><%= space.toUpperCase() %></td>\n\
+                  <td class='model text-uppercase' title='<%= model %>'><%= model %></td>\n\
+                  <td class='space text-uppercase' title='<%= space %>'><%= space %></td>\n\
                   <td class='experiment' title='<%= experiment %>'><%= experiment %></td>\n\
-                  <td class='executionStartDate' title='<%= executionStartDate %>'><%= executionStartDate %></td>\n\
-                  <td class='executionEndDate' title='<%= executionEndDate %>'><%= executionEndDate %></td>"
+                  <td class='executionStartDate' title='<%= executionStartDate %>'><%= executionStartDate.substring(0, 10) %></td>\n\
+                  <td class='executionEndDate' title='<%= executionEndDate %>'><%= executionEndDate.substring(0, 10) %></td>\n\
+                  <td class='linkToMonitoring' title='monitoring hyperlink'><span class='glyphicon glyphicon-random'></span></td>\n\
+                  <td class='linkToInterMonitoring' title='inter-monitoring hyperlink'>IM</td>"
         },
     };
 

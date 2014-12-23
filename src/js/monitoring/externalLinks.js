@@ -7,8 +7,8 @@
     var getDodsServerURL = function (simulation) {
         var cnode;
 
-        cnode = _.find(MOD.state.computeNodeList, function (cnode) {
-            return cnode.id === simulation.computeNodeID;
+        cnode = _.find(MOD.state.cvTerms.computeNode, function (cnode) {
+            return cnode.meta.name === simulation.computeNode;
         });
 
         return cnode && cnode.dodsServerUrl ? cnode.dodsServerUrl : undefined;
@@ -26,7 +26,7 @@
 
         // Construct monitoring link.
         url.push(serverURL);
-        url.push(simulation.computeNodeLogin[0]);
+        url.push(simulation.computeNodeLogin);
         url.push(simulation.model);
         url.push(simulation.space);
         url.push(simulation.experiment);

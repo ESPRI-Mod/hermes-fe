@@ -7,15 +7,14 @@
     MOD.state.setFilteredSimulationList = function () {
         var filtered;
 
-        // Filter.
+        // Initialise.
         filtered = MOD.state.simulationList;
-        _.each(MOD.filters, function (f) {
-            var item;
 
-            item = MOD.state[f.typeName];
-            if (item.name !== "*") {
+        // Apply filters.
+        _.each(MOD.filters, function (filter) {
+            if (MOD.state[filter.key] !== "*") {
                 filtered = _.filter(filtered, function (s) {
-                    return s[f.typeName].toLowerCase() === item.name.toLowerCase();
+                    return s[filter.key] === MOD.state[filter.key];
                 });
             }
         });
@@ -55,9 +54,10 @@
     MOD.state.triggerSimulationFilterEvent = function () {
         var eventName;
 
-        eventName = MOD.state.simulationListFiltered ? "simulationListFiltered" :
-                                                       "simulationListNull";
-        MOD.events.trigger("state:" + eventName, this);
+        eventName = "state:";
+        eventName += MOD.state.simulationListFiltered ? "simulationListFiltered" :
+                                                        "simulationListNull";
+        MOD.events.trigger(eventName, this);
     };
 
 }(this.APP, this.APP.modules.monitoring, this._));

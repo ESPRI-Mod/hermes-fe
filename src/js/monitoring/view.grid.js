@@ -1,11 +1,10 @@
-(function (APP, MOD, _, Backbone) {
+(function (APP, MOD, TEMPLATES, _, Backbone) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Module helper vars.
-    var templates = MOD.templates.grid,
-        GridTableHeaderView,
+    var GridTableHeaderView,
         GridTableRowView,
         GridTableBodyView;
 
@@ -16,7 +15,7 @@
 
         // Backbone: view renderer.
         render : function () {
-            APP.utils.renderHTML(templates.header, {}, this);
+            APP.utils.renderHTML(TEMPLATES.header, {}, this);
 
             return this;
         }
@@ -41,14 +40,14 @@
 
         // Backbone: view event handlers.
         events : {
-            'click > td' : function () {
+            'click > td.linkToMonitoring' : function () {
                 MOD.events.trigger("intermonitoring:open-monitoring", this.model);
             }
         },
 
         // Backbone: view renderer.
         render : function () {
-            APP.utils.renderHTML(templates.row, this.model, this);
+            APP.utils.renderHTML(TEMPLATES.row, this.model, this);
 
             return this;
         }
@@ -91,35 +90,33 @@
         },
 
         // Renders a row.
-        _renderRow : function (s) {
+        _renderRow : function (simulation) {
             APP.utils.render(GridTableRowView, {
-                model : s
+                model : simulation
             }, this);
         },
 
         // Simulation state change event handler.
-        // @ei      Event information.
-        _onSimulationStateChange: function (ei) {
+        // @eventData      Event data.
+        _onSimulationStateChange: function (eventData) {
             // Get row.
-            var $s = this.$('#simulation-' + ei.uid);
+            var $s = this.$('#simulation-' + eventData.uid);
 
             // Update row css.
-            $s.removeClass(MOD.statesCSS[ei.statePrevious]);
-            $s.addClass(MOD.statesCSS[ei.state]);
+            this._updateClassName($s, eventData.statePrevious, eventData.state);
         },
 
         // Simulation termination event handler.
-        // @ei      Event information.
-        _onSimulationTermination: function (ei) {
+        // @eventData      Event data.
+        _onSimulationTermination: function (eventData) {
             // Get row.
-            var $s = this.$('#simulation-' + ei.uid);
+            var $s = this.$('#simulation-' + eventData.uid);
 
             // Update row css.
-            $s.removeClass(MOD.statesCSS[ei.statePrevious]);
-            $s.addClass(MOD.statesCSS[ei.state]);
+            this._updateClassName($s, eventData.statePrevious, eventData.state);
 
             // Update row fields.
-            $s.find(".executionEndDate").text(ei.s.executionEndDate);
+            $s.find(".executionEndDate").text(eventData.s.executionEndDate);
         },
 
         // New simulation event handler.
@@ -136,6 +133,12 @@
         // Simulation list null event handler.
         _onSimulationListNull: function () {
             this.$('tr').remove();
+        },
+
+        // Updates row CSS class name in response to a simulation execution state change.
+        _updateClassName: function ($s, previousState, newState) {
+            $s.removeClass(MOD.statesCSS[previousState]);
+            $s.addClass(MOD.statesCSS[newState]);
         }
     });
 
@@ -176,4 +179,4 @@
         }
     });
 
-}(this.APP, this.APP.modules.monitoring, this._, this.Backbone));
+}(this.APP, this.APP.modules.monitoring, this.APP.modules.monitoring.templates.grid, this._, this.Backbone));

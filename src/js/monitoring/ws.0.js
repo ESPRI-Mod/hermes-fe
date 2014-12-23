@@ -21,12 +21,6 @@
 
     // Send a ws event module notification.
     dispatchEvent = function (ei) {
-        // Format event info where appropriate.
-        if (ei.eventType === "ws:stateChange") {
-            ei.state = ei.state.toUpperCase();
-        }
-
-        // Fire event.
         log("triggering event :: " + ei.eventType);
         MOD.events.trigger(ei.eventType, ei);
     };
@@ -85,7 +79,7 @@
         var ep;
 
         // Create socket.
-        ep = APP.utils.getEndPoint(MOD.urls.MONITORING_WS, APP.constants.protocols.WS);
+        ep = APP.utils.getEndPoint(MOD.urls.WS, APP.constants.protocols.WS);
         log("binding to :: {0}.".replace('{0}', ep));
         ws = new WebSocket(ep);
 

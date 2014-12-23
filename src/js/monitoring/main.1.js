@@ -8,9 +8,9 @@
         var ep;
 
         // Load setup data & fire event.
-        ep = APP.utils.getEndPoint(MOD.urls.MONITORING_SETUP);
-        $.getJSON(ep, function (setupData) {
-            MOD.events.trigger("state:setupDataLoaded", setupData);
+        ep = APP.utils.getEndPoint(MOD.urls.SETUP);
+        $.getJSON(ep, function (data) {
+            MOD.events.trigger("state:setupDataLoaded", data);
         });
     });
 
