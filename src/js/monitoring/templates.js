@@ -19,8 +19,10 @@
                         <th title='Experiment' class='col-md-2'>Experiment</th>\n\
                         <th title='Start'>Start</th>\n\
                         <th title='End'>End</th>\n\
-                        <th title='monitoring'>M</th>\n\
-                        <th title='inter-monitoring'>IM</th>\n\
+                        <th title='monitoring'></th>\n\
+                        <th class='interMonitoring' title='interMonitoring'>\n\
+                          <span class='glyphicon glyphicon-random'></span>\n\
+                        </th>\n\
                     </tr>",
 
             row: "<td class='activity text-uppercase' title='<%= activity %>'><%= activity %></td>\n\
@@ -32,8 +34,8 @@
                   <td class='experiment' title='<%= experiment %>'><%= experiment %></td>\n\
                   <td class='executionStartDate' title='<%= executionStartDate %>'><%= executionStartDate.substring(0, 10) %></td>\n\
                   <td class='executionEndDate' title='<%= executionEndDate %>'><%= executionEndDate.substring(0, 10) %></td>\n\
-                  <td class='linkToMonitoring' title='Hyperlink to monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\
-                  <td class='linkToInterMonitoring' title='Hyperlink to inter-monitoring'><input type='checkbox'></input></td>"
+                  <td class='monitoring' title='Hyperlink to monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\
+                  <td class='interMonitoring' title='Hyperlink to inter-monitoring'><input type='checkbox'></input></td>"
         },
     };
 

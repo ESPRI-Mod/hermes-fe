@@ -68,20 +68,7 @@
                 key: 'space',
                 displayName: 'Space'
             },
-        ],
-
-        // Parses a simulation in readiness for processing.
-        parseSimulation: function (simulation) {
-            _.each(['experiment'], function (field) {
-                var term;
-
-                term = _.find(MOD.state.cvTerms[field], function (t) {
-                    return t.meta.name === simulation[field];
-                });
-                simulation[field] = term ? term.name : simulation[field];
-            });
-            simulation.executionEndDate = simulation.executionEndDate || "";
-        }
+        ]
     });
 
     // Set filter defaults.

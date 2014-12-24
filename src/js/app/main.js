@@ -8,7 +8,7 @@ window.$ = window.$jq = jQuery.noConflict();
 // app/main.js
 // Application entry point.
 // --------------------------------------------------------
-(function(root) {
+(function (root, _, Backbone) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -49,24 +49,24 @@ window.$ = window.$jq = jQuery.noConflict();
         views: {},
 
         // Retrieves a module by name.
-        getModule: function(name) {
-            name = name.toUpperCase();
+        getModule: function (name) {
+            name = name.toLowerCase();
             return _.find(APP.modules, function(mod) {
                 var keys;
 
                 keys = _.map(mod.keyAliases, function(alias) {
-                    return alias.toUpperCase()
+                    return alias.toLowerCase()
                 });
-                keys.push(mod.key.toUpperCase());
+                keys.push(mod.key.toLowerCase());
 
                 return _.find(keys, function(key) {
-                    return key == name
+                    return key === name;
                 });
             });
         },
 
         // Register an application module.
-        registerModule: function(key, module) {
+        registerModule: function (key, module) {
             // Set module.
             APP.modules[key] = module;
 
@@ -97,7 +97,7 @@ window.$ = window.$jq = jQuery.noConflict();
                 ws: {},
 
                 // Predicate indicating whether module can be safely closed.
-                canClose: function() {
+                canClose: function () {
                     return true;
                 },
 
@@ -155,4 +155,4 @@ window.$ = window.$jq = jQuery.noConflict();
         APP.events.trigger("module:loaded", mod);
     });
 
-}(this));
+}(this, this._, this.Backbone));

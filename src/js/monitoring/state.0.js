@@ -60,11 +60,11 @@
         spaceList: [],
 
         // Paging related state.
-        paging : {
-            current : undefined,
-            count : undefined,
-            previous : undefined,
-            pages : []
+        paging: {
+            current: undefined,
+            count: undefined,
+            previous: undefined,
+            pages: []
         }
     };
 
