@@ -33,7 +33,7 @@
     });
 
     // Event handler: clear inter monitoring simulation selection.
-    MOD.events.on("im:clear", function () {
+    MOD.events.on("im:clearInterMonitor", function () {
         _.each(MOD.state.simulationListForIM(), function (simulation) {
             simulation.isSelectedForIM = false;
         });

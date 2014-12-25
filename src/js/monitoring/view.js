@@ -11,7 +11,7 @@
                 MOD.views.FilterView,
                 MOD.views.InfoView,
                 MOD.views.GridView,
-                MOD.views.GridTableIMContextMenuView,
+                MOD.views.InterMonitoringContextMenuView,
                 MOD.views.InterMonitoringFormView
             ], {}, this);
 
