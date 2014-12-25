@@ -3,16 +3,18 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
+    var getMonitorURL, getInterMonitorURL;
+
     // Helper function: returns simulation monitor URL.
-    var getMonitorURL = function (simulation) {
+    getMonitorURL = function (simulation) {
         var url = [];
 
         // Escape if simulation is not associated with a DODS server.
-        if (_.isUndefined(simulation.dodsServerUrl)) {
+        if (_.isUndefined(simulation.threddsServerUrl)) {
             return;
         }
 
-        url.push(simulation.dodsServerUrl);
+        url.push(simulation.threddsServerUrl);
         url.push(simulation.computeNodeLogin);
         if (simulation.modelSynonyms.length > 0) {
             url.push(simulation.modelSynonyms[0].toUpperCase());
@@ -23,6 +25,29 @@
         url.push(simulation.experiment);
         url.push(simulation.name);
         url.push("MONITORING/index.html");
+
+        return url.join("/");
+    };
+
+    // Helper function: returns simulation inter-monitor URL.
+    getInterMonitorURL = function (simulation) {
+        var url = [];
+
+        // Escape if simulation is not associated with a DODS server.
+        if (_.isUndefined(simulation.threddsServerUrl)) {
+            return;
+        }
+
+        url.push(simulation.threddsServerUrl);
+        url.push(simulation.computeNodeLogin);
+        if (simulation.modelSynonyms.length > 0) {
+            url.push(simulation.modelSynonyms[0].toUpperCase());
+        } else {
+            url.push(simulation.model.toUpperCase());
+        }
+        url.push(simulation.space.toUpperCase());
+        url.push(simulation.experiment);
+        url.push(simulation.name);
 
         return url.join("/");
     };
@@ -51,7 +76,7 @@
         }
 
         // Set data to be posted to inter-monitoring.
-        data = _.map(simulationList, getMonitorURL);
+        data = _.map(simulationList, getInterMonitorURL);
 
         // Trigger event.
         MOD.events.trigger("im:postInterMonitorForm", data);

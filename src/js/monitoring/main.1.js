@@ -9,7 +9,7 @@
 
         // Set defaults.
         _.defaults(simulation, {
-            dodsServerUrl: undefined,
+            threddsServerUrl: undefined,
             executionEndDate: "",
             isSelectedForIM: false,
             modelSynonyms: []
@@ -33,12 +33,12 @@
             simulation.modelSynonyms = term.synonyms;
         }
 
-        // Set DODS server URL.
+        // Set THREDDS server URL.
         cv = MOD.state.cvTerms.computeNode;
         if (_.has(cv, simulation.computeNode)) {
             term = cv[simulation.computeNode];
-            if (term.dodsServerUrl) {
-                simulation.dodsServerUrl = term.dodsServerUrl;
+            if (term.threddsServerUrl) {
+                simulation.threddsServerUrl = term.threddsServerUrl;
             }
         }
     };

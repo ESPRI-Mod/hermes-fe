@@ -55,7 +55,7 @@
                 }
             }, this);
 
-            return typeset.length == 1 ? rendered[0] : rendered;
+            return typeset.length === 1 ? rendered[0] : rendered;
         },
 
         // Renders an html view and injects it into DOM.
