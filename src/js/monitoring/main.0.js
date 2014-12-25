@@ -20,7 +20,8 @@
         // Monitoring relation URLs.
         urls: {
             SETUP: 'monitoring/fe/setup',
-            WS: 'monitoring/fe/ws'
+            WS: 'monitoring/fe/ws',
+            IM: "http://webservices.ipsl.jussieu.fr/monitoring_fromprodiguer/index.php"
         },
 
         // Map of simulation states to css classes.

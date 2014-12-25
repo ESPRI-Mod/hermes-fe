@@ -10,7 +10,6 @@
 
         // Backbone: view initializer.
         initialize: function () {
-            // MOD.events.on("state:newSimulation", this._onNewSimulation, this);
             MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
             MOD.events.on("state:simulationListNull", this._onSimulationListNull, this);
             MOD.events.on("state:simulationStatusUpdated", this._onSimulationStateChange, this);
@@ -67,12 +66,6 @@
 
             // Update row fields.
             $s.find(".executionEndDate").text(eventData.s.executionEndDate);
-        },
-
-        // New simulation event handler.
-        // @ei      Event information.
-        _onNewSimulation: function () {
-            this._renderPage();
         },
 
         // Simulation list filtered event handler.

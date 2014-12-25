@@ -9,6 +9,12 @@
         },
 
         grid: {
+            contextMenu:
+                "<ul class='dropdown-menu' role='menu'>\n\
+                    <li><a tabindex='-1' class='open'>Open inter-monitoring</a></li>\n\
+                    <li><a tabindex='-1' class='clear'>Clear selections</a></li>\n\
+                </ul>",
+
             header: "<tr class='bg-primary'>\n\
                         <th title='Activity'>Activity</th>\n\
                         <th title='Name' class='col-md-2'>Name</th>\n\
@@ -20,7 +26,7 @@
                         <th title='Start'>Start</th>\n\
                         <th title='End'>End</th>\n\
                         <th title='monitoring'></th>\n\
-                        <th class='interMonitoring' title='interMonitoring'>\n\
+                        <th class='interMonitoring' title='Open inter-monitoring menu' data-toggle='context' data-target='#imContextMenu'>\n\
                           <span class='glyphicon glyphicon-random'></span>\n\
                         </th>\n\
                     </tr>",
@@ -34,9 +40,11 @@
                   <td class='experiment' title='<%= experiment %>'><%= experiment %></td>\n\
                   <td class='executionStartDate' title='<%= executionStartDate %>'><%= executionStartDate.substring(0, 10) %></td>\n\
                   <td class='executionEndDate' title='<%= executionEndDate %>'><%= executionEndDate.substring(0, 10) %></td>\n\
-                  <td class='monitoring' title='Hyperlink to monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\
-                  <td class='interMonitoring' title='Hyperlink to inter-monitoring'><input type='checkbox'></input></td>"
+                  <td class='monitoring' title='Open monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\
+                  <td class='interMonitoring' title='Select for inter-monitoring'><input type='checkbox'></input></td>"
         },
+
+        imInput : "<input type='hidden' id=<%= key %> name=<%= key %> value=<%= value %>></ input>"
     };
 
 }(this.APP.modules.monitoring));

@@ -139,10 +139,12 @@
 
         // Opens the target url.
         openURL: function(url, inTab) {
-            if (inTab === true) {
-                window.open(url);
-            } else {
-                window.location = url;
+            if (url) {
+                if (inTab === true) {
+                    window.open(url);
+                } else {
+                    window.location = url;
+                }
             }
         },
 

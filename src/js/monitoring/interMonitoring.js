@@ -1,4 +1,4 @@
-(function (APP, MOD, _) {
+(function (APP, MOD, _, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -29,29 +29,32 @@
 
     // Event handler: open monitor link.
     MOD.events.on("im:openMonitor", function (simulation) {
-        var url;
+        APP.utils.openURL(getMonitorURL(simulation), true);
+    });
 
-        url = getMonitorURL(simulation);
-        if (url) {
-            APP.utils.openURL(url, true);
-        }
+    // Event handler: clear inter monitoring simulation selection.
+    MOD.events.on("im:clear", function () {
+        _.each(MOD.state.simulationListForIM(), function (simulation) {
+            simulation.isSelectedForIM = false;
+        });
+        $("td.interMonitoring > input").prop("checked", false);
     });
 
     // Event handler: open inter-monitoring link.
     MOD.events.on("im:openInterMonitor", function () {
-        var simulationList;
+        var simulationList, data;
 
         // Escape if there are no selected simulations.
-        simulationList = _.filter(MOD.state.simulationList, function (simulation) {
-            return simulation.isSelectedForIM;
-        });
+        simulationList = MOD.state.simulationListForIM();
         if (simulationList.length <= 1) {
             return;
         }
 
-        alert("TODO :: intermonitoring link");
+        // Set data to be posted to inter-monitoring.
+        data = _.map(simulationList, getMonitorURL);
 
-        MOD.log("UI :: open inter-monitoring hyperlink " + simulationList.length);
+        // Trigger event.
+        MOD.events.trigger("im:postInterMonitorForm", data);
     });
 
-}(this.APP, this.APP.modules.monitoring, this._));
+}(this.APP, this.APP.modules.monitoring, this._, this.$jq));

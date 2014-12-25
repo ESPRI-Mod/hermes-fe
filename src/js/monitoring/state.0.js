@@ -1,4 +1,4 @@
-(function (MOD) {
+(function (MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -47,6 +47,13 @@
         // List of filtered simulations.
         simulationListFiltered: [],
 
+        // List of simulations for inter-monitoring.
+        simulationListForIM: function () {
+            return _.filter(MOD.state.simulationList, function (simulation) {
+                return simulation.isSelectedForIM;
+            });
+        },
+
         // Current execution state.
         executionState: undefined,
 
@@ -68,4 +75,4 @@
         }
     };
 
-}(this.APP.modules.monitoring));
+}(this.APP.modules.monitoring, this._));

@@ -10,7 +10,9 @@
             APP.utils.render([
                 MOD.views.FilterView,
                 MOD.views.InfoView,
-                MOD.views.GridView
+                MOD.views.GridView,
+                MOD.views.GridTableIMContextMenuView,
+                MOD.views.InterMonitoringFormView
             ], {}, this);
 
             return this;
