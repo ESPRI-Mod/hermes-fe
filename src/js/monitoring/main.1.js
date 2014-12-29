@@ -10,10 +10,10 @@
         // Set defaults.
         _.defaults(simulation, {
             threddsServerUrl: undefined,
-            executionEndDate: "",
             isSelectedForIM: false,
             modelSynonyms: []
         });
+        simulation.executionEndDate = simulation.executionEndDate || "";
 
         // Set case sensitive CV related fields.
         _.each(['experiment'], function (field) {
