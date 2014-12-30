@@ -33,6 +33,7 @@
     // On ws connection closed event handler.
     onClosed = function () {
         log("connection closed @ " + new Date());
+        MOD.events.trigger("ws:socketClosed");
     };
 
     // On ws message received event handler.

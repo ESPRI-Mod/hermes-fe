@@ -117,12 +117,16 @@
 
             // Extract param from url.
             result = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
-            
+
             // Return param (default if unspecified).
             if (!result) {
-                return defaultValue.toUpperCase();
+                if (defaultValue) {
+                    return defaultValue;
+                } else {
+                    return undefined;
+                }
             } else {
-                return (result[1] || defaultValue).toUpperCase();
+                return (result[1] || defaultValue);
             }
         },
 
@@ -135,6 +139,11 @@
                 .replace('{0}', address)
                 .replace('{1}', subject || APP.constants.email.defaultSubject)
                 .replace('{2}', message || APP.constants.email.defaultMessage);
+        },
+
+        // Returns current URL stripped of query parameters.
+        getBaseURL: function () {
+            return window.location.origin + window.location.pathname;
         },
 
         // Opens the target url.

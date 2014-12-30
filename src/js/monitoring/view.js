@@ -12,7 +12,8 @@
                 MOD.views.InfoView,
                 MOD.views.GridView,
                 MOD.views.InterMonitoringContextMenuView,
-                MOD.views.InterMonitoringFormView
+                MOD.views.InterMonitoringFormView,
+                MOD.views.WebSocketClosedDialogView
             ], {}, this);
 
             return this;

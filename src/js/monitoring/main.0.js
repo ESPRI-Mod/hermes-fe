@@ -74,6 +74,8 @@
 
     // Set filter defaults.
     _.each(MOD.filters, function (filter) {
+        var queryParamValue;
+
         if (!_.has(filter, "cvType")) {
             filter.cvType = filter.key;
         }
@@ -83,6 +85,10 @@
         }
         if (!_.contains(['experiment', 'computeNodeLogin'], filter.key)) {
             filter.displayFormatter = "toUpperCase";
+        }
+        queryParamValue = APP.utils.getURLParam(filter.key);
+        if (queryParamValue) {
+            filter.defaultValue = queryParamValue;
         }
     });
 

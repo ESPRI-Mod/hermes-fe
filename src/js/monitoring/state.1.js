@@ -40,7 +40,7 @@
         }
 
         return values.sort();
-    }
+    };
 
     // Set filter data.
     MOD.state.setFilterData = function (filter) {
@@ -58,7 +58,7 @@
 
         // Update module state.
         MOD.state[filter.key + "List"] = values;
-        MOD.state[filter.key] = filter.defaultValue || values[0];
+        MOD.state[filter.key] = filter.defaultValue ||values[0];
     };
 
     // Resets filter data.

@@ -44,7 +44,21 @@
                   <td class='interMonitoring' title='Select for inter-monitoring'><input type='checkbox'></input></td>"
         },
 
-        imInput : "<input type='hidden' id=<%= key %> name=<%= key %> value=<%= value %>></ input>"
+        imInput : "<input type='hidden' id=<%= key %> name=<%= key %> value=<%= value %>></ input>",
+
+        wsClose: "<div class='modal-dialog'>\n\
+                <div class='modal-content'>\n\
+                    <div class='modal-header'>\n\
+                        <h4 class='modal-title' id='wsCloseDialogLabel'><%= app.title %> <%= mod.title %> v<%= mod.version %></h4>\n\
+                    </div>\n\
+                    <div class='modal-body'>\n\
+                        The Prodiguer web socket server connection has been interrupted.\n\
+                    </div>\n\
+                    <div class='modal-footer'>\n\
+                        <button type='button' class='btn btn-primary' id='wsCloseRefreshPageButton'>Refresh page</button>\n\
+                    </div>\n\
+                </div>\n\
+            </div>"
     };
 
 }(this.APP.modules.monitoring));
