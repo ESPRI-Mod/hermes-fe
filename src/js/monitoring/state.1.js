@@ -3,9 +3,6 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Module vars.
-    var sortFilterData;
-
     // Sets collection of filtered simulations.
     MOD.state.setFilteredSimulationList = function () {
         var filtered;
@@ -31,17 +28,6 @@
         MOD.state.simulationListFiltered = filtered;
     };
 
-    // Sort filter data.
-    sortFilterData = function (filter, values) {
-        if (_.contains(MOD.caseSensitiveSimulationFields, filter.key)) {
-            return _.sortBy(values, function (value) {
-                return value.toLowerCase();
-            });
-        }
-
-        return values.sort();
-    };
-
     // Set filter data.
     MOD.state.setFilterData = function (filter) {
         var values;
@@ -53,12 +39,15 @@
         if (filter.defaultValue) {
             values.push(filter.defaultValue);
         }
-        values = sortFilterData(filter, _.uniq(values));
+        values = _.uniq(values);
+        values = _.sortBy(values, function (value) {
+            return value.toLowerCase();
+        });
         values.unshift("*");
 
         // Update module state.
         MOD.state[filter.key + "List"] = values;
-        MOD.state[filter.key] = filter.defaultValue ||values[0];
+        MOD.state[filter.key] = filter.defaultValue || values[0];
     };
 
     // Resets filter data.
@@ -76,10 +65,12 @@
         values.push(newValue);
 
         // Resort.
-        values = sortFilterData(filter, values);
+        values = _.sortBy(values, function (value) {
+            return value.toLowerCase();
+        });
 
         // Recache.
-        MOD.state[filter.key + "List"] = sortFilterData(filter, values);
+        MOD.state[filter.key + "List"] = values;
 
         // Fire event.
         MOD.events.trigger("filter:refresh", filter);
