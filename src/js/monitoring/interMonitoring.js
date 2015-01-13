@@ -16,7 +16,8 @@
 
         url.push(simulation.threddsServerUrl);
         url.push(simulation.computeNodeLogin);
-        if (simulation.modelSynonyms.length > 0) {
+        if (simulation.modelSynonyms &&
+            simulation.modelSynonyms.length > 0) {
             url.push(simulation.modelSynonyms[0].toUpperCase());
         } else {
             url.push(simulation.model.toUpperCase());
@@ -40,7 +41,8 @@
 
         url.push(simulation.threddsServerUrl);
         url.push(simulation.computeNodeLogin);
-        if (simulation.modelSynonyms.length > 0) {
+        if (simulation.modelSynonyms &&
+            simulation.modelSynonyms.length > 0) {
             url.push(simulation.modelSynonyms[0].toUpperCase());
         } else {
             url.push(simulation.model.toUpperCase());
