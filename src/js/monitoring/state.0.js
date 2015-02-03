@@ -5,41 +5,8 @@
 
     // Module state.
     MOD.state = {
-        // Current activity.
-        activity: undefined,
-
-        // List of activities.
-        activityList: [],
-
-        // Current compute node.
-        computeNode: undefined,
-
-        // List of compute nodes.
-        computeNodeList: [],
-
-        // Current compute node login.
-        computeNodeLogin: undefined,
-
-        // List of compute node logins.
-        computeNodeLoginList: [],
-
-        // Current compute node machine.
-        computeNodeMachine: undefined,
-
-        // List of compute node machines.
-        computeNodeMachineList: [],
-
-        // Current experiment.
-        experiment: undefined,
-
-        // List of experiments.
-        experimentList: [],
-
-        // Current model.
-        model: undefined,
-
-        // List of models.
-        modelList: [],
+        // CV terms.
+        cvTerms: [],
 
         // List of simulations.
         simulationList: [],
@@ -50,21 +17,9 @@
         // List of simulations for inter-monitoring.
         simulationListForIM: function () {
             return _.filter(MOD.state.simulationList, function (simulation) {
-                return simulation.isSelectedForIM;
+                return simulation.ext.isSelectedForIM;
             });
         },
-
-        // Current execution state.
-        executionState: undefined,
-
-        // List of execution states.
-        executionStateList: [],
-
-        // Current space.
-        space: undefined,
-
-        // List of spaces.
-        spaceList: [],
 
         // Paging related state.
         paging: {
@@ -72,6 +27,58 @@
             count: undefined,
             previous: undefined,
             pages: []
+        },
+
+        // Appends a new term set to managed collection.
+        appendCVTermset: function (termset) {
+            _.each(termset, MOD.state.appendCVTerm);
+        },
+
+        // Appends a new term to managed collection.
+        appendCVTerm: function (term) {
+            if (!MOD.state.getCVTerm(term.typeof, term.name)) {
+                MOD.state.cvTerms.push(term);
+            }
+        },
+
+        // Returns an individual cv term.
+        getCVTerm: function (cvType, cvName) {
+            return _.find(MOD.state.getCVTermset(cvType), function (term) {
+                return term.name === cvName;
+            });
+        },
+
+        // Returns an individual cv term from a sysnonym.
+        getCVTermFromSynonym: function (cvType, cvSynonym) {
+            return _.find(MOD.state.getCVTermset(cvType), function (term) {
+                return term.synonyms === cvSynonym;
+            });
+        },
+
+        // Returns filtered collection of cv terms.
+        getCVTermset: function (cvType, cvNames) {
+            var termset;
+
+            termset = _.filter(MOD.state.cvTerms, function (term) {
+                return term.typeof === cvType;
+            });
+            if (cvNames) {
+                termset = _.filter(termset, function (term) {
+                    return _.indexOf(cvNames, term.name) !== -1;
+                });
+            }
+
+            return termset;
+        },
+
+        // Returns the global CV term used in filtering.
+        getGlobalCVTerm: function (cvType) {
+            return {
+                typeof: cvType,
+                name: '*',
+                displayName: '*',
+                synonyms: []
+            };
         }
     };
 

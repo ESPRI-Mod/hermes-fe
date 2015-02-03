@@ -5,42 +5,50 @@
 
     // Parses a simulation in readiness for processing.
     MOD.parseSimulation = function (simulation) {
-        var cv, term;
+        var cvTerm;
 
         // Set defaults.
         _.defaults(simulation, {
-            threddsServerUrl: undefined,
-            isSelectedForIM: false,
-            modelSynonyms: []
+            ext: {
+                threddsServerUrl: undefined,
+                isSelectedForIM: false,
+                modelSynonyms: [],
+                experiment: undefined
+            }
         });
         simulation.executionEndDate = simulation.executionEndDate || "";
 
         // Set case sensitive CV related fields.
         _.each(['experiment'], function (field) {
-            cv = MOD.state.cvTerms[field];
-            if (_.has(cv, simulation[field])) {
-                term = cv[simulation[field]];
-            }
-            if (term) {
-                simulation[field] = term.name;
+            cvTerm = MOD.state.getCVTerm(field, simulation[field]);
+            if (cvTerm) {
+                simulation.ext[field] = cvTerm.displayName;
             }
         });
 
         // Set model synonyms.
-        cv = MOD.state.cvTerms.model;
-        if (_.has(cv, simulation.model)) {
-            term = cv[simulation.model];
-            simulation.modelSynonyms = term.synonyms;
-        }
+        // if (!MOD.state.getCVTerm('model', simulation.model)) {
+            
+        //     console.log("TODO: set model synonyms : " +  simulation.model);
+
+        // }
+
+        // cv = MOD.state.cvTermsets.model;
+        // if (_.has(cv, simulation.model)) {
+        //     term = cv[simulation.model];
+        //     if (term.synonyms) {
+        //         simulation.ext.modelSynonyms = term.synonyms;
+        //     }
+        // }
 
         // Set THREDDS server URL.
-        cv = MOD.state.cvTerms.computeNode;
-        if (_.has(cv, simulation.computeNode)) {
-            term = cv[simulation.computeNode];
-            if (term.threddsServerUrl) {
-                simulation.threddsServerUrl = term.threddsServerUrl;
-            }
-        }
+        // cv = MOD.state.cvTermsets.computeNode;
+        // if (_.has(cv, simulation.computeNode)) {
+        //     term = cv[simulation.computeNode];
+        //     if (term.threddsServerUrl) {
+        //         simulation.ext.threddsServerUrl = term.threddsServerUrl;
+        //     }
+        // }
     };
 
 }(this.APP.modules.monitoring, this._));

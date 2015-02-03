@@ -48,19 +48,19 @@
         _onPageRefresh: function () {
             var baseURL, url;
 
-            // Redirect to current page.
+            // Construct URL.
             url = baseURL = APP.utils.getBaseURL();
-            _.each(MOD.filters, function (filter) {
-                var filterValue = MOD.state[filter.key];
-
-                if (filterValue !== '*') {
+            _.each(MOD.state.filters, function (filter) {
+                if (filter.cvTerms.current &&
+                    filter.cvTerms.current.name !== '*') {
                     url += url === baseURL ? '?' : '&';
                     url += filter.key;
                     url += '=';
-                    url += filterValue;
+                    url += filter.cvTerms.current.name;
                 }
             });
 
+            // Redirect.
             APP.utils.openURL(url);
         }
     });

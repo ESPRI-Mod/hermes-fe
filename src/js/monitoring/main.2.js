@@ -3,7 +3,7 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Websocket initialized event handler.
+    // Event handler: websocket initialized.
     MOD.events.on("ws:initialized", function () {
         var ep;
 
@@ -14,7 +14,7 @@
         });
     });
 
-    // State initialization event handler.
+    // Event handler: state initialized.
     MOD.events.on("state:initialized", function () {
         // Render view.
         MOD.view = new MOD.views.MainView();

@@ -1,4 +1,4 @@
-(function (APP, _) {
+(function (APP) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -32,64 +32,7 @@
             "complete" : 'success',
             "rollback" : 'warning',
             "error" : 'danger',
-        },
-
-        // Set of supported filters.
-        filters: [
-            {
-                key: 'activity',
-                defaultValue: 'ipsl'
-            },
-            {
-                key: 'computeNode',
-                displayName: 'Node'
-            },
-            {
-                key: 'computeNodeMachine',
-                displayName: 'Machine'
-            },
-            {
-                key: 'computeNodeLogin',
-                displayName: 'Login'
-            },
-            {
-                key: 'experiment'
-            },
-            {
-                key: 'model',
-                displayName: 'Tag / Model'
-            },
-            {
-                cvType: 'simulationState',
-                key: 'executionState',
-                displayName: 'State'
-            },
-            {
-                cvType: 'simulationSpace',
-                key: 'space',
-                displayName: 'Space'
-            },
-        ]
-    });
-
-    // Set filter defaults.
-    _.each(MOD.filters, function (filter) {
-        var queryParamValue;
-
-        if (!_.has(filter, "cvType")) {
-            filter.cvType = filter.key;
-        }
-        if (!_.has(filter, "displayName")) {
-            filter.displayName = filter.key.substring(0, 1).toUpperCase() +
-                                 filter.key.substring(1);
-        }
-        if (!_.contains(['experiment', 'computeNodeLogin'], filter.key)) {
-            filter.displayFormatter = "toUpperCase";
-        }
-        queryParamValue = APP.utils.getURLParam(filter.key);
-        if (queryParamValue) {
-            filter.defaultValue = queryParamValue;
         }
     });
 
-}(this.APP, this._));
+}(this.APP));

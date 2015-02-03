@@ -6,15 +6,15 @@
     // Setup data loaded event handler.
     // @data    Setup data loaded from remote server.
     MOD.events.on("state:setupDataLoaded", function (data) {
-        // Update module state.
+        // Cache setup data.
         MOD.state.simulationList = data.simulationList;
         MOD.state.cvTerms = data.cvTerms;
 
         // Parse simulations.
         _.each(data.simulationList, MOD.parseSimulation);
 
-        // Initialise filter data.
-        _.each(MOD.filters, MOD.state.setFilterData);
+        // Set filters.
+        _.each(MOD.state.filters, MOD.state.setFilter);
 
         // Set filtered simulations.
         MOD.state.setFilteredSimulationList();

@@ -37,7 +37,7 @@
                   <td class='computeNodeLogin' title='<%= computeNodeLogin %>'><%= computeNodeLogin %></td>\n\
                   <td class='model text-uppercase' title='<%= model %>'><%= model %></td>\n\
                   <td class='space text-uppercase' title='<%= space %>'><%= space %></td>\n\
-                  <td class='experiment' title='<%= experiment %>'><%= experiment %></td>\n\
+                  <td class='experiment' title='<%= ext.experiment %>'><%= ext.experiment %></td>\n\
                   <td class='executionStartDate' title='<%= executionStartDate %>'><%= executionStartDate.substring(0, 10) %></td>\n\
                   <td class='executionEndDate' title='<%= executionEndDate %>'><%= executionEndDate.substring(0, 10) %></td>\n\
                   <td class='monitoring' title='Open monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\

@@ -10,15 +10,14 @@
         var url = [];
 
         // Escape if simulation is not associated with a DODS server.
-        if (_.isUndefined(simulation.threddsServerUrl)) {
+        if (_.isUndefined(simulation.ext.threddsServerUrl)) {
             return;
         }
 
-        url.push(simulation.threddsServerUrl);
+        url.push(simulation.ext.threddsServerUrl);
         url.push(simulation.computeNodeLogin);
-        if (simulation.modelSynonyms &&
-            simulation.modelSynonyms.length > 0) {
-            url.push(simulation.modelSynonyms[0].toUpperCase());
+        if (simulation.ext.modelSynonyms.length) {
+            url.push(simulation.ext.modelSynonyms[0].toUpperCase());
         } else {
             url.push(simulation.model.toUpperCase());
         }
@@ -35,15 +34,14 @@
         var url = [];
 
         // Escape if simulation is not associated with a DODS server.
-        if (_.isUndefined(simulation.threddsServerUrl)) {
+        if (_.isUndefined(simulation.ext.threddsServerUrl)) {
             return;
         }
 
-        url.push(simulation.threddsServerUrl);
+        url.push(simulation.ext.threddsServerUrl);
         url.push(simulation.computeNodeLogin);
-        if (simulation.modelSynonyms &&
-            simulation.modelSynonyms.length > 0) {
-            url.push(simulation.modelSynonyms[0].toUpperCase());
+        if (simulation.ext.modelSynonyms.length) {
+            url.push(simulation.ext.modelSynonyms[0].toUpperCase());
         } else {
             url.push(simulation.model.toUpperCase());
         }
@@ -62,7 +60,7 @@
     // Event handler: clear inter monitoring simulation selection.
     MOD.events.on("im:clearInterMonitor", function () {
         _.each(MOD.state.simulationListForIM(), function (simulation) {
-            simulation.isSelectedForIM = false;
+            simulation.ext.isSelectedForIM = false;
         });
         $("td.interMonitoring > input").prop("checked", false);
     });

@@ -26,14 +26,14 @@
                 MOD.events.trigger("im:openMonitor", this.model);
             },
             'change > td.interMonitoring > input' : function () {
-                this.model.isSelectedForIM = !this.model.isSelectedForIM;
+                this.model.ext.isSelectedForIM = !this.model.ext.isSelectedForIM;
             }
         },
 
         // Backbone: view renderer.
         render : function () {
             APP.utils.renderHTML(TEMPLATES.row, this.model, this);
-            if (this.model.isSelectedForIM) {
+            if (this.model.ext.isSelectedForIM) {
                 this.$('.interMonitoring > input').attr('checked', true);
             }
 

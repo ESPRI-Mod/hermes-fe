@@ -8,7 +8,7 @@
         // Backbone: view renderer.
         render : function () {
             APP.utils.render([
-                MOD.views.FilterView,
+                MOD.views.FilterGroupView,
                 MOD.views.InfoView,
                 MOD.views.GridView,
                 MOD.views.InterMonitoringContextMenuView,
