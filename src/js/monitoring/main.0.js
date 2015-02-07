@@ -17,11 +17,26 @@
         // Module key aliases.
         keyAliases: ["monitor"],
 
-        // Monitoring relation URLs.
+        // URL's used across module.
         urls: {
+            // Setup data endpoint.
             SETUP: 'monitoring/fe/setup',
+
+            // Web-socket endpoint.
             WS: 'monitoring/fe/ws',
-            IM: "http://webservices.ipsl.jussieu.fr/monitoring_fromprodiguer/index.php"
+
+            // Monitoring endpoints.
+            M: {
+                'ccrt': 'https://esgf.extra.cea.fr/thredds/fileServer/WORK',
+                'tgcc': 'https://esgf.extra.cea.fr/thredds/fileServer/WORK'
+            },
+
+            // Inter-monitoring endpoints.
+            IM: {
+                'httpPostTarget': 'http://webservices.ipsl.jussieu.fr/monitoring_fromprodiguer/index.php',
+                'ccrt': 'http://esgf.extra.cea.fr/thredds/dodsC/WORK',
+                'tgcc': 'http://esgf.extra.cea.fr/thredds/dodsC/WORK'
+            }
         },
 
         // Map of simulation states to css classes.

@@ -9,7 +9,7 @@
     getMonitorURL = function (simulation) {
         var url = [];
 
-        // Escape if simulation is not associated with a DODS server.
+        // Escape if simulation is not associated with a THREDDS server.
         if (_.isUndefined(simulation.ext.threddsServerUrl)) {
             return;
         }
@@ -22,7 +22,7 @@
             url.push(simulation.model.toUpperCase());
         }
         url.push(simulation.space.toUpperCase());
-        url.push(simulation.experiment);
+        url.push(simulation.ext.experiment);
         url.push(simulation.name);
         url.push("MONITORING/index.html");
 
@@ -34,11 +34,11 @@
         var url = [];
 
         // Escape if simulation is not associated with a DODS server.
-        if (_.isUndefined(simulation.ext.threddsServerUrl)) {
+        if (_.isUndefined(simulation.ext.dodsServerUrl)) {
             return;
         }
 
-        url.push(simulation.ext.threddsServerUrl);
+        url.push(simulation.ext.dodsServerUrl);
         url.push(simulation.computeNodeLogin);
         if (simulation.ext.modelSynonyms.length) {
             url.push(simulation.ext.modelSynonyms[0].toUpperCase());
@@ -46,7 +46,7 @@
             url.push(simulation.model.toUpperCase());
         }
         url.push(simulation.space.toUpperCase());
-        url.push(simulation.experiment);
+        url.push(simulation.ext.experiment);
         url.push(simulation.name);
 
         return url.join("/");
@@ -76,7 +76,7 @@
         }
 
         // Set data to be posted to inter-monitoring.
-        data = _.map(simulationList, getInterMonitorURL);
+        data = _.sortBy(_.map(simulationList, getInterMonitorURL));
 
         // Trigger event.
         MOD.events.trigger("im:postInterMonitorForm", data);

@@ -16,7 +16,10 @@
                 experiment: undefined
             }
         });
-        simulation.executionEndDate = simulation.executionEndDate || "";
+        simulation.executionStartDate =
+            (simulation.executionStartDate || "").substring(0, 10);
+        simulation.executionEndDate =
+            (simulation.executionEndDate || "").substring(0, 10);
 
         // Set case sensitive CV related fields.
         _.each(['experiment'], function (field) {
@@ -26,27 +29,27 @@
             }
         });
 
-        // Set model synonyms.
-        // if (!MOD.state.getCVTerm('model', simulation.model)) {
-            
-        //     console.log("TODO: set model synonyms : " +  simulation.model);
+        // Set THREDDS server URL.
+        if (_.has(MOD.urls.M, simulation.computeNode)) {
+            simulation.ext.threddsServerUrl = MOD.urls.M[simulation.computeNode];
+        }
 
-        // }
+        // Set DODS server URL.
+        if (_.has(MOD.urls.IM, simulation.computeNode)) {
+            simulation.ext.dodsServerUrl = MOD.urls.IM[simulation.computeNode];
+        }
+
+        // Set model synonyms.
+        cvTerm = MOD.state.getCVTerm('model', simulation.model);
+        if (cvTerm && cvTerm.synonyms) {
+            simulation.ext.modelSynonyms = cvTerm.synonyms.split(", ");
+        }
 
         // cv = MOD.state.cvTermsets.model;
         // if (_.has(cv, simulation.model)) {
         //     term = cv[simulation.model];
         //     if (term.synonyms) {
         //         simulation.ext.modelSynonyms = term.synonyms;
-        //     }
-        // }
-
-        // Set THREDDS server URL.
-        // cv = MOD.state.cvTermsets.computeNode;
-        // if (_.has(cv, simulation.computeNode)) {
-        //     term = cv[simulation.computeNode];
-        //     if (term.threddsServerUrl) {
-        //         simulation.ext.threddsServerUrl = term.threddsServerUrl;
         //     }
         // }
     };

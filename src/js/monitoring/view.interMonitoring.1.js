@@ -11,7 +11,7 @@
         // Backbone: view DOM attributes.
         attributes: function () {
             return {
-                action: MOD.urls.IM,
+                action: MOD.urls.IM.httpPostTarget,
                 id: "imForm",
                 method: 'POST',
                 target: '_blank'

@@ -84,7 +84,7 @@
     });
 
     // Information panel view.
-    MOD.views.InfoView1 = Backbone.View.extend({
+    MOD.views.InfoView2 = Backbone.View.extend({
         // Backbone: view renderer.
         render : function () {
             APP.utils.render([
