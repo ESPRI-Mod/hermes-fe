@@ -38,13 +38,13 @@ div.alert, div.panel {
 
 .app-title {
 	font-size: 52px;
-	color: grey;
+	color: #337AB7;
 }
 
 .module-title {
 	font-size: 52px;
 	/*color: #337AB7;*/
-	color: darkgrey;
+	color: #1e496d;
 	/*font-style: italic;*/
 }
 
