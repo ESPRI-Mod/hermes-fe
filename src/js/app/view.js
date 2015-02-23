@@ -16,8 +16,7 @@
         render : function () {
             var subViews = [
                 APP.views.HeaderView,
-                APP.views.ContentView,
-                APP.views.FooterView,
+                APP.views.ContentView
             ];
 
             APP.utils.render(subViews, {}, this)

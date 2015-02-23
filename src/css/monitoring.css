@@ -1,3 +1,13 @@
 td.monitoring, th.interMonitoring {
 	cursor: pointer;
 }
+
+.module-footer {
+	padding: 8px;
+	border: 1px solid #BCE8F1;
+}
+
+table.monitoring-table {
+	margin-bottom: 10px;
+}
+

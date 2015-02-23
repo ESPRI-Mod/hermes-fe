@@ -21,8 +21,7 @@
         // Backbone: view renderer.
         render : function () {
             APP.utils.render([
-                MOD.views.InfoNotificationsView,
-                MOD.views.InfoPagerView,
+                MOD.views.InfoNotificationsView
             ], {}, this);
 
             return this;

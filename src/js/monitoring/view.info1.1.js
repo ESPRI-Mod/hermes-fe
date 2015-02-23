@@ -44,7 +44,7 @@
         tagName : 'ul',
 
         // Backbone: view CSS class.
-        className : 'pagination pull-right',
+        className : 'pagination pull-right bg-info',
 
         // Backbone: view initializer.
         initialize : function () {

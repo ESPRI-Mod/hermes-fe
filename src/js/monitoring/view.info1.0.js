@@ -6,7 +6,7 @@
     // View over notifications being received from server.
     MOD.views.InfoNotificationsView = Backbone.View.extend({
         // Backbone: view DOM element type.
-        tagName: "b",
+        tagName: "strong",
 
         // Backbone: view initializer.
         initialize : function () {
