@@ -1,10 +1,10 @@
-(function (APP, MOD, TEMPLATES, Backbone) {
+(function (MOD, Backbone) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // View over simulation statistics.
-    MOD.views.Info2StatsView = Backbone.View.extend({
+    // Grid header stats view.
+    MOD.views.GridHeaderStatsView = Backbone.View.extend({
         // Backbone: view DOM element type.
         tagName: "strong",
 
@@ -44,8 +44,6 @@
     });
 
 }(
-    this.APP,
     this.APP.modules.monitoring,
-    this.APP.modules.monitoring.templates,
     this.Backbone
 ));

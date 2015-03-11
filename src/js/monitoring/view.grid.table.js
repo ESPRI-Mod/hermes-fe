@@ -4,7 +4,7 @@
     "use strict";
 
     // View over the grid table.
-    MOD.views.GridView = Backbone.View.extend({
+    MOD.views.GridTableView = Backbone.View.extend({
         // Backbone: view CSS class.
         className : "table table-hover table-bordered monitoring-table",
 

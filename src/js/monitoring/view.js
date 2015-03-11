@@ -9,9 +9,9 @@
         render : function () {
             APP.utils.render([
                 MOD.views.FilterGroupView,
-                MOD.views.InfoView1,
-                MOD.views.InfoView2,
-                MOD.views.GridView,
+                MOD.views.WebSocketNotifications,
+                MOD.views.GridHeaderView,
+                MOD.views.GridTableView,
                 MOD.views.InterMonitoringContextMenuView,
                 MOD.views.InterMonitoringFormView,
                 MOD.views.WebSocketClosedDialogView,

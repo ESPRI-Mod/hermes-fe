@@ -3,27 +3,17 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Inner view.
-    var InnerView = Backbone.View.extend({
+    // Grid header view.
+    MOD.views.GridHeaderView = Backbone.View.extend({
         // Backbone: view CSS class.
         className : "alert bg-primary",
 
         // Backbone: view renderer.
         render : function () {
             APP.utils.render([
-                MOD.views.Info2StatsView,
-                MOD.views.InfoPagerView
+                MOD.views.GridHeaderStatsView,
+                MOD.views.GridHeaderPagerView
             ], {}, this);
-
-            return this;
-        }
-    });
-
-    // Secondary view.
-    MOD.views.InfoView2 = Backbone.View.extend({
-        // Backbone: view renderer.
-        render : function () {
-            APP.utils.render(InnerView, {}, this);
 
             return this;
         }

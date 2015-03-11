@@ -17,6 +17,9 @@
                   </span>\n\
                 </div>",
 
+        notifications:
+            "<strong>Awaiting simulation events ...</strong>",
+
         info: {
             pagerItem: "<a href='#'><%- id %></ a>"
         },
@@ -26,6 +29,27 @@
                 </span>",
 
         grid: {
+            pager:
+                "<span class='btn-group' role='group'>\n\
+                    <button type='button' class='btn btn-default pagination-first'>\n\
+                        <strong class='text-primary'><<</strong>\n\
+                    </button>\n\
+                    <button type='button' class='btn btn-default pagination-previous'>\n\
+                        <strong class='text-primary'>&nbsp;&lt;&nbsp;</strong>\n\
+                    </button>\n\
+                </span>\n\
+                <span class='btn-group'>\n\
+                    <input type='text' class='pagination-info form-control' placeholder=''>\n\
+                </span>\n\
+                <span class='btn-group' role='group'>\n\
+                    <button type='button' class='btn btn-default pagination-next'>\n\
+                        <strong class='text-primary'>&nbsp;&gt;&nbsp;</strong>\n\
+                    </button>\n\
+                    <button type='button' class='btn btn-default pagination-last'>\n\
+                        <strong class='text-primary'>>></strong>\n\
+                    </button>\n\
+                </span>",
+
             contextMenu:
                 "<ul class='dropdown-menu' role='menu'>\n\
                     <li><a tabindex='-1' class='open'>Open inter-monitoring</a></li>\n\

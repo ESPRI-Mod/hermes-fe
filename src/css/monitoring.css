@@ -1,3 +1,11 @@
+span.pagination {
+	margin: -7px 0 0 0;
+}
+
+input.pagination-info {
+	width: 120px;
+}
+
 td.monitoring, th.interMonitoring {
 	cursor: pointer;
 }
