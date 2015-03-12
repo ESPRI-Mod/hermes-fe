@@ -1,4 +1,4 @@
-(function (APP, MOD, _) {
+(function (MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -33,4 +33,7 @@
         MOD.events.trigger("state:simulationStatusUpdated", eventData);
     });
 
-}(this.APP, this.APP.modules.monitoring, this._));
+}(
+    this.APP.modules.monitoring,
+    this._
+));

@@ -1,4 +1,4 @@
-(function (APP, MOD, constants, _) {
+(function (MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -32,21 +32,24 @@
                     return filter.cvType === cvTerm.typeof;
                 });
                 if (filter) {
-                    MOD.state.setFilter(filter);
-                    MOD.events.trigger("filter:refresh", filter);
+                    MOD.initFilter(filter);
+                    MOD.events.trigger("ui:filter:refresh", filter);
                 }
             });
         }
 
         // Update simulations.
-        MOD.state.setFilteredSimulationList();
+        MOD.setFilteredSimulationList();
 
         // Update paging.
-        MOD.state.setPagingState(MOD.state.paging.current);
+        MOD.setPagingState(MOD.state.paging.current);
 
         // Fire events.
-        MOD.state.triggerSimulationFilterEvent();
+        MOD.triggerSimulationFilterEvent();
         MOD.events.trigger("state:newSimulation", eventData);
     });
 
-}(this.APP, this.APP.modules.monitoring, this.APP.constants, this._));
+}(
+    this.APP.modules.monitoring,
+    this._
+));

@@ -11,7 +11,7 @@
         // Backbone: view renderer.
         render: function () {
             _.each(MOD.state.filters, function (filter) {
-                APP.utils.render(MOD.views.FilterView, filter, this);
+                APP.utils.render(MOD.views.FilterItemView, filter, this);
             }, this);
 
             return this;
@@ -19,7 +19,7 @@
     });
 
     // Outer view.
-    MOD.views.FilterGroupView = Backbone.View.extend({
+    MOD.views.FilterPanelView = Backbone.View.extend({
         // Backbone: view CSS class.
         className : "panel panel-info bg-info",
 

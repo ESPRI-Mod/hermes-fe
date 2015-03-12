@@ -4,7 +4,7 @@
     "use strict";
 
     // Filter label view.
-    MOD.views.FilterLabelView = Backbone.View.extend({
+    MOD.views.FilterItemLabelView = Backbone.View.extend({
         // Backbone: view CSS class.
         className: "filter-label",
 

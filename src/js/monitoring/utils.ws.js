@@ -72,6 +72,8 @@
 
         // Empty buffer.
         _.each(buffer, dispatchEvent);
+
+        // Reset buffer.
         buffer = [];
     });
 
@@ -94,4 +96,9 @@
         MOD.events.trigger("ws:initialized");
     });
 
-}(this.APP, this.APP.modules.monitoring, this.WebSocket, this._));
+}(
+    this.APP,
+    this.APP.modules.monitoring,
+    this.WebSocket,
+    this._
+));

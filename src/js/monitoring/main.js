@@ -4,7 +4,7 @@
     "use strict";
 
     // Declare module.
-    var MOD = APP.registerModule("monitoring", {
+    APP.registerModule("monitoring", {
         // Module title.
         title: "Simulation Monitor",
 
@@ -50,4 +50,6 @@
         }
     });
 
-}(this.APP));
+}(
+    this.APP
+));

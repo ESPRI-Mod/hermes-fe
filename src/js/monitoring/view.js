@@ -8,12 +8,12 @@
         // Backbone: view renderer.
         render : function () {
             APP.utils.render([
-                MOD.views.FilterGroupView,
+                MOD.views.FilterPanelView,
                 MOD.views.WebSocketNotifications,
                 MOD.views.GridHeaderView,
                 MOD.views.GridTableView,
                 MOD.views.InterMonitoringContextMenuView,
-                MOD.views.InterMonitoringFormView,
+                MOD.views.InterMonitoringFormPostView,
                 MOD.views.WebSocketClosedDialogView,
                 MOD.views.FooterView
             ], {}, this);

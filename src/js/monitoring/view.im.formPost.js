@@ -3,8 +3,8 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // View over inter-monitoring form.
-    MOD.views.InterMonitoringFormView = Backbone.View.extend({
+    // View over inter-monitoring form post.
+    MOD.views.InterMonitoringFormPostView = Backbone.View.extend({
         // Backbone: view DOM element type.
         tagName : "form",
 

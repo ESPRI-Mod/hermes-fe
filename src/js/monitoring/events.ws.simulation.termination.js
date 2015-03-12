@@ -1,4 +1,4 @@
-(function (APP, MOD, constants, _) {
+(function (MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -35,4 +35,7 @@
         MOD.events.trigger("state:simulationTermination", eventData);
     });
 
-}(this.APP, this.APP.modules.monitoring, this.APP.constants, this._));
+}(
+    this.APP.modules.monitoring,
+    this._
+));

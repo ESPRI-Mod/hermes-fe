@@ -4,7 +4,7 @@
     "use strict";
 
     // Filter select view.
-    MOD.views.FilterSelectView = Backbone.View.extend({
+    MOD.views.FilterItemSelectView = Backbone.View.extend({
         // Backbone: view CSS class.
         className: "filter-select",
 
@@ -13,7 +13,7 @@
 
         // Backbone: view initializer.
         initialize: function () {
-            MOD.events.on("filter:refresh", this._refresh, this);
+            MOD.events.on("ui:filter:refresh", this._refresh, this);
         },
 
         // Backbone: view event handlers.
@@ -49,9 +49,9 @@
         _build: function () {
             var cvTerms;
 
-            cvTerms = this.options.cvTerms.active;
+            cvTerms = this.options.cvTerms.all;
             _.each(cvTerms, function (cvTerm) {
-                APP.utils.render(MOD.views.FilterOptionView, _.defaults({
+                APP.utils.render(MOD.views.FilterItemOptionView, _.defaults({
                     model: cvTerm
                 }, this.options), this);
             }, this);
@@ -62,7 +62,7 @@
             var term;
 
             // Retrive associated cv term.
-            term = _.find(this.options.cvTerms.active, function (term) {
+            term = _.find(this.options.cvTerms.all, function (term) {
                 return term.name === name;
             });
 
