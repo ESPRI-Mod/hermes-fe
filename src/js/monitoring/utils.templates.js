@@ -7,7 +7,6 @@
         footer: "<div>\n\
                   <span>\n\
                     <span class='monitoring-state-queued'><small><strong>&nbsp;QUEUED&nbsp;</strong></small></span>\n\
-                    &nbsp;\n\
                     <span class='monitoring-state-running'><small><strong>&nbsp;RUNNING&nbsp;</strong></small></span>\n\
                     <span class='monitoring-state-complete'><small><strong>&nbsp;COMPLETE&nbsp;</strong></small></span>\n\
                     <span class='monitoring-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small></span>\n\
