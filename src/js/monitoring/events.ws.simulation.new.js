@@ -16,30 +16,34 @@
             return;
         }
 
-        // Update cv terms.
+        // Cache new cv terms.
         if (eventData.cvTerms) {
-            MOD.state.appendCVTermset(eventData.cvTerms);
+            _.each(eventData.cvTerms, MOD.cv.insertTerm);
         }
 
-        // Parse simulation & update collection.
+        // Parse simulation.
         MOD.parseSimulation(eventData.simulation);
+
+        // Update simulation collection.
         MOD.state.simulationList.push(eventData.simulation);
+
+        // Update simulations.
+        MOD.setFilteredSimulationList();
 
         // Update filters.
         if (eventData.cvTerms) {
             _.each(eventData.cvTerms, function (cvTerm) {
-                var filter = _.find(MOD.state.filters, function (filter) {
+                var filter;
+
+                filter = _.find(MOD.state.filters, function (filter) {
                     return filter.cvType === cvTerm.typeof;
                 });
                 if (filter) {
-                    MOD.initFilter(filter);
+                    MOD.updateFilterState(filter);
                     MOD.events.trigger("ui:filter:refresh", filter);
                 }
             });
         }
-
-        // Update simulations.
-        MOD.setFilteredSimulationList();
 
         // Update paging.
         MOD.setPagingState(MOD.state.paging.current);

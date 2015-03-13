@@ -59,7 +59,7 @@
 
     // Event handler: clear inter monitoring simulation selection.
     MOD.events.on("im:clearInterMonitor", function () {
-        _.each(MOD.state.simulationListForIM(), function (simulation) {
+        _.each(MOD.getSimulationListForIM(), function (simulation) {
             simulation.ext.isSelectedForIM = false;
         });
         $("td.interMonitoring > input").prop("checked", false);
@@ -70,7 +70,7 @@
         var simulationList, data;
 
         // Escape if there are no selected simulations.
-        simulationList = MOD.state.simulationListForIM();
+        simulationList = MOD.getSimulationListForIM();
         if (simulationList.length <= 1) {
             return;
         }

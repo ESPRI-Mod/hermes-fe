@@ -19,7 +19,6 @@ table.monitoring-table {
 	margin-bottom: 10px;
 }
 
-
 ::-webkit-input-placeholder {
    text-align: center;
 }
@@ -35,3 +34,24 @@ table.monitoring-table {
 :-ms-input-placeholder {  
    text-align: center; 
 }
+
+.monitoring-state-queued {
+	background-color: #F5F5F5;
+	color: #333;
+}
+
+.monitoring-state-running {
+	background-color: #D9EDF7;
+	color: #333;
+}
+
+.monitoring-state-complete {
+	background-color: #DFF0D8;
+	color: #333;
+}
+
+.monitoring-state-error {
+	background-color: #F2DEDE;
+	color: #333;
+}
+

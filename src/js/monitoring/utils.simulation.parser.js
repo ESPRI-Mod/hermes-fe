@@ -23,7 +23,7 @@
 
         // Set case sensitive CV related fields.
         _.each(['experiment'], function (field) {
-            cvTerm = MOD.state.getCVTerm(field, simulation[field]);
+            cvTerm = MOD.cv.getTerm(field, simulation[field]);
             if (cvTerm) {
                 simulation.ext[field] = cvTerm.displayName;
             }
@@ -40,7 +40,7 @@
         }
 
         // Set model synonyms.
-        cvTerm = MOD.state.getCVTerm('model', simulation.model);
+        cvTerm = MOD.cv.getTerm('model', simulation.model);
         if (cvTerm && cvTerm.synonyms) {
             simulation.ext.modelSynonyms = cvTerm.synonyms.split(", ");
         }

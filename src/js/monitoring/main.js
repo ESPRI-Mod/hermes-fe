@@ -41,12 +41,10 @@
 
         // Map of simulation states to css classes.
         statesCSS : {
-            "queued" : 'info',
-            "running" : 'primary',
-            "suspended" : 'warning',
-            "complete" : 'success',
-            "rollback" : 'warning',
-            "error" : 'danger',
+            "queued" : 'monitoring-state-queued',
+            "running" : 'monitoring-state-running',
+            "complete" : 'monitoring-state-complete',
+            "error" : 'monitoring-state-error',
         }
     });
 

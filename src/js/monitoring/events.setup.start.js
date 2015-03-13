@@ -14,7 +14,7 @@
         _.each(data.simulationList, MOD.parseSimulation);
 
         // Initialize filters.
-        _.each(MOD.state.filters, MOD.initFilter);
+        _.each(MOD.state.filters, MOD.initFilterState);
 
         // Set filtered simulations.
         MOD.setFilteredSimulationList();

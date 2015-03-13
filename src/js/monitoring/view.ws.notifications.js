@@ -5,7 +5,7 @@
 
     // Web socket notifications view.
     MOD.views.WebSocketNotifications = Backbone.View.extend({
-        className : "alert alert-info",
+        className : "alert monitoring-state-running",
 
         // Backbone: view initializer.
         initialize : function () {
@@ -33,7 +33,7 @@
             text = text.replace("{1}", ei.s.name);
             text = text.replace("{2}", ei.statePrevious.toUpperCase());
             text = text.replace("{3}", ei.state.toUpperCase());
-            this.$el.text(text);
+            this.$('strong').text(text);
         },
 
         // Simulation termination event handler.
@@ -48,7 +48,7 @@
             text = text.replace("{1}", ei.s.name);
             text = text.replace("{2}", ei.statePrevious.toUpperCase());
             text = text.replace("{3}", ei.state.toUpperCase());
-            this.$el.text(text);
+            this.$('strong').text(text);
         },
 
         // New simulation event handler.
@@ -62,13 +62,13 @@
             text = text.replace("{0}", ei.eventTimestamp.slice(0, 19));
             text = text.replace("{1}", ei.simulation.name);
             text = text.replace("{2}", ei.simulation.executionState.toUpperCase());
-            this.$el.text(text);
+            this.$('strong').text(text);
         },
 
         // Sets CSS class name based upon simulation execution state.
         // @executionStateSimulation execution state.
         _setClassName: function (state) {
-            this.$el.attr("class", "alert alert-" + MOD.statesCSS[state]);
+            this.$el.attr("class", "alert " + MOD.statesCSS[state]);
         }
     });
 }(

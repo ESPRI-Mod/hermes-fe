@@ -34,14 +34,14 @@
     };
 
     // Initializes filter state.
-    MOD.initFilter = function (filter) {
+    MOD.initFilterState = function (filter) {
         // Set all terms.
-        filter.cvTerms.all = MOD.state.getCVTermset(filter.cvType);
+        filter.cvTerms.all = MOD.cv.getTermset(filter.cvType);
         filter.cvTerms.all = _.sortBy(filter.cvTerms.all, function (cvTerm) {
             return cvTerm.name.toLowerCase();
         });
         if (filter.supportsByAll) {
-            filter.cvTerms.all.unshift(MOD.state.getGlobalCVTerm(filter.cvType));
+            filter.cvTerms.all.unshift(MOD.cv.getGlobalTerm(filter.cvType));
         }
 
         // Set current term.
@@ -50,6 +50,19 @@
                 return term.name === (filter.defaultValue || "*");
             });
         }
+    };
+
+    // Updates filter state.
+    MOD.updateFilterState = function (filter) {
+        // Set all terms.
+        filter.cvTerms.all = MOD.cv.getTermset(filter.cvType);
+        filter.cvTerms.all = _.sortBy(filter.cvTerms.all, function (cvTerm) {
+            return cvTerm.name.toLowerCase();
+        });
+        if (filter.supportsByAll) {
+            filter.cvTerms.all.unshift(MOD.cv.getGlobalTerm(filter.cvType));
+        }
+        MOD.setActiveFilterValues(filter);
     };
 
     // Sets the paging state.
@@ -103,6 +116,13 @@
             filter.cvTerms.active.push(filter.defaultValue);
         }
         filter.cvTerms.active = _.uniq(filter.cvTerms.active);
+    };
+
+    // Gets list of simulations for inter-monitoring.
+    MOD.getSimulationListForIM = function () {
+        return _.filter(MOD.state.simulationList, function (simulation) {
+            return simulation.ext.isSelectedForIM;
+        });
     };
 
 }(
