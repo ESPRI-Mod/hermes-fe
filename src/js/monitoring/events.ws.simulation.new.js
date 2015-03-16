@@ -16,16 +16,22 @@
             return;
         }
 
+        // Parse event data.
+        _.each(eventData.simulationStateHistory, function (stateChange) {
+            stateChange.description = stateChange.state;
+        });
+
         // Cache new cv terms.
         if (eventData.cvTerms) {
             _.each(eventData.cvTerms, MOD.cv.insertTerm);
         }
 
+        // Update module state.
+        MOD.state.simulationList.push(eventData.simulation);
+        MOD.state.simulationStateHistory[eventData.simulation.uid] = eventData.simulationStateHistory;
+
         // Parse simulation.
         MOD.parseSimulation(eventData.simulation);
-
-        // Update simulation collection.
-        MOD.state.simulationList.push(eventData.simulation);
 
         // Update simulations.
         MOD.setFilteredSimulationList();

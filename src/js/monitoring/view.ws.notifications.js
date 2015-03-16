@@ -10,8 +10,7 @@
         // Backbone: view initializer.
         initialize : function () {
             MOD.events.on("state:newSimulation", this._onNewSimulation, this);
-            MOD.events.on("state:simulationStatusUpdated", this._onSimulationStateChange, this);
-            MOD.events.on("state:simulationTermination", this._onSimulationTermination, this);
+            MOD.events.on("state:simulationStatusUpdate", this._onSimulationStateUpdate, this);
         },
 
         // Backbone: view renderer.
@@ -21,33 +20,21 @@
             return this;
         },
 
-        // Simulation state change event handler.
+        // Simulation state update event handler.
         // @ei      Event information.
-        _onSimulationStateChange: function (ei) {
+        _onSimulationStateUpdate: function (ei) {
             var text;
 
-            this._setClassName(ei.state);
+            if (ei.s.executionState === ei.statePrevious) {
+                return;
+            }
 
+            this._setClassName(ei.s.executionState);
             text = "STATUS CHANGE @ {0} :: {1} changed from {2} to {3}";
             text = text.replace("{0}", ei.eventTimestamp.slice(0, 19));
             text = text.replace("{1}", ei.s.name);
             text = text.replace("{2}", ei.statePrevious.toUpperCase());
-            text = text.replace("{3}", ei.state.toUpperCase());
-            this.$('strong').text(text);
-        },
-
-        // Simulation termination event handler.
-        // @ei      Event information.
-        _onSimulationTermination: function (ei) {
-            var text;
-
-            this._setClassName(ei.state);
-
-            text = "SIMULATION TERMINATED @ {0} :: {1} changed from {2} to {3}";
-            text = text.replace("{0}", ei.eventTimestamp.slice(0, 19));
-            text = text.replace("{1}", ei.s.name);
-            text = text.replace("{2}", ei.statePrevious.toUpperCase());
-            text = text.replace("{3}", ei.state.toUpperCase());
+            text = text.replace("{3}", ei.s.executionState.toUpperCase());
             this.$('strong').text(text);
         },
 

@@ -4,33 +4,40 @@
     "use strict";
 
     // Simulation state change event handler.
-    // @eventData      Event data received from server.
-    MOD.events.on("ws:simulationStateChange", function (eventData) {
-        var simulation;
+    // @data      Event data received from server.
+    MOD.events.on("ws:simulationStateChange", function (data) {
+        var simulation,
+            simulationState,
+            eventData;
 
-        // Eascape if simulation not found.
+        // Escape if simulation not found.
         simulation = _.find(MOD.state.simulationList, function (s) {
-            return s.uid === eventData.uid;
+            return s.uid === data.simulationUID;
         });
         if (_.isUndefined(simulation)) {
             return;
         }
 
-        // Escape if state update not required.
-        if (simulation.executionState === eventData.state) {
-            return;
-        }
+        // Parse event data.
+        _.each(data.simulationStateHistory, function (stateChange) {
+            stateChange.description = stateChange.state;
+        });
 
-        // Update event data.
-        eventData.s = simulation;
-        eventData.statePrevious = simulation.executionState;
+        // Update module state.
+        MOD.state.simulationStateHistory[data.simulationUID] = data.simulationStateHistory;
 
-        // Update simulation.
-        simulation.executionState = eventData.state;
+        // Parse simulation state history.
+        simulationState = simulation.executionState;
+        MOD.parseSimulationStateHistory(simulation);
 
-        // Fire event.
-        MOD.log("state:simulationStatusUpdated: " + simulation.name + "::" + eventData.state);
-        MOD.events.trigger("state:simulationStatusUpdated", eventData);
+        // Fire simulation state update event.
+        eventData = {
+            eventTimestamp: data.eventTimestamp,
+            s: simulation,
+            statePrevious: simulationState,
+        };
+        MOD.log("state:simulationStatusUpdate: " + simulation.name + "::" + eventData.state);
+        MOD.events.trigger("state:simulationStatusUpdate", eventData);
     });
 
 }(

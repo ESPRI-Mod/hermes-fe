@@ -54,6 +54,9 @@
         // List of filtered simulations.
         simulationListFiltered: [],
 
+        // Hostory of simulation state changes.
+        simulationStateHistory: {},
+
         // Paging related state.
         paging: {
             current: undefined,

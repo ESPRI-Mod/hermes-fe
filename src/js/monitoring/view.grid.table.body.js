@@ -12,8 +12,7 @@
         initialize: function () {
             MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
             MOD.events.on("state:simulationListNull", this._onSimulationListNull, this);
-            MOD.events.on("state:simulationStatusUpdated", this._onSimulationStateChange, this);
-            MOD.events.on("state:simulationTermination", this._onSimulationTermination, this);
+            MOD.events.on("state:simulationStatusUpdate", this._onSimulationStateUpdate, this);
             MOD.events.on("ui:pagination", this._renderPage, this);
         },
 
@@ -45,27 +44,20 @@
             }, this);
         },
 
-        // Simulation state change event handler.
+        // Simulation state update event handler.
         // @eventData      Event data.
-        _onSimulationStateChange: function (eventData) {
+        _onSimulationStateUpdate: function (eventData) {
             // Get row.
-            var $s = this.$('#simulation-' + eventData.uid);
+            var $s = this.$('#simulation-' + eventData.s.uid);
 
             // Update row css.
-            this._updateClassName($s, eventData.statePrevious, eventData.state);
-        },
-
-        // Simulation termination event handler.
-        // @eventData      Event data.
-        _onSimulationTermination: function (eventData) {
-            // Get row.
-            var $s = this.$('#simulation-' + eventData.uid);
-
-            // Update row css.
-            this._updateClassName($s, eventData.statePrevious, eventData.state);
+            $s.removeClass(MOD.statesCSS[eventData.statePrevious]);
+            $s.addClass(MOD.statesCSS[eventData.s.executionState]);
 
             // Update row fields.
             $s.find(".executionEndDate").text(eventData.s.executionEndDate);
+            console.log("SSS " + eventData.s.ext.jobCount);
+            $s.find(".jobCount").text(eventData.s.ext.jobCount);
         },
 
         // Simulation list filtered event handler.
@@ -76,12 +68,6 @@
         // Simulation list null event handler.
         _onSimulationListNull: function () {
             this.$('tr').remove();
-        },
-
-        // Updates row CSS class name in response to a simulation execution state change.
-        _updateClassName: function ($s, previousState, newState) {
-            $s.removeClass(MOD.statesCSS[previousState]);
-            $s.addClass(MOD.statesCSS[newState]);
         }
     });
 

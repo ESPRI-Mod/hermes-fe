@@ -10,10 +10,16 @@
         // Set defaults.
         _.defaults(simulation, {
             ext: {
-                threddsServerUrl: undefined,
+                experiment: undefined,
                 isSelectedForIM: false,
+                jobCount: 0,
+                jobStateHistory: [],
+                jobWarningCSS: "",
                 modelSynonyms: [],
-                experiment: undefined
+                state: undefined,
+                stateHistory: [],
+                statePrevious: undefined,
+                threddsServerUrl: undefined,
             }
         });
         simulation.executionStartDate =
@@ -45,13 +51,65 @@
             simulation.ext.modelSynonyms = cvTerm.synonyms.split(", ");
         }
 
-        // cv = MOD.state.cvTermsets.model;
-        // if (_.has(cv, simulation.model)) {
-        //     term = cv[simulation.model];
-        //     if (term.synonyms) {
-        //         simulation.ext.modelSynonyms = term.synonyms;
-        //     }
-        // }
+        // Set state history.
+        MOD.parseSimulationStateHistory(simulation);
+    };
+
+    // Parses simulation state history to detect job errors.
+    MOD.parseSimulationStateHistory = function (simulation) {
+        // Reset extension fields.
+        simulation.ext.jobCount = "--";
+        simulation.ext.jobStateHistory = [];
+        simulation.ext.jobWarningCSS = "";
+        simulation.ext.stateHistory = [];
+
+        // Set histories.
+        if (_.has(MOD.state.simulationStateHistory, simulation.uid)) {
+            simulation.ext.stateHistory = _.filter(MOD.state.simulationStateHistory[simulation.uid], function (stateChange) {
+                return stateChange.jobUID === null;
+            });
+            simulation.ext.stateHistory = _.sortBy(simulation.ext.stateHistory, 'timestamp');
+            simulation.ext.jobStateHistory = _.filter(MOD.state.simulationStateHistory[simulation.uid], function (stateChange) {
+                return stateChange.jobUID !== null;
+            });
+        }
+
+        // Set current state.
+        if (simulation.ext.stateHistory.length) {
+            simulation.ext.statePrevious = simulation.ext.state;
+            simulation.ext.state = _.last(simulation.ext.stateHistory);
+            simulation.executionState = simulation.ext.state.description;
+            if (simulation.executionEndDate === "" &&
+                _.indexOf(['complete', 'error'], simulation.executionState) > -1) {
+                simulation.executionEndDate = simulation.ext.state.timestamp.substring(0, 10);
+            }
+        }
+
+        // Set job count.
+        if (simulation.ext.jobStateHistory.length) {
+            var jsh  = _.groupBy(simulation.ext.jobStateHistory, 'jobUID');
+            console.log("Job count was: " + simulation.ext.jobCount);
+            simulation.ext.jobCount = _.keys(_.groupBy(simulation.ext.jobStateHistory, 'jobUID')).length;
+            console.log("Job count is: " + simulation.ext.jobCount);
+        }
+
+        // Set job warning.
+        _.each(simulation.ext.jobStateHistory, function (stateChange) {
+            var complete;
+
+            if (stateChange.state !== 'running') {
+                return;
+            }
+            complete = _.filter(simulation.ext.jobStateHistory, function (sc) {
+                return sc.jobUID === stateChange.jobUID &&
+                       sc.state !== 'running' &&
+                       sc.state !== 'complete';
+            });
+            if (!complete.length) {
+                console.log("TODO: Apply job warning delay test");
+                simulation.ext.jobWarningCSS = "bg-danger";
+            }
+        });
     };
 
 }(this.APP.modules.monitoring, this._));
