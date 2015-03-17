@@ -7,9 +7,7 @@
     // @data    Setup data loaded from remote server.
     MOD.events.on("setup:start", function (data) {
         // Parse setup data.
-        _.each(data.simulationStateHistory, function (stateChange) {
-            stateChange.description = stateChange.state;
-        })
+        MOD.parseStateChangeHistory(data.simulationStateHistory);
 
         // Cache setup data.
         MOD.state.simulationList = data.simulationList;

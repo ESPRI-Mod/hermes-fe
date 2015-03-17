@@ -17,9 +17,7 @@
         }
 
         // Parse event data.
-        _.each(eventData.simulationStateHistory, function (stateChange) {
-            stateChange.description = stateChange.state;
-        });
+        MOD.parseStateChangeHistory(eventData.simulationStateHistory);
 
         // Cache new cv terms.
         if (eventData.cvTerms) {

@@ -19,9 +19,7 @@
         }
 
         // Parse event data.
-        _.each(data.simulationStateHistory, function (stateChange) {
-            stateChange.description = stateChange.state;
-        });
+        MOD.parseStateChangeHistory(data.simulationStateHistory);
 
         // Update module state.
         MOD.state.simulationStateHistory[data.simulationUID] = data.simulationStateHistory;
