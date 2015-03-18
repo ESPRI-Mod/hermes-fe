@@ -46,7 +46,7 @@
         }
 
         // Log.
-        log("message received :: {0}".replace("{0}", e.data));
+        // log("message received :: {0}".replace("{0}", e.data));
 
         // Get event info.
         ei = JSON.parse(e.data);

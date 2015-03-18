@@ -16,13 +16,8 @@
             return;
         }
 
-        // Parse event data.
-        MOD.parseStateChangeHistory(data.simulationStateHistory);
-
         // Cache new cv terms.
-        if (data.cvTerms) {
-            _.each(data.cvTerms, MOD.cv.insertTerm);
-        }
+        _.each(data.cvTerms, MOD.cv.insertTerm);
 
         // Remove dead simulations.
         data.dead = dead = _.find(MOD.state.simulationList, function (s) {
@@ -40,26 +35,20 @@
         MOD.state.simulationList.push(data.simulation);
         MOD.state.simulationStateHistory[data.simulation.uid] = data.simulationStateHistory;
 
-        // Parse simulation.
+        // Parse event data.
+        MOD.parseStateChangeHistory(data.simulationStateHistory);
         MOD.parseSimulation(data.simulation);
 
-        // Update simulations.
+        // Update filtered simulations.
         MOD.setFilteredSimulationList();
 
         // Update filters.
-        if (data.cvTerms) {
-            _.each(data.cvTerms, function (cvTerm) {
-                var filter;
-
-                filter = _.find(MOD.state.filters, function (filter) {
-                    return filter.cvType === cvTerm.typeof;
-                });
-                if (filter) {
-                    MOD.updateFilterState(filter);
-                    MOD.events.trigger("ui:filter:refresh", filter);
-                }
-            });
-        }
+        _.each(MOD.state.filters, function (filter) {
+            if (_.indexOf(filter.cvTerms.active, data.simulation[filter.key]) === -1) {
+                filter.cvTerms.active.push(data.simulation[filter.key]);
+                MOD.events.trigger("ui:filter:refresh", filter);
+            }
+        });
 
         // Update paging.
         MOD.setPagingState(MOD.state.paging.current);
