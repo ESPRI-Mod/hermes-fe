@@ -56,20 +56,20 @@
 
             header: "<tr class='bg-primary'>\n\
                         <th title='Activity'>Activity</th>\n\
-                        <th title='Name' class='col-md-2'>Name</th>\n\
+                        <th title='Name' class=''>Name</th>\n\
                         <th title='Jobs' class='text-center'>Jobs</th>\n\
                         <th title='Node - Machine' class='text-center'>Node - Machine</th>\n\
                         <th title='Login' class='text-center'>Login</th>\n\
                         <th title='Tag / Model' class='text-center'>Tag / Model</th>\n\
                         <th title='Space' class='text-center'>Space</th>\n\
-                        <th title='Experiment' class='col-md-2'>Experiment</th>\n\
+                        <th title='Experiment' class=''>Experiment</th>\n\
                         <th title='Start' class='text-center'>Start</th>\n\
                         <th title='End' class='text-center'>End</th>\n\
-                        <th title='monitoring'></th>\n\
-                        <th class='interMonitoring' title='Open inter-monitoring menu' data-toggle='context' data-target='#imContextMenu'>\n\
-                          <span class='glyphicon glyphicon-random'></span>\n\
-                        </th>\n\
-                    </tr>",
+                        <th title='monitoring' class='text-center'></th>\n\
+                        <th class='interMonitoring text-center' title='Open inter-monitoring menu' data-toggle='context' data-target='#imContextMenu'>\n\
+                          <tspan class='glyphicon glyphicon-random'></span>\n\
+                        </th>\tn\
+                    </ttr>",
 
             row: "<td class='activity text-uppercase' title='<%= activity %>'><%= activity %></td>\n\
                   <td class='name' title='<%= name %>'><%= name %></td>\n\
@@ -81,8 +81,8 @@
                   <td class='experiment' title='<%= ext.experiment %>'><%= ext.experiment %></td>\n\
                   <td class='executionStartDate text-center' title='<%= executionStartDate %>'><%= executionStartDate.substring(0, 10) %></td>\n\
                   <td class='executionEndDate text-center' title='<%= executionEndDate %>'><%= executionEndDate.substring(0, 10) %></td>\n\
-                  <td class='monitoring' title='Open monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\
-                  <td class='interMonitoring' title='Select for inter-monitoring'><input type='checkbox'></input></td>"
+                  <td class='monitoring text-center' title='Open monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\
+                  <td class='interMonitoring text-center' title='Select for inter-monitoring'><input type='checkbox'></input></td>"
         },
 
         imInput : "<input type='hidden' id=<%= key %> name=<%= key %> value=<%= value %>></ input>",

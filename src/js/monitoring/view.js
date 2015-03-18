@@ -5,6 +5,8 @@
 
     // Main module level view.
     MOD.views.MainView = Backbone.View.extend({
+        className: 'table-responsive',
+        
         // Backbone: view renderer.
         render : function () {
             APP.utils.render([

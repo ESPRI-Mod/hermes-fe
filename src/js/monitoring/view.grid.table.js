@@ -6,7 +6,7 @@
     // View over the grid table.
     MOD.views.GridTableView = Backbone.View.extend({
         // Backbone: view CSS class.
-        className : "table table-hover table-bordered monitoring-table",
+        className : "table table-hover table-bordered table-condensed monitoring-table",
 
         // Backbone: view DOM element type.
         tagName : "table",
