@@ -4,39 +4,51 @@
     "use strict";
 
     // New simulation event handler.
-    // @eventData      Event data received from server.
-    MOD.events.on("ws:newSimulation", function (eventData) {
-        var simulation;
+    // @data      Event data received from server.
+    MOD.events.on("ws:newSimulation", function (data) {
+        var simulation, dead;
 
         // Escape if event already received.
         simulation = _.find(MOD.state.simulationList, function (s) {
-            return s.uid === eventData.simulation.uid;
+            return s.uid === data.simulation.uid;
         });
         if (simulation) {
             return;
         }
 
         // Parse event data.
-        MOD.parseStateChangeHistory(eventData.simulationStateHistory);
+        MOD.parseStateChangeHistory(data.simulationStateHistory);
 
         // Cache new cv terms.
-        if (eventData.cvTerms) {
-            _.each(eventData.cvTerms, MOD.cv.insertTerm);
+        if (data.cvTerms) {
+            _.each(data.cvTerms, MOD.cv.insertTerm);
+        }
+
+        // Remove dead simulations.
+        data.dead = dead = _.find(MOD.state.simulationList, function (s) {
+            return s.hashid === data.simulation.hashid;
+        });
+        if (dead) {
+            MOD.state.simulationList = _.without(MOD.state.simulationList, dead);
+            MOD.state.simulationListFiltered = _.without(MOD.state.simulationListFiltered, dead);
+            if (_.has(MOD.state.simulationStateHistory, dead.uid)) {
+                delete MOD.state.simulationStateHistory[dead.uid];
+            }
         }
 
         // Update module state.
-        MOD.state.simulationList.push(eventData.simulation);
-        MOD.state.simulationStateHistory[eventData.simulation.uid] = eventData.simulationStateHistory;
+        MOD.state.simulationList.push(data.simulation);
+        MOD.state.simulationStateHistory[data.simulation.uid] = data.simulationStateHistory;
 
         // Parse simulation.
-        MOD.parseSimulation(eventData.simulation);
+        MOD.parseSimulation(data.simulation);
 
         // Update simulations.
         MOD.setFilteredSimulationList();
 
         // Update filters.
-        if (eventData.cvTerms) {
-            _.each(eventData.cvTerms, function (cvTerm) {
+        if (data.cvTerms) {
+            _.each(data.cvTerms, function (cvTerm) {
                 var filter;
 
                 filter = _.find(MOD.state.filters, function (filter) {
@@ -54,7 +66,7 @@
 
         // Fire events.
         MOD.triggerSimulationFilterEvent();
-        MOD.events.trigger("state:newSimulation", eventData);
+        MOD.events.trigger("state:newSimulation", data);
     });
 
 }(

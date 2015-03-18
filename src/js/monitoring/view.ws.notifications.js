@@ -44,8 +44,11 @@
             var text;
 
             this._setClassName(ei.simulation.executionState);
-
-            text = "NEW SIMULATION @ {0} :: {1} is {2}";
+            if (ei.dead) {
+                text = "RERUN SIMULATION @ {0} :: {1} is {2}";
+            } else {
+                text = "NEW SIMULATION @ {0} :: {1} is {2}";
+            }
             text = text.replace("{0}", ei.eventTimestamp.slice(0, 19));
             text = text.replace("{1}", ei.simulation.name);
             text = text.replace("{2}", ei.simulation.executionState.toUpperCase());
