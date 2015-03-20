@@ -19,7 +19,7 @@
         }
 
         // Parse event data.
-        MOD.parseStateChangeHistory(data.simulationStateHistory);
+        _.each(data.simulationStateHistory, MOD.parseStateChange);
 
         // Update module state.
         MOD.state.simulationStateHistory[data.simulationUID] = data.simulationStateHistory;
@@ -34,7 +34,7 @@
             s: simulation,
             statePrevious: simulationState,
         };
-        MOD.log("state:simulationStatusUpdate: " + simulation.name + "::" + eventData.state);
+        MOD.log("state:simulationStatusUpdate: " + simulation.name + "::" + simulation.ext.state.description);
         MOD.events.trigger("state:simulationStatusUpdate", eventData);
     });
 

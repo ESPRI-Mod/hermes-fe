@@ -4,40 +4,40 @@
     "use strict";
 
     // Parses a simulation status change instance in readiness for processing.
-    MOD.parseStateChange = function (stateChange) {
-        stateChange.description = stateChange.state;
-        stateChange.timestamp = moment(stateChange.timestamp);
-        if (stateChange.expectedTransitionDelay) {
-            stateChange.expectedCompletionTimestamp =
-                stateChange.timestamp.add(stateChange.expectedTransitionDelay, 'seconds');
+    MOD.parseStateChange = function (sc) {
+        sc.description = sc.state;
+        sc.timestamp = moment(sc.timestamp);
+        sc.timestampMS = sc.timestamp.valueOf();
+        if (sc.expectedTransitionDelay) {
+            sc.expectedCompletionTimestamp = sc.timestamp.add(sc.expectedTransitionDelay, 'seconds');
         } else {
-            stateChange.expectedCompletionTimestamp = undefined;
+            sc.expectedCompletionTimestamp = undefined;
         }
-    };
-
-    // Parses a collection of simulation status change instances.
-    MOD.parseStateChangeHistory = function (stateChangeHistory) {
-        _.each(stateChangeHistory, MOD.parseStateChange);
     };
 
     // Parses simulation state history to detect job errors.
     MOD.parseSimulationStateHistory = function (simulation) {
         // Reset extension fields.
+        simulation.executionState = undefined;
         simulation.ext.jobCount = "--";
         simulation.ext.jobStateHistory = [];
         simulation.ext.hasJobCompletionWarning = false;
         simulation.ext.stateHistory = [];
+        simulation.ext.state = undefined;
 
         // Set histories.
         if (_.has(MOD.state.simulationStateHistory, simulation.uid)) {
-            simulation.ext.stateHistory = _.filter(MOD.state.simulationStateHistory[simulation.uid], function (stateChange) {
-                return stateChange.jobUID === null;
+            simulation.ext.stateHistory = _.filter(MOD.state.simulationStateHistory[simulation.uid], function (sc) {
+                return sc.jobUID === null;
             });
-            simulation.ext.stateHistory = _.sortBy(simulation.ext.stateHistory, 'timestamp');
-            simulation.ext.jobStateHistory = _.filter(MOD.state.simulationStateHistory[simulation.uid], function (stateChange) {
-                return stateChange.jobUID !== null;
+            simulation.ext.jobStateHistory = _.filter(MOD.state.simulationStateHistory[simulation.uid], function (sc) {
+                return sc.jobUID !== null;
             });
         }
+
+        // Sort histories.
+        simulation.ext.stateHistory = _.sortBy(simulation.ext.stateHistory, 'timestampMS');
+        simulation.ext.jobStateHistory = _.sortBy(simulation.ext.jobStateHistory, 'timestampMS');
 
         // Set current state.
         if (simulation.ext.stateHistory.length) {
@@ -45,9 +45,11 @@
             simulation.ext.state = _.last(simulation.ext.stateHistory);
             simulation.executionState = simulation.ext.state.description;
             if (simulation.executionEndDate === "" &&
-                    _.indexOf(['complete', 'error'], simulation.executionState) > -1) {
+                _.indexOf(['complete', 'error'], simulation.executionState) > -1) {
                 simulation.executionEndDate = simulation.ext.state.timestamp.format("YYYY-MM-DD");
             }
+        } else {
+            simulation.executionState = 'complete';
         }
 
         // Set job count.
@@ -57,18 +59,17 @@
 
         // Set job warning.
         _.each(simulation.ext.jobStateHistory, function (stateChange) {
-            var complete;
+            var jobStates;
 
             if (simulation.ext.hasJobCompletionWarning === false &&
-                    stateChange.expectedCompletionTimestamp &&
-                    stateChange.state === 'running') {
-                complete = _.filter(simulation.ext.jobStateHistory, function (sc) {
+                stateChange.expectedCompletionTimestamp &&
+                stateChange.state === 'running') {
+                jobStates = _.filter(simulation.ext.jobStateHistory, function (sc) {
                     return sc.jobUID === stateChange.jobUID &&
-                           sc.state !== 'running' &&
-                           sc.state !== 'complete';
+                           sc !== stateChange;
                 });
-                if (!complete.length &&
-                        moment().isAfter(stateChange.expectedCompletionTimestamp)) {
+                if (jobStates.length === 0 &&
+                    moment().isAfter(stateChange.expectedCompletionTimestamp)) {
                     simulation.ext.hasJobCompletionWarning = true;
                 }
             }

@@ -36,7 +36,7 @@
         MOD.state.simulationStateHistory[data.simulation.uid] = data.simulationStateHistory;
 
         // Parse event data.
-        MOD.parseStateChangeHistory(data.simulationStateHistory);
+        _.each(data.simulationStateHistory, MOD.parseStateChange);
         MOD.parseSimulation(data.simulation);
 
         // Update filtered simulations.

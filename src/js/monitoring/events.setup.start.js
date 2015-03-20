@@ -6,24 +6,22 @@
     // Setup event handler.
     // @data    Setup data loaded from remote server.
     MOD.events.on("setup:start", function (data) {
-        // Parse setup data.
-        MOD.parseStateChangeHistory(data.simulationStateHistory);
-
         // Cache setup data.
         MOD.state.simulationList = data.simulationList;
         MOD.state.simulationStateHistory = _.groupBy(data.simulationStateHistory, "simulationUID");
         MOD.state.cvTerms = data.cvTerms;
 
-        // Parse simulations.
+        // Parse data.
+        _.each(data.simulationStateHistory, MOD.parseStateChange);
         _.each(data.simulationList, MOD.parseSimulation);
 
-        // Initialize filters.
+        // Set filters.
         _.each(MOD.state.filters, MOD.initFilterState);
 
         // Set filtered simulations.
         MOD.setFilteredSimulationList();
 
-        // Initialize active filter values.
+        // Set active filter values.
         _.each(MOD.state.filters, MOD.setActiveFilterValues);
 
         // Set paging.

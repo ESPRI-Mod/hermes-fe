@@ -56,8 +56,12 @@
 
             // Update row fields.
             $s.find(".executionEndDate").text(eventData.s.executionEndDate);
-            console.log("SSS " + eventData.s.ext.jobCount);
             $s.find(".jobCount").text(eventData.s.ext.jobCount);
+            if (eventData.s.ext.hasJobCompletionWarning) {
+                $s.find(".jobCount").addClass('bg-danger');
+            } else {
+                $s.find(".jobCount").removeClass('bg-danger');
+            }
         },
 
         // Simulation list filtered event handler.
