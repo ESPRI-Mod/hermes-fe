@@ -11,7 +11,7 @@
                     <span class='monitoring-state-complete'><small><strong>&nbsp;COMPLETE&nbsp;</strong></small></span>\n\
                     <span class='monitoring-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small></span>\n\
                   <span class='pull-right'>\n\
-                    <small><strong><%- APP.title %> <%- MOD.title %> v0.2.0 © <%- year %> IPSL</strong></small>\n\
+                    <small><strong><a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- MOD.version %> © <%- year %> IPSL</strong></small>\n\
                   </span>\n\
                 </div>",
 
