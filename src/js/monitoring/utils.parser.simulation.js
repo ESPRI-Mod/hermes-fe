@@ -18,7 +18,6 @@
                 modelSynonyms: [],
                 state: undefined,
                 stateHistory: [],
-                statePrevious: undefined,
                 threddsServerUrl: undefined,
             }
         });

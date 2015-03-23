@@ -41,8 +41,14 @@
 
         // Set current state.
         if (simulation.ext.stateHistory.length) {
-            simulation.ext.statePrevious = simulation.ext.state;
-            simulation.ext.state = _.last(simulation.ext.stateHistory);
+            // ... complete / error states;
+            simulation.ext.state = _.find(simulation.ext.stateHistory, function (sc) {
+                return _.indexOf(['complete', 'error'], sc.description) > -1;
+            });
+            // ... queued / running states;
+            if (_.isUndefined(simulation.ext.state)) {
+                simulation.ext.state = _.last(simulation.ext.stateHistory);
+            }
             simulation.executionState = simulation.ext.state.description;
             if (simulation.executionEndDate === "" &&
                 _.indexOf(['complete', 'error'], simulation.executionState) > -1) {

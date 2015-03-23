@@ -7,7 +7,7 @@
     // @data      Event data received from server.
     MOD.events.on("ws:simulationStateChange", function (data) {
         var simulation,
-            simulationState,
+            previousSimulationState,
             eventData;
 
         // Escape if simulation not found.
@@ -25,14 +25,14 @@
         MOD.state.simulationStateHistory[data.simulationUID] = data.simulationStateHistory;
 
         // Parse simulation state history.
-        simulationState = simulation.executionState;
+        previousSimulationState = simulation.executionState;
         MOD.parseSimulationStateHistory(simulation);
 
         // Fire simulation state update event.
         eventData = {
             eventTimestamp: data.eventTimestamp,
             s: simulation,
-            statePrevious: simulationState,
+            statePrevious: previousSimulationState,
         };
         MOD.log("state:simulationStatusUpdate: " + simulation.name + "::" + simulation.ext.state.description);
         MOD.events.trigger("state:simulationStatusUpdate", eventData);
