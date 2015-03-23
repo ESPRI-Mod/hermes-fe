@@ -34,11 +34,11 @@
         _setSimulationStatInfo: function () {
             var msg = "";
 
-            msg += "Displaying ";
-            msg += MOD.state.simulationListFiltered.length;
-            msg += " of ";
+            msg += "Total simulation count = ";
             msg += MOD.state.simulationList.length;
-            msg += " simulations.";
+            msg += ". Filtered simulation count = ";
+            msg += MOD.state.simulationListFiltered.length;
+            msg += ".";
             this.$el.text(msg);
         }
     });
