@@ -68,7 +68,6 @@
 
             // Update state & fire event.
             if (term) {
-                this.options.cvTerms.previous = this.options.cvTerms.current;
                 this.options.cvTerms.current = term;
                 MOD.events.trigger('ui:applyFilter');
             }

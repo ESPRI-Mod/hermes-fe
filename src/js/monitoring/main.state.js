@@ -73,8 +73,7 @@
         filter.cvTerms = {
             active: [],
             all: [],
-            current: undefined,
-            previous: undefined
+            current: undefined
         };
         if (!_.has(filter, "supportsByAll")) {
             filter.supportsByAll = true;

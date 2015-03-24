@@ -54,7 +54,6 @@
 
     // Updates filter state.
     MOD.updateFilterState = function (filter) {
-        // Set all terms.
         filter.cvTerms.all = MOD.cv.getTermset(filter.cvType);
         filter.cvTerms.all = _.sortBy(filter.cvTerms.all, function (cvTerm) {
             return cvTerm.name.toLowerCase();
@@ -62,7 +61,23 @@
         if (filter.supportsByAll) {
             filter.cvTerms.all.unshift(MOD.cv.getGlobalTerm(filter.cvType));
         }
-        MOD.setActiveFilterValues(filter);
+    };
+
+    // Delete simulations that have been rerun.
+    MOD.deleteDeadSimulations = function (hashid) {
+        var dead
+        dead = _.find(MOD.state.simulationList, function (s) {
+            return s.hashid === hashid;
+        });
+        if (dead) {
+            MOD.state.simulationList = _.without(MOD.state.simulationList, dead);
+            MOD.state.simulationListFiltered = _.without(MOD.state.simulationListFiltered, dead);
+            if (_.has(MOD.state.simulationStateHistory, dead.uid)) {
+                delete MOD.state.simulationStateHistory[dead.uid];
+            }
+        }
+
+        return dead;
     };
 
     // Sets the paging state.

@@ -6,7 +6,7 @@
     // New simulation event handler.
     // @data      Event data received from server.
     MOD.events.on("ws:newSimulation", function (data) {
-        var simulation, dead;
+        var simulation;
 
         // Escape if event already received.
         simulation = _.find(MOD.state.simulationList, function (s) {
@@ -16,22 +16,10 @@
             return;
         }
 
-        // Cache new cv terms.
-        _.each(data.cvTerms, MOD.cv.insertTerm);
-
-        // Remove dead simulations.
-        data.dead = dead = _.find(MOD.state.simulationList, function (s) {
-            return s.hashid === data.simulation.hashid;
-        });
-        if (dead) {
-            MOD.state.simulationList = _.without(MOD.state.simulationList, dead);
-            MOD.state.simulationListFiltered = _.without(MOD.state.simulationListFiltered, dead);
-            if (_.has(MOD.state.simulationStateHistory, dead.uid)) {
-                delete MOD.state.simulationStateHistory[dead.uid];
-            }
-        }
-
         // Update module state.
+        MOD.state.cvTerms = MOD.state.cvTerms.concat(data.cvTerms);
+        _.each(MOD.state.filters, MOD.updateFilterState);
+        data.dead = MOD.deleteDeadSimulations(data.simulation.hashid);
         MOD.state.simulationList.push(data.simulation);
         MOD.state.simulationStateHistory[data.simulation.uid] = data.simulationStateHistory;
 
