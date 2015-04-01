@@ -6,12 +6,12 @@
     // Main module level view.
     MOD.views.MainView = Backbone.View.extend({
         className: 'table-responsive',
-        
+
         // Backbone: view renderer.
         render : function () {
             APP.utils.render([
-                MOD.views.FilterPanelView,
                 MOD.views.WebSocketNotifications,
+                MOD.views.FilterPanelView,
                 MOD.views.GridHeaderView,
                 MOD.views.GridTableView,
                 MOD.views.InterMonitoringContextMenuView,
@@ -24,4 +24,8 @@
         }
     });
 
-}(this.APP, this.APP.modules.monitoring, this.Backbone));
+}(
+    this.APP,
+    this.APP.modules.monitoring,
+    this.Backbone
+));
