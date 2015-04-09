@@ -14,10 +14,10 @@
         // Set of email related constants.
         email : {
             // Contact email.
-            contact : "ipsl-prodiguer-contact@ipsl.jussieu.fr",
+            contact : "platform-users@ipsl.jussieu.fr",
 
             // Support email.
-            support : "ipsl-prodiguer-support@ipsl.jussieu.fr",
+            support : "platform-users@ipsl.jussieu.fr",
 
             // Default email subject.
             defaultSubject: "{0} {1} :: please enter subject here"

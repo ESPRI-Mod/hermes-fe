@@ -27,15 +27,15 @@
 
             // Monitoring endpoints.
             M: {
-                'ccrt': 'https://esgf.extra.cea.fr/thredds/fileServer/WORK',
-                'tgcc': 'https://esgf.extra.cea.fr/thredds/fileServer/WORK'
+                'ccrt': 'https://esgf.extra.cea.fr/thredds/fileServer/work',
+                'tgcc': 'https://esgf.extra.cea.fr/thredds/fileServer/work'
             },
 
             // Inter-monitoring endpoints.
             IM: {
                 'httpPostTarget': 'http://webservices.ipsl.jussieu.fr/monitoring_fromprodiguer/index.php',
-                'ccrt': 'http://esgf.extra.cea.fr/thredds/dodsC/WORK',
-                'tgcc': 'http://esgf.extra.cea.fr/thredds/dodsC/WORK'
+                'ccrt': 'http://esgf.extra.cea.fr/thredds/dodsC/work',
+                'tgcc': 'http://esgf.extra.cea.fr/thredds/dodsC/work'
             }
         },
 
