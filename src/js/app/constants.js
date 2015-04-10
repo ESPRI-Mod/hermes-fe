@@ -13,21 +13,14 @@
 
         // Set of email related constants.
         email : {
-            // Contact email.
-            contact : "platform-users@ipsl.jussieu.fr",
-
             // Support email.
             support : "platform-users@ipsl.jussieu.fr",
 
             // Default email subject.
-            defaultSubject: "{0} {1} :: please enter subject here"
-                            .replace("{0}", APP.institute.code.toUpperCase())
-                            .replace("{1}", APP.title.toUpperCase()),
+            defaultSubject: "IPSL PLATFORM SUPPORT",
 
             // Default email message.
-            defaultMessage: "Dear {0} {1} support team,"
-                            .replace("{0}", APP.institute.code.toUpperCase())
-                            .replace("{1}", APP.title.toUpperCase()),
+            defaultMessage: "",
         },
 
         // Application modes.

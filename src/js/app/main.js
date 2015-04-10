@@ -31,7 +31,7 @@ window.$ = window.$jq = jQuery.noConflict();
         title: "Prodiguer",
 
         // App version.
-        version: "0.1.0",
+        version : "0.3.0",
 
         // App copyright statement.
         copyrightYear: new Date().getFullYear(),

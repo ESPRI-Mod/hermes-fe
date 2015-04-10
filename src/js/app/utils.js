@@ -162,11 +162,6 @@
             APP.utils.openEmail(APP.constants.email.support);
         },
 
-        // Opens contact email.
-        openContactEmail: function() {
-            APP.utils.openEmail(APP.constants.email.contact);
-        },
-
         // Opens institute home page.
         openInstituteHomePage: function() {
             APP.utils.openURL(APP.institute.homePage, true);
