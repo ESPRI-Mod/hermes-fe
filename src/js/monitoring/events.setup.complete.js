@@ -1,4 +1,4 @@
-(function (MOD, $) {
+(function (APP, MOD, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -12,11 +12,13 @@
         // Update DOM.
         $(".app-content").append(MOD.view.$el);
 
-        // Fire event.
+        // Fire events.
         MOD.events.trigger("ui:initialized");
+        APP.events.trigger("module:initialized", MOD);
     });
 
 }(
+    this.APP,
     this.APP.modules.monitoring,
     this.$jq
 ));

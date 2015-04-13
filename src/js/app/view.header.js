@@ -1,25 +1,22 @@
-// --------------------------------------------------------
-// app/view.header.js
-// Application header view.
-// --------------------------------------------------------
-(function(APP, $, _, Backbone) {
+(function (APP, TEMPLATES, _, Backbone) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Module helper vars.
-    var templates = APP.templates.header;
-
     // View over application logo.
     var LogoView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className: "pull-left",
 
+        // Backbone: view DOM tag name.
         tagName: "img",
 
+        // Backbone: view event handlers.
         events: {
             "click": APP.utils.openInstituteHomePage
         },
 
+        // Backbone: view renderer.
         render : function () {
             this.$el.attr("lang", "EN");
             this.$el.attr("title", APP.institute.longName);
@@ -32,12 +29,15 @@
 
     // View over application title.
     var TitleView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className: "pull-left",
 
+        // Backbone: view DOM tag name.
         tagName: "h1",
 
+        // Backbone: view renderer.
         render : function () {
-            APP.utils.renderHTML(templates.title, APP, this);
+            APP.utils.renderHTML(TEMPLATES.header.title, APP, this);
 
             return this;
         }
@@ -45,39 +45,49 @@
 
     // View over application menu item label.
     var MenuItemView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className: "btn btn-primary",
+
+        // Backbone: view DOM tag name.
         tagName: "label",
 
+        // Backbone: view event handlers.
+        events: {
+            "change": function () {
+                APP.events.trigger("module:activating", this._module);
+            }
+        },
+
+        // Backbone: view initializer.
         initialize: function () {
             this._module = this.options.model;
         },
 
+        // Backbone: view renderer.
         render: function () {
-            APP.utils.renderHTML(templates.menuItem, this._module, this);
+            APP.utils.renderHTML(TEMPLATES.header.menuItem, this._module, this);
             if (this._module === APP.state.module) {
                 this.$el.button('toggle');
             }
 
             return this;
-        },
-
-        events: {
-            "change": function () {
-                APP.events.trigger("module:loading", this._module);
-            }
         }
     });
 
     // View over support button.
     var SupportButtonView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className: "btn btn-success btn-app-support",
 
+        // Backbone: view DOM tag name.
         tagName: 'button',
 
+        // Backbone: view event handlers.
         events: {
             "click": APP.utils.openSupportEmail
         },
 
+        // Backbone: view renderer.
         render: function () {
             this.$el.attr("type", "button");
             this.$el.text("Support");
@@ -88,21 +98,14 @@
 
     // View over application menu.
     var MenuView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className: "pull-right btn-group",
 
-        initialize: function () {
-            APP.events.on("app:ready", this._renderMenu, this);
-        },
-
+        // Backbone: view renderer.
         render: function () {
-            this.$el.attr("data-toggle", "buttons");
-
-            return this;
-        },
-
-        _renderMenu: function () {
             var activeModules;
 
+            this.$el.attr("data-toggle", "buttons");
             activeModules = APP.state.getActiveModules();
             if (activeModules.length > 1) {
                 _.each(activeModules, function (module) {
@@ -117,23 +120,26 @@
         }
     });
 
-    var View = Backbone.View.extend({
+    // Header view.
+    APP.views.HeaderView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className: "container app-header",
 
+        // Backbone: view renderer.
         render : function () {
-            var subViews = [
+            APP.utils.render([
                 LogoView,
                 TitleView,
                 MenuView
-            ];
-
-            APP.utils.render(subViews, {}, this)
+            ], {}, this);
 
             return this;
         }
     });
 
-    // Extend app views.
-    APP.views.HeaderView = View;
-
-}(this.APP, this.$jq, this._, this.Backbone));
+}(
+    this.APP,
+    this.APP.templates,
+    this._,
+    this.Backbone
+));

@@ -77,8 +77,8 @@
         buffer = [];
     });
 
-    // UI ready event handler.
-    MOD.events.on("module:ready", function () {
+    // Module initialisation event handler.
+    MOD.events.on("module:initialization", function () {
         var ep;
 
         // Create socket.

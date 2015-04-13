@@ -1,19 +1,10 @@
-// --------------------------------------------------------
-// app/init.js
-// Application initializer.
-// --------------------------------------------------------
-(function (APP) {
+(function (APP, document, $, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Document ready event handler.
-    $(document).ready(function() {
-        var mainView, 
-            moduleName, 
-            moduleAliases = {
-                monitor: "monitoring"
-            };
+    var initApp = function () {
+        var mainView;
 
         // Compile templates.
         APP.utils.compileTemplates(APP.templates);
@@ -21,20 +12,22 @@
             APP.utils.compileTemplates(mod.templates);
         });
 
-        // Set initial module.
-        moduleName = APP.utils.getURLParam("module", APP.constants.defaultModule);
-        APP.state.module = APP.getModule(moduleName);
-
         // Render main view.
         mainView = new APP.views.MainView();
         mainView.render();
 
-        // Fire events.
-        APP.events.trigger("app:ready");
-        APP.events.trigger("module:loading", APP.state.module);
-
-        // Update DOM.
+        // Initialise DOM.
         $("body").append(mainView.$el);
-    });
 
-}(this.APP));
+        // Activate default module.
+        APP.events.trigger("module:activating", APP.getModule(APP.constants.defaultModule));
+    };
+
+    // Document ready event handler.
+    $(document).ready(initApp);
+}(
+    this.APP,
+    this.document,
+    this.$,
+    this._
+));

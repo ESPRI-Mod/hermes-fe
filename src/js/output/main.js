@@ -26,7 +26,7 @@
     });
 
     // Module ready event handler.
-    MOD.events.on("module:ready", function () {
+    MOD.events.on("module:init", function () {
         // TODO Load setup data & fire event.
         MOD.events.trigger("state:setupDataLoaded", {});
     });

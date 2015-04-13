@@ -120,9 +120,9 @@ window.$ = window.$jq = jQuery.noConflict();
         }
     };
 
-    // Module loading event handler.
-    // @m   New module being loaded.
-    APP.events.on("module:loading", function (mod) {
+    // Module activating event handler.
+    // @mod   New module being activated.
+    APP.events.on("module:activating", function (mod) {
         var current = APP.state.module;
 
         // Process current module.
@@ -144,15 +144,13 @@ window.$ = window.$jq = jQuery.noConflict();
         // Cache new module.
         APP.state.module = mod;
 
-        // Either build module view or redisplay.
+        // Either initialise module or redisplay.
         if (!mod.view) {
-            mod.events.trigger("module:ready");
+            APP.events.trigger("module:initializing", mod);
+            mod.events.trigger("module:initialization");
         } else {
             mod.view.$el.show();
         }
-
-        // Fire event.
-        APP.events.trigger("module:loaded", mod);
     });
 
 }(this, this._, this.Backbone));
