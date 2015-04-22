@@ -8,7 +8,7 @@
     MOD.events.on("setup:start", function (data) {
         // Parse event data.
         _.each(data.simulationList, function (simulation) {
-            MOD.parseSimulation(simulation, data.stateHistory, data.jobHistory);
+            MOD.parseSimulation(simulation, data.jobHistory);
         });
 
         // Initialise state.

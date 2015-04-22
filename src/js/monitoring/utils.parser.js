@@ -32,8 +32,12 @@
 
         // Parse jobs.
         _.each(simulation.ext.jobs, function (job) {
-            job.executionStartDate = moment(job.executionStartDate);
-            job.expectedExecutionEndDate = moment(job.expectedExecutionEndDate);
+            if (job.executionStartDate) {
+                job.executionStartDate = moment(job.executionStartDate);
+            }
+            if (job.expectedExecutionEndDate) {
+                job.expectedExecutionEndDate = moment(job.expectedExecutionEndDate);
+            }
             if (job.executionEndDate) {
                 job.executionEndDate = moment(job.executionEndDate);
                 job.isLate = job.wasLate;
