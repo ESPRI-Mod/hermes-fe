@@ -32,9 +32,9 @@
 
         // Backbone: view initializer.
         initialize : function () {
-            MOD.events.on("state:newSimulation", this._onNewSimulation, this);
             MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
             MOD.events.on("state:simulationListNull", this._onSimulationListNull, this);
+            MOD.events.on("state:simulationStart", this._onSimulationStart, this);
             MOD.events.on("ui:pagination", this._onPagination, this);
         },
 
@@ -153,9 +153,9 @@
             this._setText();
         },
 
-        // New simulation event handler.
+        // Simulation start event handler.
         // @ei      Event information.
-        _onNewSimulation: function () {
+        _onSimulationStart: function () {
             this._onSimulationListFiltered();
         }
     });

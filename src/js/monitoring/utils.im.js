@@ -10,11 +10,11 @@
         var url = [];
 
         // Escape if simulation is not associated with a THREDDS server.
-        if (_.isUndefined(simulation.ext.threddsServerUrl)) {
+        if (_.isUndefined(simulation.ext.mURL)) {
             return;
         }
 
-        url.push(simulation.ext.threddsServerUrl);
+        url.push(simulation.ext.mURL);
         url.push(simulation.computeNodeLogin);
         if (simulation.ext.modelSynonyms.length) {
             url.push(simulation.ext.modelSynonyms[0].toUpperCase());
@@ -33,12 +33,12 @@
     getInterMonitorURL = function (simulation) {
         var url = [];
 
-        // Escape if simulation is not associated with a DODS server.
-        if (_.isUndefined(simulation.ext.dodsServerUrl)) {
+        // Escape if simulation is not associated with an inter-monitoring server.
+        if (_.isUndefined(simulation.ext.imURL)) {
             return;
         }
 
-        url.push(simulation.ext.dodsServerUrl);
+        url.push(simulation.ext.imURL);
         url.push(simulation.computeNodeLogin);
         if (simulation.ext.modelSynonyms.length) {
             url.push(simulation.ext.modelSynonyms[0].toUpperCase());

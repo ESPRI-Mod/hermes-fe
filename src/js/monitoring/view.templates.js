@@ -73,7 +73,7 @@
 
             row: "<td class='activity text-uppercase' title='<%= activity %>'><%= activity %></td>\n\
                   <td class='name' title='<%= name %>'><%= name %></td>\n\
-                  <td class='jobCount text-center <%= ext.hasJobCompletionWarning ? 'bg-danger' : '' %>' title='<%= ext.jobCount %>'><%= ext.jobCount %></td>\n\
+                  <td class='jobCount text-center <%= ext.hasLateJob ? 'bg-danger' : '' %>' title='<%= ext.jobCount %>'><%= ext.jobCount %></td>\n\
                   <td class='computeNodeMachine text-uppercase text-center' title='<%= computeNodeMachine %>'><%= computeNodeMachine %></td>\n\
                   <td class='computeNodeLogin text-center' title='<%= computeNodeLogin %>'><%= computeNodeLogin %></td>\n\
                   <td class='model text-uppercase text-center' title='<%= model %>'><%= model %></td>\n\

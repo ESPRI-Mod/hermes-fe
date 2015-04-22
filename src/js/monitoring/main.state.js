@@ -48,14 +48,14 @@
             },
         ],
 
+        // Set of simulations.
+        simulationSet: {},
+
         // List of simulations.
         simulationList: [],
 
         // List of filtered simulations.
         simulationListFiltered: [],
-
-        // Hostory of simulation state changes.
-        simulationStateHistory: {},
 
         // Paging related state.
         paging: {

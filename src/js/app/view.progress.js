@@ -41,7 +41,7 @@
             // Avoid screen flicker by hiding the progress dialog after 1 second.
             setTimeout(function () {
                 self.$el.modal('hide');
-            }, 1000);
+            }, 500);
         }
     });
 

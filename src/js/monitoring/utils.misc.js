@@ -72,8 +72,8 @@
         if (dead) {
             MOD.state.simulationList = _.without(MOD.state.simulationList, dead);
             MOD.state.simulationListFiltered = _.without(MOD.state.simulationListFiltered, dead);
-            if (_.has(MOD.state.simulationStateHistory, dead.uid)) {
-                delete MOD.state.simulationStateHistory[dead.uid];
+            if (_.has(MOD.state.simulationStateSet, dead.uid)) {
+                delete MOD.state.simulationStateSet[dead.uid];
             }
         }
 
