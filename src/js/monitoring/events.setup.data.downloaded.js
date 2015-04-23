@@ -5,20 +5,20 @@
 
     // Setup event handler.
     // @data    Setup data loaded from remote server.
-    MOD.events.on("setup:start", function (data) {
+    MOD.events.on("setup:dataDownloaded", function (data) {
         // Parse event data.
         _.each(data.simulationList, function (simulation) {
             MOD.parseSimulation(simulation, data.jobHistory);
         });
 
-        // Initialise state.
+        // Initialise module state.
         _.extend(MOD.state, {
             cvTerms: data.cvTerms,
             simulationList: data.simulationList,
             simulationSet: _.indexBy(data.simulationList, "uid")
         });
 
-        // Initialise filter values.
+        // Initialise filter state.
         _.each(MOD.state.filters, MOD.initFilterState);
 
         // Initialise filtered list.

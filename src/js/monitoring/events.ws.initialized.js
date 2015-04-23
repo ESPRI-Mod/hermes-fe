@@ -10,7 +10,7 @@
         // Load setup data & fire event.
         ep = APP.utils.getEndPoint(MOD.urls.SETUP);
         $.getJSON(ep, function (data) {
-            MOD.events.trigger("setup:start", data);
+            MOD.events.trigger("setup:dataDownloaded", data);
         });
     });
 

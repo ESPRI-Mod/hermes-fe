@@ -69,7 +69,7 @@
             // Update state & fire event.
             if (term) {
                 this.options.cvTerms.current = term;
-                MOD.events.trigger('ui:applyFilter');
+                MOD.events.trigger('ui:filter');
             }
         }
     });
