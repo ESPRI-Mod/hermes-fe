@@ -19,8 +19,11 @@
 
         // URL's used across module.
         urls: {
-            // Setup data endpoint.
+            // Monitoring setup data endpoint.
             SETUP: 'monitoring/fe/setup',
+
+            // CV setup data endpoint.
+            CV: 'monitoring/fe/cv',
 
             // Web-socket endpoint.
             WS: 'monitoring/fe/ws',

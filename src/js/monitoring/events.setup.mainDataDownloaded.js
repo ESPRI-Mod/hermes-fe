@@ -4,8 +4,8 @@
     "use strict";
 
     // Setup event handler.
-    // @data    Setup data loaded from remote server.
-    MOD.events.on("setup:dataDownloaded", function (data) {
+    // @data    Main setup data loaded from remote server.
+    MOD.events.on("setup:mainDataDownloaded", function (data) {
         // Parse event data.
         _.each(data.simulationList, function (simulation) {
             MOD.parseSimulation(simulation, data.jobHistory);
@@ -13,7 +13,6 @@
 
         // Initialise module state.
         _.extend(MOD.state, {
-            cvTerms: data.cvTerms,
             simulationList: data.simulationList,
             simulationSet: _.indexBy(data.simulationList, "uid")
         });
