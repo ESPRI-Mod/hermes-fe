@@ -42,6 +42,7 @@
 
         // Filter out keep-alive pongs.
         if (e.data === "pong") {
+            log("PONG PONG PONG @ " + new Date());
             return;
         }
 
