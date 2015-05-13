@@ -4,11 +4,24 @@
     "use strict";
 
     // Closure vars.
-    var setExecutionState,
-        setJobs;
+    var parseExecutionState,
+        parseObsoletions;
+
+    // Parses obsolete simulations.
+    // @hashID  Hash identifier of a simulation being processed.
+    parseObsoletions = function (hashID) {
+        var obsoletions;
+
+        obsoletions = _.filter(_.values(MOD.state.simulationSet), function (simulation){
+            return simulation.hashid === hashID;
+        });
+        _.each(obsoletions, function (simulation) {
+            delete MOD.state.simulationSet[simulation.uid];
+        });
+    };
 
     // Sets simulation's current execution status.
-    setExecutionState = function (simulation) {
+    parseExecutionState = function (simulation) {
         if (simulation.executionEndDate) {
             if (simulation.isError) {
                 simulation.ext.executionState = 'error';
@@ -23,68 +36,34 @@
         simulation.executionState = simulation.ext.executionState;
     };
 
-    // Parses simulation jobs in readiness for processing.
-    setJobs = function (simulation, jobHistory) {
-        // Set jobs.
-        simulation.ext.jobs = _.filter(jobHistory, function (item) {
-            return item.simulationUID === simulation.uid;
-        });
-
-        // Parse jobs.
-        _.each(simulation.ext.jobs, function (job) {
-            if (job.executionStartDate) {
-                job.executionStartDate = moment(job.executionStartDate);
-            }
-            if (job.expectedExecutionEndDate) {
-                job.expectedExecutionEndDate = moment(job.expectedExecutionEndDate);
-            }
-            if (job.executionEndDate) {
-                job.executionEndDate = moment(job.executionEndDate);
-                job.isLate = job.wasLate;
-            } else {
-                simulation.ext.hasRunningJob = true;
-                job.isLate = moment().valueOf() > job.expectedExecutionEndDate.valueOf();
-            }
-        });
-
-        // Set job count.
-        if (simulation.ext.jobs) {
-            simulation.ext.jobCount = simulation.ext.jobs.length;
-        } else {
-            simulation.ext.jobCount = "--";
-        }
-
-        // Set has late job flag.
-        if (_.findWhere(simulation.ext.jobs, { isLate: true })) {
-            simulation.ext.hasLateJob = true;
-        }
-    };
-
     // Parses a simulation in readiness for processing.
     MOD.parseSimulation = function (simulation, jobHistory) {
-        var model, previousSimulations;
+        var model;
 
         // Set extension fields.
         simulation.ext = {
             executionState: undefined,
             experiment: undefined,
             isSelectedForIM: false,
-            jobs: [],
+            jobs: _.filter(jobHistory, function (job) {
+                return job.simulationUID === simulation.uid;
+            }),
             jobCount: 0,
+            jobSet: [],
             hasLateJob: false,
             hasRunningJob: false,
             imURL: undefined,
-            isRestart: false,
+            isRestart: simulation.tryID > 1,
             modelSynonyms: [],
-            mURL: undefined,
+            mURL: undefined
         };
 
-        // Set job / execution state.
-        setJobs(simulation, jobHistory);
-        setExecutionState(simulation);
+        // Parse jobs, execution status, obsolete simulations.
+        MOD.parseSimulationJobs(simulation);
+        parseExecutionState(simulation);
+        parseObsoletions(simulation.hashid);
 
         // Format date fields.
-        // TODO use moment.js
         simulation.executionStartDate =
             (simulation.executionStartDate || "").substring(0, 10);
         simulation.executionEndDate =
@@ -112,18 +91,50 @@
             simulation.ext.imURL = MOD.urls.IM[simulation.computeNode];
         }
 
-        // Set is restart flag.
-        previousSimulations = _.where(MOD.state.simulationList, { hashID: simulation.hashID });
-        if (previousSimulations.length) {
-            simulation.ext.isRestart = true;
-        }
-
         // Update module state.
         MOD.state.simulationSet[simulation.uid] = simulation;
-        _.each(previousSimulations, function (previousSimulation) {
-            delete MOD.state.simulationSet[previousSimulation.uid];
-        });
         MOD.state.simulationList = _.values(MOD.state.simulationSet);
+    };
+
+    // Parses simulation jobs in readiness for processing.
+    MOD.parseSimulationJobs = function (simulation, parseJobs) {
+        // Parse jobs.
+        if (_.isUndefined(parseJobs) || parseJobs === true) {
+            _.each(simulation.ext.jobs, MOD.parseJob);
+        }
+
+        // Set job is running flag.
+        simulation.ext.hasRunningJob = _.isObject(_.find(simulation.ext.jobs, function (job) {
+            return _.isUndefined(job.executionEndDate);
+        }));
+
+        // Set job count.
+        if (simulation.ext.jobs) {
+            simulation.ext.jobCount = simulation.ext.jobs.length;
+        } else {
+            simulation.ext.jobCount = "--";
+        }
+
+        // Set has late job flag.
+        if (_.findWhere(simulation.ext.jobs, { isLate: true })) {
+            simulation.ext.hasLateJob = true;
+        }
+    };
+
+    // Parses a simulation job in readiness for processing.
+    MOD.parseJob = function (job) {
+        if (job.executionStartDate) {
+            job.executionStartDate = moment(job.executionStartDate);
+        }
+        if (job.expectedExecutionEndDate) {
+            job.expectedExecutionEndDate = moment(job.expectedExecutionEndDate);
+        }
+        if (job.executionEndDate) {
+            job.executionEndDate = moment(job.executionEndDate);
+            job.isLate = job.wasLate;
+        } else {
+            job.isLate = moment().valueOf() > job.expectedExecutionEndDate.valueOf();
+        }
     };
 
 }(

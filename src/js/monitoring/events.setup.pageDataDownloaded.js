@@ -4,11 +4,11 @@
     "use strict";
 
     // Setup event handler.
-    // @data    Main setup data loaded from remote server.
-    MOD.events.on("setup:mainDataDownloaded", function (data) {
+    // @data    Page setup data loaded from remote server.
+    MOD.events.on("setup:pageDataDownloaded", function (data) {
         // Parse event data.
         _.each(data.simulationList, function (simulation) {
-            MOD.parseSimulation(simulation, data.jobHistory);
+            MOD.parseSimulation(simulation, data.jobHistory, []);
         });
 
         // Initialise module state.

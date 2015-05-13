@@ -6,19 +6,19 @@
     // Job complete event handler.
     // @data      Event data received from server.
     MOD.events.on("ws:jobComplete", function (data) {
-        MOD.processMonitoringEvent("jobComplete", data);
+        MOD.processJobEvent("jobComplete", data);
     });
 
     // Job error event handler.
     // @data      Event data received from server.
     MOD.events.on("ws:jobError", function (data) {
-        MOD.processMonitoringEvent("jobError", data);
+        MOD.processJobEvent("jobError", data);
     });
 
     // Job start event handler.
     // @data      Event data received from server.
     MOD.events.on("ws:jobStart", function (data) {
-        MOD.processMonitoringEvent("jobStart", data);
+        MOD.processJobEvent("jobStart", data);
     });
 
 }(

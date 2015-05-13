@@ -15,7 +15,7 @@
         // Load main data & fire event.
         ep = APP.utils.getEndPoint(MOD.urls.SETUP);
         $.getJSON(ep, function (data) {
-            MOD.events.trigger("setup:mainDataDownloaded", data);
+            MOD.events.trigger("setup:pageDataDownloaded", data);
         });
     });
 

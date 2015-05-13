@@ -140,7 +140,8 @@
         });
     };
 
-    MOD.processMonitoringEvent = function (eventType, data) {
+    // Simulation event handler.
+    MOD.processSimulationEvent = function (eventType, data) {
         // Update cv terms.
         _.extend(MOD.state, {
             cvTerms: _.union(MOD.state.cvTerms, data.cvTerms)
@@ -168,6 +169,29 @@
         MOD.events.trigger("state:" + eventType, data);
     };
 
+    // Job event handler.
+    MOD.processJobEvent = function (eventType, data) {
+        // Set matching simulation.
+        data.simulation = MOD.state.simulationSet[data.job.simulationUID];
+        if (_.isUndefined(data.simulation)) {
+            return;
+        }
+
+        // Parse job.
+        MOD.parseJob(data.job);
+
+        // Update simulation jobs.
+        data.simulation.ext.jobs = _.filter(data.simulation.ext.jobs, function (job) {
+            return job.jobUID !== data.job.jobUID;
+        });
+        data.simulation.ext.jobs.push(data.job);
+
+        // Parse simulation jobs.
+        MOD.parseSimulationJobs(data.simulation, false);
+
+        // Fire events.
+        MOD.events.trigger("state:" + eventType, data);
+    };
 }(
     this.APP,
     this.APP.modules.monitoring,

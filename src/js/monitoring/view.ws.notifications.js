@@ -39,7 +39,7 @@
         // Simulation start event handler.
         // @ei      Event information.
         _onSimulationStart: function (ei) {
-            if (ei.simulation.isRestart) {
+            if (ei.simulation.ext.isRestart) {
                 this._update(ei, "SIMULATED RESTARTED");
             } else {
                 this._update(ei, "SIMULATED STARTED");

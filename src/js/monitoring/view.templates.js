@@ -57,6 +57,7 @@
             header: "<tr class='bg-primary'>\n\
                         <th title='Activity'>Activity</th>\n\
                         <th title='Name' class=''>Name</th>\n\
+                        <th title='Try' class='text-center'>Tries</th>\n\
                         <th title='Jobs' class='text-center'>Jobs</th>\n\
                         <th title='Node - Machine' class='text-center'>Node - Machine</th>\n\
                         <th title='Login' class='text-center'>Login</th>\n\
@@ -73,6 +74,7 @@
 
             row: "<td class='activity text-uppercase' title='<%= activity %>'><%= activity %></td>\n\
                   <td class='name' title='<%= name %>'><%= name %></td>\n\
+                  <td class='tryCount text-center <%= tryID > 1 ? 'bg-danger' : '' %>' title='<%= tryID %>'><%= tryID %></td>\n\
                   <td class='jobCount text-center <%= ext.hasLateJob ? 'bg-danger' : '' %>' title='<%= ext.jobCount %>'><%= ext.jobCount %></td>\n\
                   <td class='computeNodeMachine text-uppercase text-center' title='<%= computeNodeMachine %>'><%= computeNodeMachine %></td>\n\
                   <td class='computeNodeLogin text-center' title='<%= computeNodeLogin %>'><%= computeNodeLogin %></td>\n\
