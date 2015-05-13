@@ -57,7 +57,7 @@
             header: "<tr class='bg-primary'>\n\
                         <th title='Activity'>Activity</th>\n\
                         <th title='Name' class=''>Name</th>\n\
-                        <th title='Try' class='text-center'>Tries</th>\n\
+                        <th title='Try' class='text-center'>Try</th>\n\
                         <th title='Jobs' class='text-center'>Jobs</th>\n\
                         <th title='Node - Machine' class='text-center'>Node - Machine</th>\n\
                         <th title='Login' class='text-center'>Login</th>\n\
