@@ -2,7 +2,7 @@
 // app/utils.js
 // Application level utility functions.
 // --------------------------------------------------------
-(function(APP, constants) {
+(function(APP, constants, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -168,4 +168,8 @@
         }
     };
 
-}(this.APP, this.APP.constants));
+}(
+    this.APP,
+    this.APP.constants,
+    this._
+));

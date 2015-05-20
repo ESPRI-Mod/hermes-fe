@@ -24,7 +24,7 @@
 
         // Sort.
         return _.sortBy(result, function (s) {
-            return s.activity + s.name;
+            return s.activity.toLowerCase() + s.name.toLowerCase();
         });
     };
 
@@ -50,34 +50,6 @@
                 return term.name === (filter.defaultValue || "*");
             });
         }
-    };
-
-    // Updates filter state.
-    MOD.updateFilterState = function (filter) {
-        filter.cvTerms.all = MOD.cv.getTermset(filter.cvType);
-        filter.cvTerms.all = _.sortBy(filter.cvTerms.all, function (cvTerm) {
-            return cvTerm.name.toLowerCase();
-        });
-        if (filter.supportsByAll) {
-            filter.cvTerms.all.unshift(MOD.cv.getGlobalTerm(filter.cvType));
-        }
-    };
-
-    // Delete simulations that have been rerun.
-    MOD.deleteDeadSimulations = function (hashid) {
-        var dead
-        dead = _.find(MOD.state.simulationList, function (s) {
-            return s.hashid === hashid;
-        });
-        if (dead) {
-            MOD.state.simulationList = _.without(MOD.state.simulationList, dead);
-            MOD.state.simulationListFiltered = _.without(MOD.state.simulationListFiltered, dead);
-            if (_.has(MOD.state.simulationStateSet, dead.uid)) {
-                delete MOD.state.simulationStateSet[dead.uid];
-            }
-        }
-
-        return dead;
     };
 
     // Sets the paging state.
@@ -138,59 +110,6 @@
         return _.filter(MOD.state.simulationList, function (simulation) {
             return simulation.ext.isSelectedForIM;
         });
-    };
-
-    // Simulation event handler.
-    MOD.processSimulationEvent = function (eventType, data) {
-        // Update cv terms.
-        _.extend(MOD.state, {
-            cvTerms: _.union(MOD.state.cvTerms, data.cvTerms)
-        });
-
-        // Parse event data.
-        MOD.parseSimulation(data.simulation, data.jobHistory);
-
-        // Update filtered simulations.
-        MOD.setFilteredSimulationList();
-
-        // Update filters.
-        _.each(MOD.state.filters, function (filter) {
-            if (_.indexOf(filter.cvTerms.active, data.simulation[filter.key]) === -1) {
-                filter.cvTerms.active.push(data.simulation[filter.key]);
-                MOD.events.trigger("ui:filter:refresh", filter);
-            }
-        });
-
-        // Update paging.
-        MOD.setPagingState(MOD.state.paging.current);
-
-        // Fire events.
-        MOD.triggerSimulationFilterEvent();
-        MOD.events.trigger("state:" + eventType, data);
-    };
-
-    // Job event handler.
-    MOD.processJobEvent = function (eventType, data) {
-        // Set matching simulation.
-        data.simulation = MOD.state.simulationSet[data.job.simulationUID];
-        if (_.isUndefined(data.simulation)) {
-            return;
-        }
-
-        // Parse job.
-        MOD.parseJob(data.job);
-
-        // Update simulation jobs.
-        data.simulation.ext.jobs = _.filter(data.simulation.ext.jobs, function (job) {
-            return job.jobUID !== data.job.jobUID;
-        });
-        data.simulation.ext.jobs.push(data.job);
-
-        // Parse simulation jobs.
-        MOD.parseSimulationJobs(data.simulation, false);
-
-        // Fire events.
-        MOD.events.trigger("state:" + eventType, data);
     };
 }(
     this.APP,
