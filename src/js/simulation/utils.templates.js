@@ -154,10 +154,29 @@
             </header>\n\
             <textarea class='form-control' rows='45'><%- MOD.state.configCard %></textarea>",
 
-        jobHistory:
-            "<header class='bg-muted'>\n\
-                <h3>Job History (<%- simulation.ext.jobCount %>)</h3>\n\
-            </header>",
+        jobHistory: {
+            caption:
+                "<header class='bg-muted'>\n\
+                    <h3>Job History (<%- simulation.ext.jobCount %>)</h3>\n\
+                </header>",
+            header:
+                "<tr class='bg-primary'>\n\
+                    <th title='ID'>#</th>\n\
+                    <th title='Start Date'>Start Date</th>\n\
+                    <th title='End Date' class=''>End Date</th>\n\
+                    <th title='Expected End Date' class=''>Expected End Date</th>\n\
+                    <th title='Is Error' class='text-center'>Is Error ?</th>\n\
+                    <th title='Was Late' class='text-center'>Was Late ?</th>\n\
+                </ttr>",
+
+            row:
+                "<td class='id' title='<%= ext.id %>'><%= ext.id %></td>\n\
+                <td class='executionStartDate' title='<%= executionStartDate %>'><%= executionStartDate %></td>\n\
+                <td class='executionEndDate' title='<%= executionEndDate %>'><%= executionEndDate %></td>\n\
+                <td class='expectedExecutionEndDate' title='<%= executionEndDate %>'><%= executionEndDate %></td>\n\
+                <td class='isError text-center' title='<%= isError %>'><%= isError %></td>\n\
+                <td class='wasLate text-center' title='<%= wasLate %>'><%= wasLate %></td>"
+        },
 
         notifications:
             "<strong>Awaiting simulation events ...</strong>",

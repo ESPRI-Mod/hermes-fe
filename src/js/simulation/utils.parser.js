@@ -101,6 +101,11 @@
             _.each(simulation.ext.jobs, MOD.parseJob);
         }
 
+        // Set index.
+        // _.each(simulation.ext.jobs, function (job, index) {
+        //     console.log(index);
+        // })
+
         // Set running jobs.
         simulation.ext.runningJobs = _.filter(simulation.ext.jobs, function (job) {
             return _.isNull(job.executionEndDate);
@@ -121,7 +126,10 @@
     };
 
     // Parses a simulation job in readiness for processing.
-    MOD.parseJob = function (job) {
+    MOD.parseJob = function (job, index) {
+        job.ext = {
+            id: index + 1
+        };
         if (job.executionStartDate) {
             job.executionStartDate = moment(job.executionStartDate);
         }
