@@ -170,9 +170,9 @@
 
             row:
                 "<td class='id' title='<%= ext.id %>'><%= ext.id %></td>\n\
-                <td class='executionStartDate' title='<%= executionStartDate %>'><%= executionStartDate %></td>\n\
-                <td class='executionEndDate' title='<%= executionEndDate %>'><%= executionEndDate %></td>\n\
-                <td class='expectedExecutionEndDate' title='<%= expectedExecutionEndDate %>'><%= expectedExecutionEndDate %></td>\n\
+                <td class='executionStartDate' title='<%= ext.executionStartDate %>'><%= ext.executionStartDate %></td>\n\
+                <td class='executionEndDate' title='<%= ext.executionEndDate %>'><%= ext.executionEndDate %></td>\n\
+                <td class='expectedExecutionEndDate' title='<%= ext.expectedExecutionEndDate %>'><%= ext.expectedExecutionEndDate %></td>\n\
                 <td class='wasLate text-center' title='<%= wasLate ? 'Yes' : '' %>'><%= wasLate ? 'Yes' : '' %></td>"
         },
 

@@ -33,9 +33,7 @@
             executionState: undefined,
             experiment: undefined,
             isSelectedForIM: false,
-            jobs: _.filter(jobHistory, function (job) {
-                return job.simulationUID === simulation.uid;
-            }),
+            jobs: jobHistory,
             jobCount: 0,
             hasLateJob: false,
             hasRunningJob: false,
@@ -52,9 +50,7 @@
         simulation.node = simulation.computeNode;
 
         // Parse jobs, execution status, obsolete simulations.
-        console.log(simulation.ext.hasRunningJob);
         MOD.parseSimulationJobs(simulation);
-        console.log(simulation.ext.hasRunningJob);
         parseExecutionState(simulation);
 
         // Format date fields.
@@ -97,17 +93,18 @@
 
     // Parses simulation jobs in readiness for processing.
     MOD.parseSimulationJobs = function (simulation, parseJobs) {
-        var runningJobs;
-
-        // Parse jobs.
+        // Parse.
         if (_.isUndefined(parseJobs) || parseJobs === true) {
             _.each(simulation.ext.jobs, MOD.parseJob);
         }
 
-        // Set index.
-        // _.each(simulation.ext.jobs, function (job, index) {
-        //     console.log(index);
-        // })
+        // Sort.
+        simulation.ext.jobs = _.sortBy(simulation.ext.jobs, 'executionStartDate');
+
+        // Set id.
+        _.each(simulation.ext.jobs, function (job, index) {
+            job.ext.id = index + 1;
+        });
 
         // Set running jobs.
         simulation.ext.runningJobs = _.filter(simulation.ext.jobs, function (job) {
@@ -129,26 +126,29 @@
     };
 
     // Parses a simulation job in readiness for processing.
-    MOD.parseJob = function (job, index) {
+    MOD.parseJob = function (job) {
         job.ext = {
-            id: index + 1,
+            id: undefined,
+            executionEndDate: undefined,
+            expectedExecutionEndDate: undefined,
+            executionStartDate: undefined,
             executionState: undefined
         };
         if (job.executionStartDate) {
             job.executionStartDate = moment(job.executionStartDate);
+            job.ext.executionStartDate = moment(job.executionStartDate).format('DD-MM-YYYY HH:mm:ss');
         }
         if (job.expectedExecutionEndDate) {
             job.expectedExecutionEndDate = moment(job.expectedExecutionEndDate);
+            job.ext.expectedExecutionEndDate = moment(job.expectedExecutionEndDate).format('DD-MM-YYYY HH:mm:ss');
         }
         if (job.executionEndDate) {
             job.executionEndDate = moment(job.executionEndDate);
+            job.ext.executionEndDate = moment(job.executionEndDate).format('DD-MM-YYYY HH:mm:ss');
             job.isLate = job.wasLate;
         } else {
             job.isLate = moment().valueOf() > job.expectedExecutionEndDate.valueOf();
         }
-        job.ext = {
-            id: index + 1
-        };
         if (job.isError) {
             job.ext.executionState = 'error';
         } else if (job.executionEndDate) {
