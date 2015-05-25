@@ -22,6 +22,13 @@
 
         // Backbone: view event handlers.
         events : {
+            'click > td.row-link' : function () {
+                var url;
+
+                url = APP.utils.getPageURL(MOD.urls.SIMULATION_PAGE);
+                url = url.replace("{uid}", this.model.uid);
+                APP.utils.openURL(url, true);
+            },
             'click > td.monitoring' : function () {
                 MOD.events.trigger("im:openMonitor", this.model);
             },

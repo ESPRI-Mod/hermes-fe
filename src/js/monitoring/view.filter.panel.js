@@ -3,6 +3,7 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
+
     // Inner view.
     var InnerView = Backbone.View.extend({
         // Backbone: view CSS class.
@@ -13,6 +14,8 @@
             _.each(MOD.state.filters, function (filter) {
                 APP.utils.render(MOD.views.FilterItemView, filter, this);
             }, this);
+            // APP.utils.render(MOD.views.FilterTimeframeView, this.options, this);
+            // APP.utils.render(MOD.views.FilterNameView, this.options, this);
 
             return this;
         }
@@ -21,7 +24,7 @@
     // Outer view.
     MOD.views.FilterPanelView = Backbone.View.extend({
         // Backbone: view CSS class.
-        className : "panel panel-info bg-info",
+        className : "panel panel-info form-inline",
 
         // Backbone: view renderer.
         render : function () {

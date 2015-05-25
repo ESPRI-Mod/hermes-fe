@@ -7,9 +7,9 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    var constants = APP.constants = {
+    APP.constants = {
         // Default module key.
-        defaultModule: "monitoring",
+        defaultModule: undefined,
 
         // Set of email related constants.
         email : {

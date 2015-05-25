@@ -9,14 +9,21 @@
                     <span class='monitoring-state-queued'><small><strong>&nbsp;QUEUED&nbsp;</strong></small></span>\n\
                     <span class='monitoring-state-running'><small><strong>&nbsp;RUNNING&nbsp;</strong></small></span>\n\
                     <span class='monitoring-state-complete'><small><strong>&nbsp;COMPLETE&nbsp;</strong></small></span>\n\
-                    <span class='monitoring-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small></span>\n\
+                    <span class='monitoring-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small>\n\
+                  </span>\n\
                   <span class='pull-right'>\n\
-                    <small><strong><a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- MOD.version %> © <%- year %> IPSL</strong></small>\n\
+                    <small><strong><a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>\n\
                   </span>\n\
                 </div>",
 
         notifications:
             "<strong>Awaiting simulation events ...</strong>",
+
+        criteria: {
+            summary:
+                "<strong>Active Filters: </strong>\n\
+                 <span class='criteria-text'><%= filterText %></span>"
+        },
 
         info: {
             pagerItem: "<a href='#'><%- id %></ a>"
@@ -25,6 +32,16 @@
         info2: "<span>\n\
                   <strong><span class='summary-stats'></span></strong>\n\
                 </span>",
+
+        filter: {
+            timeframe: "<option value='*'>*</option>\n\
+                        <option value='1W'>1 week</option>\n\
+                        <option value='2W'>2 week</option>\n\
+                        <option value='1M' selected='true'>1 month</option>\n\
+                        <option value='2M'>2 month</option>\n\
+                        <option value='3M'>3 month</option>\n\
+                        <option value='6M'>6 month</option>"
+        },
 
         grid: {
             pager:
@@ -72,17 +89,17 @@
                         </th>\tn\
                     </ttr>",
 
-            row: "<td class='activity text-uppercase' title='<%= activity %>'><%= activity %></td>\n\
-                  <td class='name' title='<%= name %>'><%= name %></td>\n\
-                  <td class='tryCount text-center <%= tryID > 1 ? 'bg-danger' : '' %>' title='<%= tryID %>'><%= tryID %></td>\n\
-                  <td class='jobCount text-center <%= ext.hasLateJob ? 'bg-danger' : '' %>' title='<%= ext.jobCount %>'><%= ext.jobCount %></td>\n\
-                  <td class='computeNodeMachine text-uppercase text-center' title='<%= computeNodeMachine %>'><%= computeNodeMachine %></td>\n\
-                  <td class='computeNodeLogin text-center' title='<%= computeNodeLogin %>'><%= computeNodeLogin %></td>\n\
-                  <td class='model text-uppercase text-center' title='<%= model %>'><%= model %></td>\n\
-                  <td class='space text-uppercase text-center' title='<%= space %>'><%= space %></td>\n\
-                  <td class='experiment' title='<%= ext.experiment %>'><%= ext.experiment %></td>\n\
-                  <td class='executionStartDate text-center' title='<%= executionStartDate %>'><%= executionStartDate.substring(0, 10) %></td>\n\
-                  <td class='executionEndDate text-center' title='<%= executionEndDate %>'><%= executionEndDate.substring(0, 10) %></td>\n\
+            row: "<td class='row-link activity text-uppercase' title='<%= activity %>'><%= activity %></td>\n\
+                  <td class='row-link name' title='<%= name %>'><%= name %></td>\n\
+                  <td class='row-link tryCount text-center <%= tryID > 1 ? 'bg-danger' : '' %>' title='<%= tryID %>'><%= tryID %></td>\n\
+                  <td class='row-link jobCount text-center <%= ext.hasLateJob ? 'bg-danger' : '' %>' title='<%= ext.jobCount %>'><%= ext.jobCount %></td>\n\
+                  <td class='row-link computeNodeMachine text-uppercase text-center' title='<%= computeNodeMachine %>'><%= computeNodeMachine %></td>\n\
+                  <td class='row-link computeNodeLogin text-center' title='<%= computeNodeLogin %>'><%= computeNodeLogin %></td>\n\
+                  <td class='row-link model text-uppercase text-center' title='<%= model %>'><%= model %></td>\n\
+                  <td class='row-link space text-uppercase text-center' title='<%= space %>'><%= space %></td>\n\
+                  <td class='row-link experiment' title='<%= ext.experiment %>'><%= ext.experiment %></td>\n\
+                  <td class='row-link executionStartDate text-center' title='<%= executionStartDate %>'><%= executionStartDate.substring(0, 10) %></td>\n\
+                  <td class='row-link executionEndDate text-center' title='<%= executionEndDate %>'><%= executionEndDate.substring(0, 10) %></td>\n\
                   <td class='monitoring text-center' title='Open monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\
                   <td class='interMonitoring text-center' title='Select for inter-monitoring'><input type='checkbox'></input></td>"
         },

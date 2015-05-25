@@ -35,6 +35,26 @@
                 .replace("{2}", ep);
         },
 
+        // Returns URL to a static page within the application.
+        // @page         Page name.
+        getPageURL: function(page) {
+            var protocol;
+
+            // Set protocol.
+            protocol = APP.constants.protocols.HTTP;
+
+            // Append protocol suffix for secure endpoints.
+            if (window.location.protocol.indexOf("s") !== -1) {
+                protocol += "s";
+            }
+
+            // Derive url.
+            return "{0}://{1}/static/{2}"
+                .replace("{0}", protocol)
+                .replace("{1}", window.location.host)
+                .replace("{2}", page);
+        },
+
         // Renders a view.
         // @type          View type.
         // @options       View options.

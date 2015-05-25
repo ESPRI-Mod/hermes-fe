@@ -1,4 +1,4 @@
-(function (MOD, _) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -30,23 +30,35 @@
                 displayName: 'Login'
             },
             {
-                key: 'experiment'
-            },
-            {
                 key: 'model',
                 displayName: 'Tag / Model'
             },
             {
-                cvType: 'simulation_state',
-                key: 'executionState',
-                displayName: 'State'
+                key: 'experiment'
             },
             {
                 cvType: 'simulation_space',
                 key: 'space',
                 displayName: 'Space'
             },
+            {
+                cvType: 'simulation_state',
+                key: 'executionState',
+                displayName: 'State'
+            }
         ],
+
+        filterName: undefined,
+
+        filterTimeframe: "1M",
+
+        // Returns set of active filters, i.e. those for which that the user has made a selection.
+        getActiveFilters: function () {
+            return _.filter(MOD.state.filters, function (filter) {
+                return !_.isUndefined(filter.cvTerms.current) &&
+                       filter.cvTerms.current.name !== "*";
+            });
+        },
 
         // Set of simulations.
         simulationSet: {},
@@ -70,6 +82,7 @@
     _.each(MOD.state.filters, function (filter) {
         var queryParamValue;
 
+        MOD.state[filter.key + "Filter"] = filter;
         filter.cvTerms = {
             active: [],
             all: [],
@@ -94,4 +107,8 @@
         }
     });
 
-}(this.APP.modules.monitoring, this._));
+}(
+    this.APP,
+    this.APP.modules.monitoring,
+    this._
+));

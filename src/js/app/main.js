@@ -24,7 +24,7 @@ window.$ = window.$jq = jQuery.noConflict();
             longName: "Institut Pierre Simon Laplace",
 
             // Home page.
-            homePage: "http://ipsl.fr",
+            homePage: "http://www.ipsl.fr/",
         },
 
         // App title.
@@ -109,6 +109,11 @@ window.$ = window.$jq = jQuery.noConflict();
 
             // Cache.
             APP.state.moduleList.push(module);
+
+            // Set default.
+            if (_.isUndefined(APP.constants.defaultModule)) {
+                APP.constants.defaultModule = key;
+            }
 
             return module;
         },

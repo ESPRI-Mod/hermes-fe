@@ -4,21 +4,7 @@
     "use strict";
 
     // Closure vars.
-    var parseExecutionState,
-        parseObsoletions;
-
-    // Parses obsolete simulations.
-    // @hashID  Hash identifier of a simulation being processed.
-    parseObsoletions = function (hashID) {
-        var obsoletions;
-
-        obsoletions = _.filter(_.values(MOD.state.simulationSet), function (simulation){
-            return simulation.hashid === hashID;
-        });
-        _.each(obsoletions, function (simulation) {
-            delete MOD.state.simulationSet[simulation.uid];
-        });
-    };
+    var parseExecutionState;
 
     // Sets simulation's current execution status.
     parseExecutionState = function (simulation) {
@@ -42,6 +28,7 @@
 
         // Set extension fields.
         simulation.ext = {
+            caption: undefined,
             executionState: undefined,
             experiment: undefined,
             isSelectedForIM: false,
@@ -57,17 +44,25 @@
             mURL: undefined,
             runningJobs: []
         };
+        simulation.login = simulation.computeNodeLogin;
+        simulation.machine = simulation.computeNodeMachine;
+        simulation.node = simulation.computeNode;
 
         // Parse jobs, execution status, obsolete simulations.
+        console.log(simulation.ext.hasRunningJob);
         MOD.parseSimulationJobs(simulation);
+        console.log(simulation.ext.hasRunningJob);
         parseExecutionState(simulation);
-        parseObsoletions(simulation.hashid);
 
         // Format date fields.
         simulation.executionStartDate =
-            (simulation.executionStartDate || "").substring(0, 10);
+            (simulation.executionStartDate || "--").substring(0, 10);
         simulation.executionEndDate =
-            (simulation.executionEndDate || "").substring(0, 10);
+            (simulation.executionEndDate || "--").substring(0, 10);
+        simulation.outputStartDate =
+            (simulation.outputStartDate || "--").substring(0, 10);
+        simulation.outputEndDate =
+            (simulation.outputEndDate || "--").substring(0, 10);
 
         // Set case sensitive CV fields.
         _.each(['experiment'], function (field) {
@@ -87,17 +82,20 @@
         if (_.has(MOD.urls.M, simulation.computeNode)) {
             simulation.ext.mURL = MOD.urls.M[simulation.computeNode];
         }
-        if (_.has(MOD.urls.IM, simulation.computeNode)) {
-            simulation.ext.imURL = MOD.urls.IM[simulation.computeNode];
-        }
 
-        // Update module state.
-        MOD.state.simulationSet[simulation.uid] = simulation;
-        MOD.state.simulationList = _.values(MOD.state.simulationSet);
+        // Set caption.
+        var caption = "{activity} -> {space} -> {name} ({tryID})";
+        caption = caption.replace("{activity}", simulation.activity);
+        caption = caption.replace("{space}", simulation.space);
+        caption = caption.replace("{name}", simulation.name);
+        caption = caption.replace("{tryID}", simulation.tryID);
+        simulation.ext.caption = caption;
     };
 
     // Parses simulation jobs in readiness for processing.
     MOD.parseSimulationJobs = function (simulation, parseJobs) {
+        var runningJobs;
+
         // Parse jobs.
         if (_.isUndefined(parseJobs) || parseJobs === true) {
             _.each(simulation.ext.jobs, MOD.parseJob);
@@ -139,7 +137,7 @@
     };
 
 }(
-    this.APP.modules.monitoring,
+    this.APP.modules.simulation,
     this._,
     this.moment
 ));

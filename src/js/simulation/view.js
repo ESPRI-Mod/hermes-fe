@@ -5,19 +5,19 @@
 
     // Main module level view.
     MOD.views.MainView = Backbone.View.extend({
+        // Backbone: view CSS class.
         className: 'table-responsive',
+
+        // Backbone: view HTML tag.
+        tagName: 'article',
 
         // Backbone: view renderer.
         render : function () {
             APP.utils.render([
-                MOD.views.WebSocketNotifications,
-                // MOD.views.CriteriaView,
-                MOD.views.FilterPanelView,
-                MOD.views.GridHeaderView,
-                MOD.views.GridTableView,
-                MOD.views.InterMonitoringContextMenuView,
-                MOD.views.InterMonitoringFormPostView,
-                MOD.views.WebSocketClosedDialogView,
+                MOD.views.HeaderView,
+                MOD.views.DetailsView,
+                MOD.views.JobHistoryView,
+                MOD.views.ConfigCardView,
                 MOD.views.FooterView
             ], {}, this);
 
@@ -27,6 +27,6 @@
 
 }(
     this.APP,
-    this.APP.modules.monitoring,
+    this.APP.modules.simulation,
     this.Backbone
 ));

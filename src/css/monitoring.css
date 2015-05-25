@@ -6,10 +6,6 @@ input.pagination-info {
 	width: 120px;
 }
 
-td.monitoring, th.interMonitoring {
-	cursor: pointer;
-}
-
 .module-footer {
 	padding: 8px;
 	border: 1px solid #BCE8F1;
@@ -17,6 +13,18 @@ td.monitoring, th.interMonitoring {
 
 table.monitoring-table {
 	margin-bottom: 10px;
+}
+
+table.monitoring-table tr td.row-link {
+	cursor: pointer;
+}
+
+table.monitoring-table tr td.monitoring {
+	cursor: pointer;
+}
+
+table.monitoring-table th.interMonitoring {
+	cursor: pointer;
 }
 
 ::-webkit-input-placeholder {
@@ -53,4 +61,9 @@ table.monitoring-table {
 .monitoring-state-error {
 	background-color: #F2DEDE;
 	color: #333;
+}
+
+.btn.criteria-open-dialog {
+	margin-top: -7px;
+	width: 100px;
 }

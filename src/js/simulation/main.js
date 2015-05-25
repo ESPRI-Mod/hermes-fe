@@ -4,29 +4,20 @@
     "use strict";
 
     // Declare module.
-    APP.registerModule("monitoring", {
+    APP.registerModule("simulation", {
         // Module title.
-        title: "Simulation Monitoring",
+        title: "Simulation Monitor",
 
         // Module short title.
-        shortTitle: "Monitoring",
+        shortTitle: "Simulation Monitor",
 
         // Module key aliases.
-        keyAliases: ["monitor"],
+        keyAliases: [],
 
         // URL's used across module.
         urls: {
-            // Monitoring setup data endpoint.
-            SETUP: 'monitoring/fe/setup',
-
-            // Simulation page.
-            SIMULATION_PAGE: 'simulation.html?uid={uid}',
-
             // CV setup data endpoint.
-            CV: 'monitoring/fe/cv',
-
-            // Web-socket endpoint.
-            WS: 'monitoring/fe/ws',
+            CV: 'simulation/fe/cv',
 
             // Monitoring endpoints.
             M: {
@@ -34,12 +25,11 @@
                 'tgcc': 'https://esgf.extra.cea.fr/thredds/fileServer/work'
             },
 
-            // Inter-monitoring endpoints.
-            IM: {
-                'httpPostTarget': 'http://webservices.ipsl.jussieu.fr/monitoring_fromprodiguer/index.php',
-                'ccrt': 'http://esgf.extra.cea.fr/thredds/dodsC/work',
-                'tgcc': 'http://esgf.extra.cea.fr/thredds/dodsC/work'
-            }
+            // Page setup data endpoint.
+            SETUP: 'simulation/fe/setup?uid={uid}',
+
+            // Web-socket endpoint.
+            WS: 'simulation/fe/ws/uid={uid}'
         },
 
         // Map of simulation states to css classes.

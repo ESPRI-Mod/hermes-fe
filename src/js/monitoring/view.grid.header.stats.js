@@ -34,9 +34,9 @@
         _setSimulationStatInfo: function () {
             var msg = "";
 
-            msg += "Total simulation count = ";
+            msg += "Total simulations = ";
             msg += MOD.state.simulationList.length;
-            msg += ". Filtered simulation count = ";
+            msg += ". Filtered simulations = ";
             msg += MOD.state.simulationListFiltered.length;
             msg += ".";
             this.$el.text(msg);

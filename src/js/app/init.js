@@ -4,7 +4,7 @@
     "use strict";
 
     var initApp = function () {
-        var mainView;
+        var mainView, module;
 
         // Compile templates.
         APP.utils.compileTemplates(APP.templates);
@@ -20,7 +20,8 @@
         $("body").append(mainView.$el);
 
         // Activate default module.
-        APP.events.trigger("module:activating", APP.getModule(APP.constants.defaultModule));
+        module = APP.getModule(APP.constants.defaultModule);
+        APP.events.trigger("module:activating", module);
     };
 
     // Document ready event handler.

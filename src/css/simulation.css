@@ -1,0 +1,28 @@
+.execution-state-queued {
+	background-color: #F5F5F5;
+	color: #333;
+}
+
+.execution-state-running {
+	background-color: #D9EDF7;
+	color: #333;
+}
+
+.execution-state-complete {
+	background-color: #DFF0D8;
+	color: #333;
+}
+
+.execution-state-error {
+	background-color: #F2DEDE;
+	color: #333;
+}
+
+header > h2 {
+	padding: 3px;
+}
+
+header > h3 {
+ 	background-color: #f5f5f5;
+	padding: 3px;
+}
