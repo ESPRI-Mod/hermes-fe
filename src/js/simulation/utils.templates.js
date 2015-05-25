@@ -165,7 +165,6 @@
                     <th title='Start Date'>Start Date</th>\n\
                     <th title='End Date' class=''>End Date</th>\n\
                     <th title='Expected End Date' class=''>Expected End Date</th>\n\
-                    <th title='Is Error' class='text-center'>Is Error ?</th>\n\
                     <th title='Was Late' class='text-center'>Was Late ?</th>\n\
                 </ttr>",
 
@@ -174,8 +173,7 @@
                 <td class='executionStartDate' title='<%= executionStartDate %>'><%= executionStartDate %></td>\n\
                 <td class='executionEndDate' title='<%= executionEndDate %>'><%= executionEndDate %></td>\n\
                 <td class='expectedExecutionEndDate' title='<%= expectedExecutionEndDate %>'><%= expectedExecutionEndDate %></td>\n\
-                <td class='isError text-center' title='<%= isError %>'><%= isError %></td>\n\
-                <td class='wasLate text-center' title='<%= wasLate %>'><%= wasLate %></td>"
+                <td class='wasLate text-center' title='<%= wasLate ? 'Yes' : '' %>'><%= wasLate ? 'Yes' : '' %></td>"
         },
 
         notifications:

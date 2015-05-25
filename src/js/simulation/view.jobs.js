@@ -5,6 +5,11 @@
 
     // View over a grid table row.
     MOD.views.JobHistoryTableRowView = Backbone.View.extend({
+        // Backbone: view CSS class.
+        className : function () {
+            return MOD.jobStatesCSS[this.model.ext.executionState];
+        },
+
         // Backbone: view DOM element type.
         tagName : "tr",
 

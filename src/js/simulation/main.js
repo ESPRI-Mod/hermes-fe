@@ -32,12 +32,11 @@
             WS: 'simulation/fe/ws/uid={uid}'
         },
 
-        // Map of simulation states to css classes.
-        statesCSS : {
-            "queued" : 'monitoring-state-queued',
-            "running" : 'monitoring-state-running',
-            "complete" : 'monitoring-state-complete',
-            "error" : 'monitoring-state-error',
+        // Map of job states to css classes.
+        jobStatesCSS : {
+            "running" : 'job-state-running',
+            "complete" : 'job-state-complete',
+            "error" : 'job-state-error',
         }
     });
 

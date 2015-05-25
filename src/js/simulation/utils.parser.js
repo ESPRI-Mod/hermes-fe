@@ -128,7 +128,8 @@
     // Parses a simulation job in readiness for processing.
     MOD.parseJob = function (job, index) {
         job.ext = {
-            id: index + 1
+            id: index + 1,
+            executionState: undefined
         };
         if (job.executionStartDate) {
             job.executionStartDate = moment(job.executionStartDate);
@@ -141,6 +142,16 @@
             job.isLate = job.wasLate;
         } else {
             job.isLate = moment().valueOf() > job.expectedExecutionEndDate.valueOf();
+        }
+        job.ext = {
+            id: index + 1
+        };
+        if (job.isError) {
+            job.ext.executionState = 'error';
+        } else if (job.executionEndDate) {
+            job.ext.executionState = 'complete';
+        } else {
+            job.ext.executionState = 'running';
         }
     };
 

@@ -3,17 +3,17 @@
 	color: #333;
 }
 
-.execution-state-running {
+.execution-state-running, .job-state-running {
 	background-color: #D9EDF7;
 	color: #333;
 }
 
-.execution-state-complete {
+.execution-state-complete, .job-state-complete {
 	background-color: #DFF0D8;
 	color: #333;
 }
 
-.execution-state-error {
+.execution-state-error, .job-state-error {
 	background-color: #F2DEDE;
 	color: #333;
 }
