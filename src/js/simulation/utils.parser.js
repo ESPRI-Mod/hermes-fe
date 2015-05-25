@@ -24,10 +24,11 @@
 
     // Parses a simulation in readiness for processing.
     MOD.parseSimulation = function (simulation, jobHistory) {
-        var model;
+        var caption, model;
 
         // Set extension fields.
         simulation.ext = {
+            activity: undefined,
             caption: undefined,
             executionState: undefined,
             experiment: undefined,
@@ -42,7 +43,9 @@
             isRestart: simulation.tryID > 1,
             modelSynonyms: [],
             mURL: undefined,
-            runningJobs: []
+            runningJobs: [],
+            simulationSpace: undefined,
+            simulation_space: undefined
         };
         simulation.login = simulation.computeNodeLogin;
         simulation.machine = simulation.computeNodeMachine;
@@ -65,7 +68,7 @@
             (simulation.outputEndDate || "--").substring(0, 10);
 
         // Set case sensitive CV fields.
-        _.each(['experiment'], function (field) {
+        _.each(['activity', 'experiment', 'simulation_space'], function (field) {
             var cvTerm = MOD.cv.getTerm(field, simulation[field]);
             if (cvTerm) {
                 simulation.ext[field] = cvTerm.displayName;
@@ -84,7 +87,7 @@
         }
 
         // Set caption.
-        var caption = "{activity} -> {space} -> {name} ({tryID})";
+        caption = "{activity} -> {space} -> {name} ({tryID})";
         caption = caption.replace("{activity}", simulation.activity);
         caption = caption.replace("{space}", simulation.space);
         caption = caption.replace("{name}", simulation.name);

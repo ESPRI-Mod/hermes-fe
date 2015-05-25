@@ -16,7 +16,7 @@
              </span>",
 
         details:
-            "<header class='bg-muted'>\n\
+            "<header class='bg-info'>\n\
                 <h3>Details</h3>\n\
             </header>\n\
             <div class='container'>\n\
@@ -27,7 +27,7 @@
                                 <strong>Activity</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.activity %>\n\
+                                <%- simulation.ext.activity %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -37,7 +37,7 @@
                                 <strong>Space</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.space %>\n\
+                                <%- simulation.space.toUpperCase() %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -57,7 +57,7 @@
                                 <strong>Status</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.ext.executionState %>\n\
+                                <%- simulation.ext.executionState.toUpperCase() %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -69,7 +69,7 @@
                                 <strong>Machine</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.machine %>\n\
+                                <%- simulation.machine.toUpperCase() %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -111,7 +111,7 @@
                                 <strong>Model</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.model %>\n\
+                                <%- simulation.model.toUpperCase() %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -121,7 +121,7 @@
                                 <strong>Experiment</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.experiment %>\n\
+                                <%- simulation.experiment.toUpperCase() %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -149,14 +149,14 @@
             </div>",
 
         configCard:
-            "<header class='bg-muted'>\n\
+            "<header class='bg-info'>\n\
                 <h3>Configuration Card</h3>\n\
             </header>\n\
             <textarea class='form-control' rows='45'><%- MOD.state.configCard %></textarea>",
 
         jobHistory: {
             caption:
-                "<header class='bg-muted'>\n\
+                "<header class='bg-info'>\n\
                     <h3>Job History (<%- simulation.ext.jobCount %>)</h3>\n\
                 </header>",
             header:

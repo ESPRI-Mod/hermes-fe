@@ -13,13 +13,18 @@
 
         // Backbone: view renderer.
         render : function () {
-            APP.utils.render([
+            var subViews = [
                 MOD.views.HeaderView,
-                MOD.views.DetailsView,
-                MOD.views.JobHistoryView,
-                MOD.views.ConfigCardView,
-                MOD.views.FooterView
-            ], {}, this);
+                MOD.views.DetailsView
+            ];
+            if (MOD.state.jobHistory.length) {
+                subViews.push(MOD.views.JobHistoryView);
+            }
+            if (MOD.state.configCard.length) {
+                subViews.push(MOD.views.ConfigCardView);
+            }
+            subViews.push(MOD.views.FooterView);
+            APP.utils.render(subViews, {}, this);
 
             return this;
         }
