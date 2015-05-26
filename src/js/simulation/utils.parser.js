@@ -10,16 +10,15 @@
     setExecutionState = function (simulation) {
         if (simulation.executionEndDate) {
             if (simulation.isError) {
-                simulation.ext.executionState = 'error';
+                simulation.executionState = 'error';
             } else {
-                simulation.ext.executionState = 'complete';
+                simulation.executionState = 'complete';
             }
         } else if (simulation.ext.runningJobs.length) {
-            simulation.ext.executionState = 'running';
+            simulation.executionState = 'running';
         } else {
-            simulation.ext.executionState = 'queued';
+            simulation.executionState = 'queued';
         }
-        simulation.executionState = simulation.ext.executionState;
     };
 
     // Parses a simulation job in readiness for processing.
@@ -131,7 +130,7 @@
         // Set case sensitive CV fields.
         setCVTermDisplayName(simulation, 'activity');
         setCVTermDisplayName(simulation, 'simulation_space', 'space');
-        setCVTermDisplayName(simulation, 'simulation_state', 'state');
+        setCVTermDisplayName(simulation, 'simulation_state', 'executionState');
         setCVTermDisplayName(simulation, 'compute_node_login', 'computeNodeLogin');
         setCVTermDisplayName(simulation, 'compute_node_machine', 'computeNodeMachine');
         setCVTermDisplayName(simulation, 'model');

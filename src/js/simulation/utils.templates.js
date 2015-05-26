@@ -57,7 +57,7 @@
                                 <strong>Status</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.ext.executionState.toUpperCase() %>\n\
+                                <%- simulation.ext.executionState %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
