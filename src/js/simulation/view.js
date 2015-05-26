@@ -6,7 +6,7 @@
     // Main module level view.
     MOD.views.MainView = Backbone.View.extend({
         // Backbone: view CSS class.
-        className: 'table-responsive',
+        className: '',
 
         // Backbone: view HTML tag.
         tagName: 'article',

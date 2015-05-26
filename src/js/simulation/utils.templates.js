@@ -37,7 +37,7 @@
                                 <strong>Space</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.space.toUpperCase() %>\n\
+                                <%- simulation.ext.space %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -69,7 +69,7 @@
                                 <strong>Machine</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.computeNodeMachine.toUpperCase() %>\n\
+                                <%- simulation.ext.computeNodeMachine %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -79,7 +79,7 @@
                                 <strong>Login</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.computeNodeLogin %>\n\
+                                <%- simulation.ext.computeNodeLogin %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -111,7 +111,7 @@
                                 <strong>Model</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.model.toUpperCase() %>\n\
+                                <%- simulation.ext.model %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -121,7 +121,7 @@
                                 <strong>Experiment</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.experiment.toUpperCase() %>\n\
+                                <%- simulation.ext.experiment %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -152,12 +152,12 @@
             "<header class='bg-info'>\n\
                 <h3>Configuration Card</h3>\n\
             </header>\n\
-            <textarea class='form-control' rows='45'><%- MOD.state.configCard %></textarea>",
+            <textarea class='form-control' rows='45' cols='40'><%- MOD.state.configCard %></textarea>",
 
         jobHistory: {
             caption:
                 "<header class='bg-info'>\n\
-                    <h3>Job History</h3>\n\
+                    <h3>Jobs</h3>\n\
                 </header>",
 
             header:

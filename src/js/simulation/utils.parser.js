@@ -67,6 +67,9 @@
             job.ext.id = index + 1;
         });
 
+        // Reverse sort so that most recent is displayed first.
+        simulation.ext.jobs = simulation.ext.jobs.reverse();
+
         // Set running jobs.
         simulation.ext.runningJobs = _.filter(simulation.ext.jobs, function (job) {
             return _.isNull(job.executionEndDate);
@@ -77,6 +80,16 @@
         simulation.ext.errorJobs = _.filter(simulation.ext.jobs, function (job) {
             return job.isError;
         });
+    };
+
+    var setCVTermDisplayName = function (simulation, termType, fieldName) {
+        var term;
+
+        fieldName = fieldName || termType;
+        term = MOD.cv.getTerm(termType, simulation[fieldName]);
+        if (term) {
+            simulation.ext[fieldName] = term.displayName;
+        }
     };
 
     // Parses a simulation in readiness for processing.
@@ -95,6 +108,7 @@
             experiment: undefined,
             jobs: jobHistory,
             jobsCaption: undefined,
+            model: undefined,
             outputEndDate: "--",
             outputStartDate: "--",
             runningJobs: [],
@@ -115,12 +129,13 @@
         setExecutionState(simulation);
 
         // Set case sensitive CV fields.
-        _.each(['activity', 'experiment', 'simulation_space'], function (field) {
-            var cvTerm = MOD.cv.getTerm(field, simulation[field]);
-            if (cvTerm) {
-                simulation.ext[field] = cvTerm.displayName;
-            }
-        });
+        setCVTermDisplayName(simulation, 'activity');
+        setCVTermDisplayName(simulation, 'simulation_space', 'space');
+        setCVTermDisplayName(simulation, 'simulation_state', 'state');
+        setCVTermDisplayName(simulation, 'compute_node_login', 'computeNodeLogin');
+        setCVTermDisplayName(simulation, 'compute_node_machine', 'computeNodeMachine');
+        setCVTermDisplayName(simulation, 'model');
+        setCVTermDisplayName(simulation, 'experiment');
 
         // Set caption.
         caption = "{activity} -> {space} -> {name}";
