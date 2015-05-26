@@ -34,6 +34,19 @@
         }
     });
 
+    // View over the grid table footer.
+    MOD.views.JobHistoryTableFooterView = Backbone.View.extend({
+        // Backbone: view DOM element type.
+        tagName : "thead",
+
+        // Backbone: view renderer.
+        render : function () {
+            APP.utils.renderHTML(TEMPLATES.jobHistory.footer, {}, this);
+
+            return this;
+        }
+    });
+
     // View over the grid table body.
     MOD.views.JobHistoryTableBodyView = Backbone.View.extend({
         // Backbone: view DOM element type.
@@ -88,6 +101,9 @@
             APP.utils.render([
                 MOD.views.JobHistoryTableView
             ], {}, this);
+            APP.utils.renderHTML(TEMPLATES.jobHistory.footer, {
+                simulation: MOD.state.simulation
+            }, this);
 
             return this;
         }

@@ -37,3 +37,8 @@ header > h3 {
 table.job-history-table {
 	margin-bottom: 0px;
 }
+
+.module-footer {
+	padding: 8px;
+	border: 1px solid #BCE8F1;
+}

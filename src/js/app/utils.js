@@ -1,8 +1,4 @@
-// --------------------------------------------------------
-// app/utils.js
-// Application level utility functions.
-// --------------------------------------------------------
-(function(APP, constants, _) {
+(function(APP, constants, _, moment) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -185,11 +181,30 @@
         // Opens institute home page.
         openInstituteHomePage: function() {
             APP.utils.openURL(APP.institute.homePage, true);
+        },
+
+        // Formats a date field.
+        formatDateField: function (obj, attr) {
+            if (obj[attr]) {
+                obj[attr] = moment(obj[attr]);
+                obj.ext = obj.ext || {};
+                obj.ext[attr] = obj[attr].format('DD-MM-YYYY');
+            }
+        },
+
+        // Formats a date time field.
+        formatDateTimeField: function (obj, attr) {
+            if (obj[attr]) {
+                obj[attr] = moment(obj[attr]);
+                obj.ext = obj.ext || {};
+                obj.ext[attr] = obj[attr].format('DD-MM-YYYY HH:mm:ss');
+            }
         }
     };
 
 }(
     this.APP,
     this.APP.constants,
-    this._
+    this._,
+    this.moment
 ));

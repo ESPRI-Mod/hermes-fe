@@ -69,7 +69,7 @@
                                 <strong>Machine</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.machine.toUpperCase() %>\n\
+                                <%- simulation.computeNodeMachine.toUpperCase() %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -79,7 +79,7 @@
                                 <strong>Login</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.login %>\n\
+                                <%- simulation.computeNodeLogin %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -89,7 +89,7 @@
                                 <strong>Started</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.executionStartDate %>\n\
+                                <%- simulation.ext.executionStartDate %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -99,7 +99,7 @@
                                 <strong>Ended</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.executionEndDate %>\n\
+                                <%- simulation.ext.executionEndDate %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -131,7 +131,7 @@
                                 <strong>Output Start</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.outputStartDate %>\n\
+                                <%- simulation.ext.outputStartDate %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -141,7 +141,7 @@
                                 <strong>Output End</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.outputEndDate %>\n\
+                                <%- simulation.ext.outputEndDate %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -157,22 +157,37 @@
         jobHistory: {
             caption:
                 "<header class='bg-info'>\n\
-                    <h3>Job History (<%- simulation.ext.jobCount %>)</h3>\n\
+                    <h3>Job History (<%- simulation.ext.jobs.length %>)</h3>\n\
                 </header>",
+
             header:
                 "<tr class='bg-primary'>\n\
                     <th title='ID'>#</th>\n\
                     <th title='Start Date'>Start Date</th>\n\
                     <th title='End Date' class=''>End Date</th>\n\
-                    <th title='Expected End Date' class=''>Expected End Date</th>\n\
+                    <th title='Duration' class='text-center'>Duration (hours)</th>\n\
+                    <th title='Expected End Date' class='text-center'>Expected End Date</th>\n\
                     <th title='Was Late' class='text-center'>Was Late ?</th>\n\
                 </ttr>",
+
+            footer:
+                "<div class='module-footer'>\n\
+                    <span>\n\
+                        <span class='job-state-running'><small><strong>&nbsp;RUNNING&nbsp;</strong></small></span>\n\
+                        <span class='job-state-complete'><small><strong>&nbsp;COMPLETE&nbsp;</strong></small></span>\n\
+                        <span class='job-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small>\n\
+                    </span>\n\
+                    <span class='pull-right'>\n\
+                        <%- simulation.ext.jobsCaption %>\n\
+                    </span>\n\
+                </div>",
 
             row:
                 "<td class='id' title='<%= ext.id %>'><%= ext.id %></td>\n\
                 <td class='executionStartDate' title='<%= ext.executionStartDate %>'><%= ext.executionStartDate %></td>\n\
                 <td class='executionEndDate' title='<%= ext.executionEndDate %>'><%= ext.executionEndDate %></td>\n\
-                <td class='expectedExecutionEndDate' title='<%= ext.expectedExecutionEndDate %>'><%= ext.expectedExecutionEndDate %></td>\n\
+                <td class='duration text-center' title='<%= ext.duration %>'><%= ext.duration %></td>\n\
+                <td class='expectedExecutionEndDate text-center' title='<%= ext.expectedExecutionEndDate %>'><%= ext.expectedExecutionEndDate %></td>\n\
                 <td class='wasLate text-center' title='<%= wasLate ? 'Yes' : '' %>'><%= wasLate ? 'Yes' : '' %></td>"
         },
 
