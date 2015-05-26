@@ -9,7 +9,7 @@
 
         footer:
             "<span>\n\
-                <%- MOD.state.simulation.ext.caption %>\n\
+                <strong><%- MOD.state.simulation.ext.caption %></strong>\n\
              </span>\n\
              <span class='pull-right'>\n\
                 <small><strong><a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>\n\
@@ -178,7 +178,7 @@
                         <span class='job-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small>\n\
                     </span>\n\
                     <span class='pull-right'>\n\
-                        <%- simulation.ext.jobsCaption %>\n\
+                        <strong><%- simulation.ext.jobsCaption %></strong>\n\
                     </span>\n\
                 </div>",
 
