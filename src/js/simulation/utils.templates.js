@@ -157,7 +157,7 @@
         jobHistory: {
             caption:
                 "<header class='bg-info'>\n\
-                    <h3>Job History (<%- simulation.ext.jobs.length %>)</h3>\n\
+                    <h3>Job History</h3>\n\
                 </header>",
 
             header:

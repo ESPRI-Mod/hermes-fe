@@ -93,11 +93,7 @@
 
         // Backbone: view renderer.
         render : function () {
-            APP.utils.renderHTML(TEMPLATES.jobHistory.caption, {
-                APP: APP,
-                MOD: MOD,
-                simulation: MOD.state.simulation
-            }, this);
+            APP.utils.renderHTML(TEMPLATES.jobHistory.caption, {}, this);
             APP.utils.render([
                 MOD.views.JobHistoryTableView
             ], {}, this);
