@@ -9,6 +9,7 @@
 
         // Load cv data & fire event.
         ep = APP.utils.getEndPoint(MOD.urls.CV);
+        // ep = APP.utils.getTestServerEndPoint(MOD.urls.CV);
         $.getJSON(ep, function (data) {
             MOD.events.trigger("setup:cvDataDownloaded", data);
         });

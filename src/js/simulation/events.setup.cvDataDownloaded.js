@@ -14,6 +14,7 @@
 
         // Load page data & fire event.
         ep = APP.utils.getEndPoint(MOD.urls.SETUP);
+        // ep = APP.utils.getTestServerEndPoint(MOD.urls.SETUP);
         ep = ep.replace("{uid}", MOD.state.simulationUID);
         $.getJSON(ep, function (data) {
             MOD.events.trigger("setup:pageDataDownloaded", data);

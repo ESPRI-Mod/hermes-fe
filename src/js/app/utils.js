@@ -10,10 +10,18 @@
             console.log(constants.logging.PREFIX + msg);
         },
 
+        // Returns an endpoint address on the test server.
+        // @ep          Endpoint to be invoked.
+        getTestServerEndPoint: function(ep) {
+            return "https://prodiguer-test-web.ipsl.fr/api/1/{0}".replace("{0}", ep);
+        },
+
         // Returns an endpoint address.
         // @ep          Endpoint to be invoked.
         // @protocol    Communications protocol (ws | http).
         getEndPoint: function(ep, protocol) {
+            var host;
+
             // Set default protocol.
             if (_.isUndefined(protocol)) {
                 protocol = APP.constants.protocols.HTTP;
@@ -24,10 +32,16 @@
                 protocol += "s";
             }
 
+            if (!window.location.host) {
+                host = "localhost:8888";
+            } else {
+                host = window.location.host;
+            }
+
             // Derive endpoint.
             return "{0}://{1}/api/1/{2}"
                 .replace("{0}", protocol)
-                .replace("{1}", window.location.host)
+                .replace("{1}", host)
                 .replace("{2}", ep);
         },
 

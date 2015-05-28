@@ -26,11 +26,11 @@
         // Set default extension field values.
         job.ext = {
             id: undefined,
-            executionEndDate: undefined,
-            expectedExecutionEndDate: undefined,
-            executionStartDate: undefined,
+            executionEndDate: '--',
+            expectedExecutionEndDate: '--',
+            executionStartDate: '--',
             executionState: undefined,
-            duration: undefined
+            duration: '--'
         };
 
         // Format date fields.
@@ -55,19 +55,35 @@
 
     // Parses simulation jobs in readiness for processing.
     parseJobs = function (simulation) {
+        var firstJob, incompleteJobs;
+
         // Parse each job.
         _.each(simulation.ext.jobs, parseJob);
 
         // Sort.
         simulation.ext.jobs = _.sortBy(simulation.ext.jobs, 'executionStartDate');
 
-        // Set id.
-        _.each(simulation.ext.jobs, function (job, index) {
-            job.ext.id = index + 1;
-        });
+        // Set spin-up job start date if necessary.
+        firstJob = _.first(simulation.ext.jobs);
+        if (_.isNull(firstJob.executionStartDate)) {
+            firstJob.executionStartDate = simulation.executionStartDate;
+            parseJob(firstJob);
+        }
 
-        // Reverse sort so that most recent is displayed first.
-        simulation.ext.jobs = simulation.ext.jobs.reverse();
+        // When a simulation is completed ensure that
+        // incomplete jobs have the same termination status.
+        if (simulation.executionEndDate) {
+            incompleteJobs = _.filter(simulation.ext.jobs, function (job) {
+                return _.isNull(job.executionEndDate);
+            });
+            _.each(incompleteJobs, function (job) {
+                job.isError = simulation.isError;
+                parseJob(job);
+            });
+        }
+
+        // Resort.
+        simulation.ext.jobs = _.sortBy(simulation.ext.jobs, 'executionStartDate');
 
         // Set running jobs.
         simulation.ext.runningJobs = _.filter(simulation.ext.jobs, function (job) {
@@ -79,6 +95,14 @@
         simulation.ext.errorJobs = _.filter(simulation.ext.jobs, function (job) {
             return job.isError;
         });
+
+        // Set id.
+        _.each(simulation.ext.jobs, function (job, index) {
+            job.ext.id = index + 1;
+        });
+
+        // Reverse sort so that most recent is displayed first.
+        simulation.ext.jobs = simulation.ext.jobs.reverse();
     };
 
     var setCVTermDisplayName = function (simulation, termType, fieldName) {
@@ -122,7 +146,9 @@
         APP.utils.formatDateField(simulation, "outputEndDate");
 
         // Parse jobs.
-        parseJobs(simulation);
+        if (simulation.ext.jobs.length) {
+            parseJobs(simulation);
+        }
 
         // Set execution state.
         setExecutionState(simulation);

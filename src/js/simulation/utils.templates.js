@@ -163,8 +163,9 @@
             header:
                 "<tr class='bg-primary'>\n\
                     <th title='ID'>#</th>\n\
-                    <th title='Start Date'>Start Date</th>\n\
-                    <th title='End Date' class=''>End Date</th>\n\
+                    <th title='UID' class='hidden'>UID</th>\n\
+                    <th title='Start Date' class='text-center'>Start Date</th>\n\
+                    <th title='End Date' class='text-center'>End Date</th>\n\
                     <th title='Duration' class='text-center'>Duration (hours)</th>\n\
                     <th title='Expected End Date' class='text-center'>Expected End Date</th>\n\
                     <th title='Was Late' class='text-center'>Was Late ?</th>\n\
@@ -184,11 +185,12 @@
 
             row:
                 "<td class='id' title='<%= ext.id %>'><%= ext.id %></td>\n\
-                <td class='executionStartDate' title='<%= ext.executionStartDate %>'><%= ext.executionStartDate %></td>\n\
-                <td class='executionEndDate' title='<%= ext.executionEndDate %>'><%= ext.executionEndDate %></td>\n\
+                <td class='uid hidden' title='<%= jobUID %>'><%= jobUID %></td>\n\
+                <td class='executionStartDate text-center' title='<%= ext.executionStartDate %>'><%= ext.executionStartDate %></td>\n\
+                <td class='executionEndDate text-center' title='<%= ext.executionEndDate %>'><%= ext.executionEndDate %></td>\n\
                 <td class='duration text-center' title='<%= ext.duration %>'><%= ext.duration %></td>\n\
                 <td class='expectedExecutionEndDate text-center' title='<%= ext.expectedExecutionEndDate %>'><%= ext.expectedExecutionEndDate %></td>\n\
-                <td class='wasLate text-center' title='<%= wasLate ? 'Yes' : '' %>'><%= wasLate ? 'Yes' : '' %></td>"
+                <td class='wasLate text-center' title='<%= wasLate ? 'Yes' : '--' %>'><%= wasLate ? 'Yes' : '--' %></td>"
         },
 
         notifications:
