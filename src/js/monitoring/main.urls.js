@@ -28,7 +28,7 @@
         IM: {
             'httpPostTarget': 'http://webservices.ipsl.jussieu.fr/monitoring_fromprodiguer/index.php',
             'ccrt': 'http://esgf.extra.cea.fr/thredds/dodsC/work',
-            'idris': 'https://prodn.idris.fr/thredds/fileServer/ipsl_public',
+            'idris': 'https://prodn.idris.fr/thredds/dodsC/ipsl_public',
             'tgcc': 'http://esgf.extra.cea.fr/thredds/dodsC/work'
         }
     };
