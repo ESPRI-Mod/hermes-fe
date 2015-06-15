@@ -30,7 +30,8 @@
             expectedExecutionEndDate: '--',
             executionStartDate: '--',
             executionState: undefined,
-            duration: '--'
+            duration: '--',
+            type: job.typeof ? job.typeof : 'compute'
         };
 
         // Format date fields.

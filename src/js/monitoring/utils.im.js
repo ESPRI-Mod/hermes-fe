@@ -17,12 +17,12 @@
         url.push(simulation.ext.mURL);
         url.push(simulation.computeNodeLogin);
         if (simulation.ext.modelSynonyms.length) {
-            url.push(simulation.ext.modelSynonyms[0].toUpperCase());
+            url.push(simulation.ext.modelSynonyms[0]);
         } else {
-            url.push(simulation.model.toUpperCase());
+            url.push(simulation.modelRaw || simulation.model);
         }
-        url.push(simulation.space.toUpperCase());
-        url.push(simulation.ext.experiment);
+        url.push(simulation.spaceRaw || simulation.space);
+        url.push(simulation.experimentRaw || simulation.ext.experiment);
         url.push(simulation.name);
         url.push("MONITORING/index.html");
 
@@ -41,12 +41,12 @@
         url.push(simulation.ext.imURL);
         url.push(simulation.computeNodeLogin);
         if (simulation.ext.modelSynonyms.length) {
-            url.push(simulation.ext.modelSynonyms[0].toUpperCase());
+            url.push(simulation.ext.modelSynonyms[0]);
         } else {
-            url.push(simulation.model.toUpperCase());
+            url.push(simulation.modelRaw || simulation.model);
         }
-        url.push(simulation.space.toUpperCase());
-        url.push(simulation.ext.experiment);
+        url.push(simulation.spaceRaw || simulation.space);
+        url.push(simulation.experimentRaw || simulation.ext.experiment);
         url.push(simulation.name);
 
         return url.join("/");
