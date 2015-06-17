@@ -11,7 +11,7 @@
 
         // Update module state.
         MOD.state.simulation = data.simulation;
-        MOD.state.jobHistory = data.simulation.ext.jobs;
+        MOD.state.jobHistory = data.simulation.jobs.global.all;
         MOD.state.configCard = data.configCard;
 
         // Fire event.

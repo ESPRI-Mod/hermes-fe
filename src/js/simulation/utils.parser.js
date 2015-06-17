@@ -1,10 +1,20 @@
-(function (MOD, _, moment, numeral) {
+(function (APP, MOD, _, moment, numeral) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Closure vars.
-    var setExecutionState, parseJob, parseJobs;
+    var setExecutionState,
+        getJobTypesets,
+        parseComputeJobs,
+        parseJob,
+        parseJobs,
+        setCVTermDisplayName,
+        setJobIdentifiers,
+        setJobStatesets,
+        setJobTypeset,
+        setJobTypesets,
+        sortJobs;
 
     // Sets simulation's current execution status.
     setExecutionState = function (simulation) {
@@ -21,18 +31,31 @@
         }
     };
 
+    // Set case sensitive cv related field names.
+    setCVTermDisplayName = function (simulation, termType, fieldName) {
+        var term;
+
+        fieldName = fieldName || termType;
+        term = MOD.cv.getTerm(termType, simulation[fieldName]);
+        if (term) {
+            simulation.ext[fieldName] = term.displayName;
+        }
+    };
+
     // Parses a simulation job in readiness for processing.
     parseJob = function (job) {
-        // Set default extension field values.
-        job.ext = {
-            id: undefined,
-            executionEndDate: '--',
-            expectedExecutionEndDate: '--',
-            executionStartDate: '--',
-            executionState: undefined,
-            duration: '--',
-            type: job.typeof ? job.typeof : 'compute'
-        };
+        // Extend job.
+        _.extend(job, {
+            ext: {
+                id: undefined,
+                executionEndDate: '--',
+                expectedExecutionEndDate: '--',
+                executionStartDate: '--',
+                executionState: undefined,
+                duration: '--',
+                type: job.typeof || 'compute'
+            }
+        });
 
         // Format date fields.
         APP.utils.formatDateTimeField(job, "executionStartDate");
@@ -41,7 +64,7 @@
 
         // Set duration (in seconds).
         if (job.executionStartDate && job.executionEndDate) {
-            job.ext.duration = numeral(job.executionEndDate.diff(job.executionStartDate, 'seconds')).format('00:00:00');;
+            job.ext.duration = numeral(job.executionEndDate.diff(job.executionStartDate, 'seconds')).format('00:00:00');
         }
 
         // Set execution state.
@@ -54,91 +77,149 @@
         }
     };
 
-    // Parses simulation jobs in readiness for processing.
-    parseJobs = function (simulation) {
+    // Returns top-level job sets.
+    getJobTypesets = function (simulation) {
+        return [
+            simulation.jobs.global,
+            simulation.jobs.compute,
+            simulation.jobs.postProcessing,
+            simulation.jobs.postProcessingFromChecker
+        ];
+    };
+
+    // Sets a job type set.
+    setJobTypeset = function (simulation, jobTypeset, jobType) {
+        jobTypeset.all = _.filter(simulation.jobs.global.all, function (job) {
+            return job.typeof === jobType;
+        });
+    };
+
+    // Sets all job type sets.
+    setJobTypesets = function (simulation) {
+        setJobTypeset(simulation, simulation.jobs.compute, 'computing');
+        setJobTypeset(simulation, simulation.jobs.postProcessing, 'post-processing');
+        setJobTypeset(simulation, simulation.jobs.postProcessingFromChecker, 'post-processing-from-checker');
+    };
+
+    // Sorts jobs.
+    sortJobs = function (simulation) {
+        _.each(getJobTypesets(simulation), function (jobSet) {
+            _.each(['all', 'running', 'complete', 'running'], function (jobState) {
+                jobSet[jobState] = _.sortBy(jobSet[jobState], 'executionStartDate');
+            });
+        });
+    };
+
+    // Sets job state sets.
+    setJobStatesets = function (simulation) {
+        _.each(getJobTypesets(simulation), function (jobSet) {
+            _.each(['running', 'complete', 'error'], function (jobState) {
+                jobSet[jobState] = _.filter(jobSet.all, function (job) {
+                    return job.ext.executionState === jobState;
+                });
+            });
+        });
+    };
+
+    // Parses set of simulation compute jobs.
+    parseComputeJobs = function (simulation) {
         var firstJob, incompleteJobs;
 
-        // Parse each job.
-        _.each(simulation.ext.jobs, parseJob);
-
-        // Sort.
-        simulation.ext.jobs = _.sortBy(simulation.ext.jobs, 'executionStartDate');
-
         // Set spin-up job start date if necessary.
-        firstJob = _.first(simulation.ext.jobs);
+        firstJob = _.first(simulation.jobs.compute.all);
         if (_.isNull(firstJob.executionStartDate)) {
             firstJob.executionStartDate = simulation.executionStartDate;
             parseJob(firstJob);
         }
 
         // When a simulation is completed ensure that
-        // incomplete jobs have the same termination status.
+        // incomplete compute jobs have the same termination status.
         if (simulation.executionEndDate) {
-            incompleteJobs = _.filter(simulation.ext.jobs, function (job) {
+            incompleteJobs = _.filter(simulation.jobs.compute.all, function (job) {
                 return _.isNull(job.executionEndDate);
             });
             _.each(incompleteJobs, function (job) {
-                job.isError = simulation.isError;
-                parseJob(job);
+                job.ext.executionState = simulation.isError ? 'error' : 'complete';
             });
         }
+    };
 
-        // Resort.
-        simulation.ext.jobs = _.sortBy(simulation.ext.jobs, 'executionStartDate');
-
-        // Set running jobs.
-        simulation.ext.runningJobs = _.filter(simulation.ext.jobs, function (job) {
-            return _.isNull(job.executionEndDate);
-        });
-        simulation.ext.completeJobs = _.filter(simulation.ext.jobs, function (job) {
-            return !_.isNull(job.executionEndDate) && !job.isError;
-        });
-        simulation.ext.errorJobs = _.filter(simulation.ext.jobs, function (job) {
-            return job.isError;
-        });
-
-        // Set id.
-        _.each(simulation.ext.jobs, function (job, index) {
+    // Assigns job identifiers.
+    setJobIdentifiers = function (simulation) {
+        _.each(simulation.jobs.global.all, function (job, index) {
             job.ext.id = index + 1;
+        });
+    };
+
+    // Parses simulation jobs in readiness for processing.
+    parseJobs = function (simulation) {
+        // Perform initial job parse.
+        _.each(simulation.jobs.global.all, parseJob);
+
+        // Invoke parsing operations.
+        _.each([
+            sortJobs,
+            setJobTypesets,
+            parseComputeJobs,
+            sortJobs,
+            setJobStatesets,
+            setJobIdentifiers
+        ], function (parser) {
+            parser(simulation);
         });
 
         // Reverse sort so that most recent is displayed first.
-        simulation.ext.jobs = simulation.ext.jobs.reverse();
-    };
-
-    var setCVTermDisplayName = function (simulation, termType, fieldName) {
-        var term;
-
-        fieldName = fieldName || termType;
-        term = MOD.cv.getTerm(termType, simulation[fieldName]);
-        if (term) {
-            simulation.ext[fieldName] = term.displayName;
-        }
+        simulation.jobs.global.all = simulation.jobs.global.all.reverse();
     };
 
     // Parses a simulation in readiness for processing.
     MOD.parseSimulation = function (simulation, jobHistory) {
         var caption;
 
-        // Set default extension field values.
-        simulation.ext = {
-            activity: undefined,
-            caption: undefined,
-            completeJobs: [],
-            errorJobs: [],
-            executionEndDate: "--",
-            executionState: undefined,
-            executionStartDate: "--",
-            experiment: undefined,
-            jobs: jobHistory,
-            jobsCaption: undefined,
-            model: undefined,
-            outputEndDate: "--",
-            outputStartDate: "--",
-            runningJobs: [],
-            simulationSpace: undefined,
-            simulation_space: undefined
-        };
+        // Extend simulation.
+        _.extend(simulation, {
+            ext: {
+                activity: undefined,
+                caption: undefined,
+                executionEndDate: "--",
+                executionState: undefined,
+                executionStartDate: "--",
+                experiment: undefined,
+                model: undefined,
+                outputEndDate: "--",
+                outputStartDate: "--",
+                runningJobs: [],
+                simulationSpace: undefined,
+                simulation_space: undefined
+            },
+            jobs: {
+                caption: undefined,
+                compute: {
+                    all: [],
+                    complete: [],
+                    error: [],
+                    running: []
+                },
+                global: {
+                    all: jobHistory,
+                    complete: [],
+                    error: [],
+                    running: []
+                },
+                postProcessing: {
+                    all: [],
+                    complete: [],
+                    error: [],
+                    running: []
+                },
+                postProcessingFromChecker: {
+                    all: [],
+                    complete: [],
+                    error: [],
+                    running: []
+                }
+            }
+        });
 
         // Format date fields.
         APP.utils.formatDateField(simulation, "executionStartDate");
@@ -147,23 +228,24 @@
         APP.utils.formatDateField(simulation, "outputEndDate");
 
         // Parse jobs.
-        if (simulation.ext.jobs.length) {
+        if (jobHistory.length) {
             parseJobs(simulation);
         }
 
         // Set execution state.
         setExecutionState(simulation);
 
-        // Set case sensitive CV fields.
+        // Update case sensitive CV fields.
         setCVTermDisplayName(simulation, 'activity');
         setCVTermDisplayName(simulation, 'simulation_space', 'space');
         setCVTermDisplayName(simulation, 'simulation_state', 'executionState');
+        setCVTermDisplayName(simulation, 'compute_node', 'computeNode');
         setCVTermDisplayName(simulation, 'compute_node_login', 'computeNodeLogin');
         setCVTermDisplayName(simulation, 'compute_node_machine', 'computeNodeMachine');
         setCVTermDisplayName(simulation, 'model');
         setCVTermDisplayName(simulation, 'experiment');
 
-        // Set caption.
+        // Set simulation caption.
         caption = "{activity} -> {space} -> {name}";
         caption = caption.replace("{activity}", simulation.activity.toUpperCase());
         caption = caption.replace("{space}", simulation.space.toUpperCase());
@@ -172,13 +254,14 @@
 
         // Set jobs caption.
         caption = "{0} jobs: {1} running; {2} complete; {3} errors.";
-        caption = caption.replace("{0}", simulation.ext.jobs.length);
-        caption = caption.replace("{1}", simulation.ext.runningJobs.length);
-        caption = caption.replace("{2}", simulation.ext.completeJobs.length);
-        caption = caption.replace("{3}", simulation.ext.errorJobs.length);
-        simulation.ext.jobsCaption = caption;
+        caption = caption.replace("{0}", simulation.jobs.global.all.length);
+        caption = caption.replace("{1}", simulation.jobs.global.running.length);
+        caption = caption.replace("{2}", simulation.jobs.global.complete.length);
+        caption = caption.replace("{3}", simulation.jobs.global.error.length);
+        simulation.jobs.caption = caption;
     };
 }(
+    this.APP,
     this.APP.modules.simulation,
     this._,
     this.moment,

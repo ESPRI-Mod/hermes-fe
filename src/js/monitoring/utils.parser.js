@@ -40,23 +40,25 @@
     MOD.parseSimulation = function (simulation, jobHistory) {
         var model;
 
-        // Set extension fields.
-        simulation.ext = {
-            executionState: undefined,
-            experiment: undefined,
-            isSelectedForIM: false,
-            jobs: _.filter(jobHistory, function (job) {
-                return job.simulationUID === simulation.uid;
-            }),
-            jobCount: 0,
-            hasLateJob: false,
-            hasRunningJob: false,
-            imURL: undefined,
-            isRestart: simulation.tryID > 1,
-            modelSynonyms: [],
-            mURL: undefined,
-            runningJobs: []
-        };
+        // Extend simulation.
+        _.extend(simulation, {
+            ext: {
+                executionState: undefined,
+                experiment: undefined,
+                isSelectedForIM: false,
+                jobs: _.filter(jobHistory, function (job) {
+                    return job.simulationUID === simulation.uid;
+                }),
+                jobCount: 0,
+                hasLateJob: false,
+                hasRunningJob: false,
+                imURL: undefined,
+                isRestart: simulation.tryID > 1,
+                modelSynonyms: [],
+                mURL: undefined,
+                runningJobs: []
+            }
+        });
 
         // Parse jobs, execution status, obsolete simulations.
         MOD.parseSimulationJobs(simulation);
@@ -117,7 +119,9 @@
         }
 
         // Set has late job flag.
-        if (_.findWhere(simulation.ext.jobs, { isLate: true })) {
+        if (_.isUndefined(simulation.executionEndDate) &&
+            simulation.isError === false &&
+            _.findWhere(simulation.ext.jobs, { isLate: true })) {
             simulation.ext.hasLateJob = true;
         }
     };

@@ -66,20 +66,20 @@
                     <div class='col-md-3'>\n\
                         <div class='row'>\n\
                             <span class='col-md-5'>\n\
-                                <strong>Machine</strong>\n\
+                                <strong>Centre</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.ext.computeNodeMachine %>\n\
+                                <%- simulation.ext.computeNode %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
                     <div class='col-md-3'>\n\
                         <div class='row'>\n\
                             <span class='col-md-5'>\n\
-                                <strong>Login</strong>\n\
+                                <strong>Machine</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.ext.computeNodeLogin %>\n\
+                                <%- simulation.ext.computeNodeMachine %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -108,6 +108,16 @@
                     <div class='col-md-3'>\n\
                         <div class='row'>\n\
                             <span class='col-md-5'>\n\
+                                <strong>Login</strong>\n\
+                            </span>\n\
+                            <span class='col-md-7'>\n\
+                                <%- simulation.ext.computeNodeLogin %>\n\
+                            </span>\n\
+                        </div>\n\
+                    </div>\n\
+                    <div class='col-md-3'>\n\
+                        <div class='row'>\n\
+                            <span class='col-md-5'>\n\
                                 <strong>Model</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
@@ -125,6 +135,18 @@
                             </span>\n\
                         </div>\n\
                     </div>\n\
+                    <div class='col-md-3'>\n\
+                        <div class='row'>\n\
+                            <span class='col-md-5'>\n\
+                                <strong>Acc. Project</strong>\n\
+                            </span>\n\
+                            <span class='col-md-7'>\n\
+                                <%- simulation.accountingProject %>\n\
+                            </span>\n\
+                        </div>\n\
+                    </div>\n\
+                </div>\n\
+                <div class='row'>\n\
                     <div class='col-md-3'>\n\
                         <div class='row'>\n\
                             <span class='col-md-5'>\n\
@@ -181,7 +203,7 @@
                         <span class='job-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small>\n\
                     </span>\n\
                     <span class='pull-right'>\n\
-                        <strong><%- simulation.ext.jobsCaption %></strong>\n\
+                        <strong><%- simulation.jobs.caption %></strong>\n\
                     </span>\n\
                 </div>",
 

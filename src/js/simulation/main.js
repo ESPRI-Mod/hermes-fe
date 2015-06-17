@@ -37,7 +37,10 @@
             "running" : 'job-state-running',
             "complete" : 'job-state-complete',
             "error" : 'job-state-error',
-        }
+        },
+
+        // Set of supported job state types.
+        jobStates: ["running", "complete", "error"]
     });
 
 }(
