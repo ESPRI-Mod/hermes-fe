@@ -9,7 +9,7 @@
  * Licensed under MIT
  * ========================================================= */
 
-(function ($) {
+;(function($) {
 
     'use strict';
 
@@ -40,13 +40,13 @@
                 , evt
                 , tp
                 , items
-                , relatedTarget = { relatedTarget: this };
+                , relatedTarget = { relatedTarget: this, target: e.currentTarget };
 
             if (this.isDisabled()) return;
 
             this.closemenu();
 
-            if (!this.before.call(this,e,$(e.currentTarget))) return;
+            if (this.before.call(this,e,$(e.currentTarget)) === false) return;
 
             $menu = this.getMenu();
             $menu.trigger(evt = $.Event('show.bs.context', relatedTarget));
@@ -89,7 +89,7 @@
                 .off('click.context.data-api', $menu.selector);
             // Don't propagate click event so other currently
             // opened menus won't close.
-            return false;
+            e.stopPropagation();
         }
 
         ,keydown: function(e) {
@@ -116,7 +116,7 @@
         }
 
         ,isDisabled: function() {
-            return this.$element.hasClass('disabled') ||
+            return this.$element.hasClass('disabled') || 
                     this.$element.attr('disabled');
         }
 
@@ -162,7 +162,7 @@
             parentOffset = $menu.offsetParent().offset();
             X.left = X.left - parentOffset.left;
             Y.top = Y.top - parentOffset.top;
-
+ 
             return $.extend(tp, Y, X);
         }
 
@@ -195,18 +195,11 @@
                 data.closemenu();
             });
         })
-        .on('click.context.data-api', toggle, function(e) {
-            e.stopPropagation();
-            $(this).contextmenu('show', e);
-
-            e.preventDefault();
-            e.stopPropagation();
-        })
         .on('contextmenu.context.data-api', toggle, function(e) {
             $(this).contextmenu('show', e);
 
             e.preventDefault();
             e.stopPropagation();
         });
-
+        
 }(jQuery));

@@ -14,7 +14,7 @@
         MOD.parseSimulation(data.simulation, data.jobHistory);
 
         // Update module state.
-        MOD.state.simulationSet[simulation.uid] = simulation;
+        MOD.state.simulationSet[data.simulation.uid] = data.simulation;
         MOD.state.simulationList = _.values(MOD.state.simulationSet);
 
         // Update filtered simulations.
