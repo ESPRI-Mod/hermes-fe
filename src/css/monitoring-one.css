@@ -1,0 +1,29 @@
+article > header > h2 {
+	padding: 3px;
+	margin-bottom: 0px;
+	margin-top: 0px;
+}
+
+article > header > h2 > span.inter-monitoring {
+	padding-right: 5px;
+	cursor: pointer;
+}
+
+article > section {
+	margin-bottom: 15px;
+}
+
+article > section > header > h3 {
+	padding: 3px;
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+table.job-history-table {
+	margin-bottom: 0px;
+}
+
+.module-footer {
+	padding: 8px;
+	border: 1px solid #BCE8F1;
+}

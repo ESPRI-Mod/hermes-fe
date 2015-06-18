@@ -1,0 +1,35 @@
+.monitoring-state-queued {
+	background-color: #F5F5F5;
+	color: #333;
+}
+
+.monitoring-state-running {
+	background-color: #D9EDF7;
+	color: #333;
+}
+
+.monitoring-state-complete {
+	background-color: #DFF0D8;
+	color: #333;
+}
+
+.monitoring-state-error {
+	background-color: #F2DEDE;
+	color: #333;
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;  
+}
+
+:-ms-input-placeholder {  
+   text-align: center; 
+}

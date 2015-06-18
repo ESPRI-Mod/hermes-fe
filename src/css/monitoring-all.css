@@ -1,0 +1,33 @@
+span.pagination {
+	margin: -7px 0 0 0;
+}
+
+input.pagination-info {
+	width: 120px;
+}
+
+.module-footer {
+	padding: 8px;
+	border: 1px solid #BCE8F1;
+}
+
+table.monitoring-table {
+	margin-bottom: 10px;
+}
+
+table.monitoring-table tr td.row-link {
+	cursor: pointer;
+}
+
+table.monitoring-table tr td.monitoring {
+	cursor: pointer;
+}
+
+table.monitoring-table th.interMonitoring {
+	cursor: pointer;
+}
+
+.btn.criteria-open-dialog {
+	margin-top: -7px;
+	width: 100px;
+}

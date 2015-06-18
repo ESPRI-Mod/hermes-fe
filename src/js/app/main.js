@@ -50,18 +50,8 @@ window.$ = window.$jq = jQuery.noConflict();
 
         // Retrieves a module by name.
         getModule: function (name) {
-            name = name.toLowerCase();
-            return _.find(APP.modules, function(mod) {
-                var keys;
-
-                keys = _.map(mod.keyAliases, function(alias) {
-                    return alias.toLowerCase()
-                });
-                keys.push(mod.key.toLowerCase());
-
-                return _.find(keys, function(key) {
-                    return key === name;
-                });
+            return _.find(APP.modules, function (mod) {
+                return mod.key.toLowerCase() === name.toLowerCase();
             });
         },
 
@@ -72,9 +62,6 @@ window.$ = window.$jq = jQuery.noConflict();
 
             // Set module defaults.
             _.defaults(module, {
-                // Module key aliases.
-                keyAliases: [],
-
                 // Flag indicating whether module is active.
                 isActive: true,
 
