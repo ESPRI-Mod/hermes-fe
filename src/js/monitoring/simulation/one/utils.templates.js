@@ -179,7 +179,7 @@
         jobHistory: {
             caption:
                 "<header class='bg-info'>\n\
-                    <h3>Jobs</h3>\n\
+                    <h3>Jobs<span class='pull-right'><%- simulation.jobs.shortCaption %><span></h3>\n\
                 </header>",
 
             header:
@@ -198,12 +198,12 @@
             footer:
                 "<div class='module-footer'>\n\
                     <span>\n\
-                        <span class='job-state-running'><small><strong>&nbsp;RUNNING&nbsp;</strong></small></span>\n\
-                        <span class='job-state-complete'><small><strong>&nbsp;COMPLETE&nbsp;</strong></small></span>\n\
-                        <span class='job-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small>\n\
+                        <span class='monitoring-state-running'><small><strong>&nbsp;RUNNING&nbsp;</strong></small></span>\n\
+                        <span class='monitoring-state-complete'><small><strong>&nbsp;COMPLETE&nbsp;</strong></small></span>\n\
+                        <span class='monitoring-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small>\n\
                     </span>\n\
                     <span class='pull-right'>\n\
-                        <strong><%- simulation.jobs.caption %></strong>\n\
+                        <strong><%- simulation.jobs.longCaption %></strong>\n\
                     </span>\n\
                 </div>",
 

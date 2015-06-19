@@ -13,12 +13,12 @@
             MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
             MOD.events.on("state:simulationListNull", this._onSimulationListNull, this);
 
-            MOD.events.on("state:simulationStart", this._onSimulationStart, this);
-            MOD.events.on("state:simulationComplete", this._onSimulationComplete, this);
-            MOD.events.on("state:simulationError", this._onSimulationError, this);
-            MOD.events.on("state:jobStart", this._onJobStart, this);
-            MOD.events.on("state:jobComplete", this._onJobComplete, this);
-            MOD.events.on("state:jobError", this._onJobError, this);
+            MOD.events.on("state:simulationStart", this._onMonitoringEvent, this);
+            MOD.events.on("state:simulationComplete", this._onMonitoringEvent, this);
+            MOD.events.on("state:simulationError", this._onMonitoringEvent, this);
+            MOD.events.on("state:jobStart", this._onMonitoringEvent, this);
+            MOD.events.on("state:jobComplete", this._onMonitoringEvent, this);
+            MOD.events.on("state:jobError", this._onMonitoringEvent, this);
 
             MOD.events.on("state:simulationStatusUpdate", this._onSimulationStateUpdate, this);
             MOD.events.on("ui:pagination", this._renderPage, this);
@@ -90,39 +90,9 @@
             $s.find(".jobCount").text(ei.simulation.jobs.count);
         },
 
-        // Simulation start event handler.
+        // Monitoring event handler.
         // @ei      Event information.
-        _onSimulationStart: function (ei) {
-            this._updateRow(ei);
-        },
-
-        // Simulation complete event handler.
-        // @ei      Event information.
-        _onSimulationComplete: function (ei) {
-            this._updateRow(ei);
-        },
-
-        // Simulation error event handler.
-        // @ei      Event information.
-        _onSimulationError: function (ei) {
-            this._updateRow(ei);
-        },
-
-        // Job start event handler.
-        // @ei      Event information.
-        _onJobStart: function (ei) {
-            this._updateRow(ei);
-        },
-
-        // Job complete event handler.
-        // @ei      Event information.
-        _onJobComplete: function (ei) {
-            this._updateRow(ei);
-        },
-
-        // Job error event handler.
-        // @ei      Event information.
-        _onJobError: function (ei) {
+        _onMonitoringEvent: function (ei) {
             this._updateRow(ei);
         }
     });

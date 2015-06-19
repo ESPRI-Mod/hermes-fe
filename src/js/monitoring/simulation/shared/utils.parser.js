@@ -188,7 +188,7 @@
                 expectedExecutionEndDate: '--',
                 executionStartDate: '--',
                 executionState: undefined,
-                type: job.typeof || 'compute'
+                type: job.typeof || 'computing'
             },
             isLate: undefined
         });
@@ -251,7 +251,6 @@
                 space: undefined
             },
             jobs: {
-                caption: undefined,
                 compute: {
                     all: [],
                     complete: [],
@@ -266,6 +265,7 @@
                     error: [],
                     running: []
                 },
+                longCaption: undefined,
                 postProcessing: {
                     all: [],
                     complete: [],
@@ -277,13 +277,14 @@
                     complete: [],
                     error: [],
                     running: []
-                }
+                },
+                shortCaption: undefined,
             }
         });
 
         // Format date fields.
-        APP.utils.formatDateField(simulation, "executionStartDate");
-        APP.utils.formatDateField(simulation, "executionEndDate");
+        APP.utils.formatDateTimeField(simulation, "executionStartDate");
+        APP.utils.formatDateTimeField(simulation, "executionEndDate");
         APP.utils.formatDateField(simulation, "outputStartDate");
         APP.utils.formatDateField(simulation, "outputEndDate");
 
@@ -317,13 +318,20 @@
         caption = caption.replace("{name}", simulation.name);
         simulation.ext.caption = caption;
 
-        // Set jobs caption.
+        // Set jobs long caption.
         caption = "{0} jobs: {1} running; {2} complete; {3} errors.";
         caption = caption.replace("{0}", simulation.jobs.global.all.length);
         caption = caption.replace("{1}", simulation.jobs.global.running.length);
         caption = caption.replace("{2}", simulation.jobs.global.complete.length);
         caption = caption.replace("{3}", simulation.jobs.global.error.length);
-        simulation.jobs.caption = caption;
+        simulation.jobs.longCaption = caption;
+
+        // Set jobs short caption.
+        caption = "{0} running | {1} complete | {2} errors";
+        caption = caption.replace("{0}", simulation.jobs.global.running.length);
+        caption = caption.replace("{1}", simulation.jobs.global.complete.length);
+        caption = caption.replace("{2}", simulation.jobs.global.error.length);
+        simulation.jobs.shortCaption = caption;
 
         // Set model synonyms.
         model = MOD.cv.getTerm('model', simulation.model);

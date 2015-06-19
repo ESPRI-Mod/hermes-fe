@@ -7,7 +7,7 @@
     var processJobEvent = function (eventType, data) {
         var simulation;
 
-        // Set matching simulation.
+        // Escape if simulation is not in memory.
         simulation = data.simulation = MOD.state.simulationSet[data.job.simulationUID];
         if (_.isUndefined(simulation)) {
             return;
@@ -32,18 +32,21 @@
     // Job complete event handler.
     // @data      Event data received from server.
     MOD.events.on("ws:jobComplete", function (data) {
+        console.log("jobComplete event recieved: job id=" + data.job.jobUID);
         processJobEvent("jobComplete", data);
     });
 
     // Job error event handler.
     // @data      Event data received from server.
     MOD.events.on("ws:jobError", function (data) {
+        console.log("jobError event recieved: job id=" + data.job.jobUID);
         processJobEvent("jobError", data);
     });
 
     // Job start event handler.
     // @data      Event data received from server.
     MOD.events.on("ws:jobStart", function (data) {
+        console.log("jobStart event recieved: job id=" + data.job.jobUID);
         processJobEvent("jobStart", data);
     });
 
