@@ -21,7 +21,7 @@
 
     // Send a ws event module notification.
     dispatchEvent = function (ei) {
-        log("triggering event :: " + ei.eventType + " @ " + new Date());
+        log("triggering event :: " + ei.eventType);
         MOD.events.trigger(ei.eventType, ei);
     };
 

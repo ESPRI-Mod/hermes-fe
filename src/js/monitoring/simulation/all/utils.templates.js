@@ -72,6 +72,7 @@
                 </ul>",
 
             header: "<tr class='bg-primary'>\n\
+                        <th title='UID' class='hidden'>UID</th>\n\
                         <th title='Activity'>Activity</th>\n\
                         <th title='Name' class=''>Name</th>\n\
                         <th title='Try' class='text-center'>Try</th>\n\
@@ -89,14 +90,15 @@
                         </th>\tn\
                     </ttr>",
 
-            row: "<td class='row-link activity text-uppercase' title='<%= activity %>'><%= activity %></td>\n\
+            row: "<td class='row-link uid hidden' title='<%= uid %>'><%= uid %></td>\n\
+                  <td class='row-link activity' title='<%= ext.activity %>'><%= ext.activity %></td>\n\
                   <td class='row-link name' title='<%= name %>'><%= name %></td>\n\
                   <td class='row-link tryCount text-center <%= tryID > 1 ? 'bg-danger' : '' %>' title='<%= tryID %>'><%= tryID %></td>\n\
                   <td class='row-link jobCount text-center <%= jobs.compute.hasLate ? 'bg-danger' : '' %>' title='<%= jobs.count %>'><%= jobs.count %></td>\n\
-                  <td class='row-link computeNodeMachine text-uppercase text-center' title='<%= computeNodeMachine %>'><%= computeNodeMachine %></td>\n\
+                  <td class='row-link computeNodeMachine text-center' title='<%= ext.computeNodeMachine %>'><%= ext.computeNodeMachine %></td>\n\
                   <td class='row-link computeNodeLogin text-center' title='<%= computeNodeLogin %>'><%= computeNodeLogin %></td>\n\
-                  <td class='row-link model text-uppercase text-center' title='<%= model %>'><%= model %></td>\n\
-                  <td class='row-link space text-uppercase text-center' title='<%= space %>'><%= space %></td>\n\
+                  <td class='row-link model text-center' title='<%= ext.model %>'><%= ext.model %></td>\n\
+                  <td class='row-link space text-center' title='<%= ext.space %>'><%= ext.space %></td>\n\
                   <td class='row-link experiment' title='<%= ext.experiment %>'><%= ext.experiment %></td>\n\
                   <td class='row-link executionStartDate text-center' title='<%= executionStartDate %>'><%= ext.executionStartDate %></td>\n\
                   <td class='row-link executionEndDate text-center' title='<%= executionEndDate %>'><%= ext.executionEndDate %></td>\n\
