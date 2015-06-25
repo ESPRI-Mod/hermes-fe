@@ -296,9 +296,9 @@
         setExecutionState(simulation);
 
         // Parse obsolete simulations.
-        // if (_.has(MOD.state, 'simulationSet')) {
-        //     excludePreviousTries(simulation.hashid);
-        // }
+        if (_.has(MOD.state, 'simulationSet')) {
+            excludePreviousTries(simulation.hashid);
+        }
 
         // Update case sensitive CV fields.
         setCVTermDisplayName(simulation, 'activity');
