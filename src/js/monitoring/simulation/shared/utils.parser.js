@@ -106,10 +106,12 @@
         var firstJob, incompleteJobs;
 
         // Set spin-up job start date if necessary.
-        firstJob = _.first(simulation.jobs.compute.all);
-        if (_.isNull(firstJob.executionStartDate)) {
-            firstJob.executionStartDate = simulation.executionStartDate;
-            MOD.parseJob(firstJob);
+        if (simulation.jobs.compute.all.length) {
+            firstJob = _.first(simulation.jobs.compute.all);
+            if (_.isNull(firstJob.executionStartDate)) {
+                firstJob.executionStartDate = simulation.executionStartDate;
+                MOD.parseJob(firstJob);
+            }
         }
 
         // When a simulation is completed ensure that
