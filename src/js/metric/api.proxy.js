@@ -5,14 +5,12 @@
 //      2.  Call one of the following methods with the relevant parameters:
 //          2.1 METRIC_API.fetch
 //              2.1.1   group - id of metric group to be retrieved;
-//              2.1.2   includeDBCols - flag indicating whether metric columns will also be returned;
-//              2.1.3   callback - function to invoke whent he API response is received.
-//          2.2 METRIC_API.fetchCount (group, includeDBCols, callback)
+//              2.1.2   callback - function to invoke whent he API response is received.
+//          2.2 METRIC_API.fetchCount (group, callback)
 //              2.2.1   group - id of metric group to be retrieved;
 //              2.2.2   callback - function to invoke whent he API response is received.
-//          2.3 METRIC_API.fetchColumns (group, includeDBCols, callback)
+//          2.3 METRIC_API.fetchColumns (group, callback)
 //              2.3.1   group - id of metric group to be retrieved;
-//              2.3.2   includeDBCols - flag indicating whether metric columns will also be returned;
 //              2.3.3   callback - function to invoke whent he API response is received.
 //          2.4 METRIC_API.fetchList
 //              2.4.1   callback - function to invoke whent he API response is received.
@@ -25,8 +23,8 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Declare vars.
-    var api = root.METRIC_API = {},
+    // Declare module.
+    var api = {},
 
         // Set of constants.
         constants = {
@@ -35,8 +33,8 @@
 
             // API URL's.
             URLS: {
-                fetch: 'fetch?group={0}&include_db_id={1}',
-                fetchColumns: 'fetch_columns?group={0}&include_db_id={1}',
+                fetch: 'fetch?group={0}',
+                fetchColumns: 'fetch_columns?group={0}',
                 fetchCount: 'fetch_count?group={0}',
                 fetchList: 'fetch_list',
                 fetchSetup: 'fetch_setup?group={0}'
@@ -89,19 +87,14 @@
 
     // Fetches a group of metrics.
     // @group           ID of a metrics group.
-    // @includeDBCols   Flag indicating whether to include db columns.
     // @query           Metrics query filter.
     // @callback        Function to invoke when API returns.
-    api.fetch = function (group, includeDBCols, query, callback) {
+    api.fetch = function (group, query, callback) {
         var url;
-
-        // Parse inputs.
-        includeDBCols = includeDBCols || false;
 
         // Set target URL.
         url = constants.URLS.fetch;
         url = url.replace("{0}", group);
-        url = url.replace("{1}", includeDBCols);
 
         // Invoke API.
         invokeAPI(url, callback, query);
@@ -124,18 +117,13 @@
 
     // Fetches list of columns within a group of metrics.
     // @group           ID of a metrics group.
-    // @includeDBCols   Flag indicating whether to include db columns.
     // @callback        Function to invoke when API returns.
-    api.fetchColumns = function (group, includeDBCols, callback) {
+    api.fetchColumns = function (group, callback) {
         var url;
-
-        // Parse inputs.
-        includeDBCols = includeDBCols || false;
 
         // Set target URL.
         url = constants.URLS.fetchColumns;
         url = url.replace("{0}", group);
-        url = url.replace("{1}", includeDBCols);
 
         // Invoke API.
         invokeAPI(url, callback);
@@ -167,5 +155,8 @@
         // Invoke API.
         invokeAPI(url, callback, query);
     };
+
+    // Expose module.
+    root.METRIC_API = api;
 
 }(this, this.window, this.$, this._));

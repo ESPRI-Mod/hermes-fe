@@ -126,7 +126,7 @@
         switch (APP.state.endpoint.name)
         {
             case "fetch":
-                api.fetch(APP.state.group, false, APP.state.query, APP.setAPIResponse);
+                api.fetch(APP.state.group, APP.state.query, APP.setAPIResponse);
                 break;
 
             case "fetchCount":
@@ -134,7 +134,7 @@
                 break;
 
             case "fetchColumns":
-                api.fetchColumns(APP.state.group, false, APP.setAPIResponse);
+                api.fetchColumns(APP.state.group, APP.setAPIResponse);
                 break;
 
             case "fetchSetup":
