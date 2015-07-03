@@ -7,10 +7,8 @@
     // @data    Page setup data loaded from remote server.
     MOD.events.on("setup:pageDataDownloaded", function (data) {
         // Initialise module state.
-        _.extend(MOD.state, {
-            simulationList: data.simulationList,
-            simulationSet: _.indexBy(data.simulationList, "uid")
-        });
+        MOD.state.simulationList = data.simulationList;
+        MOD.state.simulationSet = _.indexBy(data.simulationList, "uid");
 
         // Parse event data.
         _.each(data.simulationList, function (simulation) {

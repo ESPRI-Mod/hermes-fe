@@ -6,22 +6,22 @@
     // Declare URL's used across module.
     MOD.urls = {
         // CV setup data endpoint.
-        CV: 'monitoring/fe/cv',
+        CV: 'simulation/monitoring/fetch_cv',
 
         // Monitoring setup data endpoint.
-        SETUP_ALL: 'monitoring/fe/setup/all',
+        SETUP_ALL: 'simulation/monitoring/fetch_all',
 
         // Page setup data endpoint.
-        SETUP_ONE: 'monitoring/fe/setup/one?uid={uid}',
+        SETUP_ONE: 'simulation/monitoring/fetch_one?uid={uid}',
 
         // Simulation page.
-        SIMULATION_PAGE: 'monitoring.simulation.one.html?uid={uid}',
+        SIMULATION_PAGE: 'simulation.monitoring.one.html?uid={uid}',
 
         // Web-socket endpoint.
-        WS_ALL: 'monitoring/fe/ws/all',
+        WS_ALL: 'simulation/monitoring/ws/all',
 
         // Web-socket endpoint.
-        WS_ONE: 'monitoring/fe/ws/uid={uid}',
+        WS_ONE: 'simulation/monitoring/ws/one?uid={uid}',
 
         // Monitoring endpoints.
         M: {

@@ -17,6 +17,12 @@
         MOD.state.simulationSet[data.simulation.uid] = data.simulation;
         MOD.state.simulationList = _.values(MOD.state.simulationSet);
 
+        // MOD.state.simulationList = _.filter(simulation.jobs.global.all, function (job) {
+        //     return job.jobUID !== data.job.jobUID;
+        // });
+        // simulation.jobs.global.all.push(data.job);
+
+
         // Update filtered simulations.
         MOD.setFilteredSimulationList();
 

@@ -69,6 +69,18 @@
         // List of filtered simulations.
         simulationListFiltered: [],
 
+        // Returns current list of simulations.
+        getSimulationList: function () {
+            return _.values(MOD.state.simulationSet);
+        },
+
+        // Returns a simulation with matching uid.
+        getSimulationByUID: function (uid) {
+            return _.find(MOD.state.simulationList, function (s) {
+                return s.uid === uid;
+            });
+        },
+
         // Paging related state.
         paging: {
             current: undefined,

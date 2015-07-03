@@ -56,7 +56,7 @@
             }
 
             // Derive endpoint.
-            return "{0}://{1}/api/1/metric/{2}"
+            return "{0}://{1}/api/1/simulation/metrics/{2}"
                 .replace("{0}", protocol)
                 .replace("{1}", window.location.host)
                 .replace("{2}", ep);
