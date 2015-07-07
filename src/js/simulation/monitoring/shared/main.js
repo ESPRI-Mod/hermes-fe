@@ -14,6 +14,13 @@
         // Module key aliases.
         keyAliases: [],
 
+        // Map of job types to captions.
+        jobTypeCaptions: {
+            "compute": "Compute",
+            "post-processing": "Post Processing",
+            "post-processing-from-checker": "Post Processing (from checker)"
+        },
+
         // Map of execution states to css classes.
         statesCSS : {
             "queued" : 'monitoring-state-queued',

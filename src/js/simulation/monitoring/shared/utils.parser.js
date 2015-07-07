@@ -34,7 +34,7 @@
     // Sets simulation's current execution status.
     setExecutionState = function (simulation) {
         if (simulation.executionEndDate) {
-            if (simulation.isError) {
+            if (simulation.isError || simulation.jobs.compute.error.length) {
                 simulation.executionState = 'error';
             } else {
                 simulation.executionState = 'complete';

@@ -13,18 +13,30 @@
 
         // Backbone: view renderer.
         render : function () {
-            var subViews = [
-                MOD.views.HeaderView,
-                MOD.views.DetailsView
-            ];
-            if (MOD.state.jobHistory.length) {
-                subViews.push(MOD.views.JobHistoryView);
+            APP.utils.render(MOD.views.HeaderView, {}, this);
+            APP.utils.render(MOD.views.DetailsView, {}, this);
+            if (MOD.state.simulation.jobs.compute.all.length) {
+                APP.utils.render(MOD.views.JobHistoryView, {
+                    jobHistory: MOD.state.simulation.jobs.compute,
+                    jobType: 'compute'
+                }, this);
+            }
+            if (MOD.state.simulation.jobs.postProcessing.all.length) {
+                APP.utils.render(MOD.views.JobHistoryView, {
+                    jobHistory: MOD.state.simulation.jobs.postProcessing,
+                    jobType: 'post-processing'
+                }, this);
+            }
+            if (MOD.state.simulation.jobs.postProcessingFromChecker.all.length) {
+                APP.utils.render(MOD.views.JobHistoryView, {
+                    jobHistory: MOD.state.simulation.jobs.postProcessingFromChecker,
+                    jobType: 'post-processing-from-checker'
+                }, this);
             }
             if (MOD.state.configCard.length) {
-                subViews.push(MOD.views.ConfigCardView);
+                APP.utils.render(MOD.views.ConfigCardView, {}, this);
             }
-            subViews.push(MOD.views.FooterView);
-            APP.utils.render(subViews, {}, this);
+            APP.utils.render(MOD.views.FooterView, {}, this);
 
             return this;
         }

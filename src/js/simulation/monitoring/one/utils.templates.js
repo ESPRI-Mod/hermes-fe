@@ -179,14 +179,19 @@
         jobHistory: {
             caption:
                 "<header class='bg-info'>\n\
-                    <h3>Jobs<span class='pull-right'><%- simulation.jobs.shortCaption %><span></h3>\n\
+                    <h3><%- jobTypeCaption %> Jobs\n\
+                    <span class='pull-right'>\n\
+                        <%- jobHistory.running.length %> running | \n\
+                        <%- jobHistory.complete.length %> complete | \n\
+                        <%- jobHistory.error.length %> errors\n\
+                    <span>\n\
+                    </h3>\n\
                 </header>",
 
             header:
                 "<tr class='bg-primary'>\n\
                     <th title='ID'>#</th>\n\
                     <th title='UID' class='hidden'>UID</th>\n\
-                    <th title='Type' class='text-center'>Type</th>\n\
                     <th title='Start Date' class='text-center'>Start Date</th>\n\
                     <th title='End Date' class='text-center'>End Date</th>\n\
                     <th title='Duration' class='text-center'>Duration (hours)</th>\n\
@@ -203,20 +208,24 @@
                         <span class='monitoring-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small>\n\
                     </span>\n\
                     <span class='pull-right'>\n\
-                        <strong><%- simulation.jobs.longCaption %></strong>\n\
+                        <strong>\n\
+                            <%- jobTypeCaption %> jobs: \n\
+                            <%- jobHistory.running.length %> running | \n\
+                            <%- jobHistory.complete.length %> complete | \n\
+                            <%- jobHistory.error.length %> errors \n\
+                        </strong>\n\
                     </span>\n\
                 </div>",
 
             row:
-                "<td class='id' title='<%= ext.id %>'><%= ext.id %></td>\n\
-                <td class='uid hidden' title='<%= jobUID %>'><%= jobUID %></td>\n\
-                <td class='typeof text-center' title='<%= ext.type %>'><%= ext.type %></td>\n\
-                <td class='executionStartDate text-center' title='<%= ext.executionStartDate %>'><%= ext.executionStartDate %></td>\n\
-                <td class='executionEndDate text-center' title='<%= ext.executionEndDate %>'><%= ext.executionEndDate %></td>\n\
-                <td class='duration text-center' title='<%= ext.duration %>'><%= ext.duration %></td>\n\
-                <td class='expectedExecutionEndDate text-center' title='<%= ext.expectedExecutionEndDate %>'><%= ext.expectedExecutionEndDate %></td>\n\
-                <td class='wasLate text-center' title='<%= wasLate ? 'Yes' : '--' %>'><%= wasLate ? 'Yes' : '--' %></td>\n\
-                <td class='accountingProject text-center' title='<%= ext.accountingProject %>'><%= ext.accountingProject %></td>"
+                "<td class='id' title='<%= jobIndex %>'><%= jobIndex %></td>\n\
+                <td class='uid hidden' title='<%= job.jobUID %>'><%= job.jobUID %></td>\n\
+                <td class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>\n\
+                <td class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>\n\
+                <td class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>\n\
+                <td class='expectedExecutionEndDate text-center' title='<%= job.ext.expectedExecutionEndDate %>'><%= job.ext.expectedExecutionEndDate %></td>\n\
+                <td class='wasLate text-center' title='<%= job.wasLate ? 'Yes' : '--' %>'><%= job.wasLate ? 'Yes' : '--' %></td>\n\
+                <td class='accountingProject text-center' title='<%= job.ext.accountingProject %>'><%= job.ext.accountingProject %></td>"
         },
 
         notifications:
