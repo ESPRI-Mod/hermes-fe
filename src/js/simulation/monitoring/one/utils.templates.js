@@ -141,7 +141,7 @@
                                 <strong>Acc. Project</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.accountingProject %>\n\
+                                <%- simulation.ext.accountingProject %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -216,7 +216,7 @@
                 <td class='duration text-center' title='<%= ext.duration %>'><%= ext.duration %></td>\n\
                 <td class='expectedExecutionEndDate text-center' title='<%= ext.expectedExecutionEndDate %>'><%= ext.expectedExecutionEndDate %></td>\n\
                 <td class='wasLate text-center' title='<%= wasLate ? 'Yes' : '--' %>'><%= wasLate ? 'Yes' : '--' %></td>\n\
-                <td class='accountingProject text-center' title='<%= accountingProject %>'><%= accountingProject %></td>"
+                <td class='accountingProject text-center' title='<%= ext.accountingProject %>'><%= ext.accountingProject %></td>"
         },
 
         notifications:

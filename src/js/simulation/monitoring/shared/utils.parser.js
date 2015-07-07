@@ -182,6 +182,7 @@
     MOD.parseJob = function (job) {
         // Extend job.
         _.extend(job, {
+            accountingProject: undefined,
             executionState: undefined,
             ext: {
                 id: undefined,
@@ -221,6 +222,14 @@
         } else {
             job.isLate = moment().valueOf() > job.expectedExecutionEndDate.valueOf();
         }
+
+        // Set accounting project.
+        if (job.accountingProject === 'None' ||
+            _.isUndefined(job.accountingProject)) {
+            job.ext.accountingProject = "--";
+        } else {
+            job.ext.accountingProject = job.accountingProject;
+        }
     };
 
     // Parses a simulation in readiness for processing.
@@ -231,6 +240,7 @@
         _.extend(simulation, {
             executionState: undefined,
             ext: {
+                accountingProject: undefined,
                 activity: undefined,
                 caption: undefined,
                 computeNode: undefined,
@@ -311,6 +321,14 @@
         setCVTermDisplayName(simulation, 'model');
         setCVTermDisplayName(simulation, 'simulation_space', 'space');
         setCVTermDisplayName(simulation, 'simulation_state', 'executionState');
+
+        // Set accounting project.
+        if (simulation.accountingProject === 'None' ||
+            _.isUndefined(simulation.accountingProject)) {
+            simulation.ext.accountingProject = "--";
+        } else {
+            simulation.ext.accountingProject = simulation.accountingProject;
+        }
 
         // Set simulation caption.
         caption = "{activity} -> {space} -> {name}";
