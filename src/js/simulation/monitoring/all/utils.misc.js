@@ -12,7 +12,6 @@
         filters = _.without(MOD.state.filters, exclusionFilter);
 
         // Apply filters.
-        console.log("List = " + MOD.state.simulationList.length + " :: Set = " + MOD.state.getSimulationList().length);
         result = MOD.state.simulationList;
         _.each(filters, function (filter) {
             if (filter.cvTerms.current &&
