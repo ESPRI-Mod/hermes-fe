@@ -48,12 +48,15 @@
 
     // Set case sensitive cv related field names.
     setCVTermDisplayName = function (simulation, termType, fieldName) {
-        var term;
+        var term, fieldValue;
 
         fieldName = fieldName || termType;
-        term = MOD.cv.getTerm(termType, simulation[fieldName]);
+        fieldValue = simulation[fieldName];
+        term = MOD.cv.getTerm(termType, fieldValue);
         if (term) {
             simulation.ext[fieldName] = term.displayName;
+        } else {
+            simulation.ext[fieldName] = fieldValue || 'UNSPECIFIED';
         }
     };
 
