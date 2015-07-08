@@ -54,7 +54,9 @@
 
         // Backbone: view renderer.
         render : function () {
-            _.each(this.options.jobHistory.all, this._renderRow, this);
+            _.each(_.sortBy(this.options.jobHistory.all, function (job) {
+                return job.ext.executionStartDate;
+            }).reverse(), this._renderRow, this);
 
             return this;
         },
@@ -63,7 +65,7 @@
         _renderRow : function (job, index) {
             APP.utils.render(TableRowView, {
                 job: job,
-                jobIndex: index + 1
+                jobIndex: this.options.jobHistory.all.length - index
             }, this);
         }
     });
