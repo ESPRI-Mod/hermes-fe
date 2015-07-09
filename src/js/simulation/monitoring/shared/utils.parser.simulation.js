@@ -31,7 +31,6 @@
             return;
         }
 
-
         // Queued if no jobs have started.
         if (simulation.jobs.compute.all.length === 0) {
             simulation.executionState = 'queued';
