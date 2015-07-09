@@ -6,13 +6,15 @@
     // Returns collection of filtered simulations.
     // @exclusionFilter     Filter to be excluded when determining result.
     MOD.getFilteredSimulationList = function (exclusionFilter) {
-        var filters, result;
+        var result, filters;
 
-        // Set filters to apply.
-        filters = _.without(MOD.state.filters, exclusionFilter);
+        // Exclude simulations without a valid start date.
+        result = _.reject(MOD.state.simulationList, function (s) {
+            return _.isNull(s.executionStartDate);
+        });
 
         // Apply filters.
-        result = MOD.state.simulationList;
+        filters = _.without(MOD.state.filters, exclusionFilter);
         _.each(filters, function (filter) {
             if (filter.cvTerms.current &&
                 filter.cvTerms.current.name !== "*") {
@@ -22,10 +24,14 @@
             }
         });
 
-        // Sort.
-        return _.sortBy(result, function (s) {
-            return s.activity.toLowerCase() + s.name.toLowerCase();
-        });
+        // Sort (when not applying exclusions).
+        if (_.isUndefined(exclusionFilter)) {
+            result = _.sortBy(result, function (s) {
+                return s.executionStartDate.valueOf();
+            }).reverse();
+        }
+
+        return result;
     };
 
     // Sets collection of filtered simulations.

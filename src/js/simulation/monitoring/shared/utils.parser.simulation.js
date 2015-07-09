@@ -25,6 +25,13 @@
     setExecutionState = function (simulation) {
         var last;
 
+        // Complete if cmip5.
+        if (simulation.activity === 'cmip5') {
+            simulation.executionState = 'complete';
+            return;
+        }
+
+
         // Queued if no jobs have started.
         if (simulation.jobs.compute.all.length === 0) {
             simulation.executionState = 'queued';
