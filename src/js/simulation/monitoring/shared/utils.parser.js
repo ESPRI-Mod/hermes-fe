@@ -327,7 +327,7 @@
 
         // Set accounting project.
         if (simulation.accountingProject === 'None' ||
-            _.isUndefined(simulation.accountingProject)) {
+            _.isNull(simulation.accountingProject)) {
             simulation.ext.accountingProject = "--";
         } else {
             simulation.ext.accountingProject = simulation.accountingProject;
