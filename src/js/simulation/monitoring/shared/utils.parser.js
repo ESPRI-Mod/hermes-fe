@@ -147,7 +147,7 @@
 
     // Sets a flag indicating whether a compute job is late.
     setJobLateFlag = function (simulation) {
-        if (_.isUndefined(simulation.executionEndDate) &&
+        if (_.isNull(simulation.executionEndDate) &&
             _.findWhere(simulation.jobs.compute.all, { isLate: true })) {
             simulation.jobs.compute.hasLate = true;
         }
@@ -227,8 +227,7 @@
         }
 
         // Set accounting project.
-        if (job.accountingProject === 'None' ||
-            _.isUndefined(job.accountingProject)) {
+        if (job.accountingProject === 'None' || _.isNull(job.accountingProject)) {
             job.ext.accountingProject = "--";
         } else {
             job.ext.accountingProject = job.accountingProject;
@@ -326,8 +325,7 @@
         setCVTermDisplayName(simulation, 'simulation_state', 'executionState');
 
         // Set accounting project.
-        if (simulation.accountingProject === 'None' ||
-            _.isNull(simulation.accountingProject)) {
+        if (simulation.accountingProject === 'None' || _.isNull(simulation.accountingProject)) {
             simulation.ext.accountingProject = "--";
         } else {
             simulation.ext.accountingProject = simulation.accountingProject;
