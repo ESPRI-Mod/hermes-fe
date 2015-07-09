@@ -6,19 +6,12 @@
     // Setup event handler.
     // @data    Page setup data loaded from remote server.
     MOD.events.on("setup:pageDataDownloaded", function (data) {
-        // Parse event data.
-        _.each(data.simulationList, function (simulation) {
-            MOD.parseSimulation(simulation, _.filter(data.jobHistory, function (job) {
-                return job.simulationUID === simulation.uid;
-            }));
-        });
-
         // Initialise module state.
         MOD.state.simulationList = data.simulationList;
         MOD.state.simulationSet = _.indexBy(data.simulationList, "uid");
 
-        // Initialise filter state.
-        _.each(MOD.state.filters, MOD.initFilterState);
+        // Parse event data.
+        MOD.parseSimulations(MOD.state.simulationList, data.jobHistory, MOD.state.simulationSet);
 
         // Initialise filtered list.
         MOD.setFilteredSimulationList();

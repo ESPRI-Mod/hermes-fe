@@ -4,82 +4,27 @@
     "use strict";
 
     // Closure vars.
-    var getJobTypesets,
-        parseComputeJobs,
+    var parseComputeJobs,
         setTotalJobCount,
-        setJobSets,
-        sortJobs;
+        sortJobset,
+        sortJobsets;
 
-    // Returns top-level job sets.
-    getJobTypesets = function (simulation) {
-        return [
-            simulation.jobs.global,
-            simulation.jobs.compute,
-            simulation.jobs.postProcessing,
-            simulation.jobs.postProcessingFromChecker
-        ];
-    };
-
-    // Sets different job sets.
-    setJobSets = function (simulation) {
-        // Set compute jobs.
-        simulation.jobs.compute.all = _.filter(simulation.jobs.global.all, function (job) {
-            return job.ext.type === 'computing';
-        });
-        simulation.jobs.compute.running = _.filter(simulation.jobs.compute.all, function (job) {
-            return job.executionState === 'running';
-        });
-        simulation.jobs.compute.complete = _.filter(simulation.jobs.compute.all, function (job) {
-            return job.executionState === 'complete';
-        });
-        simulation.jobs.compute.error = _.filter(simulation.jobs.compute.all, function (job) {
-            return job.executionState === 'error';
-        });
-
-        // Set post-processing jobs.
-        simulation.jobs.postProcessing.all = _.filter(simulation.jobs.global.all, function (job) {
-            return job.ext.type === 'post-processing';
-        });
-        simulation.jobs.postProcessing.running = _.filter(simulation.jobs.postProcessing.all, function (job) {
-            return job.executionState === 'running';
-        });
-        simulation.jobs.postProcessing.complete = _.filter(simulation.jobs.postProcessing.all, function (job) {
-            return job.executionState === 'complete';
-        });
-        simulation.jobs.postProcessing.error = _.filter(simulation.jobs.postProcessing.all, function (job) {
-            return job.executionState === 'error';
-        });
-
-        // Set post-processing (from checker) jobs.
-        simulation.jobs.postProcessingFromChecker.all = _.filter(simulation.jobs.global.all, function (job) {
-            return job.ext.type === 'post-processing-from-checker';
-        });
-        simulation.jobs.postProcessingFromChecker.running = _.filter(simulation.jobs.postProcessingFromChecker.all, function (job) {
-            return job.executionState === 'running';
-        });
-        simulation.jobs.postProcessingFromChecker.complete = _.filter(simulation.jobs.postProcessingFromChecker.all, function (job) {
-            return job.executionState === 'complete';
-        });
-        simulation.jobs.postProcessingFromChecker.error = _.filter(simulation.jobs.postProcessingFromChecker.all, function (job) {
-            return job.executionState === 'error';
-        });
-
-        // _.each(getJobTypesets(simulation), function (jobSet) {
-        //     _.each(['running', 'complete', 'error'], function (jobState) {
-        //         jobSet[jobState] = _.filter(jobSet.all, function (job) {
-        //             return job.executionState === jobState;
-        //         });
-        //     });
-        // });
-    };
-
-    // Sorts jobs.
-    sortJobs = function (simulation) {
-        _.each(getJobTypesets(simulation), function (jobSet) {
+    // Sorts a job set.
+    sortJobset = function (jobSet) {
+        if (jobSet.all.length > 1) {
             jobSet.all = _.sortBy(jobSet.all, function (job) {
                 return job.ext.executionStartDate;
             });
-        });
+        }
+    };
+
+    // Sets different job sets.
+    sortJobsets = function (simulation) {
+        _.each([
+            simulation.jobs.compute,
+            simulation.jobs.postProcessing,
+            simulation.jobs.postProcessingFromChecker
+        ], sortJobset);
     };
 
     // Parses set of simulation compute jobs.
@@ -91,19 +36,11 @@
             return;
         }
 
-        // Sort compute jobs.
-        simulation.jobs.compute.all = _.sortBy(simulation.jobs.compute.all, function (job) {
-            return job.ext.executionStartDate;
-        });
-
-        //Set first/last jobs.
-        first = simulation.jobs.compute.first = _.first(simulation.jobs.compute.all);
-        simulation.jobs.compute.last = _.last(simulation.jobs.compute.all);
-
-        // Reparse spin-up job start date (if necessary).
+        // Re-extend spin-up job start date (if necessary).
+        first = _.first(simulation.jobs.compute.all);
         if (_.isNull(first.executionStartDate)) {
             first.executionStartDate = simulation.executionStartDate;
-            MOD.parseJob(first);
+            MOD.extendJob(first);
         }
 
         // Set late flag.
@@ -123,19 +60,39 @@
     };
 
     // Parses simulation jobs in readiness for processing.
-    MOD.parseJobs = function (simulation, doIndividualParse) {
-        if (_.isUndefined(doIndividualParse) || doIndividualParse === true) {
-            _.each(simulation.jobs.global.all, MOD.parseJob);
-        }
-        setJobSets(simulation);
+    MOD.parseJobs = function (simulation) {
+        sortJobsets(simulation);
         setTotalJobCount(simulation);
         parseComputeJobs(simulation);
-        sortJobs(simulation);
     };
 
-    // Parses a job in readiness for processing.
-    MOD.parseJob = function (job) {
-        // Extend job.
+    // Appends a job to the relevant simulation job set.
+    MOD.appendJob = function (simulation, job) {
+        simulation.jobs.global.all.push(job);
+        simulation.jobs.global[job.executionState].push(job);
+        switch (job.ext.type) {
+        case 'computing':
+            simulation.jobs.compute.all.push(job);
+            simulation.jobs.compute[job.executionState].push(job);
+            break;
+        case 'post-processing':
+            simulation.jobs.postProcessing.all.push(job);
+            simulation.jobs.postProcessing[job.executionState].push(job);
+            break;
+        case 'post-processing-from-checker':
+            simulation.jobs.postProcessingFromChecker.all.push(job);
+            simulation.jobs.postProcessingFromChecker[job.executionState].push(job);
+            break;
+        default:
+            simulation.jobs.compute.all.push(job);
+            simulation.jobs.compute[job.executionState].push(job);
+            break;
+        }
+    };
+
+    // Extends a job in readiness for processing.
+    MOD.extendJob = function (job) {
+        // Initialise extension fields.
         _.extend(job, {
             accountingProject: undefined,
             executionState: undefined,

@@ -16,6 +16,7 @@
             APP.utils.renderHTML(TEMPLATES.footer, {
                 APP: APP,
                 MOD: MOD,
+                simulation: MOD.state.simulation,
                 year: new Date().getFullYear()
             }, this);
 

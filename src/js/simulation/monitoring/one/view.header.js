@@ -20,9 +20,7 @@
         // Backbone: view renderer.
         render : function () {
             APP.utils.renderHTML(TEMPLATES.header, {
-                APP: APP,
-                MOD: MOD,
-                year: new Date().getFullYear()
+                simulation: MOD.state.simulation
             }, this);
 
             return this;

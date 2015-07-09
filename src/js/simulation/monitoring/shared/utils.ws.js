@@ -21,8 +21,8 @@
 
     // Send a ws event module notification.
     dispatchEvent = function (ei) {
-        log("triggering event :: " + ei.eventType);
-        MOD.events.trigger(ei.eventType, ei);
+        log("triggering event :: ws:" + ei.eventType);
+        MOD.events.trigger("ws:" + ei.eventType, ei);
     };
 
     // On ws connection opened event handler.
@@ -51,7 +51,6 @@
 
         // Get event info.
         ei = JSON.parse(e.data);
-        ei.eventType = "ws:" + ei.eventType;
 
         // Send module notifcation.
         if (buffering) {

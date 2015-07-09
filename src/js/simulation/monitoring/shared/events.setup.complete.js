@@ -5,6 +5,7 @@
 
     // Event handler: setup complete.
     MOD.events.on("setup:complete", function () {
+
         // Render main view.
         MOD.view = new MOD.views.MainView();
         MOD.view.render();

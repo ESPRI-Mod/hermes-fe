@@ -4,18 +4,21 @@
     "use strict";
 
     // Simulation event handler.
-    var processSimulationEvent = function (eventType, data) {
+    var processSimulationEvent = function (data) {
         // Update cv terms.
         _.extend(MOD.state, {
             cvTerms: _.union(MOD.state.cvTerms, data.cvTerms)
         });
 
-        // Parse event data.
-        MOD.parseSimulation(data.simulation, data.jobHistory);
-
         // Update module state.
-        MOD.state.simulationSet[data.simulation.uid] = data.simulation;
-        MOD.state.simulationList = _.values(MOD.state.simulationSet);
+        MOD.state.simulationList = _.reject(MOD.state.simulationList, function (s) {
+            return s.uid === data.simulation.uid || s.hashid === data.simulation.hashID;
+        });
+        MOD.state.simulationList.push(data.simulation);
+        MOD.state.simulationSet = _.indexBy(data.simulationList, "uid");
+
+        // Parse event data.
+        MOD.parseSimulations(data.simulation, data.jobHistory);
 
         // Update filtered simulations.
         MOD.setFilteredSimulationList();
@@ -33,26 +36,13 @@
 
         // Fire events.
         MOD.triggerSimulationFilterEvent();
-        MOD.events.trigger("state:" + eventType, data);
+        MOD.events.trigger("state:" + data.eventType, data);
     };
 
-    // Simulation complete event handler.
-    // @data      Event data received from server.
-    MOD.events.on("ws:simulationComplete", function (data) {
-        processSimulationEvent("simulationComplete", data);
-    });
-
-    // Simulation error event handler.
-    // @data      Event data received from server.
-    MOD.events.on("ws:simulationError", function (data) {
-        processSimulationEvent("simulationError", data);
-    });
-
-    // Simulation start event handler.
-    // @data      Event data received from server.
-    MOD.events.on("ws:simulationStart", function (data) {
-        processSimulationEvent("simulationStart", data);
-    });
+    // Wire upto simulation events streaming over the web-socket channel.
+    MOD.events.on("ws:simulationComplete", processSimulationEvent);
+    MOD.events.on("ws:simulationError", processSimulationEvent);
+    MOD.events.on("ws:simulationStart", processSimulationEvent);
 
 }(
     this.APP.modules.monitoring,

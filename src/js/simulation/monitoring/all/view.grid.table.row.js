@@ -43,6 +43,9 @@
             if (this.model.ext.isSelectedForIM) {
                 this.$('.interMonitoring > input').attr('checked', true);
             }
+            if (this.model.jobs.compute.hasLate) {
+                this.$('.jobCount').addClass('bg-danger');
+            }
 
             return this;
         }

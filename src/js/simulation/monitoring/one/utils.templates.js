@@ -5,14 +5,18 @@
 
     MOD.templates = {
         header:
-            "<h2>Simulation: <%- MOD.state.simulation.ext.caption %><span class='pull-right inter-monitoring glyphicon glyphicon-random' title='Open Monitoring'></span></h2>",
+            "<h2>Simulation: <%- simulation.ext.activity %> -> <%- simulation.ext.space %> -> <%- simulation.name %>\n\
+                <span class='pull-right inter-monitoring glyphicon glyphicon-random' title='Open Monitoring'></span>\n\
+            </h2>",
 
         footer:
             "<span>\n\
-                <strong><%- MOD.state.simulation.ext.caption %></strong>\n\
+                <strong><%- simulation.ext.activity %> -> <%- simulation.ext.space %> -> <%- simulation.name %></strong>\n\
              </span>\n\
              <span class='pull-right'>\n\
-                <small><strong><a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>\n\
+                <small><strong>\n\
+                    <a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a>\n\
+                </strong></small>\n\
              </span>",
 
         details:
@@ -66,7 +70,7 @@
                     <div class='col-md-3'>\n\
                         <div class='row'>\n\
                             <span class='col-md-5'>\n\
-                                <strong>Centre</strong>\n\
+                                <strong>Node</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
                                 <%- simulation.ext.computeNode %>\n\

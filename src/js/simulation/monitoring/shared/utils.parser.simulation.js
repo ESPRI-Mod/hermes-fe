@@ -4,37 +4,24 @@
     "use strict";
 
     // Closure vars.
-    var excludePreviousTries,
+    var extendSimulation,
+        getExecutionState,
         setCVTermDisplayName,
         setExecutionState;
 
-    // Excludes previous tries from set of managed simulations.
-    // @hashID  Hash identifier of a simulation being processed.
-    excludePreviousTries = function (hashID) {
-        var obsoletions;
-
-        obsoletions = _.filter(_.values(MOD.state.simulationSet), function (simulation) {
-            return simulation.hashid === hashID;
-        });
-        _.each(obsoletions, function (simulation) {
-            delete MOD.state.simulationSet[simulation.uid];
-        });
-    };
-
-    // Sets simulation's current execution status.
-    setExecutionState = function (simulation) {
+    // Returns simulation's current execution status.
+    getExecutionState = function (simulation) {
         var last;
+
 
         // Complete if cmip5.
         if (simulation.activity === 'cmip5') {
-            simulation.executionState = 'complete';
-            return;
+            return 'complete';
         }
 
         // Queued if no jobs have started.
         if (simulation.jobs.compute.all.length === 0) {
-            simulation.executionState = 'queued';
-            return;
+            return 'queued';
         }
 
         // Set last job.
@@ -42,24 +29,27 @@
 
         // Running if last job is running.
         if (last.executionState === 'running') {
-            simulation.executionState = 'running';
-            return;
+            return 'running';
         }
 
         // Error if last job is error.
         if (last.executionState === 'error') {
-            simulation.executionState = 'error';
-            return;
+            return 'error';
         }
 
         // Complete if last job is complete and 0100 has been received.
         if (last.executionState === 'complete' && simulation.executionEndDate && simulation.isError === false) {
-            simulation.executionState = 'complete';
-            return;
+            return 'complete';
         }
 
         // Otherwise queued.
-        simulation.executionState = 'queued';
+        return 'queued';
+    };
+
+    // Sets simulation's current execution status.
+    setExecutionState = function (simulation) {
+        simulation.executionState = getExecutionState(simulation);
+        setCVTermDisplayName(simulation, 'simulation_state', 'executionState');
     };
 
     // Set case sensitive cv related field names.
@@ -72,15 +62,20 @@
         if (term) {
             simulation.ext[fieldName] = term.displayName;
         } else {
-            simulation.ext[fieldName] = fieldValue || 'UNSPECIFIED';
+            simulation.ext[fieldName] = fieldValue || '--';
+        }
+
+        // Update unspecified fields.
+        if (simulation.ext[fieldName].toLowerCase() === 'unspecified') {
+            simulation.ext[fieldName] = '--';
         }
     };
 
-    // Parses a simulation in readiness for processing.
-    MOD.parseSimulation = function (simulation, jobHistory) {
-        var caption, model;
+    // Extends a simulation in readiness for processing.
+    extendSimulation = function (simulation) {
+        var model;
 
-        // Extend simulation.
+        // Initialise extension fields.
         _.extend(simulation, {
             executionState: undefined,
             ext: {
@@ -110,14 +105,12 @@
                     all: [],
                     complete: [],
                     error: [],
-                    first: undefined,
                     hasLate: false,
-                    last: undefined,
                     running: [],
                 },
                 count: "--",
                 global: {
-                    all: jobHistory,
+                    all: [],
                     complete: [],
                     error: [],
                     running: []
@@ -143,19 +136,6 @@
         APP.utils.formatDateField(simulation, "outputStartDate");
         APP.utils.formatDateField(simulation, "outputEndDate");
 
-        // Parse jobs.
-        if (jobHistory.length) {
-            MOD.parseJobs(simulation);
-        }
-
-        // Set execution state.
-        setExecutionState(simulation);
-
-        // Parse obsolete simulations.
-        if (_.has(MOD.state, 'simulationSet')) {
-            excludePreviousTries(simulation.hashid);
-        }
-
         // Update case sensitive CV fields.
         setCVTermDisplayName(simulation, 'activity');
         setCVTermDisplayName(simulation, 'compute_node', 'computeNode');
@@ -164,7 +144,6 @@
         setCVTermDisplayName(simulation, 'experiment');
         setCVTermDisplayName(simulation, 'model');
         setCVTermDisplayName(simulation, 'simulation_space', 'space');
-        setCVTermDisplayName(simulation, 'simulation_state', 'executionState');
 
         // Set accounting project.
         if (simulation.accountingProject === 'None' || _.isNull(simulation.accountingProject)) {
@@ -172,13 +151,6 @@
         } else {
             simulation.ext.accountingProject = simulation.accountingProject;
         }
-
-        // Set simulation caption.
-        caption = "{activity} -> {space} -> {name}";
-        caption = caption.replace("{activity}", simulation.ext.activity);
-        caption = caption.replace("{space}", simulation.ext.space);
-        caption = caption.replace("{name}", simulation.name);
-        simulation.ext.caption = caption;
 
         // Set model synonyms.
         model = MOD.cv.getTerm('model', simulation.model);
@@ -194,6 +166,35 @@
             simulation.ext.imURL = MOD.urls.IM[simulation.computeNode];
         }
     };
+
+    // Parses a collection of simulations in readiness for processing.
+    MOD.parseSimulations = function (simulationList, jobHistory, simulationSet) {
+        // Parse input parameters.
+        if (_.isArray(simulationList) === false) {
+            simulationList = [simulationList];
+        }
+        simulationSet = simulationSet || _.indexBy(simulationList, "uid");
+
+        // Extend simulations.
+        _.each(simulationList, extendSimulation);
+
+        // Extend jobs.
+        _.each(jobHistory, MOD.extendJob);
+
+        // Append jobs.
+        _.each(jobHistory, function (job) {
+            if (_.has(simulationSet, job.simulationUID)) {
+                MOD.appendJob(simulationSet[job.simulationUID], job);
+            }
+        });
+
+        // Parse jobs.
+        _.each(simulationList, MOD.parseJobs);
+
+        // Set execution states.
+        _.each(simulationList, setExecutionState);
+    };
+
 }(
     this.APP,
     this.APP.modules.monitoring,
