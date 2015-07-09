@@ -73,7 +73,7 @@
     // Sets a job type set.
     setJobTypeset = function (simulation, jobTypeset, jobType) {
         jobTypeset.all = _.filter(simulation.jobs.global.all, function (job) {
-            return job.typeof === jobType;
+            return job.ext.type === jobType;
         });
     };
 
