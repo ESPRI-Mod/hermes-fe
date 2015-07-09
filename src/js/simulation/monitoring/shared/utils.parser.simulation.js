@@ -49,7 +49,7 @@
 
         // Error if last job is error.
         if (last.executionState === 'error') {
-            simulation.executionState = last.executionState;
+            simulation.executionState = 'error';
             return;
         }
 
