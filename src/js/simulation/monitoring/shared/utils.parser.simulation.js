@@ -153,12 +153,14 @@
         }
 
         // Set model synonyms.
+        // TODO - derive at click time ?
         model = MOD.cv.getTerm('model', simulation.model);
         if (model && model.synonyms) {
             simulation.ext.modelSynonyms = model.synonyms.split(", ");
         }
 
         // Set monitoring / inter-monitoring URLs.
+        // TODO - derive at click time ?
         if (_.has(MOD.urls.M, simulation.computeNode)) {
             simulation.ext.mURL = MOD.urls.M[simulation.computeNode];
         }
@@ -167,14 +169,13 @@
         }
     };
 
+    // Parses a simulation in readiness for processing.
+    MOD.parseSimulation = function (simulation, jobHistory) {
+        MOD.parseSimulations([simulation], jobHistory, _.indexBy([simulation], "uid"));
+    };
+
     // Parses a collection of simulations in readiness for processing.
     MOD.parseSimulations = function (simulationList, jobHistory, simulationSet) {
-        // Parse input parameters.
-        if (_.isArray(simulationList) === false) {
-            simulationList = [simulationList];
-        }
-        simulationSet = simulationSet || _.indexBy(simulationList, "uid");
-
         // Extend simulations.
         _.each(simulationList, extendSimulation);
 

@@ -5,31 +5,26 @@
 
     // Job event handler.
     var processJobEvent = function (data) {
-        var simulation, existing;
+        var simulation, jobHistory;
 
         // Escape if simulation is not in memory.
-        simulation = data.simulation = MOD.state.simulationSet[data.job.simulationUID];
-        if (_.isUndefined(simulation)) {
+        if (_.has(MOD.state.simulationSet, data.job.simulationUID) === false) {
             MOD.log(data.eventType + " event: WARNING: simulation not found: id=" + data.job.simulationUID);
             return;
         }
 
-        // Extend.
-        MOD.extendJob(data.job);
-
-        // Update simulation job sets.
-        // existing = _.find(simulation.jobs.global.all, function (job) {
-        //     return job.jobUID !== data.job.jobUID;
-        // });
-        // simulation.jobs.global.all
-
-        simulation.jobs.global.all = _.filter(simulation.jobs.global.all, function (job) {
-            return job.jobUID !== data.job.jobUID;
+        // Update existing job history.
+        simulation = MOD.state.simulationSet[data.job.simulationUID];
+        jobHistory = _.reject(simulation.jobs.global.all, function (j) {
+            return j.jobUID === data.job.jobUID;
         });
-        simulation.jobs.global.all.push(data.job);
-        MOD.parseJobs(simulation);
+        jobHistory.push(data.job);
+
+        // Reparse simulation.
+        MOD.parseSimulation(data.simulation, jobHistory);
 
         // Fire events.
+        data.simulation = simulation;
         MOD.events.trigger("state:" + data.eventType, data);
     };
 

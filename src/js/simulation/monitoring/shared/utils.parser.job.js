@@ -92,6 +92,11 @@
 
     // Extends a job in readiness for processing.
     MOD.extendJob = function (job) {
+        // Escape if already extended.
+        if (_.has(job, 'ext')) {
+            return;
+        }
+
         // Initialise extension fields.
         _.extend(job, {
             accountingProject: undefined,

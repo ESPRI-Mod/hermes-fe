@@ -7,7 +7,7 @@
     // @data    Page setup data loaded from remote server.
     MOD.events.on("setup:pageDataDownloaded", function (data) {
         // Parse event data.
-        MOD.parseSimulations(data.simulation, data.jobHistory);
+        MOD.parseSimulation(data.simulation, data.jobHistory);
 
         // Update module state.
         MOD.state.simulation = data.simulation;

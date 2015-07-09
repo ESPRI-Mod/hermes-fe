@@ -17,8 +17,8 @@
         MOD.state.simulationList.push(data.simulation);
         MOD.state.simulationSet = _.indexBy(data.simulationList, "uid");
 
-        // Parse event data.
-        MOD.parseSimulations(data.simulation, data.jobHistory);
+        // Reparse simulation.
+        MOD.parseSimulation(data.simulation, data.jobHistory);
 
         // Update filtered simulations.
         MOD.setFilteredSimulationList();
