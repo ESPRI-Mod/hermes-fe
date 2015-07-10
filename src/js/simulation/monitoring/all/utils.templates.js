@@ -94,7 +94,7 @@
                   <td class='row-link activity' title='<%= ext.activity %>'><%= ext.activity %></td>\n\
                   <td class='row-link name' title='<%= name %>'><%= name %></td>\n\
                   <td class='row-link tryCount text-center <%= tryID > 1 ? 'bg-danger' : '' %>' title='<%= tryID %>'><%= tryID %></td>\n\
-                  <td class='row-link jobCount text-center' title='<%= jobs.count %>'><%= jobs.count %></td>\n\
+                  <td class='row-link jobCount text-center' title='<%= jobs.global.all.length %>'><%= jobs.global.all.length %></td>\n\
                   <td class='row-link computeNodeMachine text-center' title='<%= ext.computeNodeMachine %>'><%= ext.computeNodeMachine %></td>\n\
                   <td class='row-link computeNodeLogin text-center' title='<%= computeNodeLogin %>'><%= computeNodeLogin %></td>\n\
                   <td class='row-link model text-center' title='<%= ext.model %>'><%= ext.model %></td>\n\

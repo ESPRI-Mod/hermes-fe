@@ -50,19 +50,9 @@
         }
     };
 
-    // set total job count field.
-    setTotalJobCount = function (simulation) {
-        if (simulation.jobs.global.all.length) {
-            simulation.jobs.count = simulation.jobs.global.all.length;
-        } else {
-            simulation.jobs.count = "--";
-        }
-    };
-
     // Parses simulation jobs in readiness for processing.
     MOD.parseJobs = function (simulation) {
         sortJobsets(simulation);
-        setTotalJobCount(simulation);
         parseComputeJobs(simulation);
     };
 

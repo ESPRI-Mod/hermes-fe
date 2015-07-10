@@ -15,7 +15,7 @@
             return s.uid === data.simulation.uid || s.hashid === data.simulation.hashID;
         });
         MOD.state.simulationList.push(data.simulation);
-        MOD.state.simulationSet = _.indexBy(data.simulationList, "uid");
+        MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");
 
         // Reparse simulation.
         MOD.parseSimulation(data.simulation, data.jobHistory);

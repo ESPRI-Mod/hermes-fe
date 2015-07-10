@@ -33,15 +33,12 @@
 
         // Renders current page.
         _renderPage : function () {
-            var paging;
-
             // Remove previous.
             this.$('tr').remove();
 
             // Render new.
-            paging = MOD.state.paging;
-            if (paging.current) {
-                _.each(paging.current.data, this._renderRow, this);
+            if (MOD.state.paging.current) {
+                _.each(MOD.state.paging.current.data, this._renderRow, this);
             }
         },
 
@@ -50,26 +47,6 @@
             APP.utils.render(MOD.views.GridTableRowView, {
                 model : simulation
             }, this);
-        },
-
-        // Simulation state update event handler.
-        // @eventData      Event data.
-        _onSimulationStateUpdate: function (eventData) {
-            // Get row.
-            var $s = this.$('#simulation-' + eventData.s.uid);
-
-            // Update row css.
-            $s.removeClass(MOD.getStateCSS(eventData.statePrevious));
-            $s.addClass(MOD.getStateCSS(eventData.s.executionState));
-
-            // Update row fields.
-            $s.find(".executionEndDate").text(eventData.s.executionEndDate);
-            $s.find(".jobCount").text(eventData.s.jobs.count);
-            if (eventData.s.jobs.compute.hasLate) {
-                $s.find(".jobCount").addClass('bg-danger');
-            } else {
-                $s.find(".jobCount").removeClass('bg-danger');
-            }
         },
 
         // Simulation list filtered event handler.
@@ -84,10 +61,28 @@
 
         // Updates a row in response to a simulation related event.
         _updateRow: function (ei) {
-            // Get row.
-            var $s = this.$('#simulation-' + ei.simulation.uid);
+            var $s;
 
-            $s.find(".jobCount").text(ei.simulation.jobs.count);
+            $s = this.$('#simulation-' + ei.simulation.uid);
+            if ($s) {
+                console.log('INFO: updating table row');
+                // Update row css.
+                _.each(MOD.statesCSS, function (stateCSS)  {
+                    $s.removeClass(stateCSS);
+                });
+                $s.addClass(MOD.getStateCSS(ei.simulation.executionState));
+
+                // Update row fields.
+                $s.find(".executionEndDate").text(ei.simulation.executionEndDate);
+                $s.find(".jobCount").text(ei.simulation.jobs.global.all.length);
+                if (ei.simulation.jobs.compute.hasLate) {
+                    $s.find(".jobCount").addClass('bg-danger');
+                } else {
+                    $s.find(".jobCount").removeClass('bg-danger');
+                }
+            } else {
+                console.log('WARNING: could not find table row');
+            }
         },
 
         // Monitoring event handler.

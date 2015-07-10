@@ -21,7 +21,7 @@
         jobHistory.push(data.job);
 
         // Reparse simulation.
-        MOD.parseSimulation(data.simulation, jobHistory);
+        MOD.parseSimulation(simulation, jobHistory);
 
         // Fire events.
         data.simulation = simulation;
