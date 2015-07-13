@@ -15,11 +15,8 @@
         // Initialise filter state.
         _.each(MOD.state.filters, MOD.initFilterState);
 
-        // Load main data & fire event.
-        ep = APP.utils.getEndPoint(MOD.urls.SETUP_ALL);
-        $.getJSON(ep, function (data) {
-            MOD.events.trigger("setup:pageDataDownloaded", data);
-        });
+        // Fetch timeslice & fire event.
+        MOD.fetchTimeSlice("state:timesliceLoaded");
     });
 
 }(

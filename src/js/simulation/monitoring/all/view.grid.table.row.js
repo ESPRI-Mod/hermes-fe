@@ -39,7 +39,7 @@
 
         // Backbone: view renderer.
         render : function () {
-            APP.utils.renderHTML(TEMPLATES.row, this.model, this);
+            APP.utils.renderHTML(TEMPLATES.gridRow, this.model, this);
             if (this.model.ext.isSelectedForIM) {
                 this.$('.interMonitoring > input').attr('checked', true);
             }
@@ -51,4 +51,9 @@
         }
     });
 
-}(this.APP, this.APP.modules.monitoring, this.APP.modules.monitoring.templates.grid, this.Backbone));
+}(
+    this.APP,
+    this.APP.modules.monitoring,
+    this.APP.modules.monitoring.templates,
+    this.Backbone
+));

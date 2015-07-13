@@ -14,11 +14,11 @@
                 key: 'activity',
                 defaultValue: 'ipsl'
             },
-            {
-                cvType: 'compute_node',
-                key: 'computeNode',
-                displayName: 'Node'
-            },
+            // {
+            //     cvType: 'compute_node',
+            //     key: 'computeNode',
+            //     displayName: 'Node'
+            // },
             {
                 cvType: 'compute_node_machine',
                 key: 'computeNodeMachine',
@@ -50,7 +50,8 @@
 
         filterName: undefined,
 
-        filterTimeframe: "1M",
+        // Timeslaice filter value.
+        filterTimeSlice: "2W",
 
         // Returns set of active filters, i.e. those for which that the user has made a selection.
         getActiveFilters: function () {

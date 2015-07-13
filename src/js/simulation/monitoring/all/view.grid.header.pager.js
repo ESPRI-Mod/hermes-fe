@@ -40,7 +40,7 @@
 
         // Backbone: view renderer.
         render: function () {
-            this.$el.append(TEMPLATES.pager());
+            this.$el.append(TEMPLATES.gridPager());
             this._onSimulationListFiltered();
 
             return this;
@@ -163,7 +163,7 @@
 }(
     this.APP.modules.monitoring,
     this.APP.modules.monitoring.state.paging,
-    this.APP.modules.monitoring.templates.grid,
+    this.APP.modules.monitoring.templates,
     this._,
     this.Backbone
 ));

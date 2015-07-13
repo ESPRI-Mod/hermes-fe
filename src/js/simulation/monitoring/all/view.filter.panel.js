@@ -11,10 +11,10 @@
 
         // Backbone: view renderer.
         render: function () {
+            APP.utils.render(MOD.views.FilterTimesliceView, this.options, this);
             _.each(MOD.state.filters, function (filter) {
                 APP.utils.render(MOD.views.FilterItemView, filter, this);
             }, this);
-            // APP.utils.render(MOD.views.FilterTimeframeView, this.options, this);
             // APP.utils.render(MOD.views.FilterNameView, this.options, this);
 
             return this;

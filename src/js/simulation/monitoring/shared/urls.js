@@ -8,6 +8,9 @@
         // CV setup data endpoint.
         CV: 'simulation/monitoring/fetch_cv',
 
+        // Monitoring fetch time slice endpoint.
+        FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice?timeslice={timeslice}',
+
         // Monitoring setup data endpoint.
         SETUP_ALL: 'simulation/monitoring/fetch_all',
 

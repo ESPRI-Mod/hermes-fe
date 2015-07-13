@@ -24,7 +24,7 @@
 
         // Backbone: view renderer.
         render : function () {
-            APP.utils.renderHTML(TEMPLATES.contextMenu, {}, this);
+            APP.utils.renderHTML(TEMPLATES.gridContextMenu, {}, this);
 
             return this;
         }
@@ -33,6 +33,6 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this.APP.modules.monitoring.templates.grid,
+    this.APP.modules.monitoring.templates,
     this.Backbone
 ));

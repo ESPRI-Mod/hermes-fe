@@ -1,7 +1,32 @@
-(function (APP, MOD, _) {
+(function (APP, MOD, $, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
+
+    // Fetches a timeslice of data from server & fire relevant event.
+    MOD.fetchTimeSlice = function (eventName, triggerBackgroundEvents) {
+        var ep;
+
+        if (triggerBackgroundEvents === true) {
+            APP.events.trigger("module:processingStarts", {
+                module: MOD,
+                info: 'Loading data'
+            });
+        }
+
+        ep = APP.utils.getEndPoint(MOD.urls.FETCH_TIMESLICE);
+        ep  = ep.replace('{timeslice}', MOD.state.filterTimeSlice);
+        $.getJSON(ep, function (data) {
+            MOD.events.trigger(eventName, data);
+        });
+
+        if (triggerBackgroundEvents === true) {
+            setTimeout(function () {
+                APP.events.trigger("module:processingEnds");
+            }, 250);
+            
+        }
+    };
 
     // Returns collection of filtered simulations.
     // @exclusionFilter     Filter to be excluded when determining result.
@@ -120,5 +145,6 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.$jq,
     this._
 ));

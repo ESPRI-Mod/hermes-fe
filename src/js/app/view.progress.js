@@ -11,7 +11,9 @@
         // Backbone: view initializer.
         initialize: function () {
             APP.events.on("module:initializing", this._onModuleInitializing, this);
-            APP.events.on("module:initialized", this._onModuleLoaded, this);
+            APP.events.on("module:initialized", this._onModuleInitialized, this);
+            APP.events.on("module:processingStarts", this._onModuleProcessingStarts, this);
+            APP.events.on("module:processingEnds", this._onModuleProcessingEnds, this);
         },
 
         // Backbone: view renderer.
@@ -21,6 +23,29 @@
             }, this);
 
             return this;
+        },
+
+        // On module processing starts event handler.
+        _onModuleProcessingStarts: function (ei) {
+            var module = ei.module;
+            this.$('.feedback-module-title').text(module.title);
+            this.$('.feedback-module-version').text(module.version);
+            this.$('.feedback-text').text(ei.info);
+            this.$el.modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+        },
+
+        // On module processing ends event handler.
+        _onModuleProcessingEnds: function () {
+            var self = this;
+
+            // Avoid screen flicker by hiding the progress dialog after 1 second.
+            setTimeout(function () {
+                self.$el.modal('hide');
+            }, 500);
         },
 
         // On module initializing event handler.
@@ -35,7 +60,7 @@
         },
 
         // On module loaded event handler.
-        _onModuleLoaded: function () {
+        _onModuleInitialized: function () {
             var self = this;
 
             // Avoid screen flicker by hiding the progress dialog after 1 second.
