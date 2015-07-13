@@ -7,14 +7,14 @@
 
     // Helper function: returns simulation monitor URL.
     getMonitorURL = function (simulation) {
-        var url = [];
+        var url;
 
-        // Escape if simulation is not associated with a THREDDS server.
-        if (_.isUndefined(simulation.ext.mURL)) {
+        // Escape if simulation's compute node is not associated with a THREDDS server.
+        if (_.has(MOD.urls.M, simulation.computeNode) === false) {
             return;
         }
 
-        url.push(simulation.ext.mURL);
+        url = [MOD.urls.M[simulation.computeNode]];
         url.push(simulation.computeNodeLogin);
         if (simulation.ext.modelSynonyms.length) {
             url.push(simulation.ext.modelSynonyms[0]);
@@ -25,20 +25,21 @@
         url.push(simulation.experimentRaw || simulation.ext.experiment);
         url.push(simulation.name);
         url.push("MONITORING/index.html");
+        url = url.join("/");
 
-        return url.join("/");
+        return url;
     };
 
     // Helper function: returns simulation inter-monitor URL.
     getInterMonitorURL = function (simulation) {
-        var url = [];
+        var url;
 
         // Escape if simulation is not associated with an inter-monitoring server.
-        if (_.isUndefined(simulation.ext.imURL)) {
+        if (_.has(MOD.urls.IM, simulation.computeNode) === false) {
             return;
         }
 
-        url.push(simulation.ext.imURL);
+        url = [MOD.urls.IM[simulation.computeNode]];
         url.push(simulation.computeNodeLogin);
         if (simulation.ext.modelSynonyms.length) {
             url.push(simulation.ext.modelSynonyms[0]);
@@ -48,8 +49,9 @@
         url.push(simulation.spaceRaw || simulation.space);
         url.push(simulation.experimentRaw || simulation.ext.experiment);
         url.push(simulation.name);
+        url = url.join("/");
 
-        return url.join("/");
+        return url;
     };
 
     // Event handler: open monitor link.

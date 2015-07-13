@@ -81,11 +81,9 @@
                 experiment: undefined,
                 hasRunningJob: false,
                 isSelectedForIM: false,
-                imURL: undefined,
                 isRestart: simulation.tryID > 1,
                 model: undefined,
                 modelSynonyms: [],
-                mURL: undefined,
                 outputEndDate: "--",
                 outputStartDate: "--",
                 space: undefined
@@ -143,19 +141,9 @@
         }
 
         // Set model synonyms.
-        // TODO - derive at click time ?
         model = MOD.cv.getTerm('model', simulation.model);
         if (model && model.synonyms) {
             simulation.ext.modelSynonyms = model.synonyms.split(", ");
-        }
-
-        // Set monitoring / inter-monitoring URLs.
-        // TODO - derive at click time ?
-        if (_.has(MOD.urls.M, simulation.computeNode)) {
-            simulation.ext.mURL = MOD.urls.M[simulation.computeNode];
-        }
-        if (_.has(MOD.urls.IM, simulation.computeNode)) {
-            simulation.ext.imURL = MOD.urls.IM[simulation.computeNode];
         }
     };
 
