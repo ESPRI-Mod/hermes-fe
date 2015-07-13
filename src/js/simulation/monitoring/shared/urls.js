@@ -5,17 +5,14 @@
 
     // Declare URL's used across module.
     MOD.urls = {
-        // CV setup data endpoint.
-        CV: 'simulation/monitoring/fetch_cv',
+        // Fetch CV data endpoint.
+        FETCH_CV: 'simulation/monitoring/fetch_cv',
 
-        // Monitoring fetch time slice endpoint.
+        // Fetch monitoring time slice endpoint.
         FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice?timeslice={timeslice}',
 
-        // Monitoring setup data endpoint.
-        SETUP_ALL: 'simulation/monitoring/fetch_all',
-
-        // Page setup data endpoint.
-        SETUP_ONE: 'simulation/monitoring/fetch_one?uid={uid}',
+        // Fetch monitoring one simulation endpoint.
+        FETCH_ONE: 'simulation/monitoring/fetch_one?uid={uid}',
 
         // Simulation page.
         SIMULATION_PAGE: 'simulation.monitoring.one.html?uid={uid}',
