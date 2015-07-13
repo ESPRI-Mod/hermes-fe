@@ -4,10 +4,55 @@
     "use strict";
 
     // Closure vars.
-    var parseComputeJobs,
-        setTotalJobCount,
+    var getExecutionState,
+        mapJob,
+        parseComputeJobs,
+        setExecutionState,
         sortJobset,
         sortJobsets;
+
+    // Returns simulation's current execution status.
+    getExecutionState = function (simulation) {
+        var last;
+
+
+        // Complete if cmip5.
+        if (simulation.activity === 'cmip5') {
+            return 'complete';
+        }
+
+        // Queued if no jobs have started.
+        if (simulation.jobs.compute.all.length === 0) {
+            return 'queued';
+        }
+
+        // Set last job.
+        last = _.last(simulation.jobs.compute.all);
+
+        // Running if last job is running.
+        if (last.executionState === 'running') {
+            return 'running';
+        }
+
+        // Error if last job is error.
+        if (last.executionState === 'error') {
+            return 'error';
+        }
+
+        // Complete if last job is complete and 0100 has been received.
+        if (last.executionState === 'complete' && simulation.executionEndDate && simulation.isError === false) {
+            return 'complete';
+        }
+
+        // Otherwise queued.
+        return 'queued';
+    };
+
+    // Sets simulation's current execution status.
+    setExecutionState = function (simulation) {
+        simulation.executionState = getExecutionState(simulation);
+        MOD.cv.setFieldDisplayName(simulation, 'simulation_state', 'executionState');
+    };
 
     // Sorts a job set.
     sortJobset = function (jobSet) {
@@ -50,14 +95,8 @@
         }
     };
 
-    // Parses simulation jobs in readiness for processing.
-    MOD.parseJobs = function (simulation) {
-        sortJobsets(simulation);
-        parseComputeJobs(simulation);
-    };
-
     // Appends a job to the relevant simulation job set.
-    MOD.appendJob = function (simulation, job) {
+    mapJob = function (simulation, job) {
         simulation.jobs.global.all.push(job);
         simulation.jobs.global[job.executionState].push(job);
         switch (job.ext.type) {
@@ -80,63 +119,36 @@
         }
     };
 
-    // Extends a job in readiness for processing.
-    MOD.extendJob = function (job) {
-        // Escape if already extended.
-        if (_.has(job, 'ext')) {
-            return;
-        }
+    // Parses a simulation in readiness for processing.
+    MOD.parseSimulation = function (simulation, jobHistory) {
+        MOD.parseSimulations([simulation], jobHistory, _.indexBy([simulation], "uid"));
+    };
 
-        // Initialise extension fields.
-        _.extend(job, {
-            accountingProject: undefined,
-            executionState: undefined,
-            ext: {
-                id: undefined,
-                duration: '--',
-                executionEndDate: '--',
-                expectedExecutionEndDate: '--',
-                executionStartDate: '--',
-                executionState: undefined,
-                type: job.typeof || 'computing'
-            },
-            isLate: undefined
+    // Parses a collection of simulations in readiness for processing.
+    MOD.parseSimulations = function (simulationList, jobHistory, simulationSet) {
+        // Extend simulations.
+        _.each(simulationList, MOD.extendSimulation);
+
+        // Extend jobs.
+        _.each(jobHistory, MOD.extendJob);
+
+        // Map jobs to simulations.
+        _.each(jobHistory, function (job) {
+            if (_.has(simulationSet, job.simulationUID)) {
+                mapJob(simulationSet[job.simulationUID], job);
+            }
         });
 
-        // Format date fields.
-        APP.utils.formatDateTimeField(job, "executionStartDate");
-        APP.utils.formatDateTimeField(job, "expectedExecutionEndDate");
-        APP.utils.formatDateTimeField(job, "executionEndDate");
+        // Sort jobs.
+        _.each(simulationList, sortJobsets);
 
-        // Set duration (in seconds).
-        if (job.executionStartDate && job.executionEndDate) {
-            job.ext.duration = job.executionEndDate.diff(job.executionStartDate, 'seconds');
-            job.ext.duration = numeral(job.ext.duration).format('00:00:00');
-        }
+        // Parse compute jobs.
+        _.each(simulationList, parseComputeJobs);
 
-        // Set execution state.
-        if (job.isError) {
-            job.executionState = 'error';
-        } else if (job.executionEndDate) {
-            job.executionState = 'complete';
-        } else {
-            job.executionState = 'running';
-        }
-
-        // Set is late flag.
-        if (job.executionEndDate) {
-            job.isLate = job.wasLate;
-        } else {
-            job.isLate = moment().valueOf() > job.expectedExecutionEndDate.valueOf();
-        }
-
-        // Set accounting project.
-        if (job.accountingProject === 'None' || _.isNull(job.accountingProject)) {
-            job.ext.accountingProject = "--";
-        } else {
-            job.ext.accountingProject = job.accountingProject;
-        }
+        // Set execution states.
+        _.each(simulationList, setExecutionState);
     };
+
 }(
     this.APP,
     this.APP.modules.monitoring,

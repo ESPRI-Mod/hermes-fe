@@ -4,7 +4,12 @@
     "use strict";
 
     // Forward declare module vars.
-    var insertTerm, getTerm, getTermFromSynonym, getTermset, getGlobalTerm;
+    var insertTerm,
+        getTerm,
+        getTermFromSynonym,
+        getTermset,
+        getGlobalTerm,
+        setFieldDisplayName;
 
     // Appends a new term to managed collection.
     insertTerm = function (term) {
@@ -53,13 +58,33 @@
         };
     };
 
+    // Sets a fields display name based upon it's related CV.
+    setFieldDisplayName = function (obj, termType, fieldName) {
+        var term, fieldValue;
+
+        fieldName = fieldName || termType;
+        fieldValue = obj[fieldName];
+        term = MOD.cv.getTerm(termType, fieldValue);
+        if (term) {
+            obj.ext[fieldName] = term.displayName;
+        } else {
+            obj.ext[fieldName] = fieldValue || '--';
+        }
+
+        // Update unspecified fields.
+        if (obj.ext[fieldName].toLowerCase() === 'unspecified') {
+            obj.ext[fieldName] = '--';
+        }
+    };
+
     // Expose to module.
     MOD.cv = {
         insertTerm: insertTerm,
         getTerm: getTerm,
         getTermFromSynonym: getTermFromSynonym,
         getTermset: getTermset,
-        getGlobalTerm: getGlobalTerm
+        getGlobalTerm: getGlobalTerm,
+        setFieldDisplayName: setFieldDisplayName
     };
 
 }(

@@ -3,76 +3,66 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Closure vars.
-    var extendSimulation,
-        getExecutionState,
-        setCVTermDisplayName,
-        setExecutionState;
-
-    // Returns simulation's current execution status.
-    getExecutionState = function (simulation) {
-        var last;
-
-
-        // Complete if cmip5.
-        if (simulation.activity === 'cmip5') {
-            return 'complete';
+    // Extends a job in readiness for processing.
+    MOD.extendJob = function (job) {
+        // Escape if already extended.
+        if (_.has(job, 'ext')) {
+            return;
         }
 
-        // Queued if no jobs have started.
-        if (simulation.jobs.compute.all.length === 0) {
-            return 'queued';
+        // Initialise extension fields.
+        _.extend(job, {
+            accountingProject: undefined,
+            executionState: undefined,
+            ext: {
+                id: undefined,
+                duration: '--',
+                executionEndDate: '--',
+                expectedExecutionEndDate: '--',
+                executionStartDate: '--',
+                executionState: undefined,
+                type: job.typeof || 'computing'
+            },
+            isLate: undefined
+        });
+
+        // Format date fields.
+        APP.utils.formatDateTimeField(job, "executionStartDate");
+        APP.utils.formatDateTimeField(job, "expectedExecutionEndDate");
+        APP.utils.formatDateTimeField(job, "executionEndDate");
+
+        // Set duration (in seconds).
+        if (job.executionStartDate && job.executionEndDate) {
+            job.ext.duration = job.executionEndDate.diff(job.executionStartDate, 'seconds');
+            job.ext.duration = numeral(job.ext.duration).format('00:00:00');
         }
 
-        // Set last job.
-        last = _.last(simulation.jobs.compute.all);
-
-        // Running if last job is running.
-        if (last.executionState === 'running') {
-            return 'running';
-        }
-
-        // Error if last job is error.
-        if (last.executionState === 'error') {
-            return 'error';
-        }
-
-        // Complete if last job is complete and 0100 has been received.
-        if (last.executionState === 'complete' && simulation.executionEndDate && simulation.isError === false) {
-            return 'complete';
-        }
-
-        // Otherwise queued.
-        return 'queued';
-    };
-
-    // Sets simulation's current execution status.
-    setExecutionState = function (simulation) {
-        simulation.executionState = getExecutionState(simulation);
-        setCVTermDisplayName(simulation, 'simulation_state', 'executionState');
-    };
-
-    // Set case sensitive cv related field names.
-    setCVTermDisplayName = function (simulation, termType, fieldName) {
-        var term, fieldValue;
-
-        fieldName = fieldName || termType;
-        fieldValue = simulation[fieldName];
-        term = MOD.cv.getTerm(termType, fieldValue);
-        if (term) {
-            simulation.ext[fieldName] = term.displayName;
+        // Set execution state.
+        if (job.isError) {
+            job.executionState = 'error';
+        } else if (job.executionEndDate) {
+            job.executionState = 'complete';
         } else {
-            simulation.ext[fieldName] = fieldValue || '--';
+            job.executionState = 'running';
         }
 
-        // Update unspecified fields.
-        if (simulation.ext[fieldName].toLowerCase() === 'unspecified') {
-            simulation.ext[fieldName] = '--';
+        // Set is late flag.
+        if (job.executionEndDate) {
+            job.isLate = job.wasLate;
+        } else {
+            job.isLate = moment().valueOf() > job.expectedExecutionEndDate.valueOf();
+        }
+
+        // Set accounting project.
+        if (job.accountingProject === 'None' || _.isNull(job.accountingProject)) {
+            job.ext.accountingProject = "--";
+        } else {
+            job.ext.accountingProject = job.accountingProject;
         }
     };
 
     // Extends a simulation in readiness for processing.
-    extendSimulation = function (simulation) {
+    MOD.extendSimulation = function (simulation) {
         var model;
 
         // Initialise extension fields.
@@ -137,13 +127,13 @@
         APP.utils.formatDateField(simulation, "outputEndDate");
 
         // Update case sensitive CV fields.
-        setCVTermDisplayName(simulation, 'activity');
-        setCVTermDisplayName(simulation, 'compute_node', 'computeNode');
-        setCVTermDisplayName(simulation, 'compute_node_login', 'computeNodeLogin');
-        setCVTermDisplayName(simulation, 'compute_node_machine', 'computeNodeMachine');
-        setCVTermDisplayName(simulation, 'experiment');
-        setCVTermDisplayName(simulation, 'model');
-        setCVTermDisplayName(simulation, 'simulation_space', 'space');
+        MOD.cv.setFieldDisplayName(simulation, 'activity');
+        MOD.cv.setFieldDisplayName(simulation, 'compute_node', 'computeNode');
+        MOD.cv.setFieldDisplayName(simulation, 'compute_node_login', 'computeNodeLogin');
+        MOD.cv.setFieldDisplayName(simulation, 'compute_node_machine', 'computeNodeMachine');
+        MOD.cv.setFieldDisplayName(simulation, 'experiment');
+        MOD.cv.setFieldDisplayName(simulation, 'model');
+        MOD.cv.setFieldDisplayName(simulation, 'simulation_space', 'space');
 
         // Set accounting project.
         if (simulation.accountingProject === 'None' || _.isNull(simulation.accountingProject)) {
@@ -167,33 +157,6 @@
         if (_.has(MOD.urls.IM, simulation.computeNode)) {
             simulation.ext.imURL = MOD.urls.IM[simulation.computeNode];
         }
-    };
-
-    // Parses a simulation in readiness for processing.
-    MOD.parseSimulation = function (simulation, jobHistory) {
-        MOD.parseSimulations([simulation], jobHistory, _.indexBy([simulation], "uid"));
-    };
-
-    // Parses a collection of simulations in readiness for processing.
-    MOD.parseSimulations = function (simulationList, jobHistory, simulationSet) {
-        // Extend simulations.
-        _.each(simulationList, extendSimulation);
-
-        // Extend jobs.
-        _.each(jobHistory, MOD.extendJob);
-
-        // Append jobs.
-        _.each(jobHistory, function (job) {
-            if (_.has(simulationSet, job.simulationUID)) {
-                MOD.appendJob(simulationSet[job.simulationUID], job);
-            }
-        });
-
-        // Parse jobs.
-        _.each(simulationList, MOD.parseJobs);
-
-        // Set execution states.
-        _.each(simulationList, setExecutionState);
     };
 
 }(
