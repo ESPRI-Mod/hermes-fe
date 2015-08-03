@@ -35,6 +35,7 @@
 
         timeframeFilterOptions:
             "<option value='ALL'>*</option>\n\
+             <option value='1W'>< 1 week</option>\n\
              <option value='2W' selected='true'>< 2 weeks</option>\n\
              <option value='1M'>< 1 month</option>\n\
              <option value='2M'>< 2 months</option>\n\
