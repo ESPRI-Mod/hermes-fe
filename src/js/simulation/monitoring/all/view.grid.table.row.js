@@ -43,9 +43,16 @@
             if (this.model.ext.isSelectedForIM) {
                 this.$('.interMonitoring > input').attr('checked', true);
             }
-            if (this.model.jobs.compute.hasLate) {
-                this.$('.jobCount').addClass('bg-danger');
+            if (this.model.jobs.compute.error.length) {
+                this.$('.compute-job-count').addClass('bg-danger');
             }
+            if (this.model.jobs.postProcessing.error.length) {
+                this.$('.post-processing-job-count').addClass('bg-danger');
+            }
+
+            // if (this.model.jobs.compute.hasLate) {
+            //     this.$('.jobCount').addClass('bg-danger');
+            // }
 
             return this;
         }

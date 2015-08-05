@@ -96,7 +96,6 @@
                     hasLate: false,
                     running: [],
                 },
-                count: "--",
                 global: {
                     all: [],
                     complete: [],

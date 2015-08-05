@@ -35,8 +35,8 @@
 
         timeframeFilterOptions:
             "<option value='ALL'>*</option>\n\
-             <option value='1W'>< 1 week</option>\n\
-             <option value='2W' selected='true'>< 2 weeks</option>\n\
+             <option value='1W' selected='true'>< 1 week</option>\n\
+             <option value='2W'>< 2 weeks</option>\n\
              <option value='1M'>< 1 month</option>\n\
              <option value='2M'>< 2 months</option>\n\
              <option value='3M'>< 3 months</option>\n\
@@ -73,17 +73,18 @@
         gridHeader:
             "<tr class='bg-primary'>\n\
                 <th title='UID' class='hidden'>UID</th>\n\
-                <th title='Activity'>Activity</th>\n\
-                <th title='Name' class=''>Name</th>\n\
-                <th title='Try' class='text-center'>Try</th>\n\
-                <th title='Jobs' class='text-center'>Jobs</th>\n\
-                <th title='Node - Machine' class='text-center'>Node - Machine</th>\n\
-                <th title='Login' class='text-center'>Login</th>\n\
-                <th title='Tag / Model' class='text-center'>Tag / Model</th>\n\
-                <th title='Space' class='text-center'>Space</th>\n\
-                <th title='Experiment' class='text-center'>Experiment</th>\n\
-                <th title='Start' class='text-center'>Start</th>\n\
-                <th title='End' class='text-center'>End</th>\n\
+                <th title='Activity'><small>Activity</small></th>\n\
+                <th title='Name' style='width:200px;'><small>Name</small></th>\n\
+                <th title='Try' class='text-center'><small>Try</small></th>\n\
+                <th title='Compute Jobs'><small>Jobs (C)</small></th>\n\
+                <th title='Post-Processing Jobs'><small>Jobs (PP)</small></th>\n\
+                <th title='Node - Machine' class='text-center'><small>Node - Machine</small></th>\n\
+                <th title='Login' class='text-center'><small>Login</small></th>\n\
+                <th title='Tag / Model' class='text-center'><small>Tag / Model</small></th>\n\
+                <th title='Space' class='text-center'><small>Space</small></th>\n\
+                <th title='Experiment' class='text-center'><small>Experiment</small></th>\n\
+                <th title='Start' class='text-center'><small>Start</small></th>\n\
+                <th title='End' class='text-center'><small>End</small></th>\n\
                 <th title='monitoring' class='text-center'></th>\n\
                 <th class='interMonitoring text-center' title='Open inter-monitoring menu' data-toggle='context' data-target='#imContextMenu'>\n\
                   <span class='glyphicon glyphicon-random'></span>\n\
@@ -92,17 +93,18 @@
 
         gridRow:
             "<td class='row-link uid hidden' title='<%= uid %>'><%= uid %></td>\n\
-             <td class='row-link activity' title='<%= ext.activity %>'><%= ext.activity %></td>\n\
-             <td class='row-link name' title='<%= name %>'><%= name %></td>\n\
-             <td class='row-link tryCount text-center <%= tryID > 1 ? 'bg-danger' : '' %>' title='<%= tryID %>'><%= tryID %></td>\n\
-             <td class='row-link jobCount text-center' title='<%= jobs.global.all.length %>'><%= jobs.global.all.length %></td>\n\
-             <td class='row-link computeNodeMachine text-center' title='<%= ext.computeNodeMachine %>'><%= ext.computeNodeMachine %></td>\n\
-             <td class='row-link computeNodeLogin text-center' title='<%= computeNodeLogin %>'><%= computeNodeLogin %></td>\n\
-             <td class='row-link model text-center' title='<%= ext.model %>'><%= ext.model %></td>\n\
-             <td class='row-link space text-center' title='<%= ext.space %>'><%= ext.space %></td>\n\
-             <td class='row-link experiment text-center' title='<%= ext.experiment %>'><%= ext.experiment %></td>\n\
-             <td class='row-link executionStartDate text-center' title='<%= executionStartDate %>'><%= ext.executionStartDate %></td>\n\
-             <td class='row-link executionEndDate text-center' title='<%= executionEndDate %>'><%= ext.executionEndDate %></td>\n\
+             <td class='row-link activity' title='<%= ext.activity %>'><small><%= ext.activity %></small></td>\n\
+             <td class='row-link name'  style='width:200px;' title='<%= name %>'><small><%= name %></small></td>\n\
+             <td class='row-link tryCount text-center <%= tryID > 1 ? 'bg-danger' : '' %>' title='<%= tryID %>'><small><%= tryID %></small></td>\n\
+             <td class='row-link compute-job-count text-center' title='Compute Job Count (#complete : #errors)'><small><%= jobs.compute.complete.length %> : <%= jobs.compute.error.length %></small></td>\n\
+             <td class='row-link post-processing-job-count text-center' title='Post-Processing Job Count (#complete : #errors)'><small><%= jobs.postProcessing.complete.length %> : <%= jobs.postProcessing.error.length %></small></td>\n\
+             <td class='row-link computeNodeMachine text-center' title='<%= ext.computeNodeMachine %>'><small><%= ext.computeNodeMachine %></small></td>\n\
+             <td class='row-link computeNodeLogin text-center' title='<%= computeNodeLogin %>'><small><%= computeNodeLogin %></small></td>\n\
+             <td class='row-link model text-center' title='<%= ext.model %>'><small><%= ext.model %></small></td>\n\
+             <td class='row-link space text-center' title='<%= ext.space %>'><small><%= ext.space %></small></td>\n\
+             <td class='row-link experiment text-center' title='<%= ext.experiment %>'><small><%= ext.experiment %></small></td>\n\
+             <td class='row-link executionStartDate text-center' title='<%= executionStartDate %>'><small><%= ext.executionStartDate %></small></td>\n\
+             <td class='row-link executionEndDate text-center' title='<%= executionEndDate %>'><small><%= ext.executionEndDate %></small></td>\n\
              <td class='monitoring text-center' title='Open monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\
              <td class='interMonitoring text-center' title='Select for inter-monitoring'><input type='checkbox'></input></td>",
 
