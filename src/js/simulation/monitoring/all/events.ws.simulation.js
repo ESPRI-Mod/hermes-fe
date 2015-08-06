@@ -12,12 +12,12 @@
 
         // Update module state.
         MOD.state.simulationList = _.reject(MOD.state.simulationList, function (s) {
-            return s.uid === data.simulation.uid || s.hashid === data.simulation.hashID;
+            return s.hashid === data.simulation.hashid || s.uid === data.simulation.uid;
         });
         MOD.state.simulationList.push(data.simulation);
         MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");
 
-        // Reparse simulation.
+        // Parse simulation.
         MOD.parseSimulation(data.simulation, data.jobHistory);
 
         // Update filtered simulations.
