@@ -213,6 +213,13 @@
                 obj.ext = obj.ext || {};
                 obj.ext[attr] = obj[attr].format('DD-MM-YYYY HH:mm:ss');
             }
+        },
+
+        // Returns a flag indicating whether the value is considered to be none.
+        isNone: function (value) {
+            return value === 'None' ||
+                   _.isNull(value) ||
+                   _.isUndefined(value);
         }
     };
 

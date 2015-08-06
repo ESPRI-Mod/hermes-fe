@@ -5,6 +5,8 @@
 
     // Extends a job in readiness for processing.
     MOD.extendJob = function (job) {
+        var now;
+
         // Escape if already extended.
         if (_.has(job, 'ext')) {
             return;
@@ -15,7 +17,9 @@
             accountingProject: undefined,
             executionState: undefined,
             ext: {
+                accountingProject: '--',
                 id: undefined,
+                delay: '--',
                 duration: '--',
                 executionEndDate: '--',
                 expectedExecutionEndDate: '--',
@@ -31,10 +35,24 @@
         APP.utils.formatDateTimeField(job, "expectedExecutionEndDate");
         APP.utils.formatDateTimeField(job, "executionEndDate");
 
-        // Set duration (in seconds).
+        // Set duration (in HH::MM::SS).
         if (job.executionStartDate && job.executionEndDate) {
             job.ext.duration = job.executionEndDate.diff(job.executionStartDate, 'seconds');
             job.ext.duration = numeral(job.ext.duration).format('00:00:00');
+        }
+
+        // Set delay (in HH::MM::SS).
+        if (job.executionEndDate) {
+            if (job.executionEndDate > job.expectedExecutionEndDate) {
+                job.ext.delay = job.executionEndDate.diff(job.expectedExecutionEndDate, 'seconds');
+                job.ext.delay = numeral(job.ext.delay).format('00:00:00');
+            }
+        } else {
+            now = moment();
+            if (now > job.expectedExecutionEndDate) {
+                job.ext.delay = now.diff(job.expectedExecutionEndDate, 'seconds');
+                job.ext.delay = numeral(job.ext.delay).format('00:00:00');
+            }
         }
 
         // Set execution state.
@@ -54,9 +72,7 @@
         }
 
         // Set accounting project.
-        if (job.accountingProject === 'None' || _.isNull(job.accountingProject)) {
-            job.ext.accountingProject = "--";
-        } else {
+        if (APP.utils.isNone(job.accountingProject) === false) {
             job.ext.accountingProject = job.accountingProject;
         }
     };

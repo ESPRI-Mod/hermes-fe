@@ -195,13 +195,12 @@
             header:
                 "<tr class='bg-primary'>\n\
                     <th title='ID'>#</th>\n\
+                    <th title='Accounting Project' class='text-center'>Acc. Project</th>\n\
                     <th title='UID' class='hidden'>UID</th>\n\
                     <th title='Start Date' class='text-center'>Start Date</th>\n\
                     <th title='End Date' class='text-center'>End Date</th>\n\
-                    <th title='Duration' class='text-center'>Duration (hours)</th>\n\
-                    <th title='Expected End Date' class='text-center'>Expected End Date</th>\n\
-                    <th title='Was Late' class='text-center'>Was Late ?</th>\n\
-                    <th title='Accounting Project' class='text-center'>Acc. Project</th>\n\
+                    <th title='Duration' class='text-center'>Duration (HH:MM:SS)</th>\n\
+                    <th title='Delay' class='text-center'>Lateness (HH:MM:SS)</th>\n\
                 </ttr>",
 
             footer:
@@ -224,12 +223,11 @@
             row:
                 "<td class='id' title='<%= jobIndex %>'><%= jobIndex %></td>\n\
                 <td class='uid hidden' title='<%= job.jobUID %>'><%= job.jobUID %></td>\n\
+                <td class='accountingProject text-center' title='<%= job.ext.accountingProject %>'><%= job.ext.accountingProject %></td>\n\
                 <td class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>\n\
                 <td class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>\n\
                 <td class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>\n\
-                <td class='expectedExecutionEndDate text-center' title='<%= job.ext.expectedExecutionEndDate %>'><%= job.ext.expectedExecutionEndDate %></td>\n\
-                <td class='wasLate text-center' title='<%= job.wasLate ? 'Yes' : '--' %>'><%= job.wasLate ? 'Yes' : '--' %></td>\n\
-                <td class='accountingProject text-center' title='<%= job.ext.accountingProject %>'><%= job.ext.accountingProject %></td>"
+                <td class='delay text-center' title='<%= job.ext.delay %>'><%= job.ext.delay %></td>"
         },
 
         notifications:
