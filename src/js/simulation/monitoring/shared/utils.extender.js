@@ -7,15 +7,22 @@
     MOD.setJobLateness = function (job) {
         var now;
 
+        // Escape if unnecessary.
+        if (job.ext.latenessAssigned) {
+            return;
+        }
+
         // Set lateness (in HH::MM::SS).
         if (job.executionEndDate) {
             if (job.executionEndDate > job.expectedExecutionEndDate) {
+                job.ext.latenessAssigned = true;
                 job.ext.lateness = job.executionEndDate.diff(job.expectedExecutionEndDate, 'seconds');
                 job.ext.lateness = numeral(job.ext.lateness).format('00:00:00');
             }
         } else {
             now = moment();
             if (now > job.expectedExecutionEndDate) {
+                job.ext.latenessAssigned = false;
                 job.ext.lateness = now.diff(job.expectedExecutionEndDate, 'seconds');
                 job.ext.lateness = numeral(job.ext.lateness).format('00:00:00');
             }
@@ -39,6 +46,7 @@
                 accountingProject: '--',
                 id: undefined,
                 lateness: '--',
+                latenessAssigned: false,
                 duration: '--',
                 executionEndDate: '--',
                 expectedExecutionEndDate: '--',
