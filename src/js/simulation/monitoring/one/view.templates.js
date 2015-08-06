@@ -227,7 +227,7 @@
                 <td class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>\n\
                 <td class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>\n\
                 <td class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>\n\
-                <td class='delay text-center' title='<%= job.ext.delay %>'><%= job.ext.delay %></td>"
+                <td class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>"
         },
 
         notifications:

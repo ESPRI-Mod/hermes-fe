@@ -3,6 +3,25 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
+    // Set a job's lateness indicator.
+    MOD.setJobLateness = function (job) {
+        var now;
+
+        // Set lateness (in HH::MM::SS).
+        if (job.executionEndDate) {
+            if (job.executionEndDate > job.expectedExecutionEndDate) {
+                job.ext.lateness = job.executionEndDate.diff(job.expectedExecutionEndDate, 'seconds');
+                job.ext.lateness = numeral(job.ext.lateness).format('00:00:00');
+            }
+        } else {
+            now = moment();
+            if (now > job.expectedExecutionEndDate) {
+                job.ext.lateness = now.diff(job.expectedExecutionEndDate, 'seconds');
+                job.ext.lateness = numeral(job.ext.lateness).format('00:00:00');
+            }
+        }
+    }
+
     // Extends a job in readiness for processing.
     MOD.extendJob = function (job) {
         var now;
@@ -19,7 +38,7 @@
             ext: {
                 accountingProject: '--',
                 id: undefined,
-                delay: '--',
+                lateness: '--',
                 duration: '--',
                 executionEndDate: '--',
                 expectedExecutionEndDate: '--',
@@ -41,19 +60,8 @@
             job.ext.duration = numeral(job.ext.duration).format('00:00:00');
         }
 
-        // Set delay (in HH::MM::SS).
-        if (job.executionEndDate) {
-            if (job.executionEndDate > job.expectedExecutionEndDate) {
-                job.ext.delay = job.executionEndDate.diff(job.expectedExecutionEndDate, 'seconds');
-                job.ext.delay = numeral(job.ext.delay).format('00:00:00');
-            }
-        } else {
-            now = moment();
-            if (now > job.expectedExecutionEndDate) {
-                job.ext.delay = now.diff(job.expectedExecutionEndDate, 'seconds');
-                job.ext.delay = numeral(job.ext.delay).format('00:00:00');
-            }
-        }
+        // Set lateness indicator (in HH::MM::SS).
+        MOD.setJobLateness(job);
 
         // Set execution state.
         if (job.isError) {
