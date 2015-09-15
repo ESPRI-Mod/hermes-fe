@@ -8,6 +8,9 @@
         var now;
 
         // Escape if unnecessary.
+        if (_.isNull(job.executionStartDate)) {
+            return;
+        }
         if (job.ext.latenessAssigned) {
             return;
         }

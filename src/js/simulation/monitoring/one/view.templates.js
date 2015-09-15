@@ -195,6 +195,7 @@
             header:
                 "<tr class='bg-primary'>\n\
                     <th title='ID'>#</th>\n\
+                    <th title='Is Spinup' class='text-center'>Is Spinup ?</th>\n\
                     <th title='Accounting Project' class='text-center'>Acc. Project</th>\n\
                     <th title='UID' class='hidden'>UID</th>\n\
                     <th title='Start Date' class='text-center'>Start Date</th>\n\
@@ -223,6 +224,7 @@
             row:
                 "<td class='id' title='<%= jobIndex %>'><%= jobIndex %></td>\n\
                 <td class='uid hidden' title='<%= job.jobUID %>'><%= job.jobUID %></td>\n\
+                <td class='isStartup text-center' title='<%= job.isStartup %>'><%= job.isStartup %></td>\n\
                 <td class='accountingProject text-center' title='<%= job.ext.accountingProject %>'><%= job.ext.accountingProject %></td>\n\
                 <td class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>\n\
                 <td class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>\n\

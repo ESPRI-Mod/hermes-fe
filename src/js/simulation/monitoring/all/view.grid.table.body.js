@@ -10,18 +10,17 @@
 
         // Backbone: view initializer.
         initialize: function () {
-            MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
+            MOD.events.on("ui:pagination", this._renderPage, this);
+            MOD.events.on("state:simulationListFiltered", this._renderPage, this);
             MOD.events.on("state:simulationListNull", this._onSimulationListNull, this);
 
-            MOD.events.on("state:simulationStart", this._onMonitoringEvent, this);
-            MOD.events.on("state:simulationComplete", this._onMonitoringEvent, this);
-            MOD.events.on("state:simulationError", this._onMonitoringEvent, this);
-            MOD.events.on("state:jobStart", this._onMonitoringEvent, this);
-            MOD.events.on("state:jobComplete", this._onMonitoringEvent, this);
-            MOD.events.on("state:jobError", this._onMonitoringEvent, this);
+            MOD.events.on("state:simulationStart", this._updateRow, this);
+            MOD.events.on("state:simulationComplete", this._updateRow, this);
+            MOD.events.on("state:simulationError", this._updateRow, this);
 
-            MOD.events.on("state:simulationStatusUpdate", this._onSimulationStateUpdate, this);
-            MOD.events.on("ui:pagination", this._renderPage, this);
+            MOD.events.on("state:jobStart", this._updateRow, this);
+            MOD.events.on("state:jobComplete", this._updateRow, this);
+            MOD.events.on("state:jobError", this._updateRow, this);
         },
 
         // Backbone: view renderer.
@@ -47,11 +46,6 @@
             APP.utils.render(MOD.views.GridTableRowView, {
                 model : simulation
             }, this);
-        },
-
-        // Simulation list filtered event handler.
-        _onSimulationListFiltered: function () {
-            this._renderPage();
         },
 
         // Simulation list null event handler.
@@ -83,12 +77,6 @@
             } else {
                 console.log('WARNING: could not find table row');
             }
-        },
-
-        // Monitoring event handler.
-        // @ei      Event information.
-        _onMonitoringEvent: function (ei) {
-            this._updateRow(ei);
         }
     });
 

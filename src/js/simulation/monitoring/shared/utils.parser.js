@@ -59,6 +59,7 @@
         if (jobSet.all.length > 1) {
             jobSet.all = _.sortBy(jobSet.all, function (job) {
                 return job.ext.executionStartDate;
+                return job.executionStartDate;
             });
         }
     };
