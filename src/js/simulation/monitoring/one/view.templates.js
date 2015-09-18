@@ -195,7 +195,7 @@
             header:
                 "<tr class='bg-primary'>\n\
                     <th title='ID'>#</th>\n\
-                    <th title='Is Spinup' class='text-center'>Is Spinup ?</th>\n\
+                    <th title='Is Start Up' class='text-center'>Is Start Up ?</th>\n\
                     <th title='Accounting Project' class='text-center'>Acc. Project</th>\n\
                     <th title='UID' class='hidden'>UID</th>\n\
                     <th title='Start Date' class='text-center'>Start Date</th>\n\

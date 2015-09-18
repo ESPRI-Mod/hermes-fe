@@ -34,12 +34,24 @@
 
     // Extends a job in readiness for processing.
     MOD.extendJob = function (job) {
-        var now;
-
         // Escape if already extended.
         if (_.has(job, 'ext')) {
             return;
         }
+        
+        // Set defaults:
+        _.defaults(job, {
+            accountingProject: null,
+            executionEndDate: null,
+            isError: false,
+            wasLate: false,
+            postProcessingComponent: null,
+            postProcessingDate: null,
+            postProcessingDimension: null,
+            postProcessingFile: null,
+            postProcessingName: null,
+            typeof: 'post-processing'
+        });
 
         // Initialise extension fields.
         _.extend(job, {
@@ -62,7 +74,9 @@
 
         // Format date fields.
         APP.utils.formatDateTimeField(job, "executionStartDate");
-        APP.utils.formatDateTimeField(job, "expectedExecutionEndDate");
+        if (_.has(job, "expectedExecutionEndDate")) {
+            APP.utils.formatDateTimeField(job, "expectedExecutionEndDate");            
+        }
         APP.utils.formatDateTimeField(job, "executionEndDate");
 
         // Set duration (in HH::MM::SS).
@@ -99,6 +113,31 @@
     // Extends a simulation in readiness for processing.
     MOD.extendSimulation = function (simulation) {
         var model;
+        
+        // Set defaults:
+        _.defaults(simulation, {
+            accountingProject: null,
+            executionEndDate: null,
+            isError: false,
+            isObsolete: false,
+            outputStartDate: null,
+            outputEndDate: null,
+            parentSimulationBranchDate: null,
+            parentSimulationName: null,
+            // ... cv related
+            activity: null,
+            activityRaw: null,
+            computeNode: null,
+            computeNodeRaw: null,
+            computeNodeLogin: null,
+            computeNodeLoginRaw: null,
+            experiment: null,
+            experimentRaw: null,
+            model: null,
+            modelRaw: null,
+            space: null,
+            spaceRaw: null            
+        });
 
         // Initialise extension fields.
         _.extend(simulation, {
