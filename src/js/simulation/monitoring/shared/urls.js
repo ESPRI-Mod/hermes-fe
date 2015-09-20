@@ -15,7 +15,7 @@
         FETCH_ONE: 'simulation/monitoring/fetch_one?uid={uid}',
 
         // Simulation page.
-        SIMULATION_PAGE: 'simulation.monitoring.one.html?uid={uid}',
+        SIMULATION_PAGE: 'simulation.monitoring.one.html?uid={uid}&hashid={hashid}&tryID={tryID}',
 
         // Web-socket endpoint.
         WS_ALL: 'simulation/monitoring/ws/all',

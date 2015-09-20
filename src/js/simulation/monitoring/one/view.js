@@ -2,7 +2,7 @@
 
     // ECMAScript 5 Strict Mode
     "use strict";
-
+    
     // Main module level view.
     MOD.views.MainView = Backbone.View.extend({
         // Backbone: view CSS class.

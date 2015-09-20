@@ -73,8 +73,8 @@
             var typeset, view, rendered = [];
 
             typeset = _.isArray(types) ? types : [types];
-            _.each(typeset, function (type) {
-                view = new type(options).render();
+            _.each(typeset, function (ViewType) {
+                view = new ViewType(options).render();
                 rendered.push(view);
                 if (!_.isUndefined(container)) {
                     if (_.has(container, '$el')) {

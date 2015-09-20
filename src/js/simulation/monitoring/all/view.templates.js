@@ -92,21 +92,21 @@
             </tr>",
 
         gridRow:
-            "<td class='row-link uid hidden' title='<%= uid %>'><%= uid %></td>\n\
-             <td class='row-link activity text-center' title='<%= ext.activity %>'><small><%= ext.activity %></small></td>\n\
-             <td class='row-link name' title='<%= name %>'><small><%= name %></small></td>\n\
-             <td class='row-link tryCount text-center <%= tryID > 1 ? 'bg-danger' : '' %>' title='<%= tryID %>'><small><%= tryID %></small></td>\n\
-             <td class='row-link compute-job-count text-center' title='Compute Job Count (#running : #complete : #errors)'><small><%= jobs.compute.running.length %> | <%= jobs.compute.complete.length %> | <%= jobs.compute.error.length %></small></td>\n\
-             <td class='row-link post-processing-job-count text-center' title='Post-Processing Job Count (#running : #complete : #errors)'><small><%= jobs.postProcessing.running.length %> | <%= jobs.postProcessing.complete.length %> | <%= jobs.postProcessing.error.length %></small></td>\n\
-             <td class='row-link computeNodeMachine text-center' title='<%= ext.computeNodeMachine %>'><small><%= ext.computeNodeMachine %></small></td>\n\
-             <td class='row-link computeNodeLogin text-center' title='<%= computeNodeLogin %>'><small><%= computeNodeLogin %></small></td>\n\
-             <td class='row-link model text-center' title='<%= ext.model %>'><small><%= ext.model %></small></td>\n\
-             <td class='row-link space text-center' title='<%= ext.space %>'><small><%= ext.space %></small></td>\n\
-             <td class='row-link experiment text-center' title='<%= ext.experiment %>'><small><%= ext.experiment %></small></td>\n\
-             <td class='row-link executionStartDate text-center' title='<%= ext.executionStartDate %>'><small><%= ext.executionStartDate %></small></td>\n\
-             <td class='row-link executionEndDate text-center' title='<%= ext.executionEndDate %>'><small><%= ext.executionEndDate %></small></td>\n\
-             <td class='monitoring text-center' title='Open monitoring'><span class='glyphicon glyphicon-random'></span></td>\n\
-             <td class='interMonitoring text-center' title='Select for inter-monitoring'><input type='checkbox'></input></td>",
+            "<td class='row-link uid hidden'></td>\n\
+             <td class='row-link activity text-center'><small></small></td>\n\
+             <td class='row-link name'><small></small></td>\n\
+             <td class='row-link tryID text-center'><small>XXX</small></td>\n\
+             <td class='row-link compute-job-count text-center' title='Compute Job Count (#running : #complete : #errors)'><small></small></td>\n\
+             <td class='row-link post-processing-job-count text-center' title='Post-Processing Job Count (#running : #complete : #errors)'><small></small></td>\n\
+             <td class='row-link computeNodeMachine text-center'><small></small></td>\n\
+             <td class='row-link computeNodeLogin text-center'><small></small></td>\n\
+             <td class='row-link model text-center' ><small></small></td>\n\
+             <td class='row-link space text-center' ><small></small></td>\n\
+             <td class='row-link experiment text-center' ><small></small></td>\n\
+             <td class='row-link executionStartDate text-center' ><small></small></td>\n\
+             <td class='row-link executionEndDate text-center' ><small></small></td>\n\
+             <td class='monitoring text-center' ><span class='glyphicon glyphicon-random'></span></td>\n\
+             <td class='interMonitoring text-center' ><input type='checkbox'></input></td>",
 
         imInput : "<input type='hidden' id=<%= key %> name=<%= key %> value=<%= value %>></ input>",
 
