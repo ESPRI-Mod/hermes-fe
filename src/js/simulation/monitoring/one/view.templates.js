@@ -38,48 +38,6 @@
                     <div class='col-md-3'>\n\
                         <div class='row'>\n\
                             <span class='col-md-5'>\n\
-                                <strong>Space</strong>\n\
-                            </span>\n\
-                            <span class='col-md-7'>\n\
-                                <%- simulation.ext.space %>\n\
-                            </span>\n\
-                        </div>\n\
-                    </div>\n\
-                    <div class='col-md-3'>\n\
-                        <div class='row'>\n\
-                            <span class='col-md-5'>\n\
-                                <strong>Try</strong>\n\
-                            </span>\n\
-                            <span class='col-md-7'>\n\
-                                <%- simulation.tryID %>\n\
-                            </span>\n\
-                        </div>\n\
-                    </div>\n\
-                    <div class='col-md-3'>\n\
-                        <div class='row'>\n\
-                            <span class='col-md-5'>\n\
-                                <strong>Status</strong>\n\
-                            </span>\n\
-                            <span class='col-md-7'>\n\
-                                <%- simulation.ext.executionState %>\n\
-                            </span>\n\
-                        </div>\n\
-                    </div>\n\
-                </div>\n\
-                <div class='row'>\n\
-                    <div class='col-md-3'>\n\
-                        <div class='row'>\n\
-                            <span class='col-md-5'>\n\
-                                <strong>Node</strong>\n\
-                            </span>\n\
-                            <span class='col-md-7'>\n\
-                                <%- simulation.ext.computeNode %>\n\
-                            </span>\n\
-                        </div>\n\
-                    </div>\n\
-                    <div class='col-md-3'>\n\
-                        <div class='row'>\n\
-                            <span class='col-md-5'>\n\
                                 <strong>Machine</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
@@ -90,20 +48,20 @@
                     <div class='col-md-3'>\n\
                         <div class='row'>\n\
                             <span class='col-md-5'>\n\
-                                <strong>Started</strong>\n\
+                                <strong>Space</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.ext.executionStartDate %>\n\
+                                <%- simulation.ext.space %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
                     <div class='col-md-3'>\n\
                         <div class='row'>\n\
                             <span class='col-md-5'>\n\
-                                <strong>Ended</strong>\n\
+                                <strong>Login</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.ext.executionEndDate %>\n\
+                                <%- simulation.ext.computeNodeLogin %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -112,10 +70,10 @@
                     <div class='col-md-3'>\n\
                         <div class='row'>\n\
                             <span class='col-md-5'>\n\
-                                <strong>Login</strong>\n\
+                                <strong>Acc. Project</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.ext.computeNodeLogin %>\n\
+                                <%- simulation.ext.accountingProject %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\
@@ -142,10 +100,52 @@
                     <div class='col-md-3'>\n\
                         <div class='row'>\n\
                             <span class='col-md-5'>\n\
-                                <strong>Acc. Project</strong>\n\
+                                <strong>Status</strong>\n\
                             </span>\n\
                             <span class='col-md-7'>\n\
-                                <%- simulation.ext.accountingProject %>\n\
+                                <%- simulation.ext.executionState %>\n\
+                            </span>\n\
+                        </div>\n\
+                    </div>\n\
+                </div>\n\
+                <div class='row'>\n\
+                    <div class='col-md-3'>\n\
+                        <div class='row'>\n\
+                            <span class='col-md-5'>\n\
+                                <strong>Try</strong>\n\
+                            </span>\n\
+                            <span class='col-md-7'>\n\
+                                <%- simulation.tryID %>\n\
+                            </span>\n\
+                        </div>\n\
+                    </div>\n\
+                    <div class='col-md-3'>\n\
+                        <div class='row'>\n\
+                            <span class='col-md-5'>\n\
+                                <strong>Started</strong>\n\
+                            </span>\n\
+                            <span class='col-md-7'>\n\
+                                <%- simulation.ext.executionStartDate %>\n\
+                            </span>\n\
+                        </div>\n\
+                    </div>\n\
+                    <div class='col-md-3'>\n\
+                        <div class='row'>\n\
+                            <span class='col-md-5'>\n\
+                                <strong>Ended</strong>\n\
+                            </span>\n\
+                            <span class='col-md-7'>\n\
+                                <%- simulation.ext.executionEndDate %>\n\
+                            </span>\n\
+                        </div>\n\
+                    </div>\n\
+                    <div class='col-md-3'>\n\
+                        <div class='row'>\n\
+                            <span class='col-md-5'>\n\
+                                <strong>Prev. Tries</strong>\n\
+                            </span>\n\
+                            <span class='col-md-7 previous-try'>\n\
+                                <%- simulation.tryID > 1 ? '' : '--' %>\n\
                             </span>\n\
                         </div>\n\
                     </div>\n\

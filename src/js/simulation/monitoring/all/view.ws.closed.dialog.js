@@ -9,14 +9,12 @@
         className : 'modal fade',
 
         // Backbone: view DOM attributes.
-        attributes: function () {
-            return {
-                id: 'wsCloseDialog',
-                role: 'dialog',
-                'aria-labelledby': 'wsCloseDialogLabel',
-                'aria-hidden': true,
-                tabindex: -1
-            };
+        attributes: {
+            id: 'wsCloseDialog',
+            role: 'dialog',
+            'aria-labelledby': 'wsCloseDialogLabel',
+            'aria-hidden': true,
+            tabindex: -1
         },
 
         // Backbone: view event handlers.

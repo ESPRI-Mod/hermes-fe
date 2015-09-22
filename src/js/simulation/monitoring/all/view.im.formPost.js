@@ -9,13 +9,11 @@
         tagName : "form",
 
         // Backbone: view DOM attributes.
-        attributes: function () {
-            return {
-                action: MOD.urls.IM.httpPostTarget,
-                id: "imForm",
-                method: 'POST',
-                target: '_blank'
-            };
+        attributes: {
+            action: MOD.urls.IM.httpPostTarget,
+            id: "imForm",
+            method: 'POST',
+            target: '_blank'
         },
 
         // Backbone: view initializer.

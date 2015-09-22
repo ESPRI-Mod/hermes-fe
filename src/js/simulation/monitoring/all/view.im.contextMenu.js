@@ -6,10 +6,8 @@
     // View over the inter-monitoring context menu.
     MOD.views.InterMonitoringContextMenuView = Backbone.View.extend({
         // Backbone: view DOM attributes.
-        attributes: function () {
-            return {
-                id: "imContextMenu"
-            };
+        attributes: {
+            id: "imContextMenu"
         },
 
         // Backbone: view event handlers.

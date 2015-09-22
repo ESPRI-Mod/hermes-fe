@@ -11,7 +11,7 @@
         // Backbone: view DOM attributes.
         attributes: function () {
             return {
-                value: this.model.name
+                value: this.model.name                
             };
         },
 

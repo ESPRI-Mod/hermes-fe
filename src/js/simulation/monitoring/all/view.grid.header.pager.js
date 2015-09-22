@@ -12,10 +12,8 @@
         className: 'pagination pull-right',
 
         // Backbone: view DOM attributes.
-        attributes: function () {
-            return {
-                role: 'toolbar'
-            };
+        attributes: {
+            role: 'toolbar'
         },
 
         // Backbone: view event handlers.
