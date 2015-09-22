@@ -15,30 +15,25 @@
         render : function () {
             APP.utils.render(MOD.views.HeaderView, {}, this);
             APP.utils.render(MOD.views.DetailsView, {}, this);
-            if (MOD.state.simulation.jobs.compute.all.length) {
-                APP.utils.render(MOD.views.JobHistoryView, {
-                    jobHistory: MOD.state.simulation.jobs.compute,
-                    jobType: 'compute'
-                }, this);
-            }
-            if (MOD.state.simulation.jobs.postProcessing.all.length) {
-                APP.utils.render(MOD.views.JobHistoryView, {
-                    jobHistory: MOD.state.simulation.jobs.postProcessing,
-                    jobType: 'post-processing'
-                }, this);
-            }
-            if (MOD.state.simulation.jobs.postProcessingFromChecker.all.length) {
-                APP.utils.render(MOD.views.JobHistoryView, {
-                    jobHistory: MOD.state.simulation.jobs.postProcessingFromChecker,
-                    jobType: 'post-processing-from-checker'
-                }, this);
-            }
+            this._renderJobs('compute', MOD.state.simulation.jobs.compute);
+            this._renderJobs('post-processing', MOD.state.simulation.jobs.postProcessing);
+            this._renderJobs('post-processing-from-checker', MOD.state.simulation.jobs.postProcessingFromChecker);
             if (MOD.state.configCard.length) {
                 APP.utils.render(MOD.views.ConfigCardView, {}, this);
             }
             APP.utils.render(MOD.views.FooterView, {}, this);
 
             return this;
+        },
+        
+        // Renders a job collection.
+        _renderJobs : function (jobType, jobs) {
+            if (jobs.all.length) {
+                APP.utils.render(MOD.views.JobHistoryView, {
+                    jobHistory: jobs,
+                    jobType: jobType
+                }, this);
+            }            
         }
     });
 

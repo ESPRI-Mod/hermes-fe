@@ -51,7 +51,7 @@
         filterName: undefined,
 
         // Timeslaice filter value.
-        filterTimeSlice: "1W",
+        filterTimeSlice: "ALL",
 
         // Returns set of active filters, i.e. those for which that the user has made a selection.
         getActiveFilters: function () {
@@ -76,7 +76,10 @@
             count: undefined,
             previous: undefined,
             pages: []
-        }
+        },
+        
+        // Set of grid row views.
+        gridRowViews: []
     };
 
     // Set filter defaults.

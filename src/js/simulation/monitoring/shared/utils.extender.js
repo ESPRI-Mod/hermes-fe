@@ -34,6 +34,8 @@
 
     // Extends a job in readiness for processing.
     MOD.extendJob = function (job) {
+        var ppFields = [];
+        
         // Escape if already extended.
         if (_.has(job, 'ext')) {
             return;
@@ -52,7 +54,7 @@
             postProcessingName: null,
             typeof: 'post-processing'
         });
-
+        
         // Initialise extension fields.
         _.extend(job, {
             accountingProject: undefined,
@@ -67,7 +69,9 @@
                 expectedExecutionEndDate: '--',
                 executionStartDate: '--',
                 executionState: undefined,
-                type: job.typeof || 'computing'
+                type: job.typeof,
+                isPostProcessing: job.typeof !== 'computing',
+                postProcessingInfo: '--'
             },
             isLate: undefined
         });
@@ -107,6 +111,29 @@
         // Set accounting project.
         if (APP.utils.isNone(job.accountingProject) === false) {
             job.ext.accountingProject = job.accountingProject;
+        }
+        
+        // Set post-processing fields.
+        if (job.ext.isPostProcessing) {
+            if (job.postProcessingName) {
+                ppFields.push(job.postProcessingName);
+            }
+            if (job.postProcessingDate) {
+                ppFields.push(job.postProcessingDate);
+            }
+            if (job.postProcessingDimension) {
+                ppFields.push(job.postProcessingDimension);
+            }
+            if (job.postProcessingComponent) {
+                ppFields.push(job.postProcessingComponent);
+            }
+            if (job.postProcessingFile) {
+                ppFields.push(job.postProcessingFile);
+            }
+            if (ppFields.length) {
+                job.ext.postProcessingInfo = ppFields.join(".");                
+            }
+            // job.ext.postProcessingInfo = "creates_ts.19801231.Chunck3D.ATM.Post_1M_histmth-DSDASDSDASDASD";
         }
     };
 

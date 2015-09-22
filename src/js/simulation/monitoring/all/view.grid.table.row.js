@@ -29,17 +29,9 @@
         
         // Backbone: view initializer.
         initialize: function () {
-            // Bind to paging related events.
             MOD.events.on("ui:pagination", this._reset, this);
             MOD.events.on("state:simulationListFiltered", this._reset, this);
             MOD.events.on("state:simulationListNull", this._reset, this);           
-            // Bind to web-socket related events.
-            MOD.events.on("state:simulationStart", this._update, this);
-            MOD.events.on("state:simulationComplete", this._update, this);
-            MOD.events.on("state:simulationError", this._update, this);
-            MOD.events.on("state:jobStart", this._update, this);
-            MOD.events.on("state:jobComplete", this._update, this);
-            MOD.events.on("state:jobError", this._update, this);            
         },        
 
         // Backbone: view renderer.
@@ -47,6 +39,7 @@
             APP.utils.renderHTML(TEMPLATES.gridRow, {
                 rowID: this.model
             }, this);
+            MOD.state.gridRowViews.push(this);
             this._reset();
             
             return this;
@@ -54,41 +47,20 @@
         
         // Resets state.
         _reset : function() {
-            // Reset data.
             if (MOD.state.paging.current &&
                 MOD.state.paging.current.data &&
                 MOD.state.paging.current.data.length >= this.model + 1) {
                 this.simulation = MOD.state.paging.current.data[this.model];                
+                this.update(false);            
+                this.$el.removeClass("hidden");
             } else {
                 this.simulation = null;    
-            }
-            
-            // Reset view.
-            if (this.simulation) {
-                this._updateView(false);            
-                this.$el.removeClass("hidden");
-            } else {                
                 this.$el.addClass("hidden");
             }
         },
         
-        // Updates state.
-        _update : function (ei) {
-            // Escape if not related to the simulation being displayed.
-            if (APP.utils.isNone(this.simulation) || 
-                this.simulation.uid !== ei.simulation.uid) {
-                return;
-            }
-
-            // Update data.
-            this.simulation = ei.simulation;
-
-            // Reset view.
-            this._updateView(true);            
-        },          
-        
         // Updates user interface.
-        _updateView : function (isPartialUpdate) {
+        update : function (isPartialUpdate) {
             var s = this.simulation;
             
             // Update core fields.

@@ -194,16 +194,24 @@
 
             header:
                 "<tr class='bg-primary'>\n\
-                    <th title='ID'>#</th>\n\
-                    <th title='Is Start Up' class='text-center'>Is Start Up ?</th>\n\
-                    <th title='Accounting Project' class='text-center'>Acc. Project</th>\n\
                     <th title='UID' class='hidden'>UID</th>\n\
+                    <th title='ID' class='text-center'>#</th>\n\
+                    <th title='Post Processing Information' class='text-center <%= jobType === 'compute' ? 'hidden' : '' %>'>Info.</th>\n\
                     <th title='Start Date' class='text-center'>Start Date</th>\n\
                     <th title='End Date' class='text-center'>End Date</th>\n\
-                    <th title='Duration' class='text-center'>Duration (HH:MM:SS)</th>\n\
-                    <th title='Delay' class='text-center'>Lateness (HH:MM:SS)</th>\n\
+                    <th title='Duration' class='text-center'>Duration</th>\n\
+                    <th title='Delay' class='text-center'>Lateness</th>\n\
                 </ttr>",
 
+            row:
+                "<td class='uid hidden' title='<%= job.jobUID %>'><%= job.jobUID %></td>\n\
+                 <td style='width: 40px;' class='id text-center' title='<%= jobIndex %>'><%= jobIndex %></td>\n\
+                 <td class='postProcessingInfo text-center <%= jobType === 'compute' ? 'hidden' : '' %>' title='<%= job.ext.postProcessingInfo %>'><%= job.ext.postProcessingInfo %></td>\n\
+                 <td style='width: <%= jobType === 'compute' ? '24%' : '15%' %>;' class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>\n\
+                 <td style='width: <%= jobType === 'compute' ? '24%' : '15%' %>;' class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>\n\
+                 <td style='width: <%= jobType === 'compute' ? '24%' : '15%' %>;' class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>\n\
+                 <td style='width: <%= jobType === 'compute' ? '24%' : '15%' %>;' class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>",
+                
             footer:
                 "<div class='module-footer'>\n\
                     <span>\n\
@@ -219,17 +227,7 @@
                             <%- jobHistory.error.length %> errors \n\
                         </strong>\n\
                     </span>\n\
-                </div>",
-
-            row:
-                "<td class='id' title='<%= jobIndex %>'><%= jobIndex %></td>\n\
-                <td class='uid hidden' title='<%= job.jobUID %>'><%= job.jobUID %></td>\n\
-                <td class='isStartup text-center' title='<%= job.isStartup %>'><%= job.isStartup %></td>\n\
-                <td class='accountingProject text-center' title='<%= job.ext.accountingProject %>'><%= job.ext.accountingProject %></td>\n\
-                <td class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>\n\
-                <td class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>\n\
-                <td class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>\n\
-                <td class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>"
+                </div>"
         },
 
         notifications:

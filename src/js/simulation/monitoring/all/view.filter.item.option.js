@@ -1,4 +1,4 @@
-(function (MOD, Backbone) {
+(function (MOD, _, Backbone) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -17,13 +17,13 @@
 
         // Backbone: view initializer.
         initialize: function () {
-            MOD.events.on("state:simulationListFiltered", this._onSimulationListFiltered, this);
+            MOD.events.on("state:simulationListFiltered", this.updateView, this);
         },
 
         // Backbone: view renderer.
         render: function () {
             this.$el.text(this.model.displayName);
-            this._setDisplayState();
+            this.updateView();
             if (this.model === this.options.cvTerms.current) {
                 this.$el.attr('selected', 'true');
             }
@@ -31,13 +31,8 @@
             return this;
         },
 
-        // Simulation list filtered event handler.
-        _onSimulationListFiltered: function () {
-            this._setDisplayState();
-        },
-
-        // Either hides or displays view.
-        _setDisplayState: function () {
+        // Updates view according to current state.
+        updateView: function () {
             if (this.model.name !== '*' &&
                 _.indexOf(this.options.cvTerms.active, this.model.name) < 0) {
                 this.$el.hide();
@@ -47,4 +42,8 @@
         }
     });
 
-}(this.APP.modules.monitoring, this.Backbone));
+}(
+    this.APP.modules.monitoring,
+    this._,
+    this.Backbone
+));

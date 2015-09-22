@@ -24,6 +24,7 @@
         MOD.setFilteredSimulationList();
 
         // Update filters.
+        // TODO review
         _.each(MOD.state.filters, function (filter) {
             if (_.indexOf(filter.cvTerms.active, data.simulation[filter.key]) === -1) {
                 filter.cvTerms.active.push(data.simulation[filter.key]);

@@ -28,20 +28,7 @@
 
         // Backbone: view renderer.
         render : function () {
-            APP.utils.renderHTML(TEMPLATES.jobHistory.header, {}, this);
-
-            return this;
-        }
-    });
-
-    // View over the grid table footer.
-    var TableFooterView = Backbone.View.extend({
-        // Backbone: view DOM element type.
-        tagName : "thead",
-
-        // Backbone: view renderer.
-        render : function () {
-            APP.utils.renderHTML(TEMPLATES.jobHistory.footer, {}, this);
+            APP.utils.renderHTML(TEMPLATES.jobHistory.header, this.options, this);
 
             return this;
         }
@@ -63,7 +50,8 @@
         _renderRow : function (job, index) {
             APP.utils.render(TableRowView, {
                 job: job,
-                jobIndex: this.options.jobHistory.all.length - index
+                jobIndex: this.options.jobHistory.all.length - index,
+                jobType: this.options.jobType
             }, this);
         }
     });
@@ -102,7 +90,8 @@
             APP.utils.render([
                 TableView
             ], {
-                jobHistory: this.options.jobHistory
+                jobHistory: this.options.jobHistory,
+                jobType: this.options.jobType
             }, this);
 
             APP.utils.renderHTML(TEMPLATES.jobHistory.footer, {
