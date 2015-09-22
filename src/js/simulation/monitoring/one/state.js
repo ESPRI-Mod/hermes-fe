@@ -11,8 +11,11 @@
         // CV terms.
         cvTerms: [],
 
-        // Simulation unique identifier.
-        simulationUID: APP.utils.getURLParam('uid'),
+        // Simulation hash identifier.
+        simulationHashID: APP.utils.getURLParam('hashid'),
+
+        // Simulation try identifier.
+        simulationTryID: APP.utils.getURLParam('tryID'),
 
         // Simulation.
         simulation: undefined,

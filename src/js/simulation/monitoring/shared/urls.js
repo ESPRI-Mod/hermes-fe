@@ -12,10 +12,10 @@
         FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice?timeslice={timeslice}',
 
         // Fetch monitoring one simulation endpoint.
-        FETCH_ONE: 'simulation/monitoring/fetch_one?uid={uid}',
+        FETCH_ONE: 'simulation/monitoring/fetch_one?hashid={hashid}&tryID={tryID}',
 
         // Simulation page.
-        SIMULATION_PAGE: 'simulation.monitoring.one.html?uid={uid}&hashid={hashid}&tryID={tryID}',
+        SIMULATION_PAGE: 'simulation.monitoring.one.html?hashid={hashid}&tryID={tryID}',
 
         // Web-socket endpoint.
         WS_ALL: 'simulation/monitoring/ws/all',

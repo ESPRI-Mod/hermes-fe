@@ -14,7 +14,6 @@
                 var url;
                 
                 url = APP.utils.getPageURL(MOD.urls.SIMULATION_PAGE);
-                url = url.replace("{uid}", this.simulation.uid);
                 url = url.replace("{hashid}", this.simulation.hashid);
                 url = url.replace("{tryID}", this.simulation.tryID);
                 APP.utils.openURL(url, true);
