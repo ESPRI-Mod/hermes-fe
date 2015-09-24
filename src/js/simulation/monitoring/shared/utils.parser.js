@@ -1,4 +1,4 @@
-(function (APP, MOD, _, moment, numeral) {
+(function (MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -6,7 +6,6 @@
     // Closure vars.
     var getExecutionState,
         mapJob,
-        parseComputeJobs,
         setExecutionState,
         sortJobset,
         sortJobsets;
@@ -14,7 +13,6 @@
     // Returns simulation's current execution status.
     getExecutionState = function (simulation) {
         var last;
-
 
         // Complete if cmip5.
         if (simulation.activity === 'cmip5') {
@@ -40,7 +38,9 @@
         }
 
         // Complete if last job is complete and 0100 has been received.
-        if (last.executionState === 'complete' && simulation.executionEndDate && simulation.isError === false) {
+        if (last.executionState === 'complete' &&
+            simulation.executionEndDate &&
+            simulation.isError === false) {
             return 'complete';
         }
 
@@ -58,7 +58,6 @@
     sortJobset = function (jobSet) {
         if (jobSet.all.length > 1) {
             jobSet.all = _.sortBy(jobSet.all, function (job) {
-                return job.ext.executionStartDate;
                 return job.executionStartDate;
             });
         }
@@ -73,34 +72,11 @@
         ], sortJobset);
     };
 
-    // Parses set of simulation compute jobs.
-    parseComputeJobs = function (simulation) {
-        var first;
-
-        // Escape if there are no jobs to process.
-        if (simulation.jobs.compute.all.length === 0) {
-            return;
-        }
-
-        // Re-extend spin-up job start date (if necessary).
-        first = _.first(simulation.jobs.compute.all);
-        if (_.isNull(first.executionStartDate)) {
-            first.executionStartDate = simulation.executionStartDate;
-            MOD.extendJob(first);
-        }
-
-        // Set late flag.
-        if (_.isNull(simulation.executionEndDate) &&
-            _.findWhere(simulation.jobs.compute.all, { isLate: true })) {
-            simulation.jobs.compute.hasLate = true;
-        }
-    };
-
     // Appends a job to the relevant simulation job set.
     mapJob = function (simulation, job) {
         simulation.jobs.global.all.push(job);
         simulation.jobs.global[job.executionState].push(job);
-        switch (job.ext.type) {
+        switch (job.typeof) {
         case 'computing':
             simulation.jobs.compute.all.push(job);
             simulation.jobs.compute[job.executionState].push(job);
@@ -114,14 +90,19 @@
             simulation.jobs.postProcessingFromChecker[job.executionState].push(job);
             break;
         default:
-            simulation.jobs.compute.all.push(job);
-            simulation.jobs.compute[job.executionState].push(job);
             break;
         }
     };
 
     // Parses a simulation in readiness for processing.
     MOD.parseSimulation = function (simulation, jobHistory) {
+        if (simulation.name === "FG1.CWRR.2876.dgvm") {
+            console.log("...parsing");
+            console.log("uid = " + simulation.uid);
+            console.log("hashid = " + simulation.hashid);
+            console.log("try = " + simulation.tryID);
+            console.log("job count =" + jobHistory.length);
+        }
         MOD.parseSimulations([simulation], jobHistory, _.indexBy([simulation], "uid"));
     };
 
@@ -143,17 +124,11 @@
         // Sort jobs.
         _.each(simulationList, sortJobsets);
 
-        // Parse compute jobs.
-        _.each(simulationList, parseComputeJobs);
-
         // Set execution states.
         _.each(simulationList, setExecutionState);
     };
 
 }(
-    this.APP,
     this.APP.modules.monitoring,
-    this._,
-    this.moment,
-    this.numeral
+    this._
 ));

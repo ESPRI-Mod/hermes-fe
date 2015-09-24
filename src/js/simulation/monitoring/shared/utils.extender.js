@@ -3,116 +3,49 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Set a job's lateness indicator.
-    MOD.setJobLateness = function (job) {
-        var now;
-
-        // Escape if unnecessary.
-        if (_.isNull(job.executionStartDate)) {
-            return;
-        }
-        if (job.ext.latenessAssigned) {
-            return;
-        }
-
-        // Set lateness (in HH::MM::SS).
-        if (job.executionEndDate) {
-            if (job.executionEndDate > job.expectedExecutionEndDate) {
-                job.ext.latenessAssigned = true;
-                job.ext.lateness = job.executionEndDate.diff(job.expectedExecutionEndDate, 'seconds');
-                job.ext.lateness = numeral(job.ext.lateness).format('00:00:00');
-            }
-        } else {
-            now = moment();
-            if (now > job.expectedExecutionEndDate) {
-                job.ext.latenessAssigned = false;
-                job.ext.lateness = now.diff(job.expectedExecutionEndDate, 'seconds');
-                job.ext.lateness = numeral(job.ext.lateness).format('00:00:00');
-            }
-        }
-    }
-
     // Extends a job in readiness for processing.
     MOD.extendJob = function (job) {
         var ppFields = [];
-        
+
         // Escape if already extended.
         if (_.has(job, 'ext')) {
             return;
         }
-        
+
         // Set defaults:
         _.defaults(job, {
             accountingProject: null,
             executionEndDate: null,
+            executionState: null,
+            ext: {
+                // ... user interface fields
+                accountingProject: '--',
+                lateness: '--',
+                duration: '--',
+                executionEndDate: '--',
+                executionStartDate: '--',
+                executionState: undefined,
+                postProcessingInfo: '--',
+                // ... helper fields
+                expectedExecutionEndDate: null,
+                isPostProcessing: _.has(job, 'typeof') ? job.typeof !== 'computing' : true
+            },
             isError: false,
-            wasLate: false,
             postProcessingComponent: null,
             postProcessingDate: null,
             postProcessingDimension: null,
             postProcessingFile: null,
             postProcessingName: null,
-            typeof: 'post-processing'
+            typeof: 'post-processing',
+            warningDelay: parseInt(_.has(job, 'warningDelay') ? job.warningDelay :
+                                                                MOD.constants.jobWarningDelay, 10)
         });
-        
-        // Initialise extension fields.
-        _.extend(job, {
-            accountingProject: undefined,
-            executionState: undefined,
-            ext: {
-                accountingProject: '--',
-                id: undefined,
-                lateness: '--',
-                latenessAssigned: false,
-                duration: '--',
-                executionEndDate: '--',
-                expectedExecutionEndDate: '--',
-                executionStartDate: '--',
-                executionState: undefined,
-                type: job.typeof,
-                isPostProcessing: job.typeof !== 'computing',
-                postProcessingInfo: '--'
-            },
-            isLate: undefined
-        });
-
-        // Format date fields.
-        APP.utils.formatDateTimeField(job, "executionStartDate");
-        if (_.has(job, "expectedExecutionEndDate")) {
-            APP.utils.formatDateTimeField(job, "expectedExecutionEndDate");            
-        }
-        APP.utils.formatDateTimeField(job, "executionEndDate");
-
-        // Set duration (in HH::MM::SS).
-        if (job.executionStartDate && job.executionEndDate) {
-            job.ext.duration = job.executionEndDate.diff(job.executionStartDate, 'seconds');
-            job.ext.duration = numeral(job.ext.duration).format('00:00:00');
-        }
-
-        // Set lateness indicator (in HH::MM::SS).
-        MOD.setJobLateness(job);
-
-        // Set execution state.
-        if (job.isError) {
-            job.executionState = 'error';
-        } else if (job.executionEndDate) {
-            job.executionState = 'complete';
-        } else {
-            job.executionState = 'running';
-        }
-
-        // Set is late flag.
-        if (job.executionEndDate) {
-            job.isLate = job.wasLate;
-        } else {
-            job.isLate = moment().valueOf() > job.expectedExecutionEndDate.valueOf();
-        }
 
         // Set accounting project.
         if (APP.utils.isNone(job.accountingProject) === false) {
             job.ext.accountingProject = job.accountingProject;
         }
-        
+
         // Set post-processing fields.
         if (job.ext.isPostProcessing) {
             if (job.postProcessingName) {
@@ -131,27 +64,93 @@
                 ppFields.push(job.postProcessingFile);
             }
             if (ppFields.length) {
-                job.ext.postProcessingInfo = ppFields.join(".");                
+                job.ext.postProcessingInfo = ppFields.join(".");
             }
-            // job.ext.postProcessingInfo = "creates_ts.19801231.Chunck3D.ATM.Post_1M_histmth-DSDASDSDASDASD";
+        }
+
+        // Format date fields.
+        APP.utils.formatDateTimeField(job, "executionStartDate");
+        APP.utils.formatDateTimeField(job, "executionEndDate");
+
+        // Set expected end date.
+        if (job.executionStartDate) {
+            job.ext.expectedExecutionEndDate = moment(job.executionStartDate).add(job.warningDelay, 's');
+        }
+
+        // Set duration.
+        if (job.executionStartDate && job.executionEndDate) {
+            job.ext.duration = job.executionEndDate.diff(job.executionStartDate, 's');
+            job.ext.duration = numeral(job.ext.duration).format('00:00:00');
+        }
+
+        // Set lateness.
+        if (job.executionStartDate &&
+            job.executionEndDate &&
+            job.executionEndDate > job.ext.expectedExecutionEndDate) {
+            job.ext.lateness = job.executionEndDate.diff(job.ext.expectedExecutionEndDate, 's');
+            job.ext.lateness = numeral(job.ext.lateness).format('00:00:00');
+        }
+
+        // Set execution state.
+        if (job.isError) {
+            job.executionState = 'error';
+        } else if (job.executionEndDate) {
+            job.executionState = 'complete';
+        } else {
+            job.executionState = 'running';
         }
     };
 
     // Extends a simulation in readiness for processing.
     MOD.extendSimulation = function (simulation) {
         var model;
-        
+
+        // Intialise job collections.
+        simulation.jobs = {
+            compute: {
+                all: [],
+                complete: [],
+                error: [],
+                running: [],
+            },
+            global: {
+                all: [],
+                complete: [],
+                error: [],
+                running: []
+            },
+            postProcessing: {
+                all: [],
+                complete: [],
+                error: [],
+                running: []
+            },
+            postProcessingFromChecker: {
+                all: [],
+                complete: [],
+                error: [],
+                running: []
+            }
+        };
+
+        // Escape if already extended.
+        if (_.has(simulation, 'ext')) {
+            return;
+        }
+
         // Set defaults:
         _.defaults(simulation, {
+            // ... misc. fields
             accountingProject: null,
             executionEndDate: null,
+            executionState: null,
             isError: false,
             isObsolete: false,
             outputStartDate: null,
             outputEndDate: null,
             parentSimulationBranchDate: null,
             parentSimulationName: null,
-            // ... cv related
+            // ... cv fields
             activity: null,
             activityRaw: null,
             computeNode: null,
@@ -163,14 +162,11 @@
             model: null,
             modelRaw: null,
             space: null,
-            spaceRaw: null            
-        });
-
-        // Initialise extension fields.
-        _.extend(simulation, {
-            executionState: undefined,
+            spaceRaw: null,
+            // ... extension fields
             ext: {
-                accountingProject: undefined,
+                // ... user interface fields
+                accountingProject: "--",
                 activity: undefined,
                 caption: undefined,
                 computeNode: undefined,
@@ -180,41 +176,14 @@
                 executionState: undefined,
                 executionStartDate: "--",
                 experiment: undefined,
-                hasRunningJob: false,
-                isSelectedForIM: false,
-                isRestart: simulation.tryID > 1,
                 model: undefined,
-                modelSynonyms: [],
                 outputEndDate: "--",
                 outputStartDate: "--",
-                space: undefined
-            },
-            jobs: {
-                compute: {
-                    all: [],
-                    complete: [],
-                    error: [],
-                    hasLate: false,
-                    running: [],
-                },
-                global: {
-                    all: [],
-                    complete: [],
-                    error: [],
-                    running: []
-                },
-                postProcessing: {
-                    all: [],
-                    complete: [],
-                    error: [],
-                    running: []
-                },
-                postProcessingFromChecker: {
-                    all: [],
-                    complete: [],
-                    error: [],
-                    running: []
-                }
+                space: undefined,
+                // ... helper fields
+                isSelectedForIM: false,
+                isRestart: simulation.tryID > 1,
+                modelSynonyms: []
             }
         });
 
@@ -234,9 +203,7 @@
         MOD.cv.setFieldDisplayName(simulation, 'simulation_space', 'space');
 
         // Set accounting project.
-        if (simulation.accountingProject === 'None' || _.isNull(simulation.accountingProject)) {
-            simulation.ext.accountingProject = "--";
-        } else {
+        if (APP.utils.isNone(simulation.accountingProject) === false) {
             simulation.ext.accountingProject = simulation.accountingProject;
         }
 

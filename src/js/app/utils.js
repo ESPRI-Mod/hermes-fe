@@ -208,7 +208,7 @@
 
         // Formats a date time field.
         formatDateTimeField: function (obj, attr) {
-            if (obj[attr]) {
+            if (_.has(obj, attr) && obj[attr]) {
                 obj[attr] = moment(obj[attr]);
                 obj.ext = obj.ext || {};
                 obj.ext[attr] = obj[attr].format('DD-MM-YYYY HH:mm:ss');
@@ -218,6 +218,7 @@
         // Returns a flag indicating whether the value is considered to be none.
         isNone: function (value) {
             return value === 'None' ||
+                   value === 'NONE' ||
                    _.isNull(value) ||
                    _.isUndefined(value);
         }

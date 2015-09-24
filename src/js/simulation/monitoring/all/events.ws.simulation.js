@@ -11,8 +11,8 @@
         });
 
         // Update module state.
-        MOD.state.simulationList = _.reject(MOD.state.simulationList, function (s) {
-            return s.hashid === data.simulation.hashid || s.uid === data.simulation.uid;
+        MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
+            return s.hashid !== data.simulation.hashid && s.uid !== data.simulation.uid;
         });
         MOD.state.simulationList.push(data.simulation);
         MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");

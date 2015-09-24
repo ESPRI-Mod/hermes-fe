@@ -95,7 +95,7 @@
             "<td class='row-link uid hidden'></td>\n\
              <td class='row-link activity text-center'><small></small></td>\n\
              <td class='row-link name'><small></small></td>\n\
-             <td class='row-link tryID text-center'><small>XXX</small></td>\n\
+             <td class='row-link tryID text-center'><small></small></td>\n\
              <td class='row-link compute-job-count text-center' title='Compute Job Count (#running : #complete : #errors)'><small></small></td>\n\
              <td class='row-link post-processing-job-count text-center' title='Post-Processing Job Count (#running : #complete : #errors)'><small></small></td>\n\
              <td class='row-link computeNodeMachine text-center'><small></small></td>\n\

@@ -15,8 +15,8 @@
 
         // Update existing job history.
         simulation = MOD.state.simulationSet[data.job.simulationUID];
-        jobHistory = _.reject(simulation.jobs.global.all, function (j) {
-            return j.jobUID === data.job.jobUID;
+        jobHistory = _.filter(simulation.jobs.global.all, function (j) {
+            return j.jobUID !== data.job.jobUID;
         });
         jobHistory.push(data.job);
 
