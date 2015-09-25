@@ -1,8 +1,8 @@
-(function (APP, MOD, Backbone) {
+(function (APP, MOD, _, Backbone) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
-    
+
     // Main module level view.
     MOD.views.MainView = Backbone.View.extend({
         // Backbone: view CSS class.
@@ -25,7 +25,7 @@
 
             return this;
         },
-        
+
         // Renders a job collection.
         _renderJobs : function (jobType, jobs) {
             if (jobs.all.length) {
@@ -33,12 +33,13 @@
                     jobHistory: jobs,
                     jobType: jobType
                 }, this);
-            }            
+            }
         }
     });
 
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this._,
     this.Backbone
 ));

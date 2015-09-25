@@ -13,7 +13,7 @@
             'click > td.row-link' : function () {
                 var url;
 
-                url = APP.utils.getPageURL(MOD.urls.SIMULATION_PAGE);
+                url = APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE);
                 url = url.replace("{hashid}", this.simulation.hashid);
                 url = url.replace("{tryID}", this.simulation.tryID);
                 url = url.replace("{uid}", this.simulation.uid);

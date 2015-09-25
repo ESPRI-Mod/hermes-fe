@@ -21,7 +21,7 @@
         simulation: undefined,
 
         // Simulation job history.
-        jobHistory: [],
+        jobHistory: []
     };
 
 }(

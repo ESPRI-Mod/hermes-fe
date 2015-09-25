@@ -50,7 +50,7 @@
             var url;
 
             if (tryID > 0) {
-                url = APP.utils.getPageURL(MOD.urls.SIMULATION_PAGE);
+                url = APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE);
                 url = url.replace("{hashid}", MOD.state.simulation.hashid);
                 url = url.replace("{tryID}", tryID);
                 APP.utils.openURL(url, true);

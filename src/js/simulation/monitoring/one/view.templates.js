@@ -6,7 +6,10 @@
     MOD.templates = {
         header:
             "<h2>Simulation: <%- simulation.ext.activity %> -> <%- simulation.ext.space %> -> <%- simulation.name %>\n\
-                <span class='pull-right inter-monitoring glyphicon glyphicon-random' title='Open Monitoring'></span>\n\
+                <span class='pull-right' style='margin-right: 4px;'>\n\
+                    <span class='simulation-messages glyphicon glyphicon-equalizer' title='View Simulation Messages'></span>\n\
+                    <span class='inter-monitoring glyphicon glyphicon-random' title='Open Monitoring'></span>\n\
+                </span>\n\
             </h2>",
 
         footer:
@@ -201,7 +204,7 @@
                     <th title='End Date' class='text-center'>End Date</th>\n\
                     <th title='Duration' class='text-center'>Duration</th>\n\
                     <th title='Delay' class='text-center'>Lateness</th>\n\
-                </ttr>",
+                </tr>",
 
             row:
                 "<td class='uid hidden'><%= job.jobUID %></td>\n\

@@ -5,6 +5,7 @@
 
     // Module initialisation event handler.
     MOD.events.on("module:initialization", function () {
+        MOD.title = "Simulation Details";
 		MOD.events.trigger("ws:initialized");
     });
 

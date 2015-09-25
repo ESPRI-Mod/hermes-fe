@@ -14,6 +14,13 @@
         events: {
             'click .inter-monitoring' : function () {
                 MOD.events.trigger("im:openMonitor", MOD.state.simulation);
+            },
+            'click .simulation-messages' : function () {
+                var url;
+
+                url = APP.utils.getPageURL(MOD.urls.SIMULATION_MESSAGES_PAGE);
+                url = url.replace("{uid}", MOD.state.simulation.uid);
+                APP.utils.openURL(url, true);
             }
         },
 

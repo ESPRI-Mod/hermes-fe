@@ -96,13 +96,6 @@
 
     // Parses a simulation in readiness for processing.
     MOD.parseSimulation = function (simulation, jobHistory) {
-        if (simulation.name === "FG1.CWRR.2876.dgvm") {
-            console.log("...parsing");
-            console.log("uid = " + simulation.uid);
-            console.log("hashid = " + simulation.hashid);
-            console.log("try = " + simulation.tryID);
-            console.log("job count =" + jobHistory.length);
-        }
         MOD.parseSimulations([simulation], jobHistory, _.indexBy([simulation], "uid"));
     };
 

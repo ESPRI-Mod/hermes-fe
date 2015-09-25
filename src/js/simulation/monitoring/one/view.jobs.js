@@ -3,6 +3,20 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
+
+    // View over the grid table header.
+    var TableHeaderView = Backbone.View.extend({
+        // Backbone: view DOM element type.
+        tagName : "thead",
+
+        // Backbone: view renderer.
+        render : function () {
+            APP.utils.renderHTML(TEMPLATES.jobHistory.header, this.options, this);
+
+            return this;
+        }
+    });
+
     // View over a grid table row.
     var TableRowView = Backbone.View.extend({
         // Backbone: view CSS class.
@@ -16,19 +30,6 @@
         // Backbone: view renderer.
         render : function () {
             APP.utils.renderHTML(TEMPLATES.jobHistory.row, this.options, this);
-
-            return this;
-        }
-    });
-
-    // View over the grid table header.
-    var TableHeaderView = Backbone.View.extend({
-        // Backbone: view DOM element type.
-        tagName : "thead",
-
-        // Backbone: view renderer.
-        render : function () {
-            APP.utils.renderHTML(TEMPLATES.jobHistory.header, this.options, this);
 
             return this;
         }
