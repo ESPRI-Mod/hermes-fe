@@ -1,4 +1,4 @@
-(function (APP, MOD, TEMPLATES, _, Backbone) {
+(function (APP, MOD, TEMPLATES, _, Backbone, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -11,6 +11,7 @@
         // Backbone: view CSS class.
         className: "bg-primary",
 
+        // Backbone: view events.
         events: {
             'click .simulation-details' : function () {
                 var url;
@@ -71,6 +72,16 @@
     var TableRowView = Backbone.View.extend({
         // Backbone: view DOM element type.
         tagName : "tr",
+
+        // Backbone: view events.
+        events: {
+            'click > td.message-content' : function () {
+                var obj = $.parseJSON(this.options.message.content);
+                alert(obj);
+
+                console.log(JSON.stringify(obj));
+            }
+        },
 
         // Backbone: view renderer.
         render : function () {
@@ -165,5 +176,6 @@
     this.APP.modules.messages,
     this.APP.modules.messages.templates,
     this._,
-    this.Backbone
+    this.Backbone,
+    this.$
 ));

@@ -6,8 +6,8 @@
     MOD.templates = {
         header:
             "<h2>Simulation: <%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %>\n\
-                <span class='pull-right' style='margin-right: 4px;'>\n\
-                    <span class='simulation-details glyphicon glyphicon-star' title='View Simulation Details'></span>\n\
+                <span class='pull-right'>\n\
+                    <span class='simulation-details glyphicon glyphicon-list' title='View Simulation Details'></span>\n\
                 </span>\n\
             </h2>",
 
@@ -33,14 +33,16 @@
                 <th title='Type' class='text-center'>Type</th>\n\
                 <th title='Job UID' class='text-center'>Job UID</th>\n\
                 <th title='Timestamp' class='text-center'>Timestamp</th>\n\
+                <th title='View message content' class='text-center'></th>\n\
             </tr>",
 
         tableRow:
             "<td class='uid hidden'><%= message.uid %></td>\n\
              <td style='width: 40px;' class='text-center' title='<%= messageIndex %>'><%= messageIndex %></td>\n\
-             <td class='text-center' title='<%= message.typeID %>'><%= message.typeID %></td>\n\
-             <td class='text-center' title='<%= message.correlationID2 %>'><%= message.correlationID2 %></td>\n\
-             <td class='text-center' title='<%= message.timestamp %>'><%= message.timestamp %></td>"
+             <td title='Message type' class='text-center' title='<%= message.typeID %>'><%= message.typeID %></td>\n\
+             <td title='Message job identifier' class='text-center' title='<%= message.jobUID %>'><%= message.jobUID %></td>\n\
+             <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp %></td>\n\
+             <td title='View message content' class='message-content text-center' ><span class='glyphicon glyphicon-envelope'></span></td>"
     };
 
 }(

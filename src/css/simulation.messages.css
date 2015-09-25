@@ -7,13 +7,17 @@ table {
 	margin-bottom: 10px;
 }
 
+table tr td.message-content {
+	cursor: pointer;
+}
+
 article > header > h2 {
 	padding: 3px;
 	margin-bottom: 0px;
 	margin-top: 0px;
 }
 
-article > header > h2 > span.inter-monitoring {
+article > header > h2 span.simulation-details {
 	padding-right: 5px;
 	cursor: pointer;
 }

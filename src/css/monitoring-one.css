@@ -4,8 +4,12 @@ article > header > h2 {
 	margin-top: 0px;
 }
 
-article > header > h2 > span.inter-monitoring {
+article > header > h2 span.inter-monitoring {
 	padding-right: 5px;
+	cursor: pointer;
+}
+
+article > header > h2 span.simulation-messages {
 	cursor: pointer;
 }
 

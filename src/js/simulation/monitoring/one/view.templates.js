@@ -6,8 +6,8 @@
     MOD.templates = {
         header:
             "<h2>Simulation: <%- simulation.ext.activity %> -> <%- simulation.ext.space %> -> <%- simulation.name %>\n\
-                <span class='pull-right' style='margin-right: 4px;'>\n\
-                    <span class='simulation-messages glyphicon glyphicon-equalizer' title='View Simulation Messages'></span>\n\
+                <span class='pull-right'>\n\
+                    <span class='simulation-messages glyphicon glyphicon-envelope' title='View Simulation Messages'></span>\n\
                     <span class='inter-monitoring glyphicon glyphicon-random' title='Open Monitoring'></span>\n\
                 </span>\n\
             </h2>",
