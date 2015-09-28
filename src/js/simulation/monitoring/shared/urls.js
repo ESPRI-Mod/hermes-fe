@@ -18,7 +18,7 @@
         SIMULATION_DETAIL_PAGE: 'simulation.monitoring.one.html?hashid={hashid}&tryID={tryID}&uid={uid}',
 
         // Simulation message page.
-        SIMULATION_MESSAGES_PAGE: 'simulation.messages.html?uid={uid}',
+        SIMULATION_MESSAGES_PAGE: 'messages.html?simulationUID={uid}',
 
         // Web-socket endpoint.
         WS_ALL: 'simulation/monitoring/ws/all',

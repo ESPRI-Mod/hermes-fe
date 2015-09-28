@@ -1,4 +1,4 @@
-(function (APP, MOD, TEMPLATES, _, Backbone, $) {
+(function (APP, MOD, _, Backbone, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -30,29 +30,22 @@
         // Backbone: view renderer.
         render : function () {
             // Render header.
-            APP.utils.renderTemplate("template-messages-header", {
-                simulation: MOD.state.simulation
-            }, this);
+            APP.utils.renderTemplate("template-messages-header", MOD.state, this);
 
             // Render compute messages.
-            this._renderCollection("Compute", MOD.state.messageHistory.compute);
+            this._renderMessageCollection("Compute", MOD.state.messageHistory.compute);
 
             // Render post-processing messages.
-            this._renderCollection("Post Processing", MOD.state.messageHistory.postProcessing);
+            this._renderMessageCollection("Post Processing", MOD.state.messageHistory.postProcessing);
 
             // Render footer.
-            APP.utils.renderTemplate("template-messages-footer", {
-                APP: APP,
-                MOD: MOD,
-                simulation: MOD.state.simulation,
-                year: new Date().getFullYear()
-            }, this);
+            APP.utils.renderTemplate("template-messages-footer", MOD.state, this);
 
             return this;
         },
 
         // Renders a message collection.
-        _renderCollection: function (jobType, collection) {
+        _renderMessageCollection: function (jobType, collection) {
             if (collection.length) {
                 APP.utils.renderTemplate("template-messages-collection", {
                     jobType: jobType,
@@ -89,7 +82,6 @@
 }(
     this.APP,
     this.APP.modules.messages,
-    this.APP.modules.messages.templates,
     this._,
     this.Backbone,
     this.$

@@ -21,7 +21,7 @@
 <!-- Template: module header -->
 <script type="underscore/template" id="template-messages-header">
     <header class="module-header bg-primary">
-        <h2>Simulation: <%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %>
+        <h2>Simulation: <%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %> [<%- simulation.tryID %>]
             <span class='pull-right'>
                 <span class='simulation-details glyphicon glyphicon-list' title='View Simulation Details'></span>
             </span>
@@ -65,7 +65,7 @@
                     <td style='width: 40px;' class='text-center' title='<%= messageIndex + 1 %>'><%= messageIndex + 1 %></td>
                     <td title='Message type' class='text-center' title='<%= message.typeID %>'><%= message.typeID %></td>
                     <td title='Message job identifier' class='text-center' title='<%= message.jobUID %>'><%= message.jobUID %></td>
-                    <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp %></td>
+                    <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp.slice(0, 19) %> <%= message.timestamp.slice(20) %></td>
                     <td title='View message content' class='message-content text-center' ><span class='glyphicon glyphicon-envelope'></span></td>
                 </tr>
                 <% }); %>
@@ -137,9 +137,8 @@
 <script src="js/app/view.js"></script>
 
 <!-- JS - Module = monitoring (all) -->
-<script src="js/simulation/messages/main.js"></script>
-<script src="js/simulation/messages/init.js"></script>
-<script src="js/simulation/messages/view.js"></script>
+<script src="js/messages/main.js"></script>
+<script src="js/messages/view.js"></script>
 
 </body>
 </html>
