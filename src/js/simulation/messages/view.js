@@ -3,16 +3,14 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Module header view.
-    var ModuleHeaderView = Backbone.View.extend({
+    // View over the set of messages received during the lifetime of a simulation.
+    MOD.views.MainView = Backbone.View.extend({
         // Backbone: view HTML tag.
-        tagName : "header",
-
-        // Backbone: view CSS class.
-        className: "bg-primary",
+        tagName : "article",
 
         // Backbone: view events.
         events: {
+            // Open simulation detail page.
             'click .simulation-details' : function () {
                 var url;
 
@@ -21,30 +19,29 @@
                 url = url.replace("{tryID}", MOD.state.simulation.tryID);
                 url = url.replace("{uid}", MOD.state.simulation.uid);
                 APP.utils.openURL(url, true);
+            },
+
+            // Display message content.
+            'click td.message-content' : function (e) {
+                this._renderMessageContent($(e.target).parent().parent().attr("id"));
             }
         },
 
         // Backbone: view renderer.
         render : function () {
-            APP.utils.renderHTML(TEMPLATES.header, {
+            // Render header.
+            APP.utils.renderTemplate("template-messages-header", {
                 simulation: MOD.state.simulation
             }, this);
 
-            return this;
-        }
-    });
+            // Render compute messages.
+            this._renderCollection("Compute", MOD.state.messageHistory.compute);
 
-    // Module footer view.
-    var ModuleFooterView = Backbone.View.extend({
-        // Backbone: view CSS class.
-        className : "module-footer",
+            // Render post-processing messages.
+            this._renderCollection("Post Processing", MOD.state.messageHistory.postProcessing);
 
-        // Backbone: view HTML tag.
-        tagName : "footer",
-
-        // Backbone: view renderer.
-        render : function () {
-            APP.utils.renderHTML(TEMPLATES.footer, {
+            // Render footer.
+            APP.utils.renderTemplate("template-messages-footer", {
                 APP: APP,
                 MOD: MOD,
                 simulation: MOD.state.simulation,
@@ -52,122 +49,40 @@
             }, this);
 
             return this;
-        }
-    });
-
-    // View over the grid table header.
-    var TableHeaderView = Backbone.View.extend({
-        // Backbone: view DOM element type.
-        tagName : "thead",
-
-        // Backbone: view renderer.
-        render : function () {
-            APP.utils.renderHTML(TEMPLATES.tableHeader, this.options, this);
-
-            return this;
-        }
-    });
-
-    // View over a grid table row.
-    var TableRowView = Backbone.View.extend({
-        // Backbone: view DOM element type.
-        tagName : "tr",
-
-        // Backbone: view events.
-        events: {
-            'click > td.message-content' : function () {
-                var obj = $.parseJSON(this.options.message.content);
-                alert(obj);
-
-                console.log(JSON.stringify(obj));
-            }
-        },
-
-        // Backbone: view renderer.
-        render : function () {
-            APP.utils.renderHTML(TEMPLATES.tableRow, this.options, this);
-
-            return this;
-        }
-    });
-
-    // View over the grid table body.
-    var TableBodyView = Backbone.View.extend({
-        // Backbone: view DOM element type.
-        tagName : "tbody",
-
-        // Backbone: view renderer.
-        render : function () {
-            _.each(this.options.messages, this._renderRow, this);
-
-            return this;
-        },
-
-        // Renders a row.
-        _renderRow : function (message, index) {
-            APP.utils.render(TableRowView, {
-                message: message,
-                messageIndex: index + 1
-            }, this);
-        }
-    });
-
-    // View over the grid table.
-    var TableView = Backbone.View.extend({
-        // Backbone: view CSS class.
-        className : "table table-hover table-bordered table-condensed table-striped message-history-table",
-
-        // Backbone: view DOM element type.
-        tagName : "table",
-
-        // Backbone: view renderer.
-        render : function () {
-            APP.utils.render([
-                TableHeaderView,
-                TableBodyView
-            ], this.options, this);
-
-            return this;
-        }
-    });
-
-    // View over a collection of messages.
-    var MessageCollectionView = Backbone.View.extend({
-        // Backbone: view DOM element type.
-        tagName : "section",
-
-        // Backbone: view renderer.
-        render : function () {
-            APP.utils.renderHTML(TEMPLATES.messageCollectionHeader, this.options, this);
-            APP.utils.render(TableView, this.options, this);
-
-            return this;
-        }
-    });
-
-    // View over the set of messages received during the lifetime of a simulation.
-    MOD.views.MainView = Backbone.View.extend({
-        // Backbone: view HTML tag.
-        tagName : "article",
-
-        // Backbone: view renderer.
-        render : function () {
-            APP.utils.render(ModuleHeaderView, {}, this);
-            this._renderCollection("Compute", MOD.state.messageHistory.compute);
-            this._renderCollection("Post Processing", MOD.state.messageHistory.postProcessing);
-            APP.utils.render(ModuleFooterView, {}, this);
-
-            return this;
         },
 
         // Renders a message collection.
-        _renderCollection: function (jobType, messages) {
-            if (messages.length) {
-                APP.utils.render(MessageCollectionView, {
+        _renderCollection: function (jobType, collection) {
+            if (collection.length) {
+                APP.utils.renderTemplate("template-messages-collection", {
                     jobType: jobType,
-                    messages: messages
+                    messages: collection
                 }, this);
             }
+        },
+
+        // Renders an inividual message content.
+        _renderMessageContent: function (uid) {
+            var view, viewModel;
+
+            // Set view model.
+            viewModel = _.find(MOD.state.messageHistory.all, function (m) {
+                return m.uid === uid;
+            });
+            viewModel = $.parseJSON(viewModel.content);
+            // viewModel = _.omit(viewModel, ['configuration']);
+            viewModel = _.map(_.keys(viewModel).sort(), function (key) {
+                var value;
+
+                value = viewModel[key] || '--';
+                return [key, value.slice(0, 50) + (value.length > 50 ? ' ...' : '')];
+            });
+
+            // Display view.
+            view = APP.utils.renderTemplate("template-message-content", {
+                fields: viewModel
+            });
+            $(view).modal();
         }
     });
 

@@ -1,7 +1,10 @@
-(function(APP, constants, _, moment) {
+(function(APP, constants, $, _, moment) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
+
+    // Cache of loaded templates.
+    var templateCache = {};
 
     APP.utils = {
         // Outputs message to brwoser logging console.
@@ -98,6 +101,21 @@
                 } else {
                     container.append(html);
                 }
+            }
+        },
+
+        // Returns a rendered template.
+        renderTemplate: function (templateID, templateData, view) {
+            var template;
+
+            if (!_.has(templateCache, templateID)) {
+                templateCache[templateID] = _.template($('#' + templateID).html());
+            }
+            template = templateCache[templateID];
+            if (view) {
+                view.$el.append(template(templateData));
+            } else {
+                return template(templateData);
             }
         },
 
@@ -227,6 +245,7 @@
 }(
     this.APP,
     this.APP.constants,
+    this.$,
     this._,
     this.moment
 ));
