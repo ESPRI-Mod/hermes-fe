@@ -20,93 +20,93 @@
 
 <!-- Template: module header -->
 <script type="underscore/template" id="template-messages-header">
-    <header class="module-header bg-primary">
-        <h2>Simulation: <%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %> [<%- simulation.tryID %>]
-            <span class='pull-right'>
-                <span class='simulation-details glyphicon glyphicon-list' title='View Simulation Details'></span>
-            </span>
-        </h2>
-    </header>
+<header class="module-header bg-primary">
+    <h2>Simulation: <%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %> [<%- simulation.tryID %>]
+        <span class='pull-right'>
+            <span class='simulation-details glyphicon glyphicon-list' title='View Simulation Details'></span>
+        </span>
+    </h2>
+</header>
 </script>
 
 <!-- Template: module footer -->
 <script type="underscore/template" id="template-messages-footer">
-    <footer class="module-footer">
-        <span>
-            <strong><%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %></strong>
-         </span>
-         <span class='pull-right'>
-            <small><strong>
-                <a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a>
-            </strong></small>
-         </span>
-    </footer>
+<footer class="module-footer">
+    <span>
+        <strong><%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %> [<%- simulation.tryID %>]</strong>
+     </span>
+     <span class='pull-right'>
+        <small><strong>
+            <a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a>
+        </strong></small>
+     </span>
+</footer>
 </script>
 
 <!-- Template: messages collection -->
 <script type="underscore/template" id="template-messages-collection">
-    <section>
-        <header class="bg-info">
-            <h3><%- jobType %> Messages</h3>
-        </header>
-        <table class="table table-hover table-bordered table-condensed table-striped message-history-table">
-            <thead>
-                <tr class='bg-primary'>
-                    <th title='ID' class='text-center'>#</th>
-                    <th title='Type' class='text-center'>Type</th>
-                    <th title='Job UID' class='text-center'>Job UID</th>
-                    <th title='Timestamp' class='text-center'>Timestamp</th>
-                    <th title='View message content' class='text-center'></th>
-                </tr>
-            </thead>
-            <tbody>
-                <% _.each(messages, function(message, messageIndex) { %> 
-                <tr id="<%= message.uid %>">
-                    <td style='width: 40px;' class='text-center' title='<%= messageIndex + 1 %>'><%= messageIndex + 1 %></td>
-                    <td title='Message type' class='text-center' title='<%= message.typeID %>'><%= message.typeID %></td>
-                    <td title='Message job identifier' class='text-center' title='<%= message.jobUID %>'><%= message.jobUID %></td>
-                    <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp.slice(0, 19) %> <%= message.timestamp.slice(20) %></td>
-                    <td title='View message content' class='message-content text-center' ><span class='glyphicon glyphicon-envelope'></span></td>
-                </tr>
-                <% }); %>
-            </tbody>
-        </table>
-    </section>
+<section>
+    <header class="bg-info">
+        <h3><%- jobType %> Messages</h3>
+    </header>
+    <table class="table table-hover table-bordered table-condensed table-striped message-history-table">
+        <thead>
+            <tr class='bg-primary'>
+                <th title='ID' class='text-center'>#</th>
+                <th title='Type' class='text-center'>Type</th>
+                <th title='Job UID' class='text-center'>Job UID</th>
+                <th title='Timestamp' class='text-center'>Timestamp</th>
+                <th title='View message content' class='text-center'></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% _.each(messages, function(message, messageIndex) { %> 
+            <tr id="<%= message.uid %>">
+                <td style='width: 40px;' class='text-center' title='<%= messageIndex + 1 %>'><%= messageIndex + 1 %></td>
+                <td title='Message type' class='text-center' title='<%= message.typeID %>'><%= message.typeID %></td>
+                <td title='Message job identifier' class='text-center' title='<%= message.jobUID %>'><%= message.jobUID %></td>
+                <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp.slice(0, 19) %> <%= message.timestamp.slice(20) %></td>
+                <td title='View message content' class='message-content text-center' ><span class='glyphicon glyphicon-envelope'></span></td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</section>
 </script>
 
 <!-- Template: message content dialog -->
 <script type="underscore/template" id="template-message-content">
-    <div id='message-content-modal' class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="gridSystemModalLabel">Prodiguer Message Content</h4>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-hover table-bordered table-condensed table-striped message-history-table">
-                        <thead>
-                            <tr class='bg-primary'>
-                                <th title='Field'>Field</th>
-                                <th title='Value'>Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% _.each(fields, function(field) { %>
-                            <tr>
-                                <td title='Field Name' title='<%= field[0] %>'><strong><%= field[0] %></strong></td>
-                                <td title='Field Value' title='<%= field[1] %>'><%= field[1] %></td>
-                            </tr>
-                            <% }); %>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+<div id='message-content-modal' class="modal fade" role="dialog" aria-labelledby="gridSystemModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="gridSystemModalLabel">Prodiguer Message Content</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover table-bordered table-condensed table-striped message-history-table">
+                    <thead>
+                        <tr class='bg-primary'>
+                            <th title='Field'>Field</th>
+                            <th title='Value'>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% _.each(fields, function(field) { %>
+                        <tr>
+                            <td title='Field Name' title='<%= field[0] %>'><strong><%= field[0] %></strong></td>
+                            <td title='Field Value' title='<%= field[1] %>'><%= field[1] %></td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 </script>
 
 

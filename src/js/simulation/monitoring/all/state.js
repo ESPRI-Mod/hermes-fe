@@ -59,6 +59,10 @@
         // Timeslaice filter value.
         filterTimeSlice: "ALL",
 
+        filterTermIsActive: function (filter, term) {
+            return term.name !== '*' && _.indexOf(filter.cvTerms.active, term.name) === -1;
+        },
+
         // Returns set of active filters, i.e. those for which that the user has made a selection.
         getActiveFilters: function () {
             return _.filter(MOD.state.filters, function (filter) {

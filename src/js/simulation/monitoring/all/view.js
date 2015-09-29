@@ -120,11 +120,6 @@
 
         // Backbone: view renderer.
         render : function () {
-            APP.utils.render([
-                MOD.views.FilterPanelView
-            ], {}, this);
-
-            // Render templates.
             _.each([
                 "ws-notification-info-template",
                 "filter-panel-template",
