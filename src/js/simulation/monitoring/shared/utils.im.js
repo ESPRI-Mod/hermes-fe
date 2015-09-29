@@ -3,27 +3,35 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    var getMonitorURL, getInterMonitorURL;
+    var getMonitorURL, getInterMonitorURL, getSimulationListForIM;
+
+    // Gets list of simulations for inter-monitoring.
+    getSimulationListForIM = function () {
+        return _.filter(MOD.state.simulationList, function (s) {
+            return s.ext.isSelectedForIM;
+        });
+    };
+
 
     // Helper function: returns simulation monitor URL.
-    getMonitorURL = function (simulation) {
+    getMonitorURL = function (s) {
         var url;
 
         // Escape if simulation's compute node is not associated with a THREDDS server.
-        if (_.has(MOD.urls.M, simulation.computeNode) === false) {
+        if (_.has(MOD.urls.M, s.computeNode) === false) {
             return;
         }
 
-        url = [MOD.urls.M[simulation.computeNode]];
-        url.push(simulation.computeNodeLogin);
-        if (simulation.ext.modelSynonyms.length) {
-            url.push(simulation.ext.modelSynonyms[0]);
+        url = [MOD.urls.M[s.computeNode]];
+        url.push(s.computeNodeLogin);
+        if (s.ext.modelSynonyms.length) {
+            url.push(s.ext.modelSynonyms[0]);
         } else {
-            url.push(simulation.modelRaw || simulation.model);
+            url.push(s.modelRaw || s.model);
         }
-        url.push(simulation.spaceRaw || simulation.space);
-        url.push(simulation.experimentRaw || simulation.ext.experiment);
-        url.push(simulation.name);
+        url.push(s.spaceRaw || s.space);
+        url.push(s.experimentRaw || s.ext.experiment);
+        url.push(s.name);
         url.push("MONITORING/index.html");
         url = url.join("/");
 
@@ -61,27 +69,20 @@
 
     // Event handler: clear inter monitoring simulation selection.
     MOD.events.on("im:clearInterMonitor", function () {
-        _.each(MOD.getSimulationListForIM(), function (simulation) {
+        _.each(getSimulationListForIM(), function (simulation) {
             simulation.ext.isSelectedForIM = false;
         });
-        $("td.interMonitoring > input").prop("checked", false);
+        $("td.inter-monitoring > input").prop("checked", false);
     });
 
     // Event handler: open inter-monitoring link.
     MOD.events.on("im:openInterMonitor", function () {
-        var simulationList, data;
+        var urls;
 
-        // Escape if there are no selected simulations.
-        simulationList = MOD.getSimulationListForIM();
-        if (simulationList.length <= 1) {
-            return;
+        urls = _.sortBy(_.map(getSimulationListForIM(), getInterMonitorURL));
+        if (urls.length) {
+            MOD.events.trigger("im:postInterMonitorForm", urls);
         }
-
-        // Set data to be posted to inter-monitoring.
-        data = _.sortBy(_.map(simulationList, getInterMonitorURL));
-
-        // Trigger event.
-        MOD.events.trigger("im:postInterMonitorForm", data);
     });
 
 }(this.APP, this.APP.modules.monitoring, this._, this.$jq));

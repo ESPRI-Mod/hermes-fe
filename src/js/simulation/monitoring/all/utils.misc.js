@@ -24,7 +24,6 @@
             setTimeout(function () {
                 APP.events.trigger("module:processingEnds");
             }, 250);
-            
         }
     };
 
@@ -105,16 +104,6 @@
         }
     };
 
-    // Triggers simulation filter event.
-    MOD.triggerSimulationFilterEvent = function () {
-        var eventName;
-
-        eventName = "state:";
-        eventName += MOD.state.simulationListFiltered ? "simulationListFiltered" :
-                                                        "simulationListNull";
-        MOD.events.trigger(eventName, this);
-    };
-
     // Sets a filter's active values.
     MOD.setActiveFilterValues = function (filter) {
         var simulationList;
@@ -134,13 +123,6 @@
             filter.cvTerms.active.push(filter.defaultValue);
         }
         filter.cvTerms.active = _.uniq(filter.cvTerms.active);
-    };
-
-    // Gets list of simulations for inter-monitoring.
-    MOD.getSimulationListForIM = function () {
-        return _.filter(MOD.state.simulationList, function (simulation) {
-            return simulation.ext.isSelectedForIM;
-        });
     };
 }(
     this.APP,

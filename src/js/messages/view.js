@@ -23,7 +23,10 @@
 
             // Display message content.
             'click td.message-content' : function (e) {
-                this._renderMessageContent($(e.target).parent().parent().attr("id"));
+                var messageUID;
+
+                messageUID = $(e.target).parent().parent().attr("id");
+                this._renderMessageContent(messageUID);
             }
         },
 

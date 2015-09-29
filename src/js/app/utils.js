@@ -112,8 +112,10 @@
                 templateCache[templateID] = _.template($('#' + templateID).html());
             }
             template = templateCache[templateID];
-            if (view) {
+            if (view && view.$el) {
                 view.$el.append(template(templateData));
+            } else if (view) {
+                view.replaceWith(template(templateData));
             } else {
                 return template(templateData);
             }

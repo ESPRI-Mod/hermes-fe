@@ -30,14 +30,14 @@
 
             return this;
         },
-        
+
         // Resets view.
         _reset : function () {
             _.each(this.options.cvTerms.all, function (cvTerm) {
                 APP.utils.render(MOD.views.FilterItemOptionView, _.defaults({
                     model: cvTerm
                 }, this.options), this);
-            }, this);                        
+            }, this);
         },
 
         // Refresh filter when server pushes new CV terms.
@@ -46,8 +46,8 @@
             if (this.options.key !== filter.key) {
                 return;
             }
-            
-            // TODO review            
+
+            // TODO review
             console.log("TODO: review what to do when refreshing filter after arrival of a new cv term");
             this.$('option').remove();
             this._reset();

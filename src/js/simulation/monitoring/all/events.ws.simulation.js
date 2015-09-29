@@ -36,7 +36,7 @@
         MOD.setPagingState(MOD.state.paging.current);
 
         // Fire events.
-        MOD.triggerSimulationFilterEvent();
+        MOD.events.trigger("state:simulationListFiltered");
         MOD.events.trigger("state:" + data.eventType, data);
     };
 

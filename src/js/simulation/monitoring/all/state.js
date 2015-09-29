@@ -5,6 +5,15 @@
 
     // Module state.
     MOD.state = {
+        // Application pointer.
+        APP: APP,
+
+        // Module pointer.
+        MOD: MOD,
+
+        // Copyright year.
+        year: new Date().getFullYear(),
+
         // CV terms.
         cvTerms: [],
 
@@ -14,11 +23,6 @@
                 key: 'activity',
                 defaultValue: 'ipsl'
             },
-            // {
-            //     cvType: 'compute_node',
-            //     key: 'computeNode',
-            //     displayName: 'Node'
-            // },
             {
                 cvType: 'compute_node_machine',
                 key: 'computeNodeMachine',
@@ -61,13 +65,16 @@
             });
         },
 
-        // List of simulations.
+        // Current simulation being processed.
+        simulation: null,
+
+        // List of simulations being processed.
         simulationList: [],
 
         // List of filtered simulations.
         simulationListFiltered: [],
 
-        // Set of simulations.
+        // Map of simulation uid's to simulations.
         simulationSet: {},
 
         // Paging related state.
@@ -77,7 +84,7 @@
             previous: undefined,
             pages: []
         },
-        
+
         // Set of grid row views.
         gridRowViews: []
     };

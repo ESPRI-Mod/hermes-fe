@@ -26,7 +26,9 @@
 
             // Open previous try page.
             'change #previous-try-select' : function (e) {
-                var tryID = $(e.target).val(), url;
+                var tryID, url;
+
+                tryID = $(e.target).val();
                 if (tryID > 0) {
                     url = APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE);
                     url = url.replace("{hashid}", MOD.state.simulation.hashid);
@@ -51,7 +53,9 @@
             this._renderJobs('post-processing-from-checker', MOD.state.simulation.jobs.postProcessingFromChecker);
 
             // Render config card.
-            APP.utils.renderTemplate("template-simulation-detail-config-card", MOD.state, this);
+            if (MOD.state.configCard) {
+                APP.utils.renderTemplate("template-simulation-detail-config-card", MOD.state, this);
+            }
 
             // Render footer.
             APP.utils.renderTemplate("template-simulation-detail-footer", MOD.state, this);

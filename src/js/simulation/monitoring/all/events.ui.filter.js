@@ -15,7 +15,7 @@
         MOD.setPagingState();
 
         // Fire event.
-        MOD.triggerSimulationFilterEvent();
+        MOD.events.trigger("state:simulationListFiltered");
     });
 
 }(
