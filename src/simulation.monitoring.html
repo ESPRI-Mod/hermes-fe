@@ -36,18 +36,26 @@
                     <option value='12M'>< 1 year</option>
                 </select>
             </div>
-            <% _.each(MOD.state.filters, function(filter) { %>
-            <div id="filter-by-<%- filter.key %>" class="col-md-3">
-                <label class='filter-label' style='width: 40%'><%- filter.displayName %></label>
-                <select class='filter-select' style='width: 55%'>
-                    <% _.each(filter.cvTerms.all, function(term) { %>
-                    <option value='<%- term.name %>'><%- term.displayName %></option>
-                    <% }); %>
-                </select>
-            </div>
-            <% }); %>
+            <%= APP.utils.renderTemplate("filter-selectors-template", MOD.state) %>
         </div>
     </div>
+</script>
+
+<!-- Template: filter selectors -->
+<script type="underscore/template" id="filter-selectors-template">
+    <% _.each(MOD.state.filters, function(filter) { %>
+    <div id="filter-by-<%- filter.key %>" class="col-md-3">
+        <label class='filter-label' style='width: 40%'><%- filter.displayName %></label>
+        <select class='filter-select' style='width: 55%'>
+            <% _.each(filter.cvTerms.all, function(term) { %>
+            <option value="<%= term.name %>"
+                    class="<%= term.name !== '*' && _.indexOf(filter.cvTerms.active, term.name) === -1 ? 'hidden' : '' %>"
+                    <%= term === filter.cvTerms.current ? 'selected' : '' %>>
+                <%- term.displayName %></option>
+            <% }); %>
+        </select>
+    </div>
+    <% }); %>
 </script>
 
 <!-- Template: grid header -->
@@ -64,7 +72,7 @@
                 </button>
             </span>
             <span class='btn-group'>
-                <input type='text' class='pagination-info form-control' 
+                <input type='text' class='pagination-info form-control'
                        placeholder="Page <%= paging.current ? paging.current.id : '0' %> of <%= paging.count %>">
             </span>
             <span class='btn-group' role='group'>

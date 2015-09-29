@@ -14,6 +14,8 @@
         // Copyright year.
         year: new Date().getFullYear(),
 
+        _: _,
+
         // CV terms.
         cvTerms: [],
 
