@@ -20,334 +20,272 @@
 <body>
 
 <!-- Template: filter panel -->
-<script type="underscore/template" id="monitoring-filter-panel">
-    <div class='panel panel-info form-inline'>
-        <div class='panel-body'>
-            <div id="filter-by-timeslice" class="col-md-3">
-                <label class='filter-label' style='width: 40%'>Start Date</label>
-                <select class='filter-select' style='width: 55%'>
-                    <option value='ALL'>*</option>
-                    <option value='1W' selected='true'>< 1 week</option>
-                    <option value='2W'>< 2 weeks</option>
-                    <option value='1M'>< 1 month</option>
-                    <option value='2M'>< 2 months</option>
-                    <option value='3M'>< 3 months</option>
-                    <option value='6M'>< 6 months</option>
-                    <option value='12M'>< 1 year</option>
-                </select>
-            </div>
-            <% _.each(MOD.state.filters, function(filter) { %>
-            <div id="filter-by-<%- filter.key %>" class="col-md-3">
-                <label class='filter-label' style='width: 40%'><%- filter.displayName %></label>
-                <select class='filter-select' style='width: 55%'>
-                    <% _.each(filter.cvTerms.all, function(term) { %>
-                    <option value='<%- term.name %>'><%- term.displayName %></option>
-                    <% }); %>
-                </select>
-            </div>
-            <% }); %>
+<script type="underscore/template" id="filter-panel-template">
+<div class='panel panel-info form-inline'>
+    <div class='panel-body'>
+        <div id="filter-by-timeslice" class="col-md-3">
+            <label class='filter-label' style='width: 40%'>Start Date</label>
+            <select class='filter-select' style='width: 55%'>
+                <option value='ALL'>*</option>
+                <option value='1W' selected='true'>< 1 week</option>
+                <option value='2W'>< 2 weeks</option>
+                <option value='1M'>< 1 month</option>
+                <option value='2M'>< 2 months</option>
+                <option value='3M'>< 3 months</option>
+                <option value='6M'>< 6 months</option>
+                <option value='12M'>< 1 year</option>
+            </select>
         </div>
+        <%= APP.utils.renderTemplate("filter-selectors-template", MOD.state) %>
     </div>
+</div>
+</script>
+
+<!-- Template: filter selectors -->
+<script type="underscore/template" id="filter-selectors-template">
+<% _.each(MOD.state.filters, function(filter) { %>
+<div id="filter-by-<%- filter.key %>" class="col-md-3">
+    <label class='filter-label' style='width: 40%'><%- filter.displayName %></label>
+    <select class='filter-select' style='width: 55%'>
+        <% _.each(filter.cvTerms.all, function(term) { %>
+        <option value="<%= term.name %>"
+                class="<%= filterTermIsActive(filter, term) ? 'hidden' : '' %>"
+                <%= term === filter.cvTerms.current ? 'selected' : '' %>>
+            <%- term.displayName %></option>
+        <% }); %>
+    </select>
+</div>
+<% }); %>
 </script>
 
 <!-- Template: grid header -->
-<script type="underscore/template" id="monitoring-grid-header">
-    <div class='alert bg-primary'>
-        <span id='grid-header-stats' />
-        <span class='span pagination pull-right' role='toolbar'>
-            <span class='btn-group' role='group'>
-                <button type='button' class='btn btn-default pagination-first'>
-                    <strong class='text-primary'><<</strong>
-                </button>
-                <button type='button' class='btn btn-default pagination-previous'>
-                    <strong class='text-primary'>&nbsp;&lt;&nbsp;</strong>
-                </button>
-            </span>
-            <span class='btn-group'>
-                <input type='text' class='pagination-info form-control' placeholder=''>
-            </span>
-            <span class='btn-group' role='group'>
-                <button type='button' class='btn btn-default pagination-next'>
-                    <strong class='text-primary'>&nbsp;&gt;&nbsp;</strong>
-                </button>
-                <button type='button' class='btn btn-default pagination-last'>
-                    <strong class='text-primary'>>></strong>
-                </button>
-            </span>
+<script type="underscore/template" id="grid-header-template">
+<div class='alert bg-primary'>
+    <%= APP.utils.renderTemplate("grid-header-stats-template", MOD.state) %>
+    <span class='pagination pull-right <%= paging.count < 2 ? 'hidden' : '' %>' role='toolbar'>
+        <span class='btn-group' role='group'>
+            <button type='button' class='btn btn-default pagination-first'>
+                <strong class='text-primary'><<</strong>
+            </button>
+            <button type='button' class='btn btn-default pagination-previous'>
+                <strong class='text-primary'>&nbsp;&lt;&nbsp;</strong>
+            </button>
         </span>
-    </div>
+        <span class='btn-group'>
+            <input type='text' class='pagination-info form-control'
+                   placeholder="Page <%= paging.current ? paging.current.id : '0' %> of <%= paging.count %>">
+        </span>
+        <span class='btn-group' role='group'>
+            <button type='button' class='btn btn-default pagination-next'>
+                <strong class='text-primary'>&nbsp;&gt;&nbsp;</strong>
+            </button>
+            <button type='button' class='btn btn-default pagination-last'>
+                <strong class='text-primary'>>></strong>
+            </button>
+        </span>
+    </span>
+</div>
 </script>
 
 <!-- Template: search statistics -->
-<script type="underscore/template" id="monitoring-grid-header-stats">
-    <span id='grid-header-stats'>
-        <strong>Total simulations = <%- simulationList.length %>.
-                Filtered simulations = <%- simulationListFiltered.length %>.</strong>
-    </span>
+<script type="underscore/template" id="grid-header-stats-template">
+<span id='grid-header-stats'>
+    <strong>Total simulations = <%- simulationList.length %>.
+            Filtered simulations = <%- simulationListFiltered.length %>.</strong>
+</span>
 </script>
 
 <!-- Template: search result table -->
-<script type="underscore/template" id="monitoring-grid">
-    <table class='table table-hover table-bordered table-condensed monitoring-table'>
-        <thead>
-            <tr class='bg-primary'>
-                <th title='Activity' class='text-center'><small>Activity</small></th>
-                <th title='Name'><small>Name</small></th>
-                <th title='Try' class='text-center'><small>Try</small></th>
-                <th title='Compute Jobs' class='text-center'><small>Jobs (C)</small></th>
-                <th title='Post-Processing Jobs' class='text-center'><small>Jobs (PP)</small></th>
-                <th title='Node - Machine' class='text-center'><small>Node - Machine</small></th>
-                <th title='Login' class='text-center'><small>Login</small></th>
-                <th title='Tag / Model' class='text-center'><small>Tag / Model</small></th>
-                <th title='Space' class='text-center'><small>Space</small></th>
-                <th title='Experiment' class='text-center'><small>Experiment</small></th>
-                <th title='Start' class='text-center'><small>Start</small></th>
-                <th title='End' class='text-center'><small>End</small></th>
-                <th title='monitoring' class='text-center'></th>
-                <th class='interMonitoring text-center' title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
-                  <span class='glyphicon glyphicon-random'></span>
-                </th>
-            </tr>
-        </thead>
-        <tbody />
-        <tfoot>
-            <tr>
-                <td colspan="14">
-                    <span>
-                        <span class='monitoring-state-queued'><small><strong>&nbsp;QUEUED&nbsp;</strong></small></span>
-                        <span class='monitoring-state-running'><small><strong>&nbsp;RUNNING&nbsp;</strong></small></span>
-                        <span class='monitoring-state-complete'><small><strong>&nbsp;COMPLETE&nbsp;</strong></small></span>
-                        <span class='monitoring-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small>
-                    </span>
-                    <span class='pull-right'>
-                        <small><strong><a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>
-                    </span>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+<script type="underscore/template" id="grid-template">
+<table class='table table-hover table-bordered table-condensed monitoring-table'>
+    <thead>
+        <tr class='bg-primary'>
+            <th title='Activity' class='text-center'><small>Activity</small></th>
+            <th title='Name'><small>Name</small></th>
+            <th title='Try' class='text-center'><small>Try</small></th>
+            <th title='Compute Jobs' class='text-center'><small>Jobs (C)</small></th>
+            <th title='Post-Processing Jobs' class='text-center'><small>Jobs (PP)</small></th>
+            <th title='Node - Machine' class='text-center'><small>Node - Machine</small></th>
+            <th title='Login' class='text-center'><small>Login</small></th>
+            <th title='Tag / Model' class='text-center'><small>Tag / Model</small></th>
+            <th title='Space' class='text-center'><small>Space</small></th>
+            <th title='Experiment' class='text-center'><small>Experiment</small></th>
+            <th title='Start' class='text-center'><small>Start</small></th>
+            <th title='End' class='text-center'><small>End</small></th>
+            <th title='monitoring' class='text-center'></th>
+            <th class='interMonitoring text-center' title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
+              <span class='glyphicon glyphicon-random'></span>
+            </th>
+        </tr>
+    </thead>
+    <%= APP.utils.renderTemplate("grid-body-template", MOD.state) %>
+    <tfoot>
+        <tr>
+            <td colspan="14">
+                <span>
+                    <span class='monitoring-state-queued'><small><strong>&nbsp;QUEUED&nbsp;</strong></small></span>
+                    <span class='monitoring-state-running'><small><strong>&nbsp;RUNNING&nbsp;</strong></small></span>
+                    <span class='monitoring-state-complete'><small><strong>&nbsp;COMPLETE&nbsp;</strong></small></span>
+                    <span class='monitoring-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small>
+                </span>
+                <span class='pull-right'>
+                    <small><strong><a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>
+                </span>
+            </td>
+        </tr>
+    </tfoot>
+</table>
 </script>
 
 <!-- Template: search result table body -->
-<script type="underscore/template" id="monitoring-grid-body">
-    <tbody>
-        <% _.each(paging.current.data, function(s, simulationIndex) { %>
-        <tr id="<%= s.uid %>" class='monitoring-state-<%= s.executionState %>'>
-            <td class='text-center'>
-                <small>
-                    <%= s.ext.activity %>
-                </small>
-            </td>
-            <td >
-                <small>
-                    <%= s.name %>
-                </small>
-            </td>
-            <td class='text-center'>
-                <small>
-                    <%= s.tryID %>
-                </small>
-            </td>
-            <td class="text-center compute-job-count <%= s.jobs.compute.error.length ? 'bg-danger' : ''%>"
-                title='Compute Job Count (#running : #complete : #errors)'>
-                <small>
-                    <%= s.jobs.compute.running.length %> |
-                    <%= s.jobs.compute.complete.length %> |
-                    <%= s.jobs.compute.error.length %>
-                </small>
-            </td>
-            <td class="text-center post-processing-job-count <%= s.jobs.postProcessing.error.length ? 'bg-danger' : ''%>"
-                title='Post-Processing Job Count (#running : #complete : #errors)'>
-                <small>
-                    <%= s.jobs.postProcessing.running.length %> |
-                    <%= s.jobs.postProcessing.complete.length %> |
-                    <%= s.jobs.postProcessing.error.length %>
-                </small>
-            </td>
-            <td class='text-center'>
-                <small>
-                    <%= s.ext.computeNodeMachine %>
-                </small>
-            </td>
-            <td class='text-center'>
-                <small>
-                    <%= s.computeNodeLogin %>
-                </small>
-            </td>
-            <td class='text-center' >
-                <small>
-                    <%= s.ext.model %>
-                </small>
-            </td>
-            <td class='text-center' >
-                <small>
-                    <%= s.ext.space %>
-                </small>
-            </td>
-            <td class='text-center' >
-                <small>
-                    <%= s.ext.experiment %>
-                </small>
-            </td>
-            <td class='text-center' >
-                <small>
-                    <%= s.ext.executionStartDate %>
-                </small>
-            </td>
-            <td class='text-center execution-end-date' >
-                <small>
-                    <%= s.ext.executionEndDate %>
-                </small>
-            </td>
-            <td class='text-center monitoring' ><span class='glyphicon glyphicon-random'></span></td>
-            <td class='text-center inter-monitoring' >
-                <input type='checkbox' <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
-            </td>
-        </tr>
-        <% }); %>
-    </tbody>
+<script type="underscore/template" id="grid-body-template">
+<tbody>
+    <% _.each(paging.current.data, function(s, simulationIndex) { %>
+    <%= APP.utils.renderTemplate("grid-row-template", {s: s}) %>
+    <% }); %>
+</tbody>
 </script>
 
 <!-- Template: search result table row -->
-<script type="underscore/template" id="monitoring-grid-row">
-    <tr id="<%= s.uid %>" class='monitoring-state-<%= s.executionState %>'>
-        <td class='text-center'>
-            <small>
-                <%= s.ext.activity %>
-            </small>
-        </td>
-        <td >
-            <small>
-                <%= s.name %>
-            </small>
-        </td>
-        <td class='text-center'>
-            <small>
-                <%= s.tryID %>
-            </small>
-        </td>
-        <td class="text-center compute-job-count <%= s.jobs.compute.error.length ? 'bg-danger' : ''%>"
-            title='Compute Job Count (#running : #complete : #errors)'>
-            <small>
-                <%= s.jobs.compute.running.length %> |
-                <%= s.jobs.compute.complete.length %> |
-                <%= s.jobs.compute.error.length %>
-            </small>
-        </td>
-        <td class="text-center post-processing-job-count <%= s.jobs.postProcessing.error.length ? 'bg-danger' : ''%>"
-            title='Post-Processing Job Count (#running : #complete : #errors)'>
-            <small>
-                <%= s.jobs.postProcessing.running.length %> |
-                <%= s.jobs.postProcessing.complete.length %> |
-                <%= s.jobs.postProcessing.error.length %>
-            </small>
-        </td>
-        <td class='text-center'>
-            <small>
-                <%= s.ext.computeNodeMachine %>
-            </small>
-        </td>
-        <td class='text-center'>
-            <small>
-                <%= s.computeNodeLogin %>
-            </small>
-        </td>
-        <td class='text-center' >
-            <small>
-                <%= s.ext.model %>
-            </small>
-        </td>
-        <td class='text-center' >
-            <small>
-                <%= s.ext.space %>
-            </small>
-        </td>
-        <td class='text-center' >
-            <small>
-                <%= s.ext.experiment %>
-            </small>
-        </td>
-        <td class='text-center' >
-            <small>
-                <%= s.ext.executionStartDate %>
-            </small>
-        </td>
-        <td class='text-center execution-end-date' >
-            <small>
-                <%= s.ext.executionEndDate %>
-            </small>
-        </td>
-        <td class='text-center monitoring' ><span class='glyphicon glyphicon-random'></span></td>
-        <td class='text-center inter-monitoring' >
-            <input type='checkbox' <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
-        </td>
-    </tr>
+<script type="underscore/template" id="grid-row-template">
+<tr id="<%= s.uid %>" class='monitoring-state-<%= s.executionState %>'>
+    <td class='text-center'>
+        <small>
+            <%= s.ext.activity %>
+        </small>
+    </td>
+    <td >
+        <small>
+            <%= s.name %>
+        </small>
+    </td>
+    <td class='text-center'>
+        <small>
+            <%= s.tryID %>
+        </small>
+    </td>
+    <td class="text-center compute-job-count <%= s.jobs.compute.error.length ? 'bg-danger' : ''%>"
+        title='Compute Job Count (#running : #complete : #errors)'>
+        <small>
+            <%= s.jobs.compute.running.length %> |
+            <%= s.jobs.compute.complete.length %> |
+            <%= s.jobs.compute.error.length %>
+        </small>
+    </td>
+    <td class="text-center post-processing-job-count <%= s.jobs.postProcessing.error.length ? 'bg-danger' : ''%>"
+        title='Post-Processing Job Count (#running : #complete : #errors)'>
+        <small>
+            <%= s.jobs.postProcessing.running.length %> |
+            <%= s.jobs.postProcessing.complete.length %> |
+            <%= s.jobs.postProcessing.error.length %>
+        </small>
+    </td>
+    <td class='text-center'>
+        <small>
+            <%= s.ext.computeNodeMachine %>
+        </small>
+    </td>
+    <td class='text-center'>
+        <small>
+            <%= s.computeNodeLogin %>
+        </small>
+    </td>
+    <td class='text-center' >
+        <small>
+            <%= s.ext.model %>
+        </small>
+    </td>
+    <td class='text-center' >
+        <small>
+            <%= s.ext.space %>
+        </small>
+    </td>
+    <td class='text-center' >
+        <small>
+            <%= s.ext.experiment %>
+        </small>
+    </td>
+    <td class='text-center' >
+        <small>
+            <%= s.ext.executionStartDate %>
+        </small>
+    </td>
+    <td class='text-center execution-end-date' >
+        <small>
+            <%= s.ext.executionEndDate %>
+        </small>
+    </td>
+    <td class='text-center monitoring' ><span class='glyphicon glyphicon-random'></span></td>
+    <td class='text-center inter-monitoring' >
+        <input type='checkbox' <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
+    </td>
+</tr>
 </script>
 
 <!-- Template: inter-monitoring content menu -->
-<script type="underscore/template" id="monitoring-im-context-menu-template">
-    <div id="inter-monitoring-context-menu">
-        <ul class='dropdown-menu' role='menu'>
-            <li><a tabindex='-1' class='open'>Open inter-monitoring</a></li>
-            <li><a tabindex='-1' class='clear'>Clear selections</a></li>
-        </ul>
-    </div>
+<script type="underscore/template" id="im-context-menu-template">
+<div id="inter-monitoring-context-menu">
+    <ul class='dropdown-menu' role='menu'>
+        <li><a tabindex='-1' class='open'>Open inter-monitoring</a></li>
+        <li><a tabindex='-1' class='clear'>Clear selections</a></li>
+    </ul>
+</div>
 </script>
 
 <!-- Template: inter-monitoring form -->
-<script type="underscore/template" id="monitoring-im-form-template">
-    <form id="inter-monitoring-form" method="POST" target="_blank" action="<%= httpPostTarget %>">
-        <% _.each(urls, function(url, urlIndex) { %>
-        <input type='hidden' id=simul<%= urlIndex + 1 %> name=simul<%= urlIndex + 1 %> value=<%= url %>></ input>
-        <% }); %>
-    </form>
+<script type="underscore/template" id="im-form-template">
+<form id="inter-monitoring-form" method="POST" target="_blank" action="<%= httpPostTarget %>">
+    <% _.each(urls, function(url, urlIndex) { %>
+    <input type='hidden' id=simul<%= urlIndex + 1 %> name=simul<%= urlIndex + 1 %> value=<%= url %>></ input>
+    <% }); %>
+</form>
 </script>
 
 <!-- Template: web-socket notifications -->
-<script type="underscore/template" id="monitoring-ws-notification-info-template">
-    <div id="ws-notification-info" class="alert monitoring-state-<%= simulation ? simulation.executionState : 'running' %>">
-        <strong>
-        <%= simulation ? eventTimestamp.slice(0, 19) + " :: " : '' %>
-        <% if (simulation) {
-            switch (eventType) {
-            case 'simulationComplete':
-                print("SIMULATION COMPLETED");
-                break;
-            case 'simulationError':
-                print("SIMULATION ERROR");
-                break;
-            case 'simulationStart':
-                if (simulation.ext.isRestart) {
-                    print("SIMULATION STARTED");
-                } else {
-                    print("SIMULATION RESTARTED");
-                }
-                break;
-            case 'jobComplete':
-                print("JOB COMPLETED");
-                break;
-            case 'jobError':
-                print("JOB ERROR");
-                break;
-            case 'jobStart':
-                print("JOB STARTED");
-                break;
-            default:
-                break;
+<script type="underscore/template" id="ws-notification-info-template">
+<div id="ws-notification-info" class="alert monitoring-state-<%= simulation ? simulation.executionState : 'running' %>">
+    <strong>
+    <%= simulation ? eventTimestamp.slice(0, 19) + " :: " : '' %>
+    <% if (simulation) {
+        switch (eventType) {
+        case 'simulationComplete':
+            print("SIMULATION COMPLETED");
+            break;
+        case 'simulationError':
+            print("SIMULATION ERROR");
+            break;
+        case 'simulationStart':
+            if (simulation.ext.isRestart) {
+                print("SIMULATION STARTED");
+            } else {
+                print("SIMULATION RESTARTED");
             }
-            print(" :: ");
-            print(simulation.name);
-            print(" is ");
-            print(simulation.ext.executionState);
-        } else {
-            print("Awaiting simulation events ...");
-        } %>
-        </strong>
-    </div>
+            break;
+        case 'jobComplete':
+            print("JOB COMPLETED");
+            break;
+        case 'jobError':
+            print("JOB ERROR");
+            break;
+        case 'jobStart':
+            print("JOB STARTED");
+            break;
+        default:
+            break;
+        }
+        print(" :: ");
+        print(simulation.name);
+        print(" is ");
+        print(simulation.ext.executionState);
+    } else {
+        print("Awaiting simulation events ...");
+    } %>
+    </strong>
+</div>
 </script>
 
 <!-- Template: web-socket close dialog -->
-<script type="underscore/template" id="monitoring-ws-close-dialog-template">
+<script type="underscore/template" id="ws-close-dialog-template">
 <div id="ws-close-dialog" class="modal fade" role="dialog" aria-labelledby="ws-close-dialog-label" aria-hidden="true" tabindex=-1>
     <div class='modal-dialog'>
         <div class='modal-content'>
@@ -369,12 +307,12 @@
 <!-- JS: 3rd party libraries -->
 <script src="ext/jquery-2.1.4.min.js"></script>
 <script src="ext/underscore.1.8.3.min.js"></script>
-<script src="ext/backbone.1.2.1.min.js"></script>
+<script src="ext/backbone.1.2.3.min.js"></script>
 <script src="ext/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="ext/moment-2.10.6.min.js"></script>
 <script src="ext/numeral-1.5.3.js"></script>
 <!-- JS: 3rd party libraries (extensions) -->
-<script src="ext/backbone.1.2.1-options-patch.js"></script>
+<script src="ext/backbone.1.2.3-options-patch.js"></script>
 <script src="ext/bootstrap-contextmenu/bootstrap-contextmenu.js"></script>
 <!-- JS: Application shell -->
 <script src="js/app/main.js"></script>
@@ -408,14 +346,6 @@
 <script src="js/simulation/monitoring/all/events.ui.filter.js"></script>
 <script src="js/simulation/monitoring/all/events.ws.simulation.js"></script>
 <script src="js/simulation/monitoring/all/events.ws.job.js"></script>
-<script src="js/simulation/monitoring/all/view.templates.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.item.option.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.item.select.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.item.label.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.item.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.name.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.panel.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.timeslice.js"></script>
 <script src="js/simulation/monitoring/all/view.js"></script>
 
 </body>

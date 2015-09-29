@@ -224,64 +224,64 @@
 
 <!-- Template: inter-monitoring content menu -->
 <script type="underscore/template" id="im-context-menu-template">
-    <div id="inter-monitoring-context-menu">
-        <ul class='dropdown-menu' role='menu'>
-            <li><a tabindex='-1' class='open'>Open inter-monitoring</a></li>
-            <li><a tabindex='-1' class='clear'>Clear selections</a></li>
-        </ul>
-    </div>
+<div id="inter-monitoring-context-menu">
+    <ul class='dropdown-menu' role='menu'>
+        <li><a tabindex='-1' class='open'>Open inter-monitoring</a></li>
+        <li><a tabindex='-1' class='clear'>Clear selections</a></li>
+    </ul>
+</div>
 </script>
 
 <!-- Template: inter-monitoring form -->
 <script type="underscore/template" id="im-form-template">
-    <form id="inter-monitoring-form" method="POST" target="_blank" action="<%= httpPostTarget %>">
-        <% _.each(urls, function(url, urlIndex) { %>
-        <input type='hidden' id=simul<%= urlIndex + 1 %> name=simul<%= urlIndex + 1 %> value=<%= url %>></ input>
-        <% }); %>
-    </form>
+<form id="inter-monitoring-form" method="POST" target="_blank" action="<%= httpPostTarget %>">
+    <% _.each(urls, function(url, urlIndex) { %>
+    <input type='hidden' id=simul<%= urlIndex + 1 %> name=simul<%= urlIndex + 1 %> value=<%= url %>></ input>
+    <% }); %>
+</form>
 </script>
 
 <!-- Template: web-socket notifications -->
 <script type="underscore/template" id="ws-notification-info-template">
-    <div id="ws-notification-info" class="alert monitoring-state-<%= simulation ? simulation.executionState : 'running' %>">
-        <strong>
-        <%= simulation ? eventTimestamp.slice(0, 19) + " :: " : '' %>
-        <% if (simulation) {
-            switch (eventType) {
-            case 'simulationComplete':
-                print("SIMULATION COMPLETED");
-                break;
-            case 'simulationError':
-                print("SIMULATION ERROR");
-                break;
-            case 'simulationStart':
-                if (simulation.ext.isRestart) {
-                    print("SIMULATION STARTED");
-                } else {
-                    print("SIMULATION RESTARTED");
-                }
-                break;
-            case 'jobComplete':
-                print("JOB COMPLETED");
-                break;
-            case 'jobError':
-                print("JOB ERROR");
-                break;
-            case 'jobStart':
-                print("JOB STARTED");
-                break;
-            default:
-                break;
+<div id="ws-notification-info" class="alert monitoring-state-<%= simulation ? simulation.executionState : 'running' %>">
+    <strong>
+    <%= simulation ? eventTimestamp.slice(0, 19) + " :: " : '' %>
+    <% if (simulation) {
+        switch (eventType) {
+        case 'simulationComplete':
+            print("SIMULATION COMPLETED");
+            break;
+        case 'simulationError':
+            print("SIMULATION ERROR");
+            break;
+        case 'simulationStart':
+            if (simulation.ext.isRestart) {
+                print("SIMULATION STARTED");
+            } else {
+                print("SIMULATION RESTARTED");
             }
-            print(" :: ");
-            print(simulation.name);
-            print(" is ");
-            print(simulation.ext.executionState);
-        } else {
-            print("Awaiting simulation events ...");
-        } %>
-        </strong>
-    </div>
+            break;
+        case 'jobComplete':
+            print("JOB COMPLETED");
+            break;
+        case 'jobError':
+            print("JOB ERROR");
+            break;
+        case 'jobStart':
+            print("JOB STARTED");
+            break;
+        default:
+            break;
+        }
+        print(" :: ");
+        print(simulation.name);
+        print(" is ");
+        print(simulation.ext.executionState);
+    } else {
+        print("Awaiting simulation events ...");
+    } %>
+    </strong>
+</div>
 </script>
 
 <!-- Template: web-socket close dialog -->
@@ -307,12 +307,12 @@
 <!-- JS: 3rd party libraries -->
 <script src="ext/jquery-2.1.4.min.js"></script>
 <script src="ext/underscore.1.8.3.min.js"></script>
-<script src="ext/backbone.1.2.1.min.js"></script>
+<script src="ext/backbone.1.2.3.min.js"></script>
 <script src="ext/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="ext/moment-2.10.6.min.js"></script>
 <script src="ext/numeral-1.5.3.js"></script>
 <!-- JS: 3rd party libraries (extensions) -->
-<script src="ext/backbone.1.2.1-options-patch.js"></script>
+<script src="ext/backbone.1.2.3-options-patch.js"></script>
 <script src="ext/bootstrap-contextmenu/bootstrap-contextmenu.js"></script>
 <!-- JS: Application shell -->
 <script src="js/app/main.js"></script>
@@ -346,13 +346,6 @@
 <script src="js/simulation/monitoring/all/events.ui.filter.js"></script>
 <script src="js/simulation/monitoring/all/events.ws.simulation.js"></script>
 <script src="js/simulation/monitoring/all/events.ws.job.js"></script>
-<script src="js/simulation/monitoring/all/view.templates.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.item.option.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.item.select.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.item.label.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.item.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.panel.js"></script>
-<script src="js/simulation/monitoring/all/view.filter.timeslice.js"></script>
 <script src="js/simulation/monitoring/all/view.js"></script>
 
 </body>

@@ -14,8 +14,6 @@
         // Copyright year.
         year: new Date().getFullYear(),
 
-        _: _,
-
         // CV terms.
         cvTerms: [],
 
@@ -59,6 +57,7 @@
         // Timeslaice filter value.
         filterTimeSlice: "ALL",
 
+        // Predicate determining whether a term is within a filters' activae set.
         filterTermIsActive: function (filter, term) {
             return term.name !== '*' && _.indexOf(filter.cvTerms.active, term.name) === -1;
         },
