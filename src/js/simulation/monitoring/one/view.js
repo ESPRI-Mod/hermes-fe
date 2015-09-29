@@ -16,7 +16,7 @@
             },
 
             // Open messages page.
-            'click .simulation-messages' : function () {
+            'click .glyphicon-envelope' : function () {
                 var url;
 
                 url = APP.utils.getPageURL(MOD.urls.SIMULATION_MESSAGES_PAGE);
@@ -67,6 +67,7 @@
         _renderJobs : function (jobType, jobs) {
             if (jobs.all.length) {
                 APP.utils.renderTemplate("template-simulation-detail-job-history", {
+                    APP: APP,
                     jobHistory: jobs,
                     jobType: jobType,
                     jobTypeCaption: MOD.jobTypeCaptions[jobType],
