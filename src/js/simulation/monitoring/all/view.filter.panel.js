@@ -15,7 +15,6 @@
             _.each(MOD.state.filters, function (filter) {
                 APP.utils.render(MOD.views.FilterItemView, filter, this);
             }, this);
-            // APP.utils.render(MOD.views.FilterNameView, this.options, this);
 
             return this;
         }
