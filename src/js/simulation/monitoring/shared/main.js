@@ -40,13 +40,13 @@
             jobWarningDelay: 86400,
 
             // Simulation filter timeslice.
-            timeslice: "ALL"
+            timeslice: "*"
         },
 
         // URL's used across modules.
         urls: {
             // Fetch CV data endpoint.
-            FETCH_CV: 'simulation/monitoring/fetch_cv',
+            FETCH_CV: 'cv/fetch',
 
             // Fetch monitoring time slice endpoint.
             FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice?timeslice={timeslice}',

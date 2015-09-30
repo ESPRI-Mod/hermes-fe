@@ -95,14 +95,14 @@
                 APP.utils.openURL(url);
             },
             // Filter: cv change.
-            'change #filter-cv-selectors select': function (e) {
+            'change select:not(.custom-filter)': function (e) {
                 this._applyCVFilterChange($(e.target).attr("id").slice(14),
                                           $(e.target).val());
             },
             // Filter: timeslice change.
             'change #filter-select-timeslice': function (e) {
                 MOD.fetchTimeSlice($(e.target).val(), true);
-            },
+            }
         },
 
         // Backbone: view initializer.

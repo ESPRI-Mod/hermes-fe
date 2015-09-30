@@ -10,7 +10,7 @@
 
         // Cache CV terms.
         _.extend(MOD.state, {
-            cvTerms: data.cvTerms
+            cvTerms: APP.utils.parseCVTerms(data.cvTerms)
         });
 
         // Load page data & fire event.

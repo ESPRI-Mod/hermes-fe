@@ -1,4 +1,4 @@
-(function (MOD, _) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -8,11 +8,11 @@
     MOD.events.on("setup:cvTermsLoaded", function (data) {
         // Cache CV terms.
         _.extend(MOD.state, {
-            cvTerms: data.cvTerms
+            cvTerms: APP.utils.parseCVTerms(data.cvTerms)
         });
 
-        // Initialise filter state.
-        _.each(MOD.state.filters, MOD.initFilterState);
+        // Initialise filter cv terms sets.
+        MOD.initFilterCvTermsets();
 
         // Fetch timeslice.
         MOD.fetchTimeSlice(MOD.defaults.timeslice);
@@ -46,6 +46,7 @@
     });
 
 }(
+    this.APP,
     this.APP.modules.monitoring,
     this._
 ));

@@ -20,6 +20,12 @@
         // Filters.
         filters: [
             {
+                cvType: 'simulation_timeslice',
+                key: 'timeslice',
+                displayName: 'Start Date',
+                isCustom: true
+            },
+            {
                 key: 'activity',
                 defaultValue: 'ipsl',
                 supportsByAll: false
@@ -53,11 +59,6 @@
             }
         ],
 
-        filterName: undefined,
-
-        // Timeslaice filter value.
-        filterTimeSlice: "ALL",
-
         // Current simulation being processed.
         simulation: null,
 
@@ -75,39 +76,32 @@
             current: undefined,
             count: undefined,
             pages: []
-        },
-
-        // Set of grid row views.
-        gridRowViews: []
+        }
     };
 
     // Set filter defaults.
     _.each(MOD.state.filters, function (filter) {
         var queryParamValue;
 
-        MOD.state[filter.key + "Filter"] = filter;
-        filter.cvTerms = {
-            all: [],
-            current: undefined
-        };
-        if (!_.has(filter, "supportsByAll")) {
-            filter.supportsByAll = true;
-        }
-        if (!_.has(filter, "defaultValue")) {
-            filter.defaultValue = undefined;
-        }
-        if (!_.has(filter, "cvType")) {
-            filter.cvType = filter.key;
-        }
-        if (!_.has(filter, "displayName")) {
-            filter.displayName = filter.key.substring(0, 1).toUpperCase() +
-                                 filter.key.substring(1);
-        }
+        _.defaults(filter, {
+            cvTerms: {
+                all: [],
+                current: undefined
+            },
+            cvType: filter.key,
+            defaultValue: null,
+            displayName: filter.key.substring(0, 1).toUpperCase() + filter.key.substring(1),
+            isCustom: false,
+            supportsByAll: true
+        });
         queryParamValue = APP.utils.getURLParam(filter.key);
         if (queryParamValue) {
             filter.defaultValue = queryParamValue;
         }
     });
+
+    // Set filter map.
+    MOD.state.filterSet = _.indexBy(MOD.state.filters, 'cvType');
 
 }(
     this.APP,

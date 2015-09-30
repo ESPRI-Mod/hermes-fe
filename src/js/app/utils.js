@@ -241,6 +241,16 @@
                    value === 'NONE' ||
                    _.isNull(value) ||
                    _.isUndefined(value);
+        },
+
+        // Parses set of cv terms after being retrieved from server.
+        parseCVTerms: function (terms) {
+            _.each(terms, function (term) {
+                term.sortKey = (term.typeof + ":" + (term.sortKey || term.name)).toLowerCase();
+                term.synonyms = term.synonyms ? term.synonyms.split(', ') : [];
+            });
+
+            return _.sortBy(terms, 'sortKey');
         }
     };
 

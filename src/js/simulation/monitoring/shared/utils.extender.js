@@ -210,7 +210,7 @@
         // Set model synonyms.
         model = MOD.cv.getTerm('model', simulation.model);
         if (model && model.synonyms) {
-            simulation.ext.modelSynonyms = model.synonyms.split(", ");
+            simulation.ext.modelSynonyms = model.synonyms;
         }
     };
 

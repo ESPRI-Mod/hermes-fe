@@ -10,7 +10,7 @@
         if (triggerBackgroundEvents === true) {
             APP.events.trigger("module:processingStarts", {
                 module: MOD,
-                info: 'Loading data'
+                info: 'Fetching data'
             });
         }
 
@@ -18,13 +18,12 @@
         ep  = ep.replace('{timeslice}', timeslice);
         $.getJSON(ep, function (data) {
             MOD.events.trigger("state:timesliceLoaded", data);
+            if (triggerBackgroundEvents === true) {
+                setTimeout(function () {
+                    APP.events.trigger("module:processingEnds");
+                }, 250);
+            }
         });
-
-        if (triggerBackgroundEvents === true) {
-            setTimeout(function () {
-                APP.events.trigger("module:processingEnds");
-            }, 250);
-        }
     };
 
     // Returns collection of filtered simulations.
@@ -43,7 +42,8 @@
             filters = _.without(filters, exclusionFilter);
         }
         _.each(filters, function (f) {
-            if (f.cvTerms.current &&
+            if (f.isCustom === false &&
+                f.cvTerms.current &&
                 f.cvTerms.current.name !== "*") {
                 result = _.filter(result, function (s) {
                     return s[f.key] === f.cvTerms.current.name;
@@ -66,23 +66,29 @@
         MOD.state.simulationListFiltered = getFilteredSimulationList();
     };
 
-    // Initializes filter state.
-    MOD.initFilterState = function (filter) {
-        // Set all terms.
-        filter.cvTerms.all = MOD.cv.getTermset(filter.cvType);
-        filter.cvTerms.all = _.sortBy(filter.cvTerms.all, function (cvTerm) {
-            return cvTerm.name.toLowerCase();
+    // Initializes filter cv termsets.
+    MOD.initFilterCvTermsets = function () {
+        _.each(MOD.state.filters, function (f) {
+            if (f.supportsByAll) {
+                f.cvTerms.all.push({
+                    typeof: f.cvType,
+                    name: '*',
+                    displayName: '*',
+                    synonyms: [],
+                    sortKey: "AAA"
+                });
+            }
         });
-        if (filter.supportsByAll) {
-            filter.cvTerms.all.unshift(MOD.cv.getGlobalTerm(filter.cvType));
-        }
-
-        // Set current term.
-        if (!filter.cvTerms.current) {
-            filter.cvTerms.current = _.find(filter.cvTerms.all, function (term) {
-                return term.name === (filter.defaultValue || "*");
+        _.each(MOD.state.cvTerms, function (term) {
+            if (_.has(MOD.state.filterSet, term.typeof)) {
+                MOD.state.filterSet[term.typeof].cvTerms.all.push(term);
+            }
+        });
+        _.each(MOD.state.filters, function (f) {
+            f.cvTerms.current = f.cvTerms.current || _.find(f.cvTerms.all, function (term) {
+                return term.name === (f.defaultValue || "*");
             });
-        }
+        });
     };
 
     // Sets the paging state.
@@ -106,10 +112,15 @@
         }
     };
 
-    // Sets a filter's active terms.
+    // Updates set of active cv terms used to filter simulation list.
     MOD.updateActiveFilterTerms = function () {
         _.each(MOD.state.filters, function (filter) {
             var simulationList, activeTermNames;
+
+            // Escape if processing a custom filter.
+            if (filter.isCustom) {
+                return;
+            }
 
             // Set target simulation list.
             if (filter.cvTerms.current.name === '*') {

@@ -23,50 +23,29 @@
 <script type="underscore/template" id="filter-panel-template">
 <div id="filter-panel" class='panel panel-info form-inline'>
     <div class='panel-body'>
+        <% _.each(MOD.state.filters, function(filter) { %>
         <div class="col-md-3">
-            <label style='width: 40%'>Start Date</label>
-            <select id="filter-select-timeslice" style='width: 55%'>
-                <option value='ALL'>*</option>
-                <option value='1W' selected='true'>< 1 week</option>
-                <option value='2W'>< 2 weeks</option>
-                <option value='1M'>< 1 month</option>
-                <option value='2M'>< 2 months</option>
-                <option value='3M'>< 3 months</option>
-                <option value='6M'>< 6 months</option>
-                <option value='12M'>< 1 year</option>
-            </select>
-        </div>
-        <%= APP.utils.renderTemplate("filter-cv-selectors-template", MOD.state) %>
-    </div>
-</div>
-</script>
-
-<!-- Template: cv terms filter selector -->
-<script type="underscore/template" id="filter-cv-selectors-template">
-<div id="filter-cv-selectors">
-    <% _.each(MOD.state.filters, function(filter) { %>
-    <div class="col-md-3">
-        <label style='width: 40%'>
-            <%- filter.displayName %>
-        </label>
-        <select id="filter-select-<%- filter.key %>"
-                style='width: 55%'>
+            <label style='width: 40%'><%- filter.displayName %></label>
             <%= APP.utils.renderTemplate("filter-cv-selector-template", filter) %>
-        </select>
+        </div>
+        <% }); %>
     </div>
-    <% }); %>
 </div>
 </script>
 
 <!-- Template: cv term filter selector -->
 <script type="underscore/template" id="filter-cv-selector-template">
-<% _.each(cvTerms.all, function(term) { %>
-<option <%= term.uid ? 'id=' + term.uid : '' %>
-        value="<%= term.name %>"
-        class="<%= term.isActive ? '' : 'hidden' %>"
-        <%= term === cvTerms.current ? 'selected' : '' %>>
-    <%- term.displayName %></option>
-<% }); %>
+<select id="filter-select-<%= key %>"
+        class="<%= isCustom ? 'custom-filter' : '' %>"
+        style='width: 55%'>
+    <% _.each(cvTerms.all, function(term) { %>
+        <% if (isCustom || term.isActive) { %>
+        <option <%= term.uid ? 'id=' + term.uid : '' %>
+                value="<%= term.name %>"
+                <%= term === cvTerms.current ? 'selected' : '' %>><%- term.displayName %></option>
+        <% } %>
+    <% }); %>
+</select>
 </script>
 
 <!-- Template: grid header -->
@@ -151,7 +130,7 @@
 <!-- Template: search result table body -->
 <script type="underscore/template" id="grid-body-template">
 <tbody>
-    <% _.each(paging.current.data, function(s, simulationIndex) { %>
+    <% _.each((paging.current ? paging.current.data : []), function(s, simulationIndex) { %>
     <%= APP.utils.renderTemplate("grid-row-template", {s: s}) %>
     <% }); %>
 </tbody>
@@ -340,8 +319,7 @@
 <script src="js/app/view.js"></script>
 <!-- JS: Module = monitoring (all) -->
 <script src="js/simulation/monitoring/shared/main.js"></script>
-<script src="js/simulation/monitoring/shared/events.setup.complete.js"></script>
-<script src="js/simulation/monitoring/shared/events.ws.initialized.js"></script>
+<script src="js/simulation/monitoring/shared/events.js"></script>
 <script src="js/simulation/monitoring/shared/utils.cv.js"></script>
 <script src="js/simulation/monitoring/shared/utils.im.js"></script>
 <script src="js/simulation/monitoring/shared/utils.extender.js"></script>
