@@ -110,20 +110,19 @@
             // Pagination events.
             MOD.events.on("ui:pagination", this._renderPage, this);
             MOD.events.on("ui:pagination", this._renderPageNavigator, this);
-            MOD.events.on("filter:activeTermsUpdated", this._updateFilterPanel, this);
-            // Filter events.
+            MOD.events.on("filter:cvTermsUpdated", this._renderCVFilterUpdate, this);
+
+            // Simulation list filtered event.
             MOD.events.on("state:simulationListFiltered", this._renderStatistics, this);
             MOD.events.on("state:simulationListFiltered", this._renderPage, this);
             MOD.events.on("state:simulationListFiltered", this._renderPageNavigator, this);
-            // Web-socket events.
-            MOD.events.on("state:simulationComplete", this._renderWebSocketNotification, this);
-            MOD.events.on("state:simulationError", this._renderWebSocketNotification, this);
-            MOD.events.on("state:simulationStart", this._renderWebSocketNotification, this);
-            MOD.events.on("state:jobComplete", this._renderWebSocketNotification, this);
-            MOD.events.on("state:jobError", this._renderWebSocketNotification, this);
-            MOD.events.on("state:jobStart", this._renderWebSocketNotification, this);
-            MOD.events.on("ws:socketClosed", this._renderWebSocketClosedDialog, this);
+
+            // Simulation update events.
+            MOD.events.on("state:simulationUpdate", this._renderWebSocketNotification, this);
+            MOD.events.on("state:jobUpdate", this._renderWebSocketNotification, this);
+
             // Other events.
+            MOD.events.on("ws:socketClosed", this._renderWebSocketClosedDialog, this);
             MOD.events.on("im:postInterMonitorForm", this._openInterMonitoringForm, this);
         },
 
@@ -221,14 +220,8 @@
             MOD.events.trigger('filter:updated', filter);
         },
 
-        _updateFilterPanel: function (filter) {
-            _.each(filter.cvTerms.all, function (term) {
-                if (term.isActive) {
-                    this.$('#' + term.uid).removeClass('hidden');
-                } else {
-                    this.$('#' + term.uid).addClass('hidden');
-                }
-            }, this);
+        _renderCVFilterUpdate: function (filter) {
+            this._replaceNode("#filter-select-" + filter.key, "filter-cv-selector-template", filter);
         },
 
         _replaceNode: function (nodeSelector, template, templateData) {

@@ -132,7 +132,7 @@
             });
 
             // Fire event.
-            MOD.events.trigger("filter:activeTermsUpdated", filter);
+            MOD.events.trigger("filter:cvTermsUpdated", filter);
         });
     };
 }(

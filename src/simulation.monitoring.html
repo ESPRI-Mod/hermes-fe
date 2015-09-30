@@ -49,10 +49,7 @@
         <label style='width: 40%'>
             <%- filter.displayName %>
         </label>
-        <select id="filter-select-<%- filter.key %>"
-                style='width: 55%'>
-            <%= APP.utils.renderTemplate("filter-cv-selector-template", filter) %>
-        </select>
+        <%= APP.utils.renderTemplate("filter-cv-selector-template", filter) %>
     </div>
     <% }); %>
 </div>
@@ -60,13 +57,16 @@
 
 <!-- Template: cv term filter selector -->
 <script type="underscore/template" id="filter-cv-selector-template">
-<% _.each(cvTerms.all, function(term) { %>
-<option <%= term.uid ? 'id=' + term.uid : '' %>
-        value="<%= term.name %>"
-        class="<%= term.isActive ? '' : 'hidden' %>"
-        <%= term === cvTerms.current ? 'selected' : '' %>>
-    <%- term.displayName %></option>
-<% }); %>
+<select id="filter-select-<%= key %>"
+        style='width: 55%'>
+    <% _.each(cvTerms.all, function(term) { %>
+    <option <%= term.uid ? 'id=' + term.uid : '' %>
+            value="<%= term.name %>"
+            class="<%= term.isActive ? '' : 'hidden' %>"
+            <%= term === cvTerms.current ? 'selected' : '' %>>
+        <%- term.displayName %></option>
+    <% }); %>
+</select>
 </script>
 
 <!-- Template: grid header -->

@@ -6,75 +6,70 @@
     var processSimulationEvent, processJobEvent;
 
     // Job event handler.
-    processJobEvent = function (data) {
+    // @ei    Event information received from remote server.
+    processJobEvent = function (ei) {
         var simulation, jobHistory;
 
         // Escape if simulation is not in memory.
-        if (_.has(MOD.state.simulationSet, data.job.simulationUID) === false) {
-            MOD.log(data.eventType + " event: WARNING: simulation not found: id=" + data.job.simulationUID);
+        if (_.has(MOD.state.simulationSet, ei.job.simulationUID) === false) {
+            MOD.log(ei.eventType + " event: WARNING: simulation not found: id=" + ei.job.simulationUID);
             return;
         }
 
-        // Update existing job history.
-        simulation = MOD.state.simulationSet[data.job.simulationUID];
+        // Update simulation.
+        simulation = MOD.state.simulationSet[ei.job.simulationUID];
         jobHistory = _.filter(simulation.jobs.global.all, function (j) {
-            return j.jobUID !== data.job.jobUID;
+            return j.jobUID !== ei.job.jobUID;
         });
-        jobHistory.push(data.job);
+        jobHistory.push(ei.job);
 
         // Reparse simulation.
         MOD.parseSimulation(simulation, jobHistory);
 
-        // Fire events.
-        data.simulation = simulation;
-        MOD.events.trigger("state:" + data.eventType, data);
+        // Fire event.
+        ei.simulation = simulation;
+        MOD.events.trigger("state:jobUpdate", ei);
     };
 
     // Simulation event handler.
-    processSimulationEvent = function (data) {
+    // @ei    Event information received from remote server.
+    processSimulationEvent = function (ei) {
         // Update cv terms.
         _.extend(MOD.state, {
-            cvTerms: _.union(MOD.state.cvTerms, data.cvTerms)
+            cvTerms: _.union(MOD.state.cvTerms, ei.cvTerms)
         });
 
         // Update module state.
         MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
-            return s.hashid !== data.simulation.hashid && s.uid !== data.simulation.uid;
+            return s.hashid !== ei.simulation.hashid && s.uid !== ei.simulation.uid;
         });
-        MOD.state.simulationList.push(data.simulation);
+        MOD.state.simulationList.push(ei.simulation);
         MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");
 
         // Parse simulation.
-        MOD.parseSimulation(data.simulation, data.jobHistory);
+        MOD.parseSimulation(ei.simulation, ei.jobHistory);
 
         // Update filtered simulations.
         MOD.updateFilteredSimulationList();
 
-        // Update filters.
-        // TODO review
-        alert("TODO - update active filter on a new simulation");
-        // _.each(MOD.state.filters, function (filter) {
-        //     if (_.indexOf(filter.cvTerms.active, data.simulation[filter.key]) === -1) {
-        //         filter.cvTerms.active.push(data.simulation[filter.key]);
-        //         MOD.events.trigger("ui:filter:refresh", filter);
-        //     }
-        // });
+        // Update active filter terms.
+        MOD.updateActiveFilterTerms();
 
-        // Update paging.
+        // Update pagination.
         MOD.updatePagination(MOD.state.paging.current);
 
         // Fire events.
+        MOD.events.trigger("state:simulationUpdate", ei);
         MOD.events.trigger("state:simulationListFiltered");
-        MOD.events.trigger("state:" + data.eventType, data);
     };
 
     // Wire upto events streaming over the web-socket channel.
-    MOD.events.on("ws:simulationComplete", processSimulationEvent);
-    MOD.events.on("ws:simulationError", processSimulationEvent);
-    MOD.events.on("ws:simulationStart", processSimulationEvent);
     MOD.events.on("ws:jobComplete", processJobEvent);
     MOD.events.on("ws:jobError", processJobEvent);
     MOD.events.on("ws:jobStart", processJobEvent);
+    MOD.events.on("ws:simulationComplete", processSimulationEvent);
+    MOD.events.on("ws:simulationError", processSimulationEvent);
+    MOD.events.on("ws:simulationStart", processSimulationEvent);
 
 }(
     this.APP.modules.monitoring,
