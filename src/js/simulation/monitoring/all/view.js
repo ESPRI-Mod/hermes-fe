@@ -8,31 +8,31 @@
         // Backbone: view event handlers.
         events : {
             // Open simulation detail page.
-            'click > table tbody tr td:not(.monitoring):not(.inter-monitoring)' : function (e) {
+            'click table tbody tr td:not(.monitoring):not(.inter-monitoring)' : function (e) {
                 this._openSimulationDetailPage($(e.target).parent().attr("id") ||
                                                $(e.target).parent().parent().attr("id"));
             },
             // Open monitoring page.
-            'click > table tbody tr td.monitoring' : function (e) {
+            'click table tbody tr td.monitoring' : function (e) {
                 var s;
 
                 s = this._getSimulation($(e.target).parent().parent().attr("id"));
                 MOD.events.trigger("im:openMonitor", s);
             },
-            // Open inter-monitoring page.
-            'click > #inter-monitoring-context-menu a.open' : function () {
-                MOD.events.trigger("im:openInterMonitor");
-            },
-            // Clear inter-monitoring selections.
-            'click > #inter-monitoring-context-menu a.clear' : function () {
-                MOD.events.trigger("im:clearInterMonitor");
-            },
             // Toggle inter-monitoring selection.
-            'change > table tbody tr td.inter-monitoring > input' : function (e) {
+            'change table tbody tr td.inter-monitoring > input' : function (e) {
                 var s;
 
                 s = this._getSimulation($(e.target).parent().parent().attr("id"));
                 s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
+            },
+            // Open inter-monitoring page.
+            'click #inter-monitoring-context-menu a.open' : function () {
+                MOD.events.trigger("im:openInterMonitor");
+            },
+            // Clear inter-monitoring selections.
+            'click #inter-monitoring-context-menu a.clear' : function () {
+                MOD.events.trigger("im:clearInterMonitor");
             },
             // Pager: navigate to manually chosen page.
             'change .pagination-info' : function (e) {
@@ -40,14 +40,13 @@
 
                 pageNumber = parseInt($(e.target).val(), 10);
                 $(e.target).val("");
-                if (_.isNaN(pageNumber) ||
-                    pageNumber < 1 ||
-                    pageNumber > PAGING.pages.length ||
-                    PAGING.current === PAGING.pages[pageNumber - 1]) {
-                    return;
+                if (_.isNaN(pageNumber) === false &&
+                    pageNumber > 0 &&
+                    pageNumber <= PAGING.pages.length &&
+                    PAGING.current !== PAGING.pages[pageNumber - 1]) {
+                    PAGING.current = PAGING.pages[pageNumber - 1];
+                    MOD.events.trigger('ui:pagination');
                 }
-                PAGING.current = PAGING.pages[pageNumber - 1];
-                MOD.events.trigger('ui:pagination');
             },
             // Pager: navigate to first page.
             'click .pagination-first' : function () {
@@ -94,7 +93,16 @@
 
                 // Redirect.
                 APP.utils.openURL(url);
-            }
+            },
+            // Filter: cv change.
+            'change #filter-cv-selectors select': function (e) {
+                this._applyCVFilterChange($(e.target).attr("id").slice(14),
+                                          $(e.target).val());
+            },
+            // Filter: timeslice change.
+            'change #filter-select-timeslice': function (e) {
+                MOD.fetchTimeSlice($(e.target).val(), true);
+            },
         },
 
         // Backbone: view initializer.
@@ -102,6 +110,7 @@
             // Pagination events.
             MOD.events.on("ui:pagination", this._renderPage, this);
             MOD.events.on("ui:pagination", this._renderPageNavigator, this);
+            MOD.events.on("filter:activeTermsUpdated", this._updateFilterPanel, this);
             // Filter events.
             MOD.events.on("state:simulationListFiltered", this._renderStatistics, this);
             MOD.events.on("state:simulationListFiltered", this._renderPage, this);
@@ -145,10 +154,9 @@
         _renderPageNavigator: function () {
             var text;
 
+            this.$('.pagination').removeClass('hidden');
             if (PAGING.count < 2) {
-                this.$('.pagination').hide();
-            } else {
-                this.$('.pagination').show();
+                this.$('.pagination').addClass('hidden');
             }
             text = "Page ";
             text += PAGING.current ? PAGING.current.id : '0';
@@ -199,6 +207,28 @@
                 urls: urls
             });
             $(imForm).submit();
+        },
+
+        _applyCVFilterChange: function (filterKey, filterOption) {
+            var filter;
+
+            filter = _.find(MOD.state.filters, function (f) {
+                return f.key === filterKey;
+            });
+            filter.cvTerms.current = _.find(filter.cvTerms.all, function (t) {
+                return t.name === filterOption;
+            });
+            MOD.events.trigger('filter:updated', filter);
+        },
+
+        _updateFilterPanel: function (filter) {
+            _.each(filter.cvTerms.all, function (term) {
+                if (term.isActive) {
+                    this.$('#' + term.uid).removeClass('hidden');
+                } else {
+                    this.$('#' + term.uid).addClass('hidden');
+                }
+            }, this);
         },
 
         _replaceNode: function (nodeSelector, template, templateData) {

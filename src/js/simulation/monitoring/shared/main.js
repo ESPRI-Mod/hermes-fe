@@ -32,6 +32,56 @@
         // Case insensitive state CSS lookup.
         getStateCSS: function (state) {
             return APP.modules.monitoring.statesCSS[state.toLowerCase()];
+        },
+
+        // Default used across modules.
+        defaults: {
+            // Delay in seconds before a job is considered to be dead / delayed.
+            jobWarningDelay: 86400,
+
+            // Simulation filter timeslice.
+            timeslice: "ALL"
+        },
+
+        // URL's used across modules.
+        urls: {
+            // Fetch CV data endpoint.
+            FETCH_CV: 'simulation/monitoring/fetch_cv',
+
+            // Fetch monitoring time slice endpoint.
+            FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice?timeslice={timeslice}',
+
+            // Fetch monitoring one simulation endpoint.
+            FETCH_ONE: 'simulation/monitoring/fetch_one?hashid={hashid}&tryID={tryID}',
+
+            // Simulation detail page.
+            SIMULATION_DETAIL_PAGE: 'simulation.monitoring.one.html?hashid={hashid}&tryID={tryID}&uid={uid}',
+
+            // Simulation message page.
+            SIMULATION_MESSAGES_PAGE: 'messages.html?simulationUID={uid}',
+
+            // Web-socket endpoint.
+            WS_ALL: 'simulation/monitoring/ws/all',
+
+            // Web-socket endpoint.
+            WS_ONE: 'simulation/monitoring/ws/one?uid={uid}',
+
+            // Monitoring endpoints.
+            M: {
+                'ccrt': 'https://esgf.extra.cea.fr/thredds/fileServer/work',
+                'idris': 'http://prodn.idris.fr/thredds/fileServer/ipsl_public',
+                'ipsl': 'http://esgf-local.ipsl.fr/thredds/fileServer/ipsl_public',
+                'tgcc': 'https://esgf.extra.cea.fr/thredds/fileServer/work'
+            },
+
+            // Inter-monitoring endpoints.
+            IM: {
+                'httpPostTarget': 'http://webservices.ipsl.jussieu.fr/monitoring_fromprodiguer/index.php',
+                'ccrt': 'http://esgf.extra.cea.fr/thredds/dodsC/work',
+                'idris': 'http://prodn.idris.fr/thredds/dodsC/ipsl_public',
+                'ipsl': 'http://esgf-local.ipsl.fr/thredds/dodsC/ipsl_public',
+                'tgcc': 'http://esgf.extra.cea.fr/thredds/dodsC/work'
+            }
         }
     });
 }(

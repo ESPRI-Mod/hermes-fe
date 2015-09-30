@@ -4,7 +4,7 @@
     "use strict";
 
     // Fetches a timeslice of data from server & fire relevant event.
-    MOD.fetchTimeSlice = function (eventName, triggerBackgroundEvents) {
+    MOD.fetchTimeSlice = function (timeslice, triggerBackgroundEvents) {
         var ep;
 
         if (triggerBackgroundEvents === true) {
@@ -15,9 +15,9 @@
         }
 
         ep = APP.utils.getEndPoint(MOD.urls.FETCH_TIMESLICE);
-        ep  = ep.replace('{timeslice}', MOD.state.filterTimeSlice);
+        ep  = ep.replace('{timeslice}', timeslice);
         $.getJSON(ep, function (data) {
-            MOD.events.trigger(eventName, data);
+            MOD.events.trigger("state:timesliceLoaded", data);
         });
 
         if (triggerBackgroundEvents === true) {
@@ -29,7 +29,7 @@
 
     // Returns collection of filtered simulations.
     // @exclusionFilter     Filter to be excluded when determining result.
-    MOD.getFilteredSimulationList = function (exclusionFilter) {
+    var getFilteredSimulationList = function (exclusionFilter) {
         var result, filters;
 
         // Exclude simulations without a valid start date.
@@ -38,12 +38,15 @@
         });
 
         // Apply filters.
-        filters = _.without(MOD.state.filters, exclusionFilter);
-        _.each(filters, function (filter) {
-            if (filter.cvTerms.current &&
-                filter.cvTerms.current.name !== "*") {
+        filters = MOD.state.filters;
+        if (exclusionFilter) {
+            filters = _.without(filters, exclusionFilter);
+        }
+        _.each(filters, function (f) {
+            if (f.cvTerms.current &&
+                f.cvTerms.current.name !== "*") {
                 result = _.filter(result, function (s) {
-                    return s[filter.key] === filter.cvTerms.current.name;
+                    return s[f.key] === f.cvTerms.current.name;
                 });
             }
         });
@@ -58,9 +61,9 @@
         return result;
     };
 
-    // Sets collection of filtered simulations.
-    MOD.setFilteredSimulationList = function () {
-        MOD.state.simulationListFiltered = MOD.getFilteredSimulationList();
+    // Updates collection of filtered simulations.
+    MOD.updateFilteredSimulationList = function () {
+        MOD.state.simulationListFiltered = getFilteredSimulationList();
     };
 
     // Initializes filter state.
@@ -83,17 +86,16 @@
     };
 
     // Sets the paging state.
-    MOD.setPagingState = function (currentPage) {
+    MOD.updatePagination = function (currentPage) {
         var pages, page, paging = MOD.state.paging;
 
         // Reset pages.
         pages = APP.utils.getPages(MOD.state.simulationListFiltered);
         paging.count = pages.length;
-        paging.current = pages ? pages[0] : undefined;
+        paging.current = pages ? pages[0] : null;
         paging.pages = pages;
-        paging.previous = undefined;
 
-        // Ensure current page is respected.
+        // Ensure current page is respected when pages collection changes.
         if (currentPage) {
             page = _.find(pages, function (p) {
                 return _.indexOf(p.data, currentPage.data[0]) !== -1;
@@ -104,25 +106,34 @@
         }
     };
 
-    // Sets a filter's active values.
-    MOD.setActiveFilterValues = function (filter) {
-        var simulationList;
+    // Sets a filter's active terms.
+    MOD.updateActiveFilterTerms = function () {
+        _.each(MOD.state.filters, function (filter) {
+            var simulationList, activeTermNames;
 
-        // Set target simulation list.
-        if (filter.cvTerms.current.name === '*') {
-            simulationList = MOD.state.simulationListFiltered;
-        } else {
-            simulationList = MOD.getFilteredSimulationList(filter);
-        }
+            // Set target simulation list.
+            if (filter.cvTerms.current.name === '*') {
+                simulationList = MOD.state.simulationListFiltered;
+            } else {
+                simulationList = getFilteredSimulationList(filter);
+            }
 
-        // Set active terms.
-        filter.cvTerms.active = _.map(simulationList, function (s) {
-            return s[filter.key];
+            // Set active term names collection.
+            activeTermNames = _.pluck(simulationList, filter.key);
+            if (filter.defaultValue) {
+                activeTermNames.push(filter.defaultValue);
+            }
+            activeTermNames = _.uniq(activeTermNames);
+
+            // Set term is active flag.
+            _.each(filter.cvTerms.all, function (term) {
+                term.isActive = term.name === '*' ||
+                                _.indexOf(activeTermNames, term.name) >= 0;
+            });
+
+            // Fire event.
+            MOD.events.trigger("filter:activeTermsUpdated", filter);
         });
-        if (filter.defaultValue) {
-            filter.cvTerms.active.push(filter.defaultValue);
-        }
-        filter.cvTerms.active = _.uniq(filter.cvTerms.active);
     };
 }(
     this.APP,

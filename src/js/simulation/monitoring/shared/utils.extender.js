@@ -38,7 +38,7 @@
             postProcessingName: null,
             typeof: 'post-processing',
             warningDelay: parseInt(_.has(job, 'warningDelay') ? job.warningDelay :
-                                                                MOD.constants.jobWarningDelay, 10)
+                                                                MOD.defaults.jobWarningDelay, 10)
         });
 
         // Set accounting project.

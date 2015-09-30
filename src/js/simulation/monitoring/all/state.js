@@ -21,7 +21,8 @@
         filters: [
             {
                 key: 'activity',
-                defaultValue: 'ipsl'
+                defaultValue: 'ipsl',
+                supportsByAll: false
             },
             {
                 cvType: 'compute_node_machine',
@@ -57,19 +58,6 @@
         // Timeslaice filter value.
         filterTimeSlice: "ALL",
 
-        // Predicate determining whether a term is within a filters' activae set.
-        filterTermIsActive: function (filter, term) {
-            return term.name !== '*' && _.indexOf(filter.cvTerms.active, term.name) === -1;
-        },
-
-        // Returns set of active filters, i.e. those for which that the user has made a selection.
-        getActiveFilters: function () {
-            return _.filter(MOD.state.filters, function (filter) {
-                return !_.isUndefined(filter.cvTerms.current) &&
-                       filter.cvTerms.current.name !== "*";
-            });
-        },
-
         // Current simulation being processed.
         simulation: null,
 
@@ -86,7 +74,6 @@
         paging: {
             current: undefined,
             count: undefined,
-            previous: undefined,
             pages: []
         },
 
@@ -100,7 +87,6 @@
 
         MOD.state[filter.key + "Filter"] = filter;
         filter.cvTerms = {
-            active: [],
             all: [],
             current: undefined
         };
