@@ -12,7 +12,6 @@
 
         // Escape if simulation is not in memory.
         if (_.has(MOD.state.simulationSet, ei.job.simulationUID) === false) {
-            MOD.log(ei.eventType + " event: WARNING: simulation not found: id=" + ei.job.simulationUID);
             return;
         }
 

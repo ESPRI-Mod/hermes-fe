@@ -9,10 +9,10 @@
         dispatchEvent,
         ws,
         log,
+        onOpen,
         onClosed,
-        onError,
         onMessage,
-        onOpen;
+        onError;
 
     // Logging helper function.
     log = function (msg) {
@@ -46,9 +46,6 @@
             return;
         }
 
-        // Log.
-        // log("message received :: {0}".replace("{0}", e.data));
-
         // Get event info.
         ei = JSON.parse(e.data);
 
@@ -65,6 +62,31 @@
         log("ws error :: {0}".replace("{0}", e.data));
     };
 
+    // Expose web socket related functions.
+    MOD.ws = {
+        // Connect to web socket channel.
+        connect: function (simulationUID) {
+            var ep;
+
+            // Create socket.
+            ep = APP.utils.getEndPoint(MOD.urls.WS_ALL, APP.constants.protocols.WS);
+            if (simulationUID) {
+                ep += "?simulationUID=" + simulationUID;
+            }
+            log("binding to :: {0}.".replace('{0}', ep));
+            ws = new WebSocket(ep);
+
+            // Bind socket event listeners.
+            ws.onerror = onError;
+            ws.onopen = onOpen;
+            ws.onclose = onClosed;
+            ws.onmessage = onMessage;
+
+            // Fire event.
+            MOD.events.trigger("ws:initialized");
+        }
+    };
+
     // UI initialized event handler.
     MOD.events.on("ui:initialized", function () {
         // Stop buffering.
@@ -75,25 +97,6 @@
 
         // Reset buffer.
         buffer = [];
-    });
-
-    // Module initialisation event handler.
-    MOD.events.on("module:initialization", function () {
-        var ep;
-
-        // Create socket.
-        ep = APP.utils.getEndPoint(MOD.urls.WS_ALL, APP.constants.protocols.WS);
-        log("binding to :: {0}.".replace('{0}', ep));
-        ws = new WebSocket(ep);
-
-        // Bind socket event listeners.
-        ws.onerror = onError;
-        ws.onopen = onOpen;
-        ws.onclose = onClosed;
-        ws.onmessage = onMessage;
-
-        // Fire event.
-        MOD.events.trigger("ws:initialized");
     });
 
 }(

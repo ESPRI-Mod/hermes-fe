@@ -1,4 +1,4 @@
-(function (APP, MOD, _, $) {
+(function (APP, MOD) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -26,6 +26,9 @@
         // Simulation try identifier.
         simulationTryID: APP.utils.getURLParam('tryID'),
 
+        // Simulation try identifier.
+        simulationUID: APP.utils.getURLParam('uid'),
+
         // Simulation.
         simulation: undefined,
 
@@ -33,16 +36,7 @@
         jobHistory: []
     };
 
-    // Module initialisation event handler.
-    MOD.events.on("module:initialization", function () {
-        MOD.title = "Simulation Details";
-        MOD.events.trigger("ws:initialized");
-    });
-
-    // APP.events.trigger("module:initialized", MOD);
 }(
     this.APP,
-    this.APP.modules.monitoring,
-    this._,
-    this.$
+    this.APP.modules.monitoring
 ));
