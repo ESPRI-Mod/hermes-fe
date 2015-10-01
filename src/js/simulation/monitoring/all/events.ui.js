@@ -15,7 +15,7 @@
         MOD.updatePagination();
 
         // Fire event.
-        MOD.events.trigger("state:simulationListFiltered");
+        MOD.events.trigger("state:simulationListUpdate");
     });
 
 }(

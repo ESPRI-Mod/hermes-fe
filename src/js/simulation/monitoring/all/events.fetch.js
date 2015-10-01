@@ -39,7 +39,7 @@
 
         // Fire event.
         if (MOD.view) {
-            MOD.events.trigger("state:simulationListFiltered", this);
+            MOD.events.trigger("state:simulationListUpdate", this);
         } else {
             MOD.events.trigger("setup:complete", this);
         }

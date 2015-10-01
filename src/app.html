@@ -26,16 +26,16 @@
         <% _.each(MOD.state.filters, function(filter) { %>
         <div class="col-md-3">
             <label style='width: 40%'><%- filter.displayName %></label>
-            <%= APP.utils.renderTemplate("filter-cv-selector-template", filter) %>
+            <%= APP.utils.renderTemplate("filter-selector-template", filter) %>
         </div>
         <% }); %>
     </div>
 </div>
 </script>
 
-<!-- Template: cv term filter selector -->
-<script type="underscore/template" id="filter-cv-selector-template">
-<select id="filter-select-<%= key %>"
+<!-- Template: filter selector -->
+<script type="underscore/template" id="filter-selector-template">
+<select id="filter-selector-<%= key %>"
         class="<%= isCustom ? 'custom-filter' : '' %>"
         style='width: 55%'>
     <% _.each(cvTerms.all, function(term) { %>
@@ -51,7 +51,7 @@
 <!-- Template: grid header -->
 <script type="underscore/template" id="grid-header-template">
 <div class='alert bg-primary'>
-    <%= APP.utils.renderTemplate("grid-header-stats-template", MOD.state) %>
+    <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
     <span class='pagination pull-right <%= paging.count < 2 ? 'hidden' : '' %>' role='toolbar'>
         <span class='btn-group' role='group'>
             <button type='button' class='btn btn-default pagination-first'>
@@ -78,8 +78,8 @@
 </script>
 
 <!-- Template: search statistics -->
-<script type="underscore/template" id="grid-header-stats-template">
-<span id='grid-header-stats'>
+<script type="underscore/template" id="statistics-info-template">
+<span id='statistics-info'>
     <strong>Total simulations = <%- simulationList.length %>.
             Filtered simulations = <%- simulationListFiltered.length %>.</strong>
 </span>
@@ -232,8 +232,8 @@
 </script>
 
 <!-- Template: web-socket notifications -->
-<script type="underscore/template" id="ws-notification-info-template">
-<div id="ws-notification-info" class="alert monitoring-state-<%= simulation ? simulation.executionState : 'running' %>">
+<script type="underscore/template" id="notification-info-template">
+<div id="notification-info" class="alert monitoring-state-<%= simulation ? simulation.executionState : 'running' %>">
     <strong>
     <%= simulation ? eventTimestamp.slice(0, 19) + " :: " : '' %>
     <% if (simulation) {

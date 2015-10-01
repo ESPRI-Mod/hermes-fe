@@ -45,35 +45,35 @@
                     pageNumber <= PAGING.pages.length &&
                     PAGING.current !== PAGING.pages[pageNumber - 1]) {
                     PAGING.current = PAGING.pages[pageNumber - 1];
-                    MOD.events.trigger('ui:pagination');
+                    MOD.events.trigger('state:simulationPageUpdate');
                 }
             },
             // Pager: navigate to first page.
             'click .pagination-first' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.first(PAGING.pages)) {
                     PAGING.current = _.first(PAGING.pages);
-                    MOD.events.trigger('ui:pagination');
+                    MOD.events.trigger('state:simulationPageUpdate');
                 }
             },
             // Pager: navigate to previous page.
             'click .pagination-previous' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.first(PAGING.pages)) {
                     PAGING.current = PAGING.pages[PAGING.current.id - 2];
-                    MOD.events.trigger('ui:pagination');
+                    MOD.events.trigger('state:simulationPageUpdate');
                 }
             },
             // Pager: navigate to next page.
             'click .pagination-next' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.last(PAGING.pages)) {
                     PAGING.current = PAGING.pages[PAGING.current.id];
-                    MOD.events.trigger('ui:pagination');
+                    MOD.events.trigger('state:simulationPageUpdate');
                 }
             },
             // Pager: navigate to last page.
             'click .pagination-last' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.last(PAGING.pages)) {
                     PAGING.current = _.last(PAGING.pages);
-                    MOD.events.trigger('ui:pagination');
+                    MOD.events.trigger('state:simulationPageUpdate');
                 }
             },
             // Reopen page when web socket closed.
@@ -94,13 +94,13 @@
                 // Redirect.
                 APP.utils.openURL(url);
             },
-            // Filter: cv change.
+            // Filter: value change.
             'change select:not(.custom-filter)': function (e) {
-                this._applyCVFilterChange($(e.target).attr("id").slice(14),
-                                          $(e.target).val());
+                MOD.updateFilterValue($(e.target).attr("id").slice(16),
+                                      $(e.target).val());
             },
-            // Filter: timeslice change.
-            'change #filter-select-timeslice': function (e) {
+            // Filter: value change (timeslice).
+            'change #filter-selector-timeslice': function (e) {
                 MOD.fetchTimeSlice($(e.target).val(), true);
             }
         },
@@ -108,28 +108,31 @@
         // Backbone: view initializer.
         initialize : function () {
             // Pagination events.
-            MOD.events.on("ui:pagination", this._renderPage, this);
-            MOD.events.on("ui:pagination", this._renderPageNavigator, this);
-            MOD.events.on("filter:cvTermsUpdated", this._renderCVFilterUpdate, this);
+            MOD.events.on("state:simulationPageUpdate", this._updateGrid, this);
+            MOD.events.on("state:simulationPageUpdate", this._updateGridPager, this);
+            MOD.events.on("state:filterOptionsUpdate", this._updateFilterSelector, this);
 
             // Simulation list filtered event.
-            MOD.events.on("state:simulationListFiltered", this._renderStatistics, this);
-            MOD.events.on("state:simulationListFiltered", this._renderPage, this);
-            MOD.events.on("state:simulationListFiltered", this._renderPageNavigator, this);
+            MOD.events.on("state:simulationListUpdate", this._updateStatisticsInfo, this);
+            MOD.events.on("state:simulationListUpdate", this._updateGrid, this);
+            MOD.events.on("state:simulationListUpdate", this._updateGridPager, this);
 
             // Simulation update events.
-            MOD.events.on("state:simulationUpdate", this._renderWebSocketNotification, this);
-            MOD.events.on("state:jobUpdate", this._renderWebSocketNotification, this);
+            MOD.events.on("state:simulationUpdate", this._updateNotificationInfo, this);
+
+            // Job update events.
+            MOD.events.on("state:jobUpdate", this._updateNotificationInfo, this);
+            MOD.events.on("state:jobUpdate", this._updateGridRow, this);
 
             // Other events.
-            MOD.events.on("ws:socketClosed", this._renderWebSocketClosedDialog, this);
-            MOD.events.on("im:postInterMonitorForm", this._openInterMonitoringForm, this);
+            MOD.events.on("ws:socketClosed", this._displayWebSocketClosedDialog, this);
+            MOD.events.on("im:postInterMonitorForm", this._openInterMonitoringPage, this);
         },
 
         // Backbone: view renderer.
         render : function () {
             _.each([
-                "ws-notification-info-template",
+                "notification-info-template",
                 "filter-panel-template",
                 "grid-header-template",
                 "grid-template",
@@ -142,15 +145,19 @@
             return this;
         },
 
-        _renderStatistics: function () {
-            this._replaceNode('#grid-header-stats', 'grid-header-stats-template', MOD.state);
+        _updateNotificationInfo: function (ei) {
+            this._replaceNode('#notification-info', 'notification-info-template', ei);
         },
 
-        _renderPage: function () {
-            this._replaceNode('tbody', 'grid-body-template', MOD.state);
+        _updateFilterSelector: function (filter) {
+            this._replaceNode("#filter-selector-" + filter.key, "filter-selector-template", filter);
         },
 
-        _renderPageNavigator: function () {
+        _updateStatisticsInfo: function () {
+            this._replaceNode('#statistics-info', 'statistics-info-template', MOD.state);
+        },
+
+        _updateGridPager: function () {
             var text;
 
             this.$('.pagination').removeClass('hidden');
@@ -164,27 +171,22 @@
             this.$('.pagination-info').attr('placeholder', text);
         },
 
-        _renderWebSocketNotification: function (ei) {
+        _updateGrid: function () {
+            this._replaceNode('tbody', 'grid-body-template', MOD.state);
+        },
+
+        _updateGridRow: function (ei) {
             var s;
 
-            // Update notification panel.
-            this._replaceNode('#ws-notification-info', 'ws-notification-info-template', ei);
-
-            // Update table row.
             s = this._getSimulation(ei.simulation.uid);
             if (s) {
-                this._replaceNode('#' + ei.simulation.uid, "monitoring-grid-row-template", {s: ei.simulation});
+                APP.utils.renderTemplate("grid-row-template", {s: ei.simulation});
+                this._replaceNode('#' + ei.simulation.uid, "grid-row-template", {s: ei.simulation});
             }
         },
 
-        _renderWebSocketClosedDialog: function () {
+        _displayWebSocketClosedDialog: function () {
             this.$('#ws-close-dialog').modal('show');
-        },
-
-        _getSimulation: function (uid) {
-            return _.find(MOD.state.paging.current.data, function (s) {
-                return s.uid === uid;
-            });
         },
 
         _openSimulationDetailPage: function (uid) {
@@ -198,7 +200,7 @@
             APP.utils.openURL(url, true);
         },
 
-        _openInterMonitoringForm: function (urls) {
+        _openInterMonitoringPage: function (urls) {
             var imForm;
 
             imForm = APP.utils.renderTemplate("im-form-template", {
@@ -208,20 +210,10 @@
             $(imForm).submit();
         },
 
-        _applyCVFilterChange: function (filterKey, filterOption) {
-            var filter;
-
-            filter = _.find(MOD.state.filters, function (f) {
-                return f.key === filterKey;
+        _getSimulation: function (uid) {
+            return _.find(MOD.state.paging.current.data, function (s) {
+                return s.uid === uid;
             });
-            filter.cvTerms.current = _.find(filter.cvTerms.all, function (t) {
-                return t.name === filterOption;
-            });
-            MOD.events.trigger('filter:updated', filter);
-        },
-
-        _renderCVFilterUpdate: function (filter) {
-            this._replaceNode("#filter-select-" + filter.key, "filter-cv-selector-template", filter);
         },
 
         _replaceNode: function (nodeSelector, template, templateData) {

@@ -60,7 +60,7 @@
 
         // Fire events.
         MOD.events.trigger("state:simulationUpdate", ei);
-        MOD.events.trigger("state:simulationListFiltered");
+        MOD.events.trigger("state:simulationListUpdate");
     };
 
     // Wire upto events streaming over the web-socket channel.

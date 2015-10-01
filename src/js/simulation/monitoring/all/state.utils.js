@@ -91,6 +91,19 @@
         });
     };
 
+    // Updates current filter value.
+    MOD.updateFilterValue = function (filterKey, filterOption) {
+        var filter;
+
+        filter = _.find(MOD.state.filters, function (f) {
+            return f.key === filterKey;
+        });
+        filter.cvTerms.current = _.find(filter.cvTerms.all, function (t) {
+            return t.name === filterOption;
+        });
+        MOD.events.trigger('filter:updated', filter);
+    };
+
     // Sets the paging state.
     MOD.updatePagination = function (currentPage) {
         var pages, page, paging = MOD.state.paging;
@@ -143,7 +156,7 @@
             });
 
             // Fire event.
-            MOD.events.trigger("filter:cvTermsUpdated", filter);
+            MOD.events.trigger("state:filterOptionsUpdate", filter);
         });
     };
 }(
