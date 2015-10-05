@@ -35,8 +35,8 @@
         // Simulation job history.
         jobHistory: [],
 
-        // Simulation message history.
-        messageHistory: [],
+        // Simulation message count.
+        messageCount: 0,
 
         // Returns job history collection by job type.
         getJobs: function (jobType) {

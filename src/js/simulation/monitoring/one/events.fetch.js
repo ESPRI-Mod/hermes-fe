@@ -30,7 +30,7 @@
         // Update module state.
         MOD.state.simulation = ei.simulation;
         MOD.state.jobHistory = ei.simulation.jobs.global.all;
-        MOD.state.messageHistory = ei.messageHistory;
+        MOD.state.messageCount = ei.messageCount;
         MOD.state.configCard = ei.configCard;
 
         // Fire event.
