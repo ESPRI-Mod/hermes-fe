@@ -35,6 +35,9 @@
         // Simulation job history.
         jobHistory: [],
 
+        // Simulation message history.
+        messageHistory: [],
+
         // Returns job history collection by job type.
         getJobs: function (jobType) {
             switch (jobType) {

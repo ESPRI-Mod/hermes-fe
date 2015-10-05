@@ -146,6 +146,40 @@
         },
 
         _updateNotificationInfo: function (ei) {
+            // Set event type description.
+            if (ei.simulation) {
+                ei.simulationDetailURL = this._getSimulationDetailURL(ei.simulation.uid);
+                switch (ei.eventType) {
+                case 'simulationComplete':
+                    ei.eventTypeDescription = "SIMULATION COMPLETED";
+                    break;
+                case 'simulationError':
+                    ei.eventTypeDescription = "SIMULATION ERROR";
+                    break;
+                case 'simulationStart':
+                    if (ei.simulation.ext.isRestart) {
+                        ei.eventTypeDescription = "SIMULATION STARTED";
+                    } else {
+                        ei.eventTypeDescription = "SIMULATION RESTARTED";
+                    }
+                    break;
+                case 'jobComplete':
+                    ei.eventTypeDescription = "JOB COMPLETED";
+                    break;
+                case 'jobError':
+                    ei.eventTypeDescription = "JOB ERROR";
+                    break;
+                case 'jobStart':
+                    ei.eventTypeDescription = "JOB STARTED";
+                    break;
+                default:
+                    break;
+                }
+            } else {
+                ei.eventTypeDescription = "Awaiting simulation events ...";
+            }
+
+            // Update UI.
             this._replaceNode('#notification-info', 'notification-info-template', ei);
         },
 
@@ -190,14 +224,7 @@
         },
 
         _openSimulationDetailPage: function (uid) {
-            var s, url;
-
-            s = this._getSimulation(uid);
-            url = APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE);
-            url = url.replace("{hashid}", s.hashid);
-            url = url.replace("{tryID}", s.tryID);
-            url = url.replace("{uid}", s.uid);
-            APP.utils.openURL(url, true);
+            APP.utils.openURL(this._getSimulationDetailURL(uid), true);
         },
 
         _openInterMonitoringPage: function (urls) {
@@ -214,6 +241,18 @@
             return _.find(MOD.state.paging.current.data, function (s) {
                 return s.uid === uid;
             });
+        },
+
+        _getSimulationDetailURL: function (uid) {
+            var s, url;
+
+            s = this._getSimulation(uid);
+            url = APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE);
+            url = url.replace("{hashid}", s.hashid);
+            url = url.replace("{tryID}", s.tryID);
+            url = url.replace("{uid}", s.uid);
+
+            return url;
         },
 
         _replaceNode: function (nodeSelector, template, templateData) {

@@ -24,10 +24,10 @@
 <header id="simulation-detail-header" class="module-header bg-primary">
     <h2>Simulation: <%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %> [<%- simulation.tryID %>]
         <span class='pull-right'>
-            <span class='simulation-messages glyphicon glyphicon-envelope'
-                  title='View Simulation Messages'></span>
-            <span class='inter-monitoring glyphicon glyphicon-random'
-                  title='Open Monitoring'></span>
+            <span class="simulation-messages glyphicon glyphicon-envelope <%= messageHistory.length ? '' : 'hidden' %>"
+                  title="View Simulation Messages"></span>
+            <span class="inter-monitoring glyphicon glyphicon-random"
+                  title="Open Monitoring"></span>
         </span>
     </h2>
 </header>

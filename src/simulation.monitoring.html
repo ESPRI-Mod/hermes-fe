@@ -235,41 +235,14 @@
 <script type="underscore/template" id="notification-info-template">
 <div id="notification-info" class="alert monitoring-state-<%= simulation ? simulation.executionState : 'running' %>">
     <strong>
-    <%= simulation ? eventTimestamp.slice(0, 19) + " :: " : '' %>
-    <% if (simulation) {
-        switch (eventType) {
-        case 'simulationComplete':
-            print("SIMULATION COMPLETED");
-            break;
-        case 'simulationError':
-            print("SIMULATION ERROR");
-            break;
-        case 'simulationStart':
-            if (simulation.ext.isRestart) {
-                print("SIMULATION STARTED");
-            } else {
-                print("SIMULATION RESTARTED");
-            }
-            break;
-        case 'jobComplete':
-            print("JOB COMPLETED");
-            break;
-        case 'jobError':
-            print("JOB ERROR");
-            break;
-        case 'jobStart':
-            print("JOB STARTED");
-            break;
-        default:
-            break;
-        }
-        print(" :: ");
-        print(simulation.name);
-        print(" is ");
-        print(simulation.ext.executionState);
-    } else {
-        print("Awaiting simulation events ...");
-    } %>
+    <% if (simulation) { %>
+        <%= eventTimestamp.slice(0, 19) %>&nbsp;::
+        <%= eventTypeDescription %>&nbsp;::
+        <a href="<%= simulationDetailURL %>" target="_blank"><%= simulation.name %></a>&nbsp;is
+        <%= simulation.ext.executionState %>
+    <% } else { %>
+        Awaiting simulation events ...
+    <% } %>
     </strong>
 </div>
 </script>
