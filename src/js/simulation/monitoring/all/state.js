@@ -21,6 +21,7 @@
         filters: [
             {
                 cvType: 'simulation_timeslice',
+                defaultValue: '1W',
                 key: 'timeslice',
                 displayName: 'Start Date',
                 isCustom: true
