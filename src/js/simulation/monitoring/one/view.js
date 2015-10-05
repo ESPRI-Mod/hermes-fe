@@ -37,43 +37,67 @@
                     APP.utils.openURL(url, true);
                 }
             },
+
+            // Reopen page when web socket closed.
+            'click #ws-close-dialog-refresh-page-button' : function () {
+                APP.utils.openURL();
+            }
+        },
+
+        // Backbone: view initializer.
+        initialize : function () {
+            // Simulation update events.
+            MOD.events.on("state:simulationUpdate", this._updateSimulationOverview, this);
+            MOD.events.on("state:simulationUpdate", this._updateJobHistories, this);
+
+            // Job update events.
+            MOD.events.on("state:jobHistoryUpdate", this._updateJobHistory, this);
+
+            // Web socket closed event.
+            MOD.events.on("ws:socketClosed", this._displayWebSocketClosedDialog, this);
         },
 
         // Backbone: view renderer.
         render : function () {
-            // Render header.
-            APP.utils.renderTemplate("template-simulation-detail-header", MOD.state, this);
-
-            // Render overview.
-            APP.utils.renderTemplate("template-simulation-detail-overview", MOD.state, this);
-
-            // Render jobs.
-            this._renderJobs('compute', MOD.state.simulation.jobs.compute);
-            this._renderJobs('post-processing', MOD.state.simulation.jobs.postProcessing);
-            this._renderJobs('post-processing-from-checker', MOD.state.simulation.jobs.postProcessingFromChecker);
-
-            // Render config card.
-            if (MOD.state.configCard) {
-                APP.utils.renderTemplate("template-simulation-detail-config-card", MOD.state, this);
-            }
-
-            // Render footer.
-            APP.utils.renderTemplate("template-simulation-detail-footer", MOD.state, this);
+            _.each([
+                "template-simulation-detail-header",
+                "template-simulation-detail-overview",
+                "template-simulation-detail-job-histories",
+                "template-simulation-detail-config-card",
+                "template-simulation-detail-footer",
+                "ws-close-dialog-template"
+                ], function (template) {
+                APP.utils.renderTemplate(template, MOD.state, this);
+            }, this);
 
             return this;
         },
 
-        // Renders a job collection.
-        _renderJobs : function (jobType, jobs) {
-            if (jobs.all.length) {
-                APP.utils.renderTemplate("template-simulation-detail-job-history", {
-                    APP: APP,
-                    jobHistory: jobs,
-                    jobType: jobType,
-                    jobTypeCaption: MOD.jobTypeCaptions[jobType],
-                    MOD: MOD
-                }, this);
-            }
+        _updateSimulationOverview: function () {
+            this._replaceNode("#" + MOD.state.simulation.uid, "template-simulation-detail-overview", MOD.state);
+        },
+
+        _updateJobHistories: function () {
+            _.each(MOD.jobTypes, this._updateJobHistory, this);
+        },
+
+        // Updates a job collection.
+        _updateJobHistory : function (jobType) {
+            this._replaceNode("#simulation-detail-job-history-" + jobType, "template-simulation-detail-job-history", {
+                APP: APP,
+                jobHistory: MOD.state.getJobs(jobType),
+                jobType: jobType,
+                jobTypeCaption: MOD.jobTypeCaptions[jobType],
+                MOD: MOD
+            });
+        },
+
+        _displayWebSocketClosedDialog: function () {
+            this.$('#ws-close-dialog').modal('show');
+        },
+
+        _replaceNode: function (nodeSelector, template, templateData) {
+            this.$(nodeSelector).replaceWith(APP.utils.renderTemplate(template, templateData));
         }
     });
 

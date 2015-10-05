@@ -8,13 +8,36 @@
     // Job event handler.
     // @ei    Event information received from remote server.
     processJobEvent = function (ei) {
-        console.log("WS job event :: " + ei.job.uid);
+        // Update module state.
+        MOD.state.jobHistory = _.filter(MOD.state.simulation.jobs.global.all, function (j) {
+            return j.jobUID !== ei.job.jobUID;
+        });
+        MOD.state.jobHistory.push(ei.job);
+
+        // Reparse simulation.
+        MOD.parseSimulation(MOD.state.simulation, MOD.state.jobHistory);
+
+        // Fire event.
+        MOD.events.trigger("state:jobHistoryUpdate", ei.job.typeof);
     };
 
     // Simulation event handler.
     // @ei    Event information received from remote server.
     processSimulationEvent = function (ei) {
-        console.log("WS simulation event :: " + ei.simulation.name);
+        // Update cv terms.
+        _.extend(MOD.state, {
+            cvTerms: _.union(MOD.state.cvTerms, ei.cvTerms)
+        });
+
+        // Parse event data.
+        MOD.parseSimulation(ei.simulation, ei.jobHistory);
+
+        // Update module state.
+        MOD.state.simulation = ei.simulation;
+        MOD.state.jobHistory = ei.simulation.jobs.global.all;
+
+        // Fire events.
+        MOD.events.trigger("state:simulationUpdate", ei);
     };
 
     // Wire upto events streaming over the web-socket channel.

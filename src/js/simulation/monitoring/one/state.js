@@ -33,7 +33,21 @@
         simulation: undefined,
 
         // Simulation job history.
-        jobHistory: []
+        jobHistory: [],
+
+        // Returns job history collection by job type.
+        getJobs: function (jobType) {
+            switch (jobType) {
+            case "compute":
+                return MOD.state.simulation.jobs.compute;
+            case "post-processing":
+                return MOD.state.simulation.jobs.postProcessing;
+            case "post-processing-from-checker":
+                return MOD.state.simulation.jobs.postProcessingFromChecker;
+            default:
+                return [];
+            }
+        }
     };
 
 }(

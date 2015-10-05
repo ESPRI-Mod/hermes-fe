@@ -204,6 +204,8 @@
                 } else {
                     window.location = url;
                 }
+            } else {
+                window.location = window.location;
             }
         },
 

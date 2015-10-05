@@ -4,13 +4,13 @@
     "use strict";
 
     // Controlled vocabularies loaded event handler.
-    // @data    Data loaded from remote server.
-    MOD.events.on("setup:cvTermsLoaded", function (data) {
+    // @ei     Data loaded from remote server.
+    MOD.events.on("setup:cvTermsLoaded", function (ei) {
         var ep;
 
         // Cache CV terms.
         _.extend(MOD.state, {
-            cvTerms: APP.utils.parseCVTerms(data.cvTerms)
+            cvTerms: APP.utils.parseCVTerms(ei.cvTerms)
         });
 
         // Load page data & fire event.
@@ -23,14 +23,14 @@
     });
 
     // Event handler: page data downloaded.
-    MOD.events.on("setup:pageDataDownloaded", function (data) {
+    MOD.events.on("setup:pageDataDownloaded", function (ei) {
         // Parse event data.
-        MOD.parseSimulation(data.simulation, data.jobHistory);
+        MOD.parseSimulation(ei.simulation, ei.jobHistory);
 
         // Update module state.
-        MOD.state.simulation = data.simulation;
-        MOD.state.jobHistory = data.simulation.jobs.global.all;
-        MOD.state.configCard = data.configCard;
+        MOD.state.simulation = ei.simulation;
+        MOD.state.jobHistory = ei.simulation.jobs.global.all;
+        MOD.state.configCard = ei.configCard;
 
         // Fire event.
         MOD.events.trigger("setup:complete", this);

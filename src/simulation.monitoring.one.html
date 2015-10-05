@@ -21,7 +21,7 @@
 
 <!-- Template: module header -->
 <script type="underscore/template" id="template-simulation-detail-header">
-<header class="module-header bg-primary">
+<header id="simulation-detail-header" class="module-header bg-primary">
     <h2>Simulation: <%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %> [<%- simulation.tryID %>]
         <span class='pull-right'>
             <span class='simulation-messages glyphicon glyphicon-envelope'
@@ -35,7 +35,7 @@
 
 <!-- Template: module footer -->
 <script type="underscore/template" id="template-simulation-detail-footer">
-<footer class="module-footer">
+<footer id="simulation-detail-footer" class="module-footer">
     <span>
         <strong><%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %> [<%- simulation.tryID %>]</strong>
      </span>
@@ -53,17 +53,19 @@
 
 <!-- Template: simulation config card -->
 <script type="underscore/template" id="template-simulation-detail-config-card">
-<section>
+<% if (MOD.state.configCard) { %>
+<section id="simulation-detail-config-card">
     <header class='bg-info'>
         <h3>Configuration Card</h3>
     </header>
     <textarea class='form-control' rows='45' cols='40'><%- configCard %></textarea>
 </section>
+<% } %>
 </script>
 
 <!-- Template: simulation overview -->
 <script type="underscore/template" id="template-simulation-detail-overview">
-<section>
+<section id="simulation-detail-overview">
     <header class='bg-info'>
         <h3>Details</h3>
     </header>
@@ -229,9 +231,23 @@
 </section>
 </script>
 
+<!-- Template: simulation job histories -->
+<script type="underscore/template" id="template-simulation-detail-job-histories">
+<% _.each(MOD.jobTypes, function (jobType) {  %>
+    <%= APP.utils.renderTemplate("template-simulation-detail-job-history", {
+        APP: APP,
+        jobHistory: MOD.state.getJobs(jobType),
+        jobType: jobType,
+        jobTypeCaption: MOD.jobTypeCaptions[jobType],
+        MOD: MOD
+    }) %>
+<% });  %>
+</script>
+
 <!-- Template: simulation job history -->
 <script type="underscore/template" id="template-simulation-detail-job-history">
-<section>
+<% if (jobHistory.all.length) { %>
+<section id="simulation-detail-job-history-<%= jobType %>">
     <header class='bg-info'>
         <h3><%- jobTypeCaption %> Jobs
         <span class='pull-right'>
@@ -254,6 +270,12 @@
                 </tr>
             </tr>
         </thead>
+        <%= APP.utils.renderTemplate("template-simulation-detail-job-collection", {
+                APP: APP,
+                MOD: MOD,
+                jobHistory: jobHistory,
+                jobType: jobType
+        }) %>
         <tfoot>
             <tr>
                 <td colspan="6">
@@ -273,15 +295,23 @@
                 </td>
             </tr>
         </tfoot>
-        <tbody>
-            <% _.each(jobHistory.all.reverse(), function(job, jobIndex) { %>
-            <%= APP.utils.renderTemplate("template-simulation-detail-job", {
-                MOD: MOD, job: job, jobIndex: jobHistory.all.length - jobIndex, jobType: jobType
-            }) %>
-            <% }); %>
-        </tbody>
     </table>
 </section>
+<% } %>
+</script>
+
+<!-- Template: search result table body -->
+<script type="underscore/template" id="template-simulation-detail-job-collection">
+<tbody>
+    <% _.each(jobHistory.all.reverse(), function(job, jobIndex) { %>
+    <%= APP.utils.renderTemplate("template-simulation-detail-job", {
+            MOD: MOD,
+            job: job,
+            jobIndex: jobHistory.all.length - jobIndex,
+            jobType: jobType
+        }) %>
+    <% }); %>
+</tbody>
 </script>
 
 <script type="underscore/template" id="template-simulation-detail-job">
@@ -293,6 +323,26 @@
     <td style='width: <%= jobType === 'compute' ? '24%' : '15%' %>;' class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>
     <td style='width: <%= jobType === 'compute' ? '24%' : '15%' %>;' class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>
 </tr>
+</script>
+
+
+<!-- Template: web-socket close dialog -->
+<script type="underscore/template" id="ws-close-dialog-template">
+<div id="ws-close-dialog" class="modal fade" role="dialog" aria-labelledby="ws-close-dialog-label" aria-hidden="true" tabindex=-1>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-header'>
+                <h4 class='modal-title' id='ws-close-dialog-label'><%= APP.title %> <%= MOD.title %> v<%= APP.version %></h4>
+            </div>
+            <div class='modal-body'>
+                The Prodiguer web socket server connection has been interrupted.
+            </div>
+            <div class='modal-footer'>
+                <button type='button' class='btn btn-primary' id='ws-close-dialog-refresh-page-button'>Refresh page</button>
+            </div>
+        </div>
+    </div>
+</div>
 </script>
 
 

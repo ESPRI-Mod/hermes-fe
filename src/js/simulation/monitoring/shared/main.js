@@ -21,6 +21,13 @@
             "post-processing-from-checker": "Post Processing (from checker)"
         },
 
+        // Set of job types.
+        jobTypes: [
+            "compute",
+            "post-processing",
+            "post-processing-from-checker"
+        ],
+
         // Map of execution states to css classes.
         statesCSS : {
             "queued" : 'monitoring-state-queued',
@@ -40,7 +47,7 @@
             jobWarningDelay: 86400,
 
             // Simulation filter timeslice.
-            timeslice: "*"
+            timeslice: "1W"
         },
 
         // URL's used across modules.
