@@ -20,6 +20,10 @@
         // CV terms.
         cvTerms: [],
 
+        eventTimestamp: null,
+
+        eventTypeDescription: null,
+
         // Simulation hash identifier.
         simulationHashID: APP.utils.getURLParam('hashid'),
 
@@ -41,7 +45,7 @@
         // Returns job history collection by job type.
         getJobs: function (jobType) {
             switch (jobType) {
-            case "compute":
+            case "computing":
                 return MOD.state.simulation.jobs.compute;
             case "post-processing":
                 return MOD.state.simulation.jobs.postProcessing;

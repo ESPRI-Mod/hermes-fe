@@ -16,14 +16,14 @@
 
         // Map of job types to captions.
         jobTypeCaptions: {
-            "compute": "Compute",
+            "computing": "Compute",
             "post-processing": "Post Processing",
             "post-processing-from-checker": "Post Processing (from checker)"
         },
 
         // Set of job types.
         jobTypes: [
-            "compute",
+            "computing",
             "post-processing",
             "post-processing-from-checker"
         ],
@@ -88,6 +88,29 @@
                 'idris': 'http://prodn.idris.fr/thredds/dodsC/ipsl_public',
                 'ipsl': 'http://esgf-local.ipsl.fr/thredds/dodsC/ipsl_public',
                 'tgcc': 'http://esgf.extra.cea.fr/thredds/dodsC/work'
+            }
+        },
+
+        // Returns description of a simulation related event.
+        getEventDescription: function (ei) {
+            switch (ei.eventType) {
+            case 'simulationComplete':
+                return "SIMULATION COMPLETED";
+            case 'simulationError':
+                return "SIMULATION ERROR";
+            case 'simulationStart':
+                if (ei.simulation.ext.isRestart) {
+                    return "SIMULATION STARTED";
+                }
+                return "SIMULATION RESTARTED";
+            case 'jobComplete':
+                return "JOB COMPLETED";
+            case 'jobError':
+                return "JOB ERROR";
+            case 'jobStart':
+                return "JOB STARTED";
+            default:
+                break;
             }
         }
     });

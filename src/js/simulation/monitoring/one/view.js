@@ -49,9 +49,14 @@
             // Simulation update events.
             MOD.events.on("state:simulationUpdate", this._updateSimulationOverview, this);
             MOD.events.on("state:simulationUpdate", this._updateJobHistories, this);
+            MOD.events.on("state:simulationUpdate", this._updateNotificationInfo, this);
 
             // Job update events.
-            MOD.events.on("state:jobHistoryUpdate", this._updateJobHistory, this);
+            MOD.events.on("state:jobHistoryUpdate", this._updateSimulationOverview, this);
+            MOD.events.on("state:jobHistoryUpdate", function (ei) {
+                this._updateJobHistory(ei.job.typeof);
+            }, this);
+            MOD.events.on("state:jobHistoryUpdate", this._updateNotificationInfo, this);
 
             // Web socket closed event.
             MOD.events.on("ws:socketClosed", this._displayWebSocketClosedDialog, this);
@@ -60,6 +65,7 @@
         // Backbone: view renderer.
         render : function () {
             _.each([
+                "template-notification-info",
                 "template-simulation-detail-header",
                 "template-simulation-detail-overview",
                 "template-simulation-detail-job-histories",
@@ -79,6 +85,16 @@
 
         _updateJobHistories: function () {
             _.each(MOD.jobTypes, this._updateJobHistory, this);
+        },
+
+        _updateNotificationInfo: function (ei) {
+            // Set event type description.
+            if (ei.simulation) {
+                ei.eventTypeDescription = MOD.getEventDescription(ei);
+            }
+
+            // Update UI.
+            this._replaceNode('#notification-info', 'template-notification-info', ei);
         },
 
         // Updates a job collection.

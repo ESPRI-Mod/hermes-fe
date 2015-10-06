@@ -18,7 +18,8 @@
         MOD.parseSimulation(MOD.state.simulation, MOD.state.jobHistory);
 
         // Fire event.
-        MOD.events.trigger("state:jobHistoryUpdate", ei.job.typeof);
+        ei.simulation = MOD.state.simulation;
+        MOD.events.trigger("state:jobHistoryUpdate", ei);
     };
 
     // Simulation event handler.

@@ -51,6 +51,22 @@
 </footer>
 </script>
 
+<!-- Template: web-socket notifications -->
+<script type="underscore/template" id="template-notification-info">
+<div id="notification-info" class="alert monitoring-state-<%= eventTypeDescription ? simulation.executionState : 'running' %>">
+    <strong>
+    <% if (eventTypeDescription) { %>
+        <%= eventTimestamp.slice(0, 19) %>&nbsp;::
+        <%= eventTypeDescription %>&nbsp;::
+        <%= simulation.name %>&nbsp;is
+        <%= simulation.ext.executionState %>
+    <% } else { %>
+        Awaiting simulation events ...
+    <% } %>
+    </strong>
+</div>
+</script>
+
 <!-- Template: simulation config card -->
 <script type="underscore/template" id="template-simulation-detail-config-card">
 <% if (MOD.state.configCard) { %>
@@ -262,7 +278,7 @@
             <tr class='bg-info'>
                 <tr class='bg-primary'>
                     <th title='ID' class='text-center'>#</th>
-                    <th title='Post Processing Information' class='<%= jobType === 'compute' ? 'hidden' : '' %>'>Info.</th>
+                    <th title='Post Processing Information' class='<%= jobType === 'computing' ? 'hidden' : '' %>'>Info.</th>
                     <th title='Start Date' class='text-center'>Start Date</th>
                     <th title='End Date' class='text-center'>End Date</th>
                     <th title='Duration' class='text-center'>Duration</th>
@@ -317,11 +333,11 @@
 <script type="underscore/template" id="template-simulation-detail-job">
 <tr id="<%= job.jobUID %>" class="<%= MOD.getStateCSS(job.executionState) %>">
     <td style='width: 40px;' class='id text-center' title='<%= jobIndex %>'><%= jobIndex %></td>
-    <td class='postProcessingInfo <%= jobType === 'compute' ? 'hidden' : '' %>' title='<%= job.ext.postProcessingInfo %>'><%= job.ext.postProcessingInfo %></td>
-    <td style='width: <%= jobType === 'compute' ? '24%' : '15%' %>;' class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>
-    <td style='width: <%= jobType === 'compute' ? '24%' : '15%' %>;' class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>
-    <td style='width: <%= jobType === 'compute' ? '24%' : '15%' %>;' class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>
-    <td style='width: <%= jobType === 'compute' ? '24%' : '15%' %>;' class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>
+    <td class='postProcessingInfo <%= jobType === 'computing' ? 'hidden' : '' %>' title='<%= job.ext.postProcessingInfo %>'><%= job.ext.postProcessingInfo %></td>
+    <td style='width: <%= jobType === 'computing' ? '24%' : '15%' %>;' class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>
+    <td style='width: <%= jobType === 'computing' ? '24%' : '15%' %>;' class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>
+    <td style='width: <%= jobType === 'computing' ? '24%' : '15%' %>;' class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>
+    <td style='width: <%= jobType === 'computing' ? '24%' : '15%' %>;' class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>
 </tr>
 </script>
 

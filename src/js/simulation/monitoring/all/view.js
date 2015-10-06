@@ -149,34 +149,7 @@
             // Set event type description.
             if (ei.simulation) {
                 ei.simulationDetailURL = this._getSimulationDetailURL(ei.simulation.uid);
-                switch (ei.eventType) {
-                case 'simulationComplete':
-                    ei.eventTypeDescription = "SIMULATION COMPLETED";
-                    break;
-                case 'simulationError':
-                    ei.eventTypeDescription = "SIMULATION ERROR";
-                    break;
-                case 'simulationStart':
-                    if (ei.simulation.ext.isRestart) {
-                        ei.eventTypeDescription = "SIMULATION STARTED";
-                    } else {
-                        ei.eventTypeDescription = "SIMULATION RESTARTED";
-                    }
-                    break;
-                case 'jobComplete':
-                    ei.eventTypeDescription = "JOB COMPLETED";
-                    break;
-                case 'jobError':
-                    ei.eventTypeDescription = "JOB ERROR";
-                    break;
-                case 'jobStart':
-                    ei.eventTypeDescription = "JOB STARTED";
-                    break;
-                default:
-                    break;
-                }
-            } else {
-                ei.eventTypeDescription = "Awaiting simulation events ...";
+                ei.eventTypeDescription = MOD.getEventDescription(ei);
             }
 
             // Update UI.
