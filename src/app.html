@@ -62,7 +62,7 @@
             </button>
         </span>
         <span class='btn-group'>
-            <input type='text' class='pagination-info form-control'
+            <input type='text' class='pagination-info form-control' style="width:170px;"
                    placeholder="Page <%= paging.current ? paging.current.id : '0' %> of <%= paging.count %>">
         </span>
         <span class='btn-group' role='group'>
@@ -102,8 +102,7 @@
             <th title='Experiment' class='text-center'><small>Experiment</small></th>
             <th title='Start' class='text-center'><small>Start</small></th>
             <th title='End' class='text-center'><small>End</small></th>
-            <th title='monitoring' class='text-center'></th>
-            <th class='interMonitoring text-center' title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
+            <th colspan="2" class='text-center' title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
               <span class='glyphicon glyphicon-random'></span>
             </th>
         </tr>
@@ -295,12 +294,13 @@
 <script src="js/simulation/monitoring/shared/events.js"></script>
 <script src="js/simulation/monitoring/shared/utils.cv.js"></script>
 <script src="js/simulation/monitoring/shared/utils.im.js"></script>
-<script src="js/simulation/monitoring/shared/utils.extender.js"></script>
-<script src="js/simulation/monitoring/shared/utils.parser.js"></script>
 <script src="js/simulation/monitoring/shared/utils.ws.js"></script>
 <script src="js/simulation/monitoring/all/init.js"></script>
 <script src="js/simulation/monitoring/all/state.js"></script>
 <script src="js/simulation/monitoring/all/state.utils.js"></script>
+<script src="js/simulation/monitoring/all/data.extender.job.js"></script>
+<script src="js/simulation/monitoring/all/data.extender.simulation.js"></script>
+<script src="js/simulation/monitoring/all/data.parser.js"></script>
 <script src="js/simulation/monitoring/all/events.fetch.js"></script>
 <script src="js/simulation/monitoring/all/events.ui.js"></script>
 <script src="js/simulation/monitoring/all/events.ws.js"></script>

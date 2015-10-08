@@ -3,7 +3,8 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    var processSimulationEvent, processJobEvent;
+    var processSimulationEvent,
+        processJobEvent;
 
     // Job event handler.
     // @ei    Event information received from remote server.

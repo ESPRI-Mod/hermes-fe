@@ -7,8 +7,7 @@
     var getExecutionState,
         mapJob,
         setExecutionState,
-        sortJobset,
-        sortJobsets;
+        sortComputeJobset;
 
     // Returns simulation's current execution status.
     getExecutionState = function (simulation) {
@@ -55,39 +54,33 @@
     };
 
     // Sorts a job set.
-    sortJobset = function (jobSet) {
-        if (jobSet.all.length > 1) {
-            jobSet.all = _.sortBy(jobSet.all, function (job) {
+    sortComputeJobset = function (simulation) {
+        if (simulation.jobs.compute.all.length > 1) {
+            simulation.jobs.compute.all = _.sortBy(simulation.jobs.compute.all, function (job) {
                 return job.executionStartDate;
             });
         }
     };
 
-    // Sets different job sets.
-    sortJobsets = function (simulation) {
-        _.each([
-            simulation.jobs.compute,
-            simulation.jobs.postProcessing,
-            simulation.jobs.postProcessingFromChecker
-        ], sortJobset);
-    };
+    // Maps a job to the relevant simulation job set.
+    mapJob = function (job) {
+        var jobs;
 
-    // Appends a job to the relevant simulation job set.
-    mapJob = function (simulation, job) {
-        simulation.jobs.global.all.push(job);
-        simulation.jobs.global[job.executionState].push(job);
+        if (_.has(MOD.state.simulationSet, job.simulationUID) === false) {
+            return;
+        }
+
+        jobs = MOD.state.simulationSet[job.simulationUID].jobs;
         switch (job.typeof) {
         case 'computing':
-            simulation.jobs.compute.all.push(job);
-            simulation.jobs.compute[job.executionState].push(job);
+            jobs.compute.all.push(job);
+            jobs.compute[job.executionState].push(job);
             break;
         case 'post-processing':
-            simulation.jobs.postProcessing.all.push(job);
-            simulation.jobs.postProcessing[job.executionState].push(job);
+            jobs.postProcessing[job.executionState].push(job);
             break;
         case 'post-processing-from-checker':
-            simulation.jobs.postProcessingFromChecker.all.push(job);
-            simulation.jobs.postProcessingFromChecker[job.executionState].push(job);
+            jobs.postProcessingFromChecker[job.executionState].push(job);
             break;
         default:
             break;
@@ -99,26 +92,30 @@
         MOD.parseSimulations([simulation], jobHistory, _.indexBy([simulation], "uid"));
     };
 
-    // Parses a collection of simulations in readiness for processing.
-    MOD.parseSimulations = function (simulationList, jobHistory, simulationSet) {
-        // Extend simulations.
-        _.each(simulationList, MOD.extendSimulation);
+    // Module data parser.
+    MOD.parser = {
+        // Parses loaded timeslice.
+        parseTimeslice: function () {
+            // Extend simulations.
+            _.each(MOD.state.simulationList, MOD.extendSimulation);
+            MOD.log("timeslice simulations extended");
 
-        // Extend jobs.
-        _.each(jobHistory, MOD.extendJob);
+            // Extend jobs.
+            _.each(MOD.state.jobList, MOD.extendJob);
+            MOD.log("timeslice jobs extended");
 
-        // Map jobs to simulations.
-        _.each(jobHistory, function (job) {
-            if (_.has(simulationSet, job.simulationUID)) {
-                mapJob(simulationSet[job.simulationUID], job);
-            }
-        });
+            // Map jobs to simulations.
+            _.each(MOD.state.jobList, mapJob);
+            MOD.log("timeslice jobs mapped to simulation");
 
-        // Sort jobs.
-        _.each(simulationList, sortJobsets);
+            // Sort compute jobs (required in order to determine simulation execution status).
+            _.each(MOD.state.simulationList, sortComputeJobset);
+            MOD.log("timeslice compute jobs sorted");
 
-        // Set execution states.
-        _.each(simulationList, setExecutionState);
+            // Set execution states.
+            _.each(MOD.state.simulationList, setExecutionState);
+            MOD.log("timeslice simulation execution state assigned");
+        }
     };
 
 }(

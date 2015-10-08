@@ -60,6 +60,9 @@
             }
         ],
 
+        // Map of simulation uid's to jobs.
+        jobSet: {},
+
         // Current simulation being processed.
         simulation: null,
 

@@ -24,9 +24,13 @@
         // Update module state.
         MOD.state.simulationList = data.simulationList;
         MOD.state.simulationSet = _.indexBy(data.simulationList, "uid");
+        MOD.state.jobList = data.jobHistory;
+        MOD.state.jobSet = _.indexBy(data.jobHistory, "simulationUID");
+        MOD.log("timeslice assigned");
 
-        // Parse simulations.
-        MOD.parseSimulations(MOD.state.simulationList, data.jobHistory, MOD.state.simulationSet);
+        // Parse timeslice.
+        MOD.parser.parseTimeslice();
+        MOD.log("timeslice parsed");
 
         // Update filtered simulations.
         MOD.updateFilteredSimulationList();

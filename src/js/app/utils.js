@@ -9,8 +9,8 @@
     APP.utils = {
         // Outputs message to brwoser logging console.
         // @msg          Logging message.
-        log: function(msg) {
-            console.log(constants.logging.PREFIX + msg);
+        log: function (msg) {
+            console.log(new Date() + " :: " + constants.logging.PREFIX + msg);
         },
 
         // Returns an endpoint address on the test server.

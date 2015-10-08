@@ -47,7 +47,8 @@
             jobWarningDelay: 86400,
 
             // Simulation filter timeslice.
-            timeslice: "1W"
+            // timeslice: "1W"
+            timeslice: "3M"
         },
 
         // URL's used across modules.

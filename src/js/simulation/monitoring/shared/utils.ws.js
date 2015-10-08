@@ -27,12 +27,12 @@
 
     // On ws connection opened event handler.
     onOpen = function () {
-        log("connection opened @ " + new Date());
+        log("connection opened");
     };
 
     // On ws connection closed event handler.
     onClosed = function () {
-        log("connection closed @ " + new Date());
+        log("connection closed");
         MOD.events.trigger("ws:socketClosed");
     };
 
@@ -42,7 +42,7 @@
 
         // Filter out keep-alive pongs.
         if (e.data === "pong") {
-            log("PONG PONG PONG @ " + new Date());
+            log("PONG PONG PONG");
             return;
         }
 
@@ -83,6 +83,7 @@
             ws.onmessage = onMessage;
 
             // Fire event.
+            log("initialized");
             MOD.events.trigger("ws:initialized");
         }
     };
