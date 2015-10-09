@@ -13,8 +13,8 @@ article > header > h2 span.simulation-messages {
 	cursor: pointer;
 }
 
-article > section {
-	margin-bottom: 15px;
+ul.nav {
+	margin-bottom: 5px;
 }
 
 article > section > header > h3 {
@@ -25,9 +25,14 @@ article > section > header > h3 {
 
 table.job-history-table {
 	margin-bottom: 0px;
+	margin-top: 5px;
 }
 
 .module-footer {
 	padding: 8px;
 	border: 1px solid #BCE8F1;
+}
+
+#caption {
+	margin-bottom: 5px;
 }

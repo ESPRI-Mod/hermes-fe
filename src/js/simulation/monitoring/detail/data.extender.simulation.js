@@ -3,55 +3,42 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Extends a simulation in readiness for processing.
-    MOD.extendSimulation = function (simulation) {
-        var model;
-
-        // Intialise job collections.
+    // Set simulation job collections.
+    MOD.extendSimulation01 = function (simulation) {
         simulation.jobs = {
+            all: [],
             compute: {
                 all: [],
                 complete: [],
                 error: [],
                 running: [],
             },
-            global: {
-                all: [],
-                complete: [],
-                error: [],
-                running: []
-            },
             postProcessing: {
                 all: [],
                 complete: [],
+                hasInfo: false,
                 error: [],
                 running: []
             },
             postProcessingFromChecker: {
                 all: [],
                 complete: [],
+                hasInfo: false,
                 error: [],
                 running: []
             }
         };
+    };
 
-        // Escape if already extended.
-        if (_.has(simulation, 'ext')) {
-            return;
-        }
-
-        // Set defaults:
+    // Sets simulation default values.
+    MOD.extendSimulation02 = function (simulation) {
         _.defaults(simulation, {
             // ... misc. fields
-            accountingProject: null,
             executionEndDate: null,
             executionState: null,
             isError: false,
-            isObsolete: false,
             outputStartDate: null,
             outputEndDate: null,
-            parentSimulationBranchDate: null,
-            parentSimulationName: null,
             // ... cv fields
             activity: null,
             activityRaw: null,
@@ -67,8 +54,8 @@
             spaceRaw: null,
             // ... extension fields
             ext: {
-                // ... user interface fields
-                accountingProject: "--",
+                accountingProject: APP.utils.isNone(simulation.accountingProject) ? "--" :
+                                                                                    simulation.accountingProject,
                 activity: undefined,
                 caption: undefined,
                 computeNode: undefined,
@@ -88,12 +75,27 @@
                 modelSynonyms: []
             }
         });
+    };
 
-        // Format date fields.
-        APP.utils.formatDateTimeField(simulation, "executionStartDate");
-        APP.utils.formatDateTimeField(simulation, "executionEndDate");
-        APP.utils.formatDateField(simulation, "outputStartDate");
-        APP.utils.formatDateField(simulation, "outputEndDate");
+    // Set simulation date fields.
+    MOD.extendSimulation03 = function (simulation) {
+        if (simulation.executionStartDate) {
+            simulation.ext.executionStartDate = simulation.executionStartDate.slice(0, 19);
+        }
+        if (simulation.executionEndDate) {
+            simulation.ext.executionEndDate = simulation.executionEndDate.slice(0, 19);
+        }
+        if (simulation.outputStartDate) {
+            simulation.ext.outputStartDate = simulation.outputStartDate.slice(0, 10);
+        }
+        if (simulation.outputEndDate) {
+            simulation.ext.outputEndDate = simulation.outputEndDate.slice(0, 10);
+        }
+    };
+
+    // Set simulation cv fields.
+    MOD.extendSimulation04 = function (simulation) {
+        var model;
 
         // Update case sensitive CV fields.
         MOD.cv.setFieldDisplayName(simulation, 'activity');
@@ -104,15 +106,20 @@
         MOD.cv.setFieldDisplayName(simulation, 'model');
         MOD.cv.setFieldDisplayName(simulation, 'simulation_space', 'space');
 
-        // Set accounting project.
-        if (APP.utils.isNone(simulation.accountingProject) === false) {
-            simulation.ext.accountingProject = simulation.accountingProject;
-        }
-
         // Set model synonyms.
         model = MOD.cv.getTerm('model', simulation.model);
         if (model && model.synonyms) {
             simulation.ext.modelSynonyms = model.synonyms;
+        }
+    };
+
+    // Extends a simulation in readiness for processing.
+    MOD.extendSimulation = function (simulation) {
+        MOD.extendSimulation01(simulation);
+        if (_.has(simulation, 'ext') === false) {
+            MOD.extendSimulation02(simulation);
+            MOD.extendSimulation03(simulation);
+            MOD.extendSimulation04(simulation);
         }
     };
 

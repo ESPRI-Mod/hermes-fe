@@ -9,7 +9,7 @@
     // Job event handler.
     // @ei    Event information received from remote server.
     processJobEvent = function (ei) {
-        var simulation, jobHistory;
+        var simulation, jobList;
 
         // Escape if simulation is not in memory.
         if (_.has(MOD.state.simulationSet, ei.job.simulationUID) === false) {
@@ -18,13 +18,13 @@
 
         // Update simulation.
         simulation = MOD.state.simulationSet[ei.job.simulationUID];
-        jobHistory = _.filter(simulation.jobs.global.all, function (j) {
+        jobList = _.filter(simulation.jobs.all, function (j) {
             return j.jobUID !== ei.job.jobUID;
         });
-        jobHistory.push(ei.job);
+        jobList.push(ei.job);
 
         // Reparse simulation.
-        MOD.parseSimulation(simulation, jobHistory);
+        MOD.parseSimulation(simulation, jobList);
 
         // Fire event.
         ei.simulation = simulation;
@@ -47,7 +47,7 @@
         MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");
 
         // Parse simulation.
-        MOD.parseSimulation(ei.simulation, ei.jobHistory);
+        MOD.parseSimulation(ei.simulation, ei.jobList);
 
         // Update filtered simulations.
         MOD.updateFilteredSimulationList();

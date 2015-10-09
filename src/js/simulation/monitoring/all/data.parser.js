@@ -88,8 +88,8 @@
     };
 
     // Parses a simulation in readiness for processing.
-    MOD.parseSimulation = function (simulation, jobHistory) {
-        MOD.parseSimulations([simulation], jobHistory, _.indexBy([simulation], "uid"));
+    MOD.parseSimulation = function (simulation, jobList) {
+        MOD.parseSimulations([simulation], jobList, _.indexBy([simulation], "uid"));
     };
 
     // Module data parser.
@@ -106,7 +106,7 @@
 
             // Map jobs to simulations.
             _.each(MOD.state.jobList, mapJob);
-            MOD.log("timeslice jobs mapped to simulation");
+            MOD.log("timeslice jobs mapped");
 
             // Sort compute jobs (required in order to determine simulation execution status).
             _.each(MOD.state.simulationList, sortComputeJobset);

@@ -7,6 +7,7 @@
     var getExecutionState,
         mapJob,
         setExecutionState,
+        setHasPostProcessingInfo,
         sortJobset,
         sortJobsets;
 
@@ -74,8 +75,7 @@
 
     // Appends a job to the relevant simulation job set.
     mapJob = function (simulation, job) {
-        simulation.jobs.global.all.push(job);
-        simulation.jobs.global[job.executionState].push(job);
+        simulation.jobs.all.push(job);
         switch (job.typeof) {
         case 'computing':
             simulation.jobs.compute.all.push(job);
@@ -94,31 +94,41 @@
         }
     };
 
-    // Parses a simulation in readiness for processing.
-    MOD.parseSimulation = function (simulation, jobHistory) {
-        MOD.parseSimulations([simulation], jobHistory, _.indexBy([simulation], "uid"));
+    // Sets a flag indicating whether there is post processing information to display.
+    setHasPostProcessingInfo = function (jobs) {
+        jobs.hasInfo = _.isObject(_.find(jobs.all, function (job) {
+            return job.ext.postProcessingInfo !== "--";
+        }));
     };
 
-    // Parses a collection of simulations in readiness for processing.
-    MOD.parseSimulations = function (simulationList, jobHistory, simulationSet) {
-        // Extend simulations.
-        // _.each(simulationList, MOD.extendSimulation);
+    // Parses a simulation in readiness for processing.
+    MOD.parseSimulation = function (simulation, jobList) {
+        // Extend simulation.
+        MOD.extendSimulation(simulation);
+        MOD.log("simulation extended");
 
         // Extend jobs.
-        // _.each(jobHistory, MOD.extendJob);
+        _.each(jobList, MOD.extendJob);
+        MOD.log("simulation jobs extended");
 
         // Map jobs to simulations.
-        _.each(jobHistory, function (job) {
-            if (_.has(simulationSet, job.simulationUID)) {
-                mapJob(simulationSet[job.simulationUID], job);
-            }
+        _.each(jobList, function (job) {
+            mapJob(simulation, job);
         });
+        MOD.log("simulation jobs mapped");
+
+        // Set flags indicating whether there is post-processing info to display.
+        setHasPostProcessingInfo(simulation.jobs.postProcessing);
+        setHasPostProcessingInfo(simulation.jobs.postProcessingFromChecker);
+        MOD.log("simulation post-processing flag assigned");
 
         // Sort jobs.
-        _.each(simulationList, sortJobsets);
+        sortJobsets(simulation);
+        MOD.log("simulation jobs sorted");
 
         // Set execution states.
-        _.each(simulationList, setExecutionState);
+        setExecutionState(simulation);
+        MOD.log("simulation execution state assigned");
     };
 
 }(

@@ -9,17 +9,17 @@
     // @ei    Event information received from remote server.
     processJobEvent = function (ei) {
         // Update module state.
-        MOD.state.jobHistory = _.filter(MOD.state.simulation.jobs.global.all, function (j) {
+        MOD.state.jobList = _.filter(MOD.state.simulation.jobs.all, function (j) {
             return j.jobUID !== ei.job.jobUID;
         });
-        MOD.state.jobHistory.push(ei.job);
+        MOD.state.jobList.push(ei.job);
 
         // Reparse simulation.
-        MOD.parseSimulation(MOD.state.simulation, MOD.state.jobHistory);
+        MOD.parseSimulation(MOD.state.simulation, MOD.state.jobList);
 
         // Fire event.
         ei.simulation = MOD.state.simulation;
-        MOD.events.trigger("state:jobHistoryUpdate", ei);
+        MOD.events.trigger("state:jobListUpdate", ei);
     };
 
     // Simulation event handler.
@@ -31,11 +31,11 @@
         });
 
         // Parse event data.
-        MOD.parseSimulation(ei.simulation, ei.jobHistory);
+        MOD.parseSimulation(ei.simulation, ei.jobList);
 
         // Update module state.
         MOD.state.simulation = ei.simulation;
-        MOD.state.jobHistory = ei.simulation.jobs.global.all;
+        MOD.state.jobList = ei.simulation.jobs.all;
 
         // Fire events.
         MOD.events.trigger("state:simulationUpdate", ei);

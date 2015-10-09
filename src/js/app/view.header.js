@@ -35,6 +35,12 @@
         // Backbone: view DOM tag name.
         tagName: "h1",
 
+        events: {
+            "click": function () {
+                APP.utils.openURL(APP.institute.githubPage, true);
+            }
+        },
+
         // Backbone: view renderer.
         render : function () {
             APP.utils.renderHTML(TEMPLATES.header.title, APP, this);

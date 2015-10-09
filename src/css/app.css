@@ -35,6 +35,7 @@ div.alert, div.panel {
 .app-title {
 	font-size: 52px;
 	color: #337AB7;
+	cursor: pointer;
 }
 
 .module-title {

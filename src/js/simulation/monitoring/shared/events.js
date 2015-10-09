@@ -25,6 +25,7 @@
 
         // Update DOM.
         $(".app-content").append(MOD.view.$el);
+        MOD.log("ui initialized");
 
         // Fire events.
         MOD.events.trigger("ui:initialized");

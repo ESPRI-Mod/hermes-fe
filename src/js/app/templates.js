@@ -12,7 +12,8 @@
 		header: {
 			title:
 				"<span class='app-title'><%= title %></span>\n\
-		    	 <span class='module-title'></span>",
+		    	 <span class='module-title'></span>\n\
+		    	 <span><small>v0.4.0</small></span>",
 
 		    menuItem:
 		    	"<input type='radio' name='options' /><%= shortTitle %>"

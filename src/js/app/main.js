@@ -25,6 +25,9 @@ window.$ = window.$jq = jQuery.noConflict();
 
             // Home page.
             homePage: "http://www.ipsl.fr/",
+
+            // GitHub page.
+            githubPage: "https://github.com/Prodiguer/prodiguer-docs/wiki"
         },
 
         // App title.

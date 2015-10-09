@@ -36,10 +36,10 @@
         // Simulation.
         simulation: undefined,
 
-        // Simulation job history.
-        jobHistory: [],
+        // Job list.
+        jobList: [],
 
-        // Simulation message count.
+        // Message count.
         messageCount: 0,
 
         // Returns job history collection by job type.

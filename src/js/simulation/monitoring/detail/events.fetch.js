@@ -25,11 +25,11 @@
     // Event handler: page data downloaded.
     MOD.events.on("setup:pageDataDownloaded", function (ei) {
         // Parse event data.
-        MOD.parseSimulation(ei.simulation, ei.jobHistory);
+        MOD.parseSimulation(ei.simulation, ei.jobList);
 
         // Update module state.
         MOD.state.simulation = ei.simulation;
-        MOD.state.jobHistory = ei.simulation.jobs.global.all;
+        MOD.state.jobList = ei.simulation.jobs.all;
         MOD.state.messageCount = ei.messageCount;
         MOD.state.configCard = ei.configCard;
 

@@ -10,7 +10,6 @@
             executionEndDate: null,
             executionState: null,
             isError: false,
-            isObsolete: false,
             // ... cv fields
             activity: null,
             activityRaw: null,
@@ -64,7 +63,7 @@
         });
     };
 
-    // Set simulation date fields for UI.
+    // Set simulation date fields.
     MOD.extendSimulation02 = function (simulation) {
         if (simulation.executionStartDate) {
             simulation.ext.executionStartDate = simulation.executionStartDate.slice(0, 19);

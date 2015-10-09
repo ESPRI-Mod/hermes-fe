@@ -47,8 +47,8 @@
             jobWarningDelay: 86400,
 
             // Simulation filter timeslice.
-            // timeslice: "1W"
-            timeslice: "3M"
+            timeslice: "1W"
+            // timeslice: "3M"
         },
 
         // URL's used across modules.
@@ -63,10 +63,10 @@
             FETCH_ONE: 'simulation/monitoring/fetch_one?hashid={hashid}&tryID={tryID}',
 
             // Simulation detail page.
-            SIMULATION_DETAIL_PAGE: 'simulation.monitoring.one.html?hashid={hashid}&tryID={tryID}&uid={uid}',
+            SIMULATION_DETAIL_PAGE: 'simulation.detail.html?hashid={hashid}&tryID={tryID}&uid={uid}',
 
             // Simulation message page.
-            SIMULATION_MESSAGES_PAGE: 'messages.html?simulationUID={uid}',
+            SIMULATION_MESSAGES_PAGE: 'simulation.messages.html?simulationUID={uid}',
 
             // Web-socket endpoint.
             WS_ALL: 'simulation/monitoring/ws/all',

@@ -24,8 +24,8 @@
         // Update module state.
         MOD.state.simulationList = data.simulationList;
         MOD.state.simulationSet = _.indexBy(data.simulationList, "uid");
-        MOD.state.jobList = data.jobHistory;
-        MOD.state.jobSet = _.indexBy(data.jobHistory, "simulationUID");
+        MOD.state.jobList = data.jobList;
+        MOD.state.jobSet = _.indexBy(data.jobList, "simulationUID");
         MOD.log("timeslice assigned");
 
         // Parse timeslice.

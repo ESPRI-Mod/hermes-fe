@@ -52,11 +52,11 @@
             MOD.events.on("state:simulationUpdate", this._updateNotificationInfo, this);
 
             // Job update events.
-            MOD.events.on("state:jobHistoryUpdate", this._updateSimulationOverview, this);
-            MOD.events.on("state:jobHistoryUpdate", function (ei) {
+            MOD.events.on("state:jobListUpdate", this._updateSimulationOverview, this);
+            MOD.events.on("state:jobListUpdate", function (ei) {
                 this._updateJobHistory(ei.job.typeof);
             }, this);
-            MOD.events.on("state:jobHistoryUpdate", this._updateNotificationInfo, this);
+            MOD.events.on("state:jobListUpdate", this._updateNotificationInfo, this);
 
             // Web socket closed event.
             MOD.events.on("ws:socketClosed", this._displayWebSocketClosedDialog, this);
@@ -65,12 +65,9 @@
         // Backbone: view renderer.
         render : function () {
             _.each([
-                "template-notification-info",
-                "template-simulation-detail-header",
-                "template-simulation-detail-overview",
-                "template-simulation-detail-job-histories",
-                "template-simulation-detail-config-card",
-                "template-simulation-detail-footer",
+                "template-caption",
+                "template-notifications",
+                "template-tabs",
                 "ws-close-dialog-template"
                 ], function (template) {
                 APP.utils.renderTemplate(template, MOD.state, this);
@@ -94,14 +91,14 @@
             }
 
             // Update UI.
-            this._replaceNode('#notification-info', 'template-notification-info', ei);
+            this._replaceNode('#notifications', 'template-notifications', ei);
         },
 
         // Updates a job collection.
         _updateJobHistory : function (jobType) {
             this._replaceNode("#simulation-detail-job-history-" + jobType, "template-simulation-detail-job-history", {
                 APP: APP,
-                jobHistory: MOD.state.getJobs(jobType),
+                jobList: MOD.state.getJobs(jobType),
                 jobType: jobType,
                 jobTypeCaption: MOD.jobTypeCaptions[jobType],
                 MOD: MOD
