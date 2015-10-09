@@ -40,3 +40,7 @@ table.job-history-table {
 	padding: 8px;
 	border: 1px solid #BCE8F1;
 }
+
+#notification {
+	margin-bottom: 0px;
+}

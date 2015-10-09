@@ -35,7 +35,9 @@
 
 <!-- Template: notification info -->
 <script type="underscore/template" id="template-notifications">
-<div id="notification" class="alert monitoring-state-<%= eventTypeDescription ? simulation.executionState : 'running' %>">
+<div id="notification"
+     class="alert monitoring-state-<%= eventTypeDescription ? simulation.executionState : 'running' %>"
+     style="margin-bottom: 5px;">
     <strong>
     <% if (eventTypeDescription) { %>
         <%= eventTimestamp.slice(0, 19) %>&nbsp;::
@@ -55,54 +57,60 @@
     <% // TAB NAV: overview %>
     <li role="presentation" class="active">
         <a href="#tab-overview" aria-controls="profile" role="tab" data-toggle="tab">
-            <strong>
+            <strong class="text-uppercase">
                 Overview
             </strong>
         </a>
     </li>
+    <% // TAB NAV: config-card %>
+    <% if (MOD.state.configCard) { %>
+        <li role="presentation" style="border-left: 1px solid lightgrey;">
+            <a href="#tab-config-card" aria-controls="profile" role="tab" data-toggle="tab">
+                <strong class="text-uppercase">
+                    Config Card
+                </strong>
+            </a>
+        </li>
+    <% } %>
     <% // TAB NAV: compute jobs %>
     <% // TAB NAV: post-processing jobs %>
     <% // TAB NAV: post-processing (from checker) jobs %>
     <%  _.each(MOD.jobTypes, function (jobType, jobTypeIndex) {  %>
     <%      var jobList = MOD.state.getJobs(jobType); %>
     <%      if (jobList.all.length) { %>
-            <li role="presentation" class="<%= jobList.error.length ? '' : '' %>">
-                    <a href="#tab-jobs-<%= jobType %>" aria-controls="profile" role="tab" data-toggle="tab">
-                        <strong>
-                            <%= MOD.jobTypeCaptions[jobType] %> Jobs
-                        </strong>
-                        <span class="monitoring-state-running badge"
-                              style="background-color: #D9EDF7; color: #333;">
-                            <%- jobList.running.length %>
-                        </span>
-                        <span class="monitoring-state-running badge"
-                              style="background-color: #DFF0D8; color: #333;">
-                            <%- jobList.complete.length %>
-                        </span>
-                        <span class="monitoring-state-running badge"
-                              style="background-color: #F2DEDE; color: #333;">
-                            <%- jobList.error.length %>
-                        </span>
-                    </a>
-                </li>
+            <li role="presentation" style="border-left: 1px solid lightgrey;">
+                <a href="#tab-jobs-<%= jobType %>" aria-controls="profile" role="tab" data-toggle="tab">
+                    <strong class="text-uppercase">
+                        <%= MOD.jobTypeCaptions[jobType] %> Jobs
+                    </strong>
+                    <span class="monitoring-state-running badge"
+                          style="background-color: #D9EDF7; color: #333;">
+                        <%- jobList.running.length %>
+                    </span>
+                    <span class="monitoring-state-running badge"
+                          style="background-color: #DFF0D8; color: #333;">
+                        <%- jobList.complete.length %>
+                    </span>
+                    <span class="monitoring-state-running badge"
+                          style="background-color: #F2DEDE; color: #333;">
+                        <%- jobList.error.length %>
+                    </span>
+                </a>
+            </li>
     <%      } %>
     <%  });  %>
-    <% // TAB NAV: config-card %>
-    <% if (MOD.state.configCard) { %>
-        <li role="presentation" class="">
-            <a href="#tab-config-card" aria-controls="profile" role="tab" data-toggle="tab">
-                <strong>
-                    Config Card
-                </strong>
-            </a>
-        </li>
-    <% } %>
 </ul>
 <div class="tab-content">
     <% // TAB CONTENT: overview %>
     <div role="tabpanel" class="tab-pane active" id="tab-overview">
         <%= APP.utils.renderTemplate("template-tab-overview", MOD.state) %>
     </div>
+    <% // TAB CONTENT: config-card %>
+    <% if (MOD.state.configCard) { %>
+        <div role="tabpanel" class="tab-pane" id="tab-config-card">
+            <%= APP.utils.renderTemplate("template-tab-config-card", MOD.state) %>
+        </div>
+    <% } %>
     <% // TAB CONTENT: compute jobs %>
     <% // TAB CONTENT: post-processing jobs %>
     <% // TAB CONTENT: post-processing (from checker) jobs %>
@@ -122,20 +130,13 @@
                 </div>
     <%      } %>
     <%  });  %>
-    <% // TAB CONTENT: config-card %>
-    <% if (MOD.state.configCard) { %>
-        <div role="tabpanel" class="tab-pane" id="tab-config-card">
-            <%= APP.utils.renderTemplate("template-tab-config-card", MOD.state) %>
-        </div>
-    <% } %>
-<hr/>
 </script>
 
 <!-- Template: overview -->
 <script type="underscore/template" id="template-tab-overview">
 <section id="simulation-overview">
 
-<table class="table table-striped">
+<table class="table table-striped table-hover">
     <tbody>
         <tr>
             <td class="text-right">
@@ -273,9 +274,9 @@
 <!-- Template: job list -->
 <script type="underscore/template" id="template-job-list">
 <section id="job-list-<%= jobType %>">
-    <table class='table table-hover table-condensed job-history-table'>
-        <thead  style="border: 0px;">
-            <tr class="">
+    <table class='table table-hover table-bordered table-condensed job-history-table'>
+        <thead>
+            <tr>
                 <th title='ID' class='text-center'>#</th>
                 <th title='Post Processing Information' class='<%= hidePPInfo ? 'hidden' : '' %>'>Info.</th>
                 <th title='Start Date' class='text-center'>Start Date</th>

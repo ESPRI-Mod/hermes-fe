@@ -23,16 +23,11 @@ article > section > header > h3 {
 	margin-top: 5px;
 }
 
-table.job-history-table {
-	margin-bottom: 0px;
-	margin-top: 5px;
-}
-
-.module-footer {
-	padding: 8px;
-	border: 1px solid #BCE8F1;
-}
-
 #caption {
 	margin-bottom: 5px;
 }
+
+li:not(.active) > a > strong.text-uppercase {
+	color: black;
+}
+
