@@ -112,10 +112,26 @@
         <tr>
             <td colspan="14">
                 <span>
-                    <span class='monitoring-state-queued'><small><strong>&nbsp;QUEUED&nbsp;</strong></small></span>
-                    <span class='monitoring-state-running'><small><strong>&nbsp;RUNNING&nbsp;</strong></small></span>
-                    <span class='monitoring-state-complete'><small><strong>&nbsp;COMPLETE&nbsp;</strong></small></span>
-                    <span class='monitoring-state-error'><small><strong>&nbsp;ERROR&nbsp;</strong></small>
+                    <span class='monitoring-state-queued badge'
+                          title='QUEUED'
+                          style="background-color: #F5F5F5; color: #333;">
+                        <small><strong>&nbsp;QUEUED&nbsp;</strong></small>
+                    </span>
+                    <span class='monitoring-state-running badge'
+                          title='RUNNING'
+                          style="background-color: #D9EDF7; color: #333;">
+                        <small><strong>&nbsp;RUNNING&nbsp;</strong></small>
+                    </span>
+                    <span class='monitoring-state-complete badge'
+                          title='COMPLETE'
+                          style="background-color: #DFF0D8; color: #333;">
+                        <small><strong>&nbsp;COMPLETE&nbsp;</strong></small>
+                    </span>
+                    <span class='monitoring-state-error badge'
+                          title='ERROR'
+                          style="background-color: #F2DEDE; color: #333;">
+                        <small><strong>&nbsp;ERROR&nbsp;</strong>
+                    </small>
                 </span>
                 <span class='pull-right'>
                     <small><strong><a href='https://github.com/Prodiguer/prodiguer-docs/wiki' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>
@@ -125,6 +141,24 @@
     </tfoot>
 </table>
 </script>
+
+<!--                 <span class="pull-right">
+                    <span class="badge"
+                          title="<%- jobList.running.length %> running"
+                          style="background-color: #D9EDF7; color: #333;">
+                        <%- jobList.running.length %> RUNNING
+                    </span>
+                    <span class="badge"
+                          title="<%- jobList.complete.length %> complete"
+                          style="background-color: #DFF0D8; color: #333;">
+                        <%- jobList.complete.length %> COMPLETE
+                    </span>
+                    <span class="monitoring-state-running badge"
+                          title="<%- jobList.error.length %> in error"
+                          style="background-color: #F2DEDE; color: #333;">
+                        <%- jobList.error.length %> ERROR
+                    </span>
+                </span> -->
 
 <!-- Template: search result table body -->
 <script type="underscore/template" id="grid-body-template">

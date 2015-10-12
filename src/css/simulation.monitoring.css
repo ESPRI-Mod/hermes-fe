@@ -6,15 +6,6 @@ input.pagination-info {
 	width: 120px;
 }
 
-.module-footer {
-	padding: 8px;
-	border: 1px solid #BCE8F1;
-}
-
-table.monitoring-table {
-	margin-bottom: 10px;
-}
-
 table.monitoring-table tbody tr td:not(.inter-monitoring) {
 	cursor: pointer;
 }
