@@ -45,3 +45,7 @@ div.alert, div.panel {
 	/*font-style: italic;*/
 }
 
+.module-version {
+	cursor: pointer;
+}
+

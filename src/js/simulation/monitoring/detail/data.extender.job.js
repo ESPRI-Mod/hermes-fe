@@ -41,7 +41,7 @@
             ppFields.push(job.postProcessingName);
         }
         if (job.postProcessingDate) {
-            ppFields.push(job.postProcessingDate);
+            ppFields.push(job.postProcessingDate.slice(0, 10));
         }
         if (job.postProcessingDimension) {
             ppFields.push(job.postProcessingDimension);

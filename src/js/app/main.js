@@ -27,14 +27,17 @@ window.$ = window.$jq = jQuery.noConflict();
             homePage: "http://www.ipsl.fr/",
 
             // GitHub page.
-            githubPage: "https://github.com/Prodiguer/prodiguer-docs/wiki"
+            githubPage: "https://github.com/Prodiguer/prodiguer-docs/wiki",
+
+            // Documentation page.
+            docPage: "http://prodiguer-docs.readthedocs.org/en/latest/"
         },
 
         // App title.
         title: "Prodiguer",
 
         // App version.
-        version : "0.4.0",
+        version : "0.4.2",
 
         // App copyright statement.
         copyrightYear: new Date().getFullYear(),
@@ -74,10 +77,13 @@ window.$ = window.$jq = jQuery.noConflict();
                 // Module key.
                 key: key,
 
-                // Module templates placeholder.
+                // Module JS templates placeholder.
                 templates: {},
 
-                // Module main view instance.
+                // Module version.
+                version: APP.version,
+
+                // Module view instance.
                 view: undefined,
 
                 // Module sub-views placeholder.

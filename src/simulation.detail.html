@@ -22,7 +22,9 @@
 <!-- Template: header -->
 <script type="underscore/template" id="template-caption">
 <header id="caption" class="module-header bg-primary">
-    <h2>Simulation: <%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %> [<%- simulation.tryID %>]
+    <h2><%- simulation.activity.toUpperCase() %> ->
+        <%- simulation.space.toUpperCase() %> ->
+        <%- simulation.name %> [<%- simulation.tryID %>]
         <span class='pull-right'>
             <span class="simulation-messages glyphicon glyphicon-envelope <%= messageCount ? '' : 'hidden' %>"
                   title="View Simulation Messages"></span>
@@ -36,9 +38,8 @@
 <!-- Template: notification info -->
 <script type="underscore/template" id="template-notifications">
 <div id="notification"
-     class="alert monitoring-state-<%= eventTypeDescription ? simulation.executionState : 'running' %>"
-     style="margin-bottom: 5px;">
-    <strong>
+         class="lead monitoring-state-<%= eventTypeDescription ? simulation.executionState : 'running' %>"
+         style="padding: 5px; margin-bottom: 5px;">
     <% if (eventTypeDescription) { %>
         <%= eventTimestamp.slice(0, 19) %>&nbsp;::
         <%= eventTypeDescription %>&nbsp;::
@@ -47,16 +48,19 @@
     <% } else { %>
         Awaiting simulation events ...
     <% } %>
-    </strong>
 </div>
 </script>
 
 <!-- Template: tabs -->
 <script type="underscore/template" id="template-tabs">
-<ul class="nav nav-pills nav-justified" role="tablist">
+<ul class="nav nav-tabs " role="tablist">
     <% // TAB NAV: overview %>
     <li role="presentation" class="active">
-        <a href="#tab-overview" aria-controls="profile" role="tab" data-toggle="tab">
+        <a  href="#tab-overview"
+            aria-controls="profile"
+            role="tab"
+            title="Overview"
+            data-toggle="tab">
             <strong class="text-uppercase">
                 Overview
             </strong>
@@ -64,8 +68,12 @@
     </li>
     <% // TAB NAV: config-card %>
     <% if (MOD.state.configCard) { %>
-        <li role="presentation" style="border-left: 1px solid lightgrey;">
-            <a href="#tab-config-card" aria-controls="profile" role="tab" data-toggle="tab">
+        <li role="presentation"  style="border-left: 1px solid lightgrey;">
+            <a  href="#tab-config-card"
+                aria-controls="profile"
+                role="tab"
+                title="Config Card"
+                data-toggle="tab">
                 <strong class="text-uppercase">
                     Config Card
                 </strong>
@@ -79,19 +87,26 @@
     <%      var jobList = MOD.state.getJobs(jobType); %>
     <%      if (jobList.all.length) { %>
             <li role="presentation" style="border-left: 1px solid lightgrey;">
-                <a href="#tab-jobs-<%= jobType %>" aria-controls="profile" role="tab" data-toggle="tab">
+                <a  href="#tab-jobs-<%= jobType %>"
+                    aria-controls="profile"
+                    role="tab"
+                    title="<%= MOD.jobTypeCaptions[jobType] %> Jobs"
+                    data-toggle="tab">
                     <strong class="text-uppercase">
                         <%= MOD.jobTypeCaptions[jobType] %> Jobs
                     </strong>
                     <span class="monitoring-state-running badge"
+                          title="<%- jobList.running.length %> running"
                           style="background-color: #D9EDF7; color: #333;">
                         <%- jobList.running.length %>
                     </span>
                     <span class="monitoring-state-running badge"
+                          title="<%- jobList.complete.length %> complete"
                           style="background-color: #DFF0D8; color: #333;">
                         <%- jobList.complete.length %>
                     </span>
                     <span class="monitoring-state-running badge"
+                          title="<%- jobList.error.length %> jobs in error"
                           style="background-color: #F2DEDE; color: #333;">
                         <%- jobList.error.length %>
                     </span>
@@ -108,7 +123,9 @@
     <% // TAB CONTENT: config-card %>
     <% if (MOD.state.configCard) { %>
         <div role="tabpanel" class="tab-pane" id="tab-config-card">
-            <%= APP.utils.renderTemplate("template-tab-config-card", MOD.state) %>
+            <section id="simulation-config-card">
+                <textarea class='form-control' rows='45' cols='40'><%- configCard %></textarea>
+            </section>
         </div>
     <% } %>
     <% // TAB CONTENT: compute jobs %>
@@ -139,55 +156,13 @@
 <table class="table table-striped table-hover">
     <tbody>
         <tr>
-            <td class="text-right">
+            <td class="col-md-2">
                 <strong>Activity</strong>
             </td>
-            <td>
+            <td class="col-md-4">
                 <%- simulation.ext.activity %>
             </td>
-        </tr>
-        <tr>
-            <td class="text-right">
-                <strong>Machine</strong>
-            </td>
-            <td>
-                <%- simulation.ext.computeNodeMachine %>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right">
-                <strong>Space</strong>
-            </td>
-            <td>
-                <%- simulation.ext.space %>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right">
-                <strong>Login</strong>
-            </td>
-            <td>
-                <%- simulation.ext.computeNodeLogin %>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right">
-                <strong>Acc. Project</strong>
-            </td>
-            <td>
-                <%- simulation.ext.accountingProject %>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right">
-                <strong>Model</strong>
-            </td>
-            <td>
-                <%- simulation.ext.model %>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right">
+            <td class="col-md-2">
                 <strong>Experiment</strong>
             </td>
             <td>
@@ -195,7 +170,27 @@
             </td>
         </tr>
         <tr>
-            <td class="text-right">
+            <td class="col-md-2">
+                <strong>Space</strong>
+            </td>
+            <td class="col-md-4">
+                <%- simulation.ext.space %>
+            </td>
+            <td class="col-md-2">
+                <strong>Model</strong>
+            </td>
+            <td class="col-md-4">
+                <%- simulation.ext.model %>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2">
+                <strong>Machine</strong>
+            </td>
+            <td>
+                <%- simulation.ext.computeNodeMachine %>
+            </td>
+            <td class="col-md-2">
                 <strong>Compute start date</strong>
             </td>
             <td>
@@ -203,7 +198,13 @@
             </td>
         </tr>
         <tr>
-            <td class="text-right">
+            <td class="col-md-2">
+                <strong>Login</strong>
+            </td>
+            <td class="col-md-4">
+                <%- simulation.ext.computeNodeLogin %>
+            </td>
+            <td class="col-md-2">
                 <strong>Compute end date</strong>
             </td>
             <td>
@@ -211,40 +212,27 @@
             </td>
         </tr>
         <tr>
-            <td class="text-right">
+            <td class="col-md-2">
+                <strong>Acc. Project</strong>
+            </td>
+            <td class="col-md-4">
+                <%- simulation.ext.accountingProject %>
+            </td>
+            <td class="col-md-2">
                 <strong>Compute Status</strong>
             </td>
-            <td>
+            <td class="">
                 <%- simulation.ext.executionState %>
             </td>
         </tr>
         <tr>
-            <td class="text-right">
-                <strong>Try</strong>
+            <td class="col-md-2">
+                <strong>Name</strong>
             </td>
-            <td>
-                <%- simulation.tryID %>
+            <td class="col-md-4">
+                <%- simulation.name %>
             </td>
-        </tr>
-        <tr>
-            <td class="text-right">
-                <strong>Previous Tries</strong>
-            </td>
-            <td>
-                <% if (simulation.tryID === 1) { %>
-                    --
-                <% } else { %>
-                <select id='previous-try-select'>
-                    <option value="0"></option>
-                    <% _.each(_.range(simulation.tryID - 1), function(tryID) { %>
-                    <option value="<%- tryID + 1 %>"><%- tryID + 1 %></option>
-                    <% }); %>
-                </select>
-                <% } %>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-right">
+            <td class="col-md-2">
                 <strong>Output start date</strong>
             </td>
             <td>
@@ -252,11 +240,37 @@
             </td>
         </tr>
         <tr>
-            <td class="text-right">
-                <strong>Output end date</strong>
+            <td class="col-md-2">
+                <strong>Try</strong>
             </td>
             <td>
+                <%- simulation.tryID %>
+            </td>
+            <td class="col-md-2">
+                <strong>Output end date</strong>
+            </td>
+            <td class="col-md-4">
                 <%- simulation.ext.outputEndDate %>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2">
+                <strong>Previous Tries</strong>
+            </td>
+            <td class="col-md-4">
+                <% if (simulation.tryID === 1) { %>
+                    --
+                <% } else { %>
+                <% _.each(_.range(simulation.tryID - 1), function(tryID) { %>
+                <a href="<%- APP.utils.getBaseURL() %>?hashid=<%= simulationHashID %>&tryID=<%= tryID + 1 %>" target="_blank"><%- tryID + 1 %></a>&nbsp;
+                <% }); %>
+                <% } %>
+            </td>
+            <td class="col-md-2">
+                <strong>Unique Identifier</strong>
+            </td>
+            <td>
+                <%- simulation.uid %>
             </td>
         </tr>
     </tbody>
@@ -276,13 +290,13 @@
 <section id="job-list-<%= jobType %>">
     <table class='table table-hover table-bordered table-condensed job-history-table'>
         <thead>
-            <tr>
-                <th title='ID' class='text-center'>#</th>
-                <th title='Post Processing Information' class='<%= hidePPInfo ? 'hidden' : '' %>'>Info.</th>
-                <th title='Start Date' class='text-center'>Start Date</th>
-                <th title='End Date' class='text-center'>End Date</th>
-                <th title='Duration' class='text-center'>Duration</th>
-                <th title='Delay' class='text-center'>Lateness</th>
+            <tr class="">
+                <th title='Job ID' class='text-center'>#</th>
+                <th title='Job Post Processing Information' class='<%= hidePPInfo ? 'hidden' : '' %>'>Info.</th>
+                <th title='Job Start Date' class='text-center'>Start Date</th>
+                <th title='Job End Date' class='text-center'>End Date</th>
+                <th title='Job Duration' class='text-center'>Duration</th>
+                <th title='Job Lateness' class='text-center'>Lateness</th>
             </tr>
         </thead>
         <tbody>
@@ -300,18 +314,26 @@
         </tbody>
         <tfoot>
             <tr  style="border: 0px;">
-                <td style="text-align: right; border: 0px;" colspan="6">
-                    <span class="monitoring-state-running badge"
-                          style="background-color: #D9EDF7; color: #333;">
-                        <%- jobList.running.length %> RUNNING
+                <td style="" colspan="6">
+                    <span>
+                        <strong><%= MOD.jobTypeCaptions[jobType] %> Jobs</strong>
                     </span>
-                    <span class="monitoring-state-running badge"
-                          style="background-color: #DFF0D8; color: #333;">
-                        <%- jobList.complete.length %> COMPLETE
-                    </span>
-                    <span class="monitoring-state-running badge"
-                          style="background-color: #F2DEDE; color: #333;">
-                        <%- jobList.error.length %> ERROR
+                    <span class="pull-right">
+                        <span class="monitoring-state-running badge"
+                              title="<%- jobList.running.length %> running"
+                              style="background-color: #D9EDF7; color: #333;">
+                            <%- jobList.running.length %> RUNNING
+                        </span>
+                        <span class="monitoring-state-running badge"
+                              title="<%- jobList.complete.length %> complete"
+                              style="background-color: #DFF0D8; color: #333;">
+                            <%- jobList.complete.length %> COMPLETE
+                        </span>
+                        <span class="monitoring-state-running badge"
+                              title="<%- jobList.error.length %> in error"
+                              style="background-color: #F2DEDE; color: #333;">
+                            <%- jobList.error.length %> ERROR
+                        </span>
                     </span>
                 </td>
             </tr>

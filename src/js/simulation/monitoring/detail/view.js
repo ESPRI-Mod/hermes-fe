@@ -65,8 +65,8 @@
         // Backbone: view renderer.
         render : function () {
             _.each([
-                "template-notifications",
                 "template-caption",
+                "template-notifications",
                 "template-tabs",
                 "ws-close-dialog-template"
                 ], function (template) {

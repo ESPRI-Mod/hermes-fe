@@ -36,7 +36,10 @@
         tagName: "h1",
 
         events: {
-            "click": function () {
+            "click .app-title": function () {
+                APP.utils.openURL(APP.institute.docPage, true);
+            },
+            "click .module-version": function () {
                 APP.utils.openURL(APP.institute.githubPage, true);
             }
         },

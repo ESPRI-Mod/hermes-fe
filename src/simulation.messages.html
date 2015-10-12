@@ -21,7 +21,9 @@
 <!-- Template: module header -->
 <script type="underscore/template" id="template-messages-header">
 <header class="module-header bg-primary">
-    <h2>Simulation: <%- simulation.activity.toUpperCase() %> -> <%- simulation.space.toUpperCase() %> -> <%- simulation.name %> [<%- simulation.tryID %>]
+    <h2><%- simulation.activity.toUpperCase() %> ->
+        <%- simulation.space.toUpperCase() %> ->
+        <%- simulation.name %> [<%- simulation.tryID %>]
         <span class='pull-right'>
             <span class='simulation-details glyphicon glyphicon-list' title='View Simulation Details'></span>
         </span>
@@ -56,6 +58,7 @@
                 <th title='Type' class='text-center'>Type</th>
                 <th title='Job UID' class='text-center'>Job UID</th>
                 <th title='Timestamp' class='text-center'>Timestamp</th>
+                <th title='liblIGCM version' class='text-center'>liblIGCM version</th>
                 <th title='View message content' class='text-center'></th>
             </tr>
         </thead>
@@ -66,6 +69,7 @@
                 <td title='Message type' class='text-center' title='<%= message.typeID %>'><%= message.typeID %></td>
                 <td title='Message job identifier' class='text-center' title='<%= message.jobUID %>'><%= message.jobUID %></td>
                 <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp.slice(0, 19) %> <%= message.timestamp.slice(20) %></td>
+                <td title='liblIGCM version' class='text-center' title='<%= message.producerVersion %>'><%= message.producerVersion %></td>
                 <td title='View message content' class='message-content text-center' ><span class='glyphicon glyphicon-envelope'></span></td>
             </tr>
             <% }); %>
