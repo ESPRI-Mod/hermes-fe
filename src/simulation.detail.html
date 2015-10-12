@@ -53,7 +53,7 @@
 
 <!-- Template: tabs -->
 <script type="underscore/template" id="template-tabs">
-<ul class="nav nav-tabs " role="tablist">
+<ul class="nav nav-pills " role="tablist">
     <% // TAB NAV: overview %>
     <li role="presentation" class="active">
         <a  href="#tab-overview"
@@ -123,9 +123,7 @@
     <% // TAB CONTENT: config-card %>
     <% if (MOD.state.configCard) { %>
         <div role="tabpanel" class="tab-pane" id="tab-config-card">
-            <section id="simulation-config-card">
-                <textarea class='form-control' rows='45' cols='40'><%- configCard %></textarea>
-            </section>
+            <textarea id="simulation-config-card" class='form-control' rows='45' cols='40'><%- configCard %></textarea>
         </div>
     <% } %>
     <% // TAB CONTENT: compute jobs %>
@@ -138,7 +136,7 @@
                 <div role="tabpanel" class="tab-pane" id="tab-jobs-<%= jobType %>">
                     <%= APP.utils.renderTemplate("template-job-list", {
                         APP: APP,
-                        hidePPInfo: jobType === 'computing' || !jobList.hasInfo,
+                        hidePPInfo: jobType === 'computing' ,
                         jobList: jobList,
                         jobType: jobType,
                         jobTypeCaption: MOD.jobTypeCaptions[jobType],
@@ -151,9 +149,7 @@
 
 <!-- Template: overview -->
 <script type="underscore/template" id="template-tab-overview">
-<section id="simulation-overview">
-
-<table class="table table-striped table-hover">
+<table id="simulation-overview" class="table table-striped table-hover">
     <tbody>
         <tr>
             <td class="col-md-2">
@@ -275,71 +271,62 @@
         </tr>
     </tbody>
 </table>
-</section>
-</script>
-
-<!-- Template: config card -->
-<script type="underscore/template" id="template-tab-config-card">
-<section id="simulation-config-card">
-    <textarea class='form-control' rows='45' cols='40'><%- configCard %></textarea>
-</section>
 </script>
 
 <!-- Template: job list -->
 <script type="underscore/template" id="template-job-list">
-<section id="job-list-<%= jobType %>">
-    <table class='table table-hover table-bordered table-condensed job-history-table'>
-        <thead>
-            <tr class="">
-                <th title='Job ID' class='text-center'>#</th>
-                <th title='Job Post Processing Information' class='<%= hidePPInfo ? 'hidden' : '' %>'>Info.</th>
-                <th title='Job Start Date' class='text-center'>Start Date</th>
-                <th title='Job End Date' class='text-center'>End Date</th>
-                <th title='Job Duration' class='text-center'>Duration</th>
-                <th title='Job Lateness' class='text-center'>Lateness</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% _.each(jobList.all.reverse(), function(job, jobIndex) { %>
-            <%= APP.utils.renderTemplate("template-job-detail", {
-                    APP: APP,
-                    MOD: MOD,
-                    job: job,
-                    jobIndex: jobList.all.length - jobIndex,
-                    jobList,
-                    jobType: jobType,
-                    hidePPInfo: hidePPInfo
-                }) %>
-            <% }); %>
-        </tbody>
-        <tfoot>
-            <tr  style="border: 0px;">
-                <td style="" colspan="6">
-                    <span>
-                        <strong><%= MOD.jobTypeCaptions[jobType] %> Jobs</strong>
+<table id="job-list-<%= jobType %>" class='table table-hover table-bordered table-condensed job-history-table'>
+    <thead>
+        <tr class="">
+            <th title='Job ID' class='text-center'>#</th>
+            <th title='Job post processing information' class='<%= hidePPInfo ? 'hidden' : '' %>'>Info.</th>
+            <th title='Job submission path' class='<%= hidePPInfo ? 'hidden' : '' %>'>Submission path</th>
+            <th title='Job start date' class='text-center'>Start Date</th>
+            <th title='Job end date' class='text-center'>End Date</th>
+            <th title='Job duration' class='text-center'>Duration</th>
+            <th title='Job lateness' class='text-center'>Lateness</th>
+        </tr>
+    </thead>
+    <tbody>
+        <% _.each(jobList.all.reverse(), function(job, jobIndex) { %>
+        <%= APP.utils.renderTemplate("template-job-detail", {
+                APP: APP,
+                MOD: MOD,
+                job: job,
+                jobIndex: jobList.all.length - jobIndex,
+                jobList,
+                jobType: jobType,
+                hidePPInfo: hidePPInfo
+            }) %>
+        <% }); %>
+    </tbody>
+    <tfoot>
+        <tr  style="border: 0px;">
+            <td style="" colspan="7">
+                <span>
+                    <strong><%= MOD.jobTypeCaptions[jobType] %> Jobs</strong>
+                </span>
+                <span class="pull-right">
+                    <span class="monitoring-state-running badge"
+                          title="<%- jobList.running.length %> running"
+                          style="background-color: #D9EDF7; color: #333;">
+                        <%- jobList.running.length %> RUNNING
                     </span>
-                    <span class="pull-right">
-                        <span class="monitoring-state-running badge"
-                              title="<%- jobList.running.length %> running"
-                              style="background-color: #D9EDF7; color: #333;">
-                            <%- jobList.running.length %> RUNNING
-                        </span>
-                        <span class="monitoring-state-running badge"
-                              title="<%- jobList.complete.length %> complete"
-                              style="background-color: #DFF0D8; color: #333;">
-                            <%- jobList.complete.length %> COMPLETE
-                        </span>
-                        <span class="monitoring-state-running badge"
-                              title="<%- jobList.error.length %> in error"
-                              style="background-color: #F2DEDE; color: #333;">
-                            <%- jobList.error.length %> ERROR
-                        </span>
+                    <span class="monitoring-state-running badge"
+                          title="<%- jobList.complete.length %> complete"
+                          style="background-color: #DFF0D8; color: #333;">
+                        <%- jobList.complete.length %> COMPLETE
                     </span>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-</section>
+                    <span class="monitoring-state-running badge"
+                          title="<%- jobList.error.length %> in error"
+                          style="background-color: #F2DEDE; color: #333;">
+                        <%- jobList.error.length %> ERROR
+                    </span>
+                </span>
+            </td>
+        </tr>
+    </tfoot>
+</table>
 </script>
 
 <!-- Template: job detail -->
@@ -347,6 +334,7 @@
 <tr id="<%= job.jobUID %>" class="<%= MOD.getStateCSS(job.executionState) %>">
     <td style='width: 40px;' class='id text-center' title='<%= jobIndex %>'><%= jobIndex %></td>
     <td class='postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.ext.postProcessingInfo %>'><%= job.ext.postProcessingInfo %></td>
+    <td class='submissionPath <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.submissionPath %>'><%= job.ext.submissionPath || '--' %></td>
     <td style='width: <%= hidePPInfo  ? '24%' : '15%' %>;' class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>
     <td style='width: <%= hidePPInfo  ? '24%' : '15%' %>;' class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>
     <td style='width: <%= hidePPInfo  ? '24%' : '15%' %>;' class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>

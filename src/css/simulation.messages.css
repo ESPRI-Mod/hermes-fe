@@ -41,6 +41,11 @@ table.job-history-table {
 	border: 1px solid #BCE8F1;
 }
 
-#notification {
-	margin-bottom: 0px;
+ul.nav {
+	margin-bottom: 5px;
+	margin-top: 5px;
+}
+
+li:not(.active) > a > strong.text-uppercase {
+	color: black;
 }

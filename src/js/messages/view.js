@@ -33,20 +33,9 @@
         // Backbone: view renderer.
         render : function () {
             APP.utils.renderTemplate("template-messages-header", MOD.state, this);
-            this._renderMessageCollection("Compute", MOD.state.messageHistory.compute);
-            this._renderMessageCollection("Post Processing", MOD.state.messageHistory.postProcessing);
+            APP.utils.renderTemplate("template-tabs", MOD.state, this);
 
             return this;
-        },
-
-        // Renders a message collection.
-        _renderMessageCollection: function (jobType, collection) {
-            if (collection.length) {
-                APP.utils.renderTemplate("template-messages-collection", {
-                    jobType: jobType,
-                    messages: collection
-                }, this);
-            }
         },
 
         // Renders an inividual message content.

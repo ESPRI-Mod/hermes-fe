@@ -16,14 +16,12 @@
             postProcessing: {
                 all: [],
                 complete: [],
-                hasInfo: false,
                 error: [],
                 running: []
             },
             postProcessingFromChecker: {
                 all: [],
                 complete: [],
-                hasInfo: false,
                 error: [],
                 running: []
             }

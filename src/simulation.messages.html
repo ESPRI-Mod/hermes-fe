@@ -31,13 +31,56 @@
 </header>
 </script>
 
+<script type="underscore/template" id="template-tabs">
+<ul class="nav nav-pills " role="tablist">
+    <% // TAB NAV: compute job messages %>
+    <li role="presentation" class="active">
+        <a  href="#tab-jobs-compute"
+            aria-controls="profile"
+            role="tab"
+            title="Overview"
+            data-toggle="tab">
+            <strong class="text-uppercase">
+                Compute Job Messages (<%= messageHistory.compute.length %>)
+            </strong>
+        </a>
+    </li>
+    <% // TAB NAV: post-processing jobs %>
+    <% if (messageHistory.postProcessing.length) { %>
+    <li role="presentation">
+        <a  href="#tab-jobs-post-processing"
+            aria-controls="profile"
+            role="tab"
+            title="Overview"
+            data-toggle="tab">
+            <strong class="text-uppercase">
+                Post Processing Job Messages (<%= messageHistory.postProcessing.length %>)
+            </strong>
+        </a>
+    </li>
+    <% } %>
+</ul>
+<div class="tab-content">
+    <% // TAB CONTENT: compute job messages %>
+    <div role="tabpanel" class="tab-pane active" id="tab-jobs-compute">
+        <%= APP.utils.renderTemplate("template-messages-collection", {
+            messages: messageHistory.compute,
+            jobTypeDescription:'Compute'}) %>
+    </div>
+    <% // TAB CONTENT: post-processing jobs %>
+    <% if (messageHistory.postProcessing.length) { %>
+    <div role="tabpanel" class="tab-pane" id="tab-jobs-post-processing">
+        <%= APP.utils.renderTemplate("template-messages-collection", {
+            messages: messageHistory.postProcessing,
+            jobTypeDescription:'Post-Processing'}) %>
+    </div>
+    <% } %>
+</div>
+</script>
+
 <!-- Template: messages collection -->
 <script type="underscore/template" id="template-messages-collection">
-<section>
-    <header class="bg-info">
-        <h3><%- jobType %> Messages</h3>
-    </header>
-    <table class="table table-hover table-bordered table-condensed table-striped message-history-table">
+    <table class="table table-hover table-bordered table-condensed message-history-table">
         <thead>
             <tr>
                 <th title='ID' class='text-center'>#</th>
@@ -50,8 +93,13 @@
         </thead>
         <tbody>
             <% _.each(messages, function(message, messageIndex) { %> 
-            <tr id="<%= message.uid %>">
+            <% if (_.indexOf(['1999', '2999', '3999'], message.typeID) != -1) {%>
+            <tr id="<%= message.uid %>" class="bg-danger">
+            <% } else {%>
+            <tr id="<%= message.uid %>" class="">
+            <% } %>
                 <td style='width: 40px;' class='text-center' title='<%= messageIndex + 1 %>'><%= messageIndex + 1 %></td>
+
                 <td title='Message type' class='text-center' title='<%= message.typeID %>'><%= message.typeID %></td>
                 <td title='Message job identifier' class='text-center' title='<%= message.jobUID %>'><%= message.jobUID %></td>
                 <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp.slice(0, 19) %> <%= message.timestamp.slice(20) %></td>
@@ -60,8 +108,18 @@
             </tr>
             <% }); %>
         </tbody>
+        <tfoot>
+            <tr  style="border: 0px;">
+                <td style="" colspan="6">
+                    <span>
+                        <strong><%= jobTypeDescription %> Jobs</strong>
+                    </span>
+                    <span class="pull-right">
+                    </span>
+                </td>
+            </tr>
+        </tfoot>
     </table>
-</section>
 </script>
 
 <!-- Template: message content dialog -->

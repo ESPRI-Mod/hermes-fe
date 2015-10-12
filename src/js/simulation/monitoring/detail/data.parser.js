@@ -7,7 +7,6 @@
     var getExecutionState,
         mapJob,
         setExecutionState,
-        setHasPostProcessingInfo,
         sortJobset,
         sortJobsets;
 
@@ -94,13 +93,6 @@
         }
     };
 
-    // Sets a flag indicating whether there is post processing information to display.
-    setHasPostProcessingInfo = function (jobs) {
-        jobs.hasInfo = _.isObject(_.find(jobs.all, function (job) {
-            return job.ext.postProcessingInfo !== "--";
-        }));
-    };
-
     // Parses a simulation in readiness for processing.
     MOD.parseSimulation = function (simulation, jobList) {
         // Extend simulation.
@@ -116,11 +108,6 @@
             mapJob(simulation, job);
         });
         MOD.log("simulation jobs mapped");
-
-        // Set flags indicating whether there is post-processing info to display.
-        setHasPostProcessingInfo(simulation.jobs.postProcessing);
-        setHasPostProcessingInfo(simulation.jobs.postProcessingFromChecker);
-        MOD.log("simulation post-processing flag assigned");
 
         // Sort jobs.
         sortJobsets(simulation);

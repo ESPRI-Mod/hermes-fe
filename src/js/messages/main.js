@@ -14,12 +14,12 @@
 
             // Set of message types related to compute jobs.
             computeMessageTypes: [
-                "0000", "0100", "1000", "1100", "9999"
+                "0000", "0100", "1000", "1100", "1900", "1999"
             ],
 
             // Set of message types related to post processing jobs.
             postProcessingMessageTypes: [
-                "2000", "2100", "2900", "3000", "3100", "3900"
+                "2000", "2100", "2900", "2999", "3000", "3100", "3900", "3999"
             ],
 
             // Set of urls used across module.

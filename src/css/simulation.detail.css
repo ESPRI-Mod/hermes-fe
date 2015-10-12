@@ -17,17 +17,12 @@ ul.nav {
 	margin-bottom: 5px;
 }
 
-article > section > header > h3 {
-	padding: 3px;
-	margin-bottom: 5px;
-	margin-top: 5px;
+li:not(.active) > a > strong.text-uppercase {
+	color: black;
 }
 
 #caption {
 	margin-bottom: 5px;
 }
 
-li:not(.active) > a > strong.text-uppercase {
-	color: black;
-}
 
