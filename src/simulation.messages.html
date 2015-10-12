@@ -96,10 +96,9 @@
             <% if (_.indexOf(['1999', '2999', '3999'], message.typeID) != -1) {%>
             <tr id="<%= message.uid %>" class="bg-danger">
             <% } else {%>
-            <tr id="<%= message.uid %>" class="">
+            <tr id="<%= message.uid %>">
             <% } %>
                 <td style='width: 40px;' class='text-center' title='<%= messageIndex + 1 %>'><%= messageIndex + 1 %></td>
-
                 <td title='Message type' class='text-center' title='<%= message.typeID %>'><%= message.typeID %></td>
                 <td title='Message job identifier' class='text-center' title='<%= message.jobUID %>'><%= message.jobUID %></td>
                 <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp.slice(0, 19) %> <%= message.timestamp.slice(20) %></td>

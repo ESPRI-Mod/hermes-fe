@@ -3,8 +3,31 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Sets simulation default values.
+    // Sets simulation job collections.
     MOD.extendSimulation01 = function (simulation) {
+        simulation.jobs = {
+            all: [],
+            compute: {
+                all: [],
+                complete: [],
+                error: [],
+                running: [],
+            },
+            postProcessing: {
+                complete: [],
+                error: [],
+                running: []
+            },
+            postProcessingFromChecker: {
+                complete: [],
+                error: [],
+                running: []
+            }
+        };
+    };
+
+    // Sets simulation default values.
+    MOD.extendSimulation02 = function (simulation) {
         _.defaults(simulation, {
             // ... misc. fields
             executionEndDate: null,
@@ -40,31 +63,12 @@
                 isSelectedForIM: false,
                 isRestart: simulation.tryID > 1,
                 modelSynonyms: []
-            },
-            // ... simulation jobs
-            jobs: {
-                compute: {
-                    all: [],
-                    complete: [],
-                    error: [],
-                    running: [],
-                },
-                postProcessing: {
-                    complete: [],
-                    error: [],
-                    running: []
-                },
-                postProcessingFromChecker: {
-                    complete: [],
-                    error: [],
-                    running: []
-                }
             }
         });
     };
 
     // Set simulation date fields.
-    MOD.extendSimulation02 = function (simulation) {
+    MOD.extendSimulation03 = function (simulation) {
         if (simulation.executionStartDate) {
             simulation.ext.executionStartDate = simulation.executionStartDate.slice(0, 19);
         }
@@ -74,7 +78,7 @@
     };
 
     // Set simulation cv fields for UI.
-    MOD.extendSimulation03 = function (simulation) {
+    MOD.extendSimulation04 = function (simulation) {
         var model;
 
         // Update case sensitive CV fields.
@@ -96,8 +100,11 @@
     // Extends a simulation in readiness for processing.
     MOD.extendSimulation = function (simulation) {
         MOD.extendSimulation01(simulation);
-        MOD.extendSimulation02(simulation);
-        MOD.extendSimulation03(simulation);
+        if (_.has(simulation, 'ext') === false) {
+            MOD.extendSimulation02(simulation);
+            MOD.extendSimulation03(simulation);
+            MOD.extendSimulation04(simulation);
+        }
     };
 
 }(

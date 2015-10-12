@@ -1,4 +1,4 @@
-(function (APP) {
+(function (APP, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -113,8 +113,47 @@
             default:
                 break;
             }
+        },
+
+        // Returns compute execution state of a simulation.
+        getSimulationComputeExecutionState: function (simulation) {
+            var last;
+
+            // Complete if cmip5.
+            if (simulation.activity === 'cmip5') {
+                return 'complete';
+            }
+
+            // Queued if no jobs have started.
+            if (simulation.jobs.compute.all.length === 0) {
+                return 'queued';
+            }
+
+            // Set last job.
+            last = _.last(simulation.jobs.compute.all);
+
+            // Running if last job is running.
+            if (last.executionState === 'running') {
+                return 'running';
+            }
+
+            // Error if last job is error.
+            if (last.executionState === 'error') {
+                return 'error';
+            }
+
+            // Complete if last job is complete and 0100 has been received.
+            if (last.executionState === 'complete' &&
+                simulation.executionEndDate &&
+                simulation.isError === false) {
+                return 'complete';
+            }
+
+            // Otherwise queued.
+            return 'queued';
         }
     });
 }(
-    this.APP
+    this.APP,
+    this._
 ));

@@ -4,52 +4,13 @@
     "use strict";
 
     // Closure vars.
-    var getExecutionState,
-        mapJob,
+    var mapJob,
         setExecutionState,
         sortComputeJobset;
 
-    // Returns simulation's current execution status.
-    getExecutionState = function (simulation) {
-        var last;
-
-        // Complete if cmip5.
-        if (simulation.activity === 'cmip5') {
-            return 'complete';
-        }
-
-        // Queued if no jobs have started.
-        if (simulation.jobs.compute.all.length === 0) {
-            return 'queued';
-        }
-
-        // Set last job.
-        last = _.last(simulation.jobs.compute.all);
-
-        // Running if last job is running.
-        if (last.executionState === 'running') {
-            return 'running';
-        }
-
-        // Error if last job is error.
-        if (last.executionState === 'error') {
-            return 'error';
-        }
-
-        // Complete if last job is complete and 0100 has been received.
-        if (last.executionState === 'complete' &&
-            simulation.executionEndDate &&
-            simulation.isError === false) {
-            return 'complete';
-        }
-
-        // Otherwise queued.
-        return 'queued';
-    };
-
     // Sets simulation's current execution status.
     setExecutionState = function (simulation) {
-        simulation.executionState = getExecutionState(simulation);
+        simulation.executionState = MOD.getSimulationComputeExecutionState(simulation);
         MOD.cv.setFieldDisplayName(simulation, 'simulation_state', 'executionState');
     };
 
@@ -71,6 +32,7 @@
         }
 
         jobs = MOD.state.simulationSet[job.simulationUID].jobs;
+        jobs.all.push(job);
         switch (job.typeof) {
         case 'computing':
             jobs.compute.all.push(job);
@@ -95,26 +57,44 @@
     // Module data parser.
     MOD.parser = {
         // Parses loaded timeslice.
-        parseTimeslice: function () {
+        parseTimeslice: function (simulationList, jobList) {
             // Extend simulations.
-            _.each(MOD.state.simulationList, MOD.extendSimulation);
+            _.each(simulationList, MOD.extendSimulation);
             MOD.log("timeslice simulations extended");
 
             // Extend jobs.
-            _.each(MOD.state.jobList, MOD.extendJob);
+            _.each(jobList, MOD.extendJob);
             MOD.log("timeslice jobs extended");
 
             // Map jobs to simulations.
-            _.each(MOD.state.jobList, mapJob);
+            _.each(jobList, mapJob);
             MOD.log("timeslice jobs mapped");
 
             // Sort compute jobs (required in order to determine simulation execution status).
-            _.each(MOD.state.simulationList, sortComputeJobset);
+            _.each(simulationList, sortComputeJobset);
             MOD.log("timeslice compute jobs sorted");
 
             // Set execution states.
-            _.each(MOD.state.simulationList, setExecutionState);
+            _.each(simulationList, setExecutionState);
             MOD.log("timeslice simulation execution state assigned");
+        },
+
+        // Parses web-socket event data.
+        parseEvent: function (simulation, jobList) {
+            // Extend simulation.
+            MOD.extendSimulation(simulation);
+
+            // Extend jobs.
+            _.each(jobList, MOD.extendJob);
+
+            // Map jobs to simulation.
+            _.each(jobList, mapJob);
+
+            // Sort compute jobs (required in order to determine simulation execution status).
+            sortComputeJobset(simulation);
+
+            // Set execution states.
+            setExecutionState(simulation);
         }
     };
 

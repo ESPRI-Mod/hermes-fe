@@ -23,8 +23,8 @@
         });
         jobList.push(ei.job);
 
-        // Reparse simulation.
-        MOD.parseSimulation(simulation, jobList);
+        // Parse event data.
+        MOD.parser.parseEvent(simulation, jobList);
 
         // Fire event.
         ei.simulation = simulation;
@@ -46,8 +46,8 @@
         MOD.state.simulationList.push(ei.simulation);
         MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");
 
-        // Parse simulation.
-        MOD.parseSimulation(ei.simulation, ei.jobList);
+        // Parse event data.
+        MOD.parser.parseEvent(ei.simulation, ei.jobList);
 
         // Update filtered simulations.
         MOD.updateFilteredSimulationList();
