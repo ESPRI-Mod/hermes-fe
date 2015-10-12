@@ -37,9 +37,9 @@
 
 <!-- Template: notification info -->
 <script type="underscore/template" id="template-notifications">
-<div id="notification"
-         class="lead monitoring-state-<%= eventTypeDescription ? simulation.executionState : 'running' %>"
-         style="padding: 5px; margin-bottom: 5px;">
+<h3 id="notification"
+         class="monitoring-state-<%= eventTypeDescription ? simulation.executionState : 'running' %>"
+         style="padding: 5px; margin-bottom: 5px;margin-top: 0px;">
     <% if (eventTypeDescription) { %>
         <%= eventTimestamp.slice(0, 19) %>&nbsp;::
         <%= eventTypeDescription %>&nbsp;::
@@ -48,7 +48,7 @@
     <% } else { %>
         Awaiting simulation events ...
     <% } %>
-</div>
+</h3>
 </script>
 
 <!-- Template: tabs -->
