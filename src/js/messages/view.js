@@ -32,17 +32,9 @@
 
         // Backbone: view renderer.
         render : function () {
-            // Render header.
             APP.utils.renderTemplate("template-messages-header", MOD.state, this);
-
-            // Render compute messages.
             this._renderMessageCollection("Compute", MOD.state.messageHistory.compute);
-
-            // Render post-processing messages.
             this._renderMessageCollection("Post Processing", MOD.state.messageHistory.postProcessing);
-
-            // Render footer.
-            APP.utils.renderTemplate("template-messages-footer", MOD.state, this);
 
             return this;
         },
