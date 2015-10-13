@@ -8,14 +8,18 @@
     // Job event handler.
     // @ei    Event information received from remote server.
     processJobEvent = function (ei) {
-        // Update module state.
-        MOD.state.jobList = _.filter(MOD.state.simulation.jobs.all, function (j) {
+        var jobList;
+
+        console.log((new Date()) + " :: " + ei.job.jobUID);
+
+        // Update simulation job list.
+        jobList = _.filter(MOD.state.simulation.jobs.all, function (j) {
             return j.jobUID !== ei.job.jobUID;
         });
-        MOD.state.jobList.push(ei.job);
+        jobList.push(ei.job);
 
         // Reparse simulation.
-        MOD.parseSimulation(MOD.state.simulation, MOD.state.jobList);
+        MOD.parseSimulation(MOD.state.simulation, jobList);
 
         // Fire event.
         ei.simulation = MOD.state.simulation;
@@ -30,12 +34,11 @@
             cvTerms: _.union(MOD.state.cvTerms, ei.cvTerms)
         });
 
-        // Parse event data.
+        // Reparse simulation.
         MOD.parseSimulation(ei.simulation, ei.jobList);
 
         // Update module state.
         MOD.state.simulation = ei.simulation;
-        MOD.state.jobList = ei.simulation.jobs.all;
 
         // Fire events.
         MOD.events.trigger("state:simulationUpdate", ei);

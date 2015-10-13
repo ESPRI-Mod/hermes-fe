@@ -47,16 +47,18 @@
         // Backbone: view initializer.
         initialize : function () {
             // Simulation update events.
-            MOD.events.on("state:simulationUpdate", this._updateSimulationOverview, this);
-            MOD.events.on("state:simulationUpdate", this._updateJobHistories, this);
-            MOD.events.on("state:simulationUpdate", this._updateNotificationInfo, this);
+            MOD.events.on("state:simulationUpdate", this._updateOverview, this);
+            MOD.events.on("state:simulationUpdate", this._updateJobCollections, this);
+            MOD.events.on("state:simulationUpdate", this._updateJobCounts, this);
+            MOD.events.on("state:simulationUpdate", this._updateNotification, this);
 
             // Job update events.
-            MOD.events.on("state:jobListUpdate", this._updateSimulationOverview, this);
+            MOD.events.on("state:jobListUpdate", this._updateOverview, this);
             MOD.events.on("state:jobListUpdate", function (ei) {
-                this._updateJobHistory(ei.job.typeof);
+                this._updateJobCollection(ei.job.typeof);
+                this._updateJobCount(ei.job.typeof);
             }, this);
-            MOD.events.on("state:jobListUpdate", this._updateNotificationInfo, this);
+            MOD.events.on("state:jobListUpdate", this._updateNotification, this);
 
             // Web socket closed event.
             MOD.events.on("ws:socketClosed", this._displayWebSocketClosedDialog, this);
@@ -66,7 +68,7 @@
         render : function () {
             _.each([
                 "template-caption",
-                "template-notifications",
+                "template-notification",
                 "template-tabs",
                 "ws-close-dialog-template"
                 ], function (template) {
@@ -76,33 +78,47 @@
             return this;
         },
 
-        _updateSimulationOverview: function () {
-            this._replaceNode("#" + MOD.state.simulation.uid, "template-simulation-detail-overview", MOD.state);
-        },
-
-        _updateJobHistories: function () {
-            _.each(MOD.jobTypes, this._updateJobHistory, this);
-        },
-
-        _updateNotificationInfo: function (ei) {
-            // Set event type description.
+        _updateNotification: function (ei) {
             if (ei.simulation) {
                 ei.eventTypeDescription = MOD.getEventDescription(ei);
             }
-
-            // Update UI.
-            this._replaceNode('#notifications', 'template-notifications', ei);
+            if (ei.job) {
+                ei.eventTypeDescription = MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " " + ei.eventTypeDescription;
+            }
+            this._replaceNode('#notification', 'template-notification', ei);
         },
 
-        // Updates a job collection.
-        _updateJobHistory : function (jobType) {
-            this._replaceNode("#simulation-detail-job-history-" + jobType, "template-simulation-detail-job-history", {
+        _updateOverview: function () {
+            this._replaceNode("#simulation-overview", "template-tab-overview", MOD.state);
+        },
+
+        _updateJobCollections: function () {
+            _.each(MOD.jobTypes, this._updateJobCollection, this);
+        },
+
+        _updateJobCollection : function (jobType) {
+            this._replaceNode("#job-collection-" + jobType, "template-job-collection", {
                 APP: APP,
+                hidePPInfo: jobType === 'computing' ,
                 jobList: MOD.state.getJobs(jobType),
                 jobType: jobType,
-                jobTypeCaption: MOD.jobTypeCaptions[jobType],
+                jobTypeCaption: MOD.jobTypeDescriptions[jobType],
                 MOD: MOD
             });
+        },
+
+        _updateJobCounts: function () {
+            _.each(MOD.jobTypes, this._updateJobCount, this);
+        },
+
+        _updateJobCount : function (jobType) {
+            var jobs, selector;
+
+            jobs = MOD.state.getJobs(jobType);
+            selector = '#' + "tab-job-count-" + jobType + "-";
+            this.$(selector + "running").text(jobs.running.length);
+            this.$(selector + "complete").text(jobs.complete.length);
+            this.$(selector + "error").text(jobs.error.length);
         },
 
         _displayWebSocketClosedDialog: function () {

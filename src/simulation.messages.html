@@ -93,7 +93,7 @@
         </thead>
         <tbody>
             <% _.each(messages, function(message, messageIndex) { %> 
-            <% if (_.indexOf(['1999', '2999', '3999'], message.typeID) != -1) {%>
+            <% if (_.indexOf(['1900', '1999', '2900', '2999', '3900', '3999'], message.typeID) != -1) {%>
             <tr id="<%= message.uid %>" class="bg-danger">
             <% } else {%>
             <tr id="<%= message.uid %>">
@@ -133,7 +133,7 @@
             <div class="modal-body">
                 <table class="table table-hover table-bordered table-condensed table-striped message-history-table">
                     <thead>
-                        <tr class='bg-primary'>
+                        <tr>
                             <th title='Field'>Field</th>
                             <th title='Value'>Value</th>
                         </tr>

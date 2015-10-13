@@ -20,8 +20,10 @@
         // CV terms.
         cvTerms: [],
 
+        // Timestamp of most recent web-socket event.
         eventTimestamp: null,
 
+        // Description of most recent web-socket event.
         eventTypeDescription: null,
 
         // Simulation hash identifier.
@@ -35,9 +37,6 @@
 
         // Simulation.
         simulation: undefined,
-
-        // Job list.
-        jobList: [],
 
         // Message count.
         messageCount: 0,

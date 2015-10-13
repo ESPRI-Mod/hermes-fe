@@ -15,7 +15,7 @@
         keyAliases: [],
 
         // Map of job types to captions.
-        jobTypeCaptions: {
+        jobTypeDescriptions: {
             "computing": "Compute",
             "post-processing": "Post Processing",
             "post-processing-from-checker": "Post Processing (from checker)"
@@ -100,7 +100,7 @@
             case 'simulationError':
                 return "SIMULATION ERROR";
             case 'simulationStart':
-                if (ei.simulation.ext.isRestart) {
+                if (ei.simulation.ext.isRestart == false) {
                     return "SIMULATION STARTED";
                 }
                 return "SIMULATION RESTARTED";

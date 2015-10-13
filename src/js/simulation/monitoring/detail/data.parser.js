@@ -58,25 +58,20 @@
     MOD.parseSimulation = function (simulation, jobList) {
         // Extend simulation.
         MOD.extendSimulation(simulation);
-        MOD.log("simulation extended");
 
         // Extend jobs.
         _.each(jobList, MOD.extendJob);
-        MOD.log("simulation jobs extended");
 
         // Map jobs to simulations.
         _.each(jobList, function (job) {
             mapJob(simulation, job);
         });
-        MOD.log("simulation jobs mapped");
 
         // Sort jobs.
         sortJobsets(simulation);
-        MOD.log("simulation jobs sorted");
 
         // Set execution states.
         setExecutionState(simulation);
-        MOD.log("simulation execution state assigned");
     };
 
 }(

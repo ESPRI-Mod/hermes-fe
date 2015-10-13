@@ -18,18 +18,18 @@
         ep = ep.replace("{hashid}", MOD.state.simulationHashID);
         ep = ep.replace("{tryID}", MOD.state.simulationTryID);
         $.getJSON(ep, function (data) {
+            MOD.log("page data fetched");
             MOD.events.trigger("setup:pageDataDownloaded", data);
         });
     });
 
     // Event handler: page data downloaded.
     MOD.events.on("setup:pageDataDownloaded", function (ei) {
-        // Parse event data.
+        // Parse data.
         MOD.parseSimulation(ei.simulation, ei.jobList);
 
         // Update module state.
         MOD.state.simulation = ei.simulation;
-        MOD.state.jobList = ei.simulation.jobs.all;
         MOD.state.messageCount = ei.messageCount;
         MOD.state.configCard = ei.configCard;
 

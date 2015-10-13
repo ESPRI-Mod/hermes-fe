@@ -20,3 +20,11 @@ ul.nav {
 li:not(.active) > a > strong.text-uppercase {
 	color: black;
 }
+
+table.table.table-striped tr.bg-danger td {
+    background-color:#F2DEDE;
+}
+
+table.table thead tr {
+    background-color:#eceeef;
+}
