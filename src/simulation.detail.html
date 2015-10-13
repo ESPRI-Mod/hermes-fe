@@ -37,9 +37,10 @@
 
 <!-- Template: notification info -->
 <script type="underscore/template" id="template-notifications">
-<h3 id="notification"
+<div id="notification"
          class="monitoring-state-<%= eventTypeDescription ? simulation.executionState : 'running' %>"
-         style="padding: 5px; margin-bottom: 5px;margin-top: 0px;">
+         style="padding: 7px; margin-bottom: 5px;">
+    <strong>
     <% if (eventTypeDescription) { %>
         <%= eventTimestamp.slice(0, 19) %>&nbsp;::
         <%= eventTypeDescription %>&nbsp;::
@@ -48,7 +49,8 @@
     <% } else { %>
         Awaiting simulation events ...
     <% } %>
-</h3>
+    </strong>
+</div>
 </script>
 
 <!-- Template: tabs -->
@@ -280,7 +282,6 @@
         <tr class="">
             <th title='Job ID' class='text-center'>#</th>
             <th title='Job post processing information' class='<%= hidePPInfo ? 'hidden' : '' %>'>Info.</th>
-            <th title='Job submission path' class='<%= hidePPInfo ? 'hidden' : '' %>'>Submission path</th>
             <th title='Job start date' class='text-center'>Start Date</th>
             <th title='Job end date' class='text-center'>End Date</th>
             <th title='Job duration' class='text-center'>Duration</th>
@@ -332,13 +333,12 @@
 <!-- Template: job detail -->
 <script type="underscore/template" id="template-job-detail">
 <tr id="<%= job.jobUID %>" class="<%= MOD.getStateCSS(job.executionState) %>">
-    <td style='width: 40px;' class='id text-center' title='<%= jobIndex %>'><%= jobIndex %></td>
+    <td class='id text-center' style='width: 40px;' title='<%= jobIndex %>'><%= jobIndex %></td>
     <td class='postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.ext.postProcessingInfo %>'><%= job.ext.postProcessingInfo %></td>
-    <td class='submissionPath <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.submissionPath %>'><%= job.ext.submissionPath || '--' %></td>
-    <td style='width: <%= hidePPInfo  ? '24%' : '15%' %>;' class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>
-    <td style='width: <%= hidePPInfo  ? '24%' : '15%' %>;' class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>
-    <td style='width: <%= hidePPInfo  ? '24%' : '15%' %>;' class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>
-    <td style='width: <%= hidePPInfo  ? '24%' : '15%' %>;' class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>
+    <td style='width: <%= hidePPInfo  ? '24%' : '16%' %>;' class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>
+    <td style='width: <%= hidePPInfo  ? '24%' : '16%' %>;' class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>
+    <td style='width: <%= hidePPInfo  ? '24%' : '16%' %>;' class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>
+    <td style='width: <%= hidePPInfo  ? '24%' : '16%' %>;' class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>
 </tr>
 </script>
 
