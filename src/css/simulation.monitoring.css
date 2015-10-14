@@ -3,7 +3,8 @@ span.pagination {
 }
 
 input.pagination-info {
-	width: 120px;
+	width: 170px;
+	text-align: center;
 }
 
 table.monitoring-table tbody tr td:not(.inter-monitoring) {
