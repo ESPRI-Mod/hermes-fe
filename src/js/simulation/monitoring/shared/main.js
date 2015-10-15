@@ -116,7 +116,7 @@
         },
 
         // Returns compute execution state of a simulation.
-        getSimulationComputeExecutionState: function (simulation) {
+        getSimulationComputeState: function (simulation) {
             var last;
 
             // Complete if cmip5.
@@ -124,28 +124,26 @@
                 return 'complete';
             }
 
-            // Queued if no jobs have started.
+            // Queued if no compute jobs have started.
             if (simulation.jobs.compute.all.length === 0) {
                 return 'queued';
             }
 
-            // Set last job.
+            // Set last compute job.
             last = _.last(simulation.jobs.compute.all);
 
-            // Running if last job is running.
+            // Running if last compute job is running.
             if (last.executionState === 'running') {
                 return 'running';
             }
 
-            // Error if last job is error.
+            // Error if last compute job is error.
             if (last.executionState === 'error') {
                 return 'error';
             }
 
-            // Complete if last job is complete and 0100 has been received.
-            if (last.executionState === 'complete' &&
-                simulation.executionEndDate &&
-                simulation.isError === false) {
+            // Complete if last compute job is complete and 0100 has been received.
+            if (last.executionState === 'complete' && simulation.executionEndDate) {
                 return 'complete';
             }
 

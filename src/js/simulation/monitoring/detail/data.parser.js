@@ -11,7 +11,7 @@
 
     // Sets simulation's current execution status.
     setExecutionState = function (simulation) {
-        simulation.executionState = MOD.getSimulationComputeExecutionState(simulation);
+        simulation.executionState = MOD.getSimulationComputeState(simulation);
         MOD.cv.setFieldDisplayName(simulation, 'simulation_state', 'executionState');
     };
 

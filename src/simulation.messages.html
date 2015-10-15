@@ -88,13 +88,15 @@
                 <th title='Job UID' class='text-center'>Job UID</th>
                 <th title='Timestamp' class='text-center'>Timestamp</th>
                 <th title='liblIGCM version' class='text-center'>liblIGCM version</th>
+                <th title='Processed' class='text-center'>Processed</th>
+                <th title='Email ID' class='text-center'>Email ID</th>
                 <th title='View message content' class='text-center'></th>
             </tr>
         </thead>
         <tbody>
             <% _.each(messages, function(message, messageIndex) { %>
             <% if (_.indexOf(['1999', '2999', '3999'], message.typeID) != -1) { %>
-            <tr id="<%= message.uid %>" style="background-color: red; color: white;">
+            <tr id="<%= message.uid %>" class="bg-danger">
             <% } else if (_.indexOf(['1900', '2900', '3900'], message.typeID) != -1) {%>
             <tr id="<%= message.uid %>" class="bg-danger">
             <% } else {%>
@@ -103,15 +105,17 @@
                 <td style='width: 40px;' class='text-center' title='<%= messageIndex + 1 %>'><%= messageIndex + 1 %></td>
                 <td title='Message type' class='text-center' title='<%= message.typeID %>'><%= message.typeID %></td>
                 <td title='Message job identifier' class='text-center' title='<%= message.jobUID %>'><%= message.jobUID %></td>
-                <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp.slice(0, 19) %> <%= message.timestamp.slice(20) %></td>
+                <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp %></td>
                 <td title='liblIGCM version' class='text-center' title='<%= message.producerVersion %>'><%= message.producerVersion %></td>
+                <td title='Message processing date' class='text-center' title='<%= message.rowCreateDate %>'><%= message.rowCreateDate %></td>
+                <td title='Email ID' class='text-center' title='Email ID'><%= message.emailID || '--' %></td>
                 <td title='View message content' class='message-content text-center' ><span class='glyphicon glyphicon-envelope'></span></td>
             </tr>
             <% }); %>
         </tbody>
         <tfoot>
             <tr  style="border: 0px;">
-                <td style="" colspan="6">
+                <td style="" colspan="8">
                     <span>
                         <strong><%= jobTypeDescription %> Job Messages</strong>
                     </span>
