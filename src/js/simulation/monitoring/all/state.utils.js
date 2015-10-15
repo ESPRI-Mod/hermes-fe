@@ -16,6 +16,7 @@
 
         ep = APP.utils.getEndPoint(MOD.urls.FETCH_TIMESLICE);
         ep  = ep.replace('{timeslice}', timeslice);
+        MOD.log("timeslice fetching begins");
         $.getJSON(ep, function (data) {
             MOD.log("timeslice fetched");
             MOD.events.trigger("state:timesliceLoaded", data);

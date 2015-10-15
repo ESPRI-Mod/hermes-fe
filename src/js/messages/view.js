@@ -52,7 +52,7 @@
                 var value;
 
                 value = viewModel[key] || '--';
-                return [key, value.slice(0, 50) + (value.length > 50 ? ' ...' : '')];
+                return [key, value.slice(0, 45) + (value.length > 45 ? ' ...' : '')];
             });
 
             // Display view.
