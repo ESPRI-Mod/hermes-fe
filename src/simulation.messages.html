@@ -124,7 +124,7 @@
         <tbody>
             <% _.each(messages, function(message, messageIndex) { %>
                 <% if (_.indexOf(['1999', '2999', '3999'], message.typeID) != -1) { %>
-                <tr id="<%= message.uid %>" class="bg-danger">
+                <tr id="<%= message.uid %>" class="bg-danger" style="font-weight: bold;">
                 <% } else if (_.indexOf(['1900', '2900', '3900'], message.typeID) != -1) {%>
                 <tr id="<%= message.uid %>" class="bg-danger">
                 <% } else {%>
