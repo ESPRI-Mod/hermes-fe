@@ -21,7 +21,7 @@
 
 <!-- Template: filter panel -->
 <script type="underscore/template" id="filter-panel-template">
-<div id="filter-panel" class='panel panel-info form-inline'>
+<div id="filter-panel" class='panel panel-info form-inline' style="margin-bottom: 3px;">
     <div class='panel-body'>
         <% _.each(MOD.state.filters, function(filter) { %>
         <div class="col-md-3">
@@ -50,7 +50,7 @@
 
 <!-- Template: grid header -->
 <script type="underscore/template" id="grid-header-template">
-<div class='alert bg-primary'>
+<div class='alert bg-primary' style="margin-bottom: 3px;">
     <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
     <span class='pagination pull-right <%= paging.count < 2 ? 'hidden' : '' %>' role='toolbar'>
         <span class='btn-group' role='group'>
@@ -266,7 +266,9 @@
 
 <!-- Template: web-socket notifications -->
 <script type="underscore/template" id="notification-info-template">
-<div id="notification-info" class="alert monitoring-state-<%= simulation ? simulation.executionState : 'running' %>">
+<div id="notification-info"
+     class="monitoring-state-<%= simulation ? simulation.executionState : 'running' %>"
+     style="padding: 12px; margin-bottom: 3px; .border-radius( 5px );">
     <strong>
     <% if (simulation) { %>
         <%= eventTimestamp.slice(0, 19) %>&nbsp;::

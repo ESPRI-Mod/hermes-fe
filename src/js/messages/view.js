@@ -25,7 +25,7 @@
             'click td.message-content' : function (e) {
                 var messageUID;
 
-                messageUID = $(e.target).parent().parent().attr("id");
+                messageUID = $(e.target).parent().parent().parent().attr("id");
                 this._renderMessageContent(messageUID);
             }
         },

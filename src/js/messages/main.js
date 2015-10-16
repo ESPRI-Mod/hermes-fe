@@ -1,4 +1,4 @@
-(function (APP, _, $) {
+(function (APP, _, $, moment, numeral) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -22,6 +22,16 @@
                 "2000", "2100", "2900", "2999", "3000", "3100", "3900", "3999"
             ],
 
+            // Returns flag indicating whether the messages is a compute message or not.
+            isComputeMessage: function (msg) {
+                return _.indexOf(MOD.computeMessageTypes, msg.typeID) !== -1;
+            },
+
+            // Returns flag indicating whether the messages is a post-processing message or not.
+            isPostProcessingMessage: function (msg) {
+                return _.indexOf(MOD.postProcessingMessageTypes, msg.typeID) !== -1;
+            },
+
             // Set of urls used across module.
             urls: {
                 // Fetch simulation messages endpoint.
@@ -29,20 +39,59 @@
 
                 // Simulation detail page.
                 SIMULATION_DETAIL_PAGE: 'simulation.detail.html?hashid={hashid}&tryID={tryID}&uid={uid}',
-            }
+            },
         }),
+
+        // Returns job post-processing information.
+        getPostProcessingInfo = function (job) {
+            var ppFields = [];
+
+            if (job.postProcessingName && job.postProcessingName !== 'null') {
+                ppFields.push(job.postProcessingName);
+            }
+            if (job.postProcessingDate && job.postProcessingDate !== 'null') {
+                // ppFields.push(job.postProcessingDate);
+                ppFields.push(moment(job.postProcessingDate, "YYYYMMDD").format("YYYY-MM-DD"));
+            }
+            if (job.postProcessingDimension && job.postProcessingDimension !== 'null') {
+                ppFields.push(job.postProcessingDimension);
+            }
+            if (job.postProcessingComponent && job.postProcessingComponent !== 'null') {
+                ppFields.push(job.postProcessingComponent);
+            }
+            if (job.postProcessingFile && job.postProcessingFile !== 'null') {
+                ppFields.push(job.postProcessingFile);
+            }
+            return ppFields.join(".");
+        },
+
+        // Parses a message recieved from web-service.
+        parseMessage = function (msg) {
+            msg.latency = numeral(moment.utc(msg.processed).diff(msg.timestamp, 's')).format("00:00:00");
+            if (msg.latency.length === 7) {
+                msg.latency = "0" + msg.latency;
+            }
+            if (msg.typeID === "2000" || msg.typeID === "3000") {
+                msg.jobInfo = getPostProcessingInfo($.parseJSON(msg.content));
+            } else {
+                msg.jobInfo = "--";
+            }
+        },
 
         // Page setup data download event handler.
         onPageSetUpDataDownloaded = function (data) {
+            // Parse data.
+            _.each(data.messageHistory, parseMessage);
+
             // Update module state.
             MOD.state.simulation = data.simulation;
             MOD.state.messageHistory = {
                 all: data.messageHistory,
                 compute: _.filter(data.messageHistory, function (m) {
-                    return _.indexOf(MOD.computeMessageTypes, m.typeID) !== -1;
+                    return MOD.isComputeMessage(m) === true;
                 }),
                 postProcessing: _.filter(data.messageHistory, function (m) {
-                    return _.indexOf(MOD.postProcessingMessageTypes, m.typeID) !== -1;
+                    return MOD.isPostProcessingMessage(m) === true;
                 })
             };
 
@@ -95,7 +144,9 @@
 }(
     this.APP,
     this._,
-    this.$
+    this.$,
+    this.moment,
+    this.numeral
 ));
 
 

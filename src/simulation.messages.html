@@ -64,6 +64,7 @@
     <% // TAB CONTENT: compute job messages %>
     <div role="tabpanel" class="tab-pane active" id="tab-jobs-compute">
         <%= APP.utils.renderTemplate("template-messages-collection", {
+            MOD: MOD,
             messages: messageHistory.compute,
             jobTypeDescription:'Compute'}) %>
     </div>
@@ -71,6 +72,7 @@
     <% if (messageHistory.postProcessing.length) { %>
     <div role="tabpanel" class="tab-pane" id="tab-jobs-post-processing">
         <%= APP.utils.renderTemplate("template-messages-collection", {
+            MOD: MOD,
             messages: messageHistory.postProcessing,
             jobTypeDescription:'Post-Processing'}) %>
     </div>
@@ -80,42 +82,84 @@
 
 <!-- Template: messages collection -->
 <script type="underscore/template" id="template-messages-collection">
-    <table class="table table-hover table-bordered table-striped message-history-table">
+    <table class="table table-hover table-bordered table-striped table-condensed1 message-history-table">
         <thead>
             <tr>
-                <th title='ID' class='text-center'>#</th>
-                <th title='Type' class='text-center'>Type</th>
-                <th title='Job UID' class='text-center'>Job UID</th>
-                <th title='Timestamp' class='text-center'>Timestamp</th>
-                <th title='liblIGCM version' class='text-center'>liblIGCM version</th>
-                <th title='Processed' class='text-center'>Processed</th>
-                <th title='Email ID' class='text-center'>Email ID</th>
+                <th title='ID' class='text-center'>
+                    <small>#</small>
+                </th>
+                <th title='Type' class='text-center'>
+                    <small>Type</small>
+                </th>
+                <th title='Job Info.'>
+                    <small>Job Info.</small>
+                </th>
+                <th title='Job UID' class='text-center'>
+                    <small>Job UID</small>
+                </th>
+                <th title='Timestamp' class='text-center'>
+                    <small>Timestamp</small>
+                </th>
+                <th title='Processed' class='text-center'>
+                    <small>Processed</small>
+                </th>
+                <th title='Latency' class='text-center'>
+                    <small>Latency</small>
+                </th>
+                <th title='Email ID' class='text-center'>
+                    <small>Email ID</small>
+                </th>
+                <th title='liblGCM version' class='text-center'>
+                    <small>liblGCM</small>
+                </th>
                 <th title='View message content' class='text-center'></th>
             </tr>
         </thead>
         <tbody>
             <% _.each(messages, function(message, messageIndex) { %>
-            <% if (_.indexOf(['1999', '2999', '3999'], message.typeID) != -1) { %>
-            <tr id="<%= message.uid %>" class="bg-danger">
-            <% } else if (_.indexOf(['1900', '2900', '3900'], message.typeID) != -1) {%>
-            <tr id="<%= message.uid %>" class="bg-danger">
-            <% } else {%>
-            <tr id="<%= message.uid %>">
-            <% } %>
-                <td style='width: 40px;' class='text-center' title='<%= messageIndex + 1 %>'><%= messageIndex + 1 %></td>
-                <td title='Message type' class='text-center' title='<%= message.typeID %>'><%= message.typeID %></td>
-                <td title='Message job identifier' class='text-center' title='<%= message.jobUID %>'><%= message.jobUID %></td>
-                <td title='Message timestamp' class='text-center' title='<%= message.timestamp %>'><%= message.timestamp %></td>
-                <td title='liblIGCM version' class='text-center' title='<%= message.producerVersion %>'><%= message.producerVersion %></td>
-                <td title='Message processing date' class='text-center' title='<%= message.rowCreateDate %>'><%= message.rowCreateDate %></td>
-                <td title='Email ID' class='text-center' title='Email ID'><%= message.emailID || '--' %></td>
-                <td title='View message content' class='message-content text-center' ><span class='glyphicon glyphicon-envelope'></span></td>
-            </tr>
+                <% if (_.indexOf(['1999', '2999', '3999'], message.typeID) != -1) { %>
+                <tr id="<%= message.uid %>" class="bg-danger">
+                <% } else if (_.indexOf(['1900', '2900', '3900'], message.typeID) != -1) {%>
+                <tr id="<%= message.uid %>" class="bg-danger">
+                <% } else {%>
+                <tr id="<%= message.uid %>">
+                <% } %>
+                    <td style='width: 40px;' class='text-center'>
+                        <small><%= messageIndex + 1 %></small>
+                    </td>
+                    <td title='Message type' class='text-center'>
+                        <small><%= message.typeID %></small>
+                    </td>
+                    <td title='Job information'>
+                        <small><%= message.jobInfo %></small>
+                    </td>
+                    <td title='Job identifier' class='text-center'>
+                        <small><%= message.jobUID %></small>
+                    </td>
+                    <td title='Message timestamp' class='text-center'>
+                        <small><%= message.timestamp %></small>
+                    </td>
+                    <td title='Message processing date' class='text-center'>
+                        <small><%= message.processed %></small>
+                    </td>
+                    <td title='Message processing latency' class='text-center'>
+                        <small><%= message.latency %></small>
+                    </td>
+                    <td title='Email identifier' class='text-center'>
+                        <small><%= message.emailID || '--' %></small>
+                    </td>
+                    <td title='liblGCM version' class='text-center'>
+                        <small>v<%= message.producerVersion %></small>
+                    </td>
+                    <td title='View message content' class='message-content text-center' >
+                        <small><span class='glyphicon glyphicon-envelope'></span></small>
+                    </td>
+                </tr>
             <% }); %>
         </tbody>
         <tfoot>
             <tr  style="border: 0px;">
-                <td style="" colspan="8">
+                <td style="" colspan="10">
                     <span>
                         <strong><%= jobTypeDescription %> Job Messages</strong>
                     </span>
@@ -134,7 +178,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="gridSystemModalLabel">Prodiguer Message Content</h4>
+                <h4 class="modal-title" id="gridSystemModalLabel"><strong>Prodiguer Message Content</strong></h4>
             </div>
             <div class="modal-body">
                 <table class="table table-hover table-bordered table-condensed table-striped message-history-table">
@@ -155,7 +199,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

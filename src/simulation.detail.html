@@ -292,6 +292,7 @@
             <th title='Job start date' class='text-center'>Start Date</th>
             <th title='Job end date' class='text-center'>End Date</th>
             <th title='Job duration' class='text-center'>Duration</th>
+            <th title='Job warning delay' class='text-center'>Delay Warning</th>
             <th title='Job lateness' class='text-center'>Lateness</th>
         </tr>
     </thead>
@@ -340,12 +341,13 @@
 <!-- Template: job detail -->
 <script type="underscore/template" id="template-job-detail">
 <tr id="<%= job.jobUID %>" class="<%= MOD.getStateCSS(job.executionState) %>">
-    <td class='id text-center' style='width: 40px;' title='<%= jobIndex %>'><%= jobIndex %></td>
+    <td class='id text-center' title='<%= jobIndex %>'><%= jobIndex %></td>
     <td class='postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.ext.postProcessingInfo %>'><%= job.ext.postProcessingInfo %></td>
-    <td style='width: <%= hidePPInfo  ? '24%' : '16%' %>;' class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>
-    <td style='width: <%= hidePPInfo  ? '24%' : '16%' %>;' class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>
-    <td style='width: <%= hidePPInfo  ? '24%' : '16%' %>;' class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>
-    <td style='width: <%= hidePPInfo  ? '24%' : '16%' %>;' class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>
+    <td class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>
+    <td class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>
+    <td class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>
+    <td class='lateness text-center' title='<%= job.ext.warningDelay %>'><%= job.ext.warningDelay %></td>
+    <td class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>
 </tr>
 </script>
 

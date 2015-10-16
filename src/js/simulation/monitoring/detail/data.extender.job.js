@@ -6,6 +6,7 @@
     // Sets job default values.
     MOD.extendJob01 = function (job) {
         _.defaults(job, {
+            duration: null,
             executionEndDate: null,
             executionStartDate: null,
             executionState: null,
@@ -16,10 +17,10 @@
                 executionEndDate: '--',
                 executionStartDate: '--',
                 executionState: undefined,
-                expectedExecutionEndDate: null,
                 isPostProcessing: _.has(job, 'typeof') ? job.typeof !== 'computing' : true,
                 lateness: '--',
-                postProcessingInfo: '--'
+                postProcessingInfo: '--',
+                warningDelay: '--'
             },
             isError: false,
             postProcessingComponent: null,
@@ -69,21 +70,28 @@
             job.ext.executionEndDate = job.executionEndDate.format('DD-MM-YYYY HH:mm:ss');
         }
 
-        // Set expected end date.
-        if (job.executionStartDate) {
-            job.ext.expectedExecutionEndDate = moment(job.executionStartDate).add(job.warningDelay, 's');
+        // Format warning delay.
+        job.ext.warningDelay = job.warningDelay;
+        job.ext.warningDelay = numeral(job.warningDelay).format('00:00:00');
+        if (job.ext.warningDelay.length === 7) {
+            job.ext.warningDelay = "0" + job.ext.warningDelay;
         }
 
         // Set duration.
         if (job.executionStartDate && job.executionEndDate) {
-            job.ext.duration = numeral(job.executionEndDate.diff(job.executionStartDate, 's')).format('00:00:00');
+            job.duration = numeral(job.executionEndDate.diff(job.executionStartDate, 's'));
+            job.ext.duration = job.duration.format('00:00:00');
+            if (job.ext.duration.length === 7) {
+                job.ext.duration = "0" + job.ext.duration;
+            }
         }
 
         // Set lateness.
-        if (job.executionStartDate &&
-            job.executionEndDate &&
-            job.executionEndDate > job.ext.expectedExecutionEndDate) {
-            job.ext.lateness = numeral(job.executionEndDate.diff(job.ext.expectedExecutionEndDate, 's')).format('00:00:00');
+        if (job.duration && job.duration > job.warningDelay) {
+            job.ext.lateness = (job.duration - job.warningDelay).format('00:00:00');
+            if (job.ext.lateness.length === 7) {
+                job.ext.lateness = "0" + job.ext.lateness;
+            }
         }
     };
 
