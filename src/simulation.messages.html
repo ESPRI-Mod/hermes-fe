@@ -66,7 +66,9 @@
         <%= APP.utils.renderTemplate("template-messages-collection", {
             MOD: MOD,
             messages: messageHistory.compute,
-            jobTypeDescription:'Compute'}) %>
+            jobTypeDescription:'Compute',
+            displayJobInfo: false
+        }) %>
     </div>
     <% // TAB CONTENT: post-processing jobs %>
     <% if (messageHistory.postProcessing.length) { %>
@@ -74,7 +76,9 @@
         <%= APP.utils.renderTemplate("template-messages-collection", {
             MOD: MOD,
             messages: messageHistory.postProcessing,
-            jobTypeDescription:'Post-Processing'}) %>
+            jobTypeDescription:'Post-Processing',
+            displayJobInfo: true
+        }) %>
     </div>
     <% } %>
 </div>
@@ -91,9 +95,11 @@
                 <th title='Type' class='text-center'>
                     <small>Type</small>
                 </th>
-                <th title='Job Info.'>
-                    <small>Job Info.</small>
-                </th>
+                <% if (displayJobInfo) { %>
+                    <th title='Job Info.'>
+                        <small>Job Info.</small>
+                    </th>
+                <% } %>
                 <th title='Job UID' class='text-center'>
                     <small>Job UID</small>
                 </th>
@@ -130,9 +136,11 @@
                     <td title='Message type' class='text-center'>
                         <small><%= message.typeID %></small>
                     </td>
-                    <td title='Job information'>
-                        <small><%= message.jobInfo %></small>
-                    </td>
+                    <% if (displayJobInfo) { %>
+                        <td title='Job information'>
+                            <small><%= message.jobInfo %></small>
+                        </td>
+                    <% } %>
                     <td title='Job identifier' class='text-center'>
                         <small><%= message.jobUID %></small>
                     </td>
