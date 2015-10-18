@@ -68,6 +68,7 @@
         // Map tuples to JSON objects.
         data.simulationList = _.map(data.simulationList, mapSimulation);
         data.jobList = _.map(data.jobList, mapJob);
+        MOD.log("timeslice unpacked");
 
         // Update module state.
         MOD.state.simulationList = data.simulationList;
