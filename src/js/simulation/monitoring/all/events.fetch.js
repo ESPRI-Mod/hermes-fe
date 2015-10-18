@@ -58,7 +58,7 @@
             isError: i[2],
             jobUID: i[3],
             simulationUID: i[4],
-            typeof: i.length === 5 ? "post-processing" : i[5]
+            typeof: i[5]
         };
     };
 
