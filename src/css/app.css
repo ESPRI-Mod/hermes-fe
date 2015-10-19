@@ -1,7 +1,3 @@
-div.alert, div.panel {
-	margin-bottom: 8px;
-}
-
 .app-header {
 	margin-bottom: 0px;
 }
@@ -28,10 +24,6 @@ div.alert, div.panel {
 	font-weight: bold;
 }
 
-.app-content {
-	margin-bottom: 8px;
-}
-
 .app-title {
 	font-size: 52px;
 	color: #337AB7;
@@ -40,12 +32,9 @@ div.alert, div.panel {
 
 .module-title {
 	font-size: 52px;
-	/*color: #337AB7;*/
 	color: #1e496d;
-	/*font-style: italic;*/
 }
 
 .module-version {
 	cursor: pointer;
 }
-

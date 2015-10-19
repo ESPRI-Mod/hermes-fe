@@ -14,7 +14,7 @@ article > header > h2 span.simulation-messages {
 }
 
 ul.nav {
-	margin-bottom: 5px;
+	margin-bottom: 2px;
 }
 
 li:not(.active) > a > strong.text-uppercase {
@@ -22,5 +22,5 @@ li:not(.active) > a > strong.text-uppercase {
 }
 
 #caption {
-	margin-bottom: 5px;
+	margin-bottom: 2px;
 }
