@@ -287,13 +287,27 @@
        class='table table-hover table-bordered table-condensed job-history-table <%= new Date() %>'>
     <thead>
         <tr class="">
-            <th title='Job ID' class='text-center'>#</th>
-            <th title='Job post processing information' class='<%= hidePPInfo ? 'hidden' : '' %>'>Info.</th>
-            <th title='Job start date' class='text-center'>Start Date</th>
-            <th title='Job end date' class='text-center'>End Date</th>
-            <th title='Job duration' class='text-center'>Duration</th>
-            <th title='Job warning delay' class='text-center'>Delay Warning</th>
-            <th title='Job lateness' class='text-center'>Lateness</th>
+            <th title='Job ID' class='text-center'>
+                <small>#</small>
+            </th>
+            <th title='Job post processing information' class='<%= hidePPInfo ? 'hidden' : '' %>'>
+                <small>Info.</small>
+            </th>
+            <th title='Job start date' class='text-center'>
+                <small>Start Date</small>
+            </th>
+            <th title='Job end date' class='text-center'>
+                <small>End Date</small>
+            </th>
+            <th title='Job duration' class='text-center'>
+                <small>Duration</small>
+            </th>
+            <th title='Job warning delay' class='text-center'>
+                <small>Delay Warning</small>
+            </th>
+            <th title='Job lateness' class='text-center'>
+                <small>Lateness</small>
+            </th>
         </tr>
     </thead>
     <tbody>

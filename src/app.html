@@ -21,8 +21,8 @@
 
 <!-- Template: filter panel -->
 <script type="underscore/template" id="filter-panel-template">
-<div id="filter-panel" class='panel panel-info form-inline' style="margin-bottom: 3px;">
-    <div class='panel-body'>
+<div id="filter-panel" class='panel panel-info form-inline' style="margin-bottom: 2px; padding: 0px;">
+    <div class='panel-body' style="padding: 10px; 0px;">
         <% _.each(MOD.state.filters, function(filter) { %>
         <div class="col-md-3">
             <label style='width: 40%'><%- filter.displayName %></label>
@@ -50,7 +50,7 @@
 
 <!-- Template: grid header -->
 <script type="underscore/template" id="grid-header-template">
-<div class='alert bg-primary' style="margin-bottom: 3px;">
+<div class='alert bg-primary' style="margin-bottom: 2px;">
     <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
     <span class='pagination pull-right <%= paging.count < 2 ? 'hidden' : '' %>' role='toolbar'>
         <span class='btn-group' role='group'>
@@ -268,7 +268,7 @@
 <script type="underscore/template" id="notification-info-template">
 <div id="notification-info"
      class="monitoring-state-<%= simulation ? simulation.executionState : 'running' %>"
-     style="padding: 12px; margin-bottom: 3px; .border-radius( 5px );">
+     style="padding: 12px 17px; margin-bottom: 2px; .border-radius( 5px );">
     <strong>
     <% if (simulation) { %>
         <%= eventTimestamp.slice(0, 19) %>&nbsp;::
