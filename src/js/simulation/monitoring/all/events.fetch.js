@@ -7,11 +7,9 @@
 
     // Controlled vocabularies loaded event handler.
     // @data    Data loaded from remote server.
-    MOD.events.on("setup:cvTermsLoaded", function (data) {
-        // Cache CV terms.
-        _.extend(MOD.state, {
-            cvTerms: APP.utils.parseCVTerms(data.cvTerms)
-        });
+    MOD.events.on("setup:cvDataLoaded", function (data) {
+        // Update module state.
+        MOD.state.cvTerms = APP.utils.parseCVTerms(data.cvTerms);
 
         // Initialise filter cv terms sets.
         MOD.initFilterCvTermsets();

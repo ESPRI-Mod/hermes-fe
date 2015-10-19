@@ -26,6 +26,7 @@
             fieldName = fieldName || termType;
             fieldValue = obj[fieldName];
             term = MOD.cv.getTerm(termType, fieldValue);
+
             if (term) {
                 obj.ext[fieldName] = term.displayName;
             } else {

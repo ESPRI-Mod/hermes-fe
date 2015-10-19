@@ -12,7 +12,7 @@
         ep = APP.utils.getEndPoint(MOD.urls.FETCH_CV);
         $.getJSON(ep, function (data) {
             MOD.log("cv fetched");
-            MOD.events.trigger("setup:cvTermsLoaded", data);
+            MOD.events.trigger("setup:cvDataLoaded", data);
         });
     });
 

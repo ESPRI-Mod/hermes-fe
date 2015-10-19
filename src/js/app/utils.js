@@ -225,14 +225,21 @@
                    _.isUndefined(value);
         },
 
-        // Parses set of cv terms after being retrieved from server.
-        parseCVTerms: function (terms) {
-            _.each(terms, function (term) {
-                term.sortKey = (term.typeof + ":" + (term.sortKey || term.name)).toLowerCase();
-                term.synonyms = term.synonyms ? term.synonyms.split(', ') : [];
-            });
+        // Returns a mapped cv term.
+        mapCVTerm: function (term) {
+            return {
+                displayName: term[0],
+                name: term[1],
+                sortKey: (term[4] + ":" + (term[2] || term[1])).toLowerCase(),
+                synonyms: _.isString(term[3]) ? term[3].split(', ') : term[3],
+                typeof: term[4],
+                uid: term[5]
+            };
+        },
 
-            return _.sortBy(terms, 'sortKey');
+        // Parses set of cv terms retrieved from server.
+        parseCVTerms: function (terms) {
+            return _.sortBy(_.map(terms, APP.utils.mapCVTerm), 'sortKey');
         }
     };
 

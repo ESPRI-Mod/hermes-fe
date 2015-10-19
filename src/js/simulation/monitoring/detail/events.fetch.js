@@ -4,14 +4,12 @@
     "use strict";
 
     // Controlled vocabularies loaded event handler.
-    // @ei     Data loaded from remote server.
-    MOD.events.on("setup:cvTermsLoaded", function (ei) {
+    // @data     Data loaded from remote server.
+    MOD.events.on("setup:cvDataLoaded", function (data) {
         var ep;
 
-        // Cache CV terms.
-        _.extend(MOD.state, {
-            cvTerms: APP.utils.parseCVTerms(ei.cvTerms)
-        });
+        // Update module state.
+        MOD.state.cvTerms = APP.utils.parseCVTerms(data.cvTerms);
 
         // Load page data & fire event.
         ep = APP.utils.getEndPoint(MOD.urls.FETCH_ONE);
