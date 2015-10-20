@@ -78,8 +78,25 @@
             }
         },
 
+        // Returns a mapped message.
+        mapMessage = function (i) {
+            return {
+                content: i[0],
+                emailID: i[1],
+                jobUID: i[2],
+                processed: i[3],
+                producerVersion: i[4],
+                timestamp: i[5],
+                typeID: i[6],
+                uid: i[7],
+            };
+        },
+
         // Page setup data download event handler.
         onPageSetUpDataDownloaded = function (data) {
+            // Map tuples to JSON objects.
+            data.messageHistory = _.map(data.messageHistory, mapMessage);
+
             // Parse data.
             _.each(data.messageHistory, parseMessage);
 
