@@ -93,6 +93,16 @@
         });
     };
 
+    // Initializes filter cv termsets.
+    MOD.updateFilterCvTermsets = function (terms) {
+        MOD.state.cvTerms = _.union(MOD.state.cvTerms, terms);
+        _.each(terms, function (term) {
+            if (_.has(MOD.state.filterSet, term.typeof)) {
+                MOD.state.filterSet[term.typeof].cvTerms.all.push(term);
+            }
+        });
+    };
+
     // Updates current filter value.
     MOD.updateFilterValue = function (filterKey, filterOption) {
         var filter;

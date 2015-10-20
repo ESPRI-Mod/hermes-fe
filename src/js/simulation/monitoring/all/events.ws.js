@@ -41,9 +41,7 @@
         }
 
         // Update module state.
-        _.extend(MOD.state, {
-            cvTerms: _.union(MOD.state.cvTerms, ei.cvTerms)
-        });
+        MOD.updateFilterCvTermsets(ei.cvTerms);
 
         // Update module state.
         MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
