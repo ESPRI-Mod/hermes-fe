@@ -67,7 +67,7 @@
 
         // Parses a message recieved from web-service.
         parseMessage = function (msg) {
-            msg.latency = numeral(moment.utc(msg.processed).diff(msg.timestamp, 's')).format("00:00:00");
+            msg.latency = numeral(moment(msg.processed).diff(msg.timestamp, 's')).format("00:00:00");
             if (msg.latency.length === 7) {
                 msg.latency = "0" + msg.latency;
             }
