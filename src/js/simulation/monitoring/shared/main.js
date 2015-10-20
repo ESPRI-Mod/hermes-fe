@@ -57,7 +57,7 @@
             FETCH_CV: 'cv/fetch',
 
             // Fetch monitoring time slice endpoint.
-            FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice1?timeslice={timeslice}',
+            FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice?timeslice={timeslice}',
 
             // Fetch monitoring one simulation endpoint.
             FETCH_ONE: 'simulation/monitoring/fetch_one?hashid={hashid}&tryID={tryID}',
