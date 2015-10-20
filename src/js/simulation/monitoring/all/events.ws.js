@@ -34,7 +34,13 @@
     // Simulation event handler.
     // @ei    Event information received from remote server.
     processSimulationEvent = function (ei) {
-        // Update cv terms.
+        console.log(_.keys(ei));
+        console.log("NEW TERMS : " + ei.cvTerms.length);
+        if (ei.cvTerms.length > 0) {
+            console.log("NEW TERM : " + _.keys(ei.cvTerms[0]));
+        }
+
+        // Update module state.
         _.extend(MOD.state, {
             cvTerms: _.union(MOD.state.cvTerms, ei.cvTerms)
         });

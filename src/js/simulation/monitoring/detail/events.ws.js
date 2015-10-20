@@ -10,8 +10,6 @@
     processJobEvent = function (ei) {
         var jobList;
 
-        console.log((new Date()) + " :: " + ei.job.jobUID);
-
         // Update simulation job list.
         jobList = _.filter(MOD.state.simulation.jobs.all, function (j) {
             return j.jobUID !== ei.job.jobUID;
