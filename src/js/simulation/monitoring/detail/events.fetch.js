@@ -11,18 +11,19 @@
                 executionEndDate: i[1],
                 executionStartDate: i[2],
                 isError: i[3],
-                isStartup: i[4],
-                jobUID: i[5],
-                postProcessingComponent: i[6],
-                postProcessingDate: i[7],
-                postProcessingDimension: i[8],
-                postProcessingFile: i[9],
-                postProcessingName: i[10],
-                simulationUID: i[11],
-                schedulerID: i[12],
-                submissionPath: i[13],
-                typeof: i[14],
-                warningDelay: i[15]
+                isComputeEnd: i[4],
+                isComputeStartup: i[5],
+                jobUID: i[6],
+                postProcessingComponent: i[7],
+                postProcessingDate: i[8],
+                postProcessingDimension: i[9],
+                postProcessingFile: i[10],
+                postProcessingName: i[11],
+                simulationUID: i[12],
+                schedulerID: i[13],
+                submissionPath: i[14],
+                typeof: i[15],
+                warningDelay: i[16]
             };
         };
 
