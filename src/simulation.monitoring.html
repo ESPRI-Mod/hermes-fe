@@ -164,7 +164,7 @@
 <script type="underscore/template" id="grid-body-template">
 <tbody>
     <% _.each((paging.current ? paging.current.data : []), function(s, simulationIndex) { %>
-    <%= APP.utils.renderTemplate("grid-row-template", {s: s}) %>
+    <%= APP.utils.renderTemplate("grid-row-template", {s: s, MOD: MOD}) %>
     <% }); %>
 </tbody>
 </script>
@@ -235,7 +235,7 @@
     </td>
     <td class='text-center execution-end-date' >
         <small>
-            <%= s.ext.executionEndDate %>
+            <%= (MOD.getSimulationComputeEndDate(s) || "--").slice(0, 19) %>
         </small>
     </td>
     <td class='text-center monitoring' ><span class='glyphicon glyphicon-random'></span></td>

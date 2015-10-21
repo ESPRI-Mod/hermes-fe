@@ -10,8 +10,8 @@
                 accountingProject: i[0],
                 executionEndDate: i[1],
                 executionStartDate: i[2],
-                isError: i[3],
-                isComputeEnd: i[4],
+                isComputeEnd: i[3],
+                isError: i[4],
                 jobUID: i[5],
                 postProcessingComponent: i[6],
                 postProcessingDate: i[7],
@@ -35,7 +35,7 @@
         MOD.state.cvTerms = APP.utils.parseCVTerms(data.cvTerms);
 
         // Load page data & fire event.
-        ep = APP.utils.getEndPoint(MOD.urls.FETCH_ONE);
+        ep = APP.utils.getEndPoint(MOD.urls.FETCH_DETAIL);
         ep = ep.replace("{hashid}", MOD.state.simulationHashID);
         ep = ep.replace("{tryID}", MOD.state.simulationTryID);
         $.getJSON(ep, function (data) {

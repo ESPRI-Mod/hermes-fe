@@ -93,7 +93,7 @@
             // Sort compute jobs (required in order to determine simulation execution status).
             sortComputeJobset(simulation);
 
-            // Set execution states.
+            // Set execution state.
             setExecutionState(simulation);
         }
     };

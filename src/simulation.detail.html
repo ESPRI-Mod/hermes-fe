@@ -212,7 +212,7 @@
                 <strong>Compute end date</strong>
             </td>
             <td>
-                <%- simulation.ext.executionEndDate %>
+                <%= (MOD.getSimulationComputeEndDate(simulation) || "--").slice(0, 19) %>
             </td>
         </tr>
         <tr>

@@ -53,10 +53,11 @@
         return {
             executionEndDate: i[0],
             executionStartDate: i[1],
-            isError: i[2],
-            jobUID: i[3],
-            simulationUID: i[4],
-            typeof: i[5]
+            isComputeEnd: i[2],
+            isError: i[3],
+            jobUID: i[4],
+            simulationUID: i[5],
+            typeof: i[6]
         };
     };
 

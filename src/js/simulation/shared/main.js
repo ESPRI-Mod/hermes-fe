@@ -59,8 +59,8 @@
             // Fetch monitoring time slice endpoint.
             FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice?timeslice={timeslice}',
 
-            // Fetch monitoring one simulation endpoint.
-            FETCH_ONE: 'simulation/monitoring/fetch_one?hashid={hashid}&tryID={tryID}',
+            // Fetch monitoring detail simulation endpoint.
+            FETCH_DETAIL: 'simulation/monitoring/fetch_detail?hashid={hashid}&tryID={tryID}',
 
             // Simulation detail page.
             SIMULATION_DETAIL_PAGE: 'simulation.detail.html?hashid={hashid}&tryID={tryID}&uid={uid}',
@@ -115,6 +115,34 @@
             }
         },
 
+        // Returns compute execution end date of a simulation.
+        getSimulationComputeEndDate: function (simulation) {
+            var last;
+
+            // Fixed date if cmip5.
+            if (simulation.activity === 'cmip5') {
+                return simulation.ext.executionEndDate;
+            }
+
+            // Null if no compute jobs have started.
+            if (simulation.jobs.compute.all.length === 0) {
+                return null;
+            }
+
+            // Derive from last compute job.
+            last = _.last(simulation.jobs.compute.all);
+            if (last.executionState === 'running') {
+                return null;
+            }
+            if (last.executionState === 'error') {
+                return last.ext.executionEndDate || last.executionEndDate;
+            }
+            if (last.executionState === 'complete' && last.isComputeEnd) {
+                return last.ext.executionEndDate || last.executionEndDate;
+            }
+            return null;
+        },
+
         // Returns compute execution state of a simulation.
         getSimulationComputeState: function (simulation) {
             var last;
@@ -129,25 +157,17 @@
                 return 'queued';
             }
 
-            // Set last compute job.
+            // Derive from last compute job.
             last = _.last(simulation.jobs.compute.all);
-
-            // Running if last compute job is running.
             if (last.executionState === 'running') {
                 return 'running';
             }
-
-            // Error if last compute job is error.
             if (last.executionState === 'error') {
                 return 'error';
             }
-
-            // Complete if last compute job is complete and 0100 has been received.
-            if (last.executionState === 'complete' && simulation.executionEndDate) {
+            if (last.executionState === 'complete' && last.isComputeEnd) {
                 return 'complete';
             }
-
-            // Otherwise queued.
             return 'queued';
         }
     });
