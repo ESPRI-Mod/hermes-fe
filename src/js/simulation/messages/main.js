@@ -38,7 +38,7 @@
                 FETCH: 'simulation/monitoring/fetch_messages?uid={uid}',
 
                 // Simulation detail page.
-                SIMULATION_DETAIL_PAGE: 'simulation.detail.html?hashid={hashid}&tryID={tryID}&uid={uid}',
+                SIMULATION_DETAIL_PAGE: 'simulation.detail.html?uid={uid}&hashid={hashid}&tryID={tryID}',
             },
         }),
 

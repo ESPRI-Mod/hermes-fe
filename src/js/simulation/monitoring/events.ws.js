@@ -1,4 +1,4 @@
-(function (MOD, _) {
+(function (MOD, _, moment) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -28,24 +28,34 @@
             MOD.parser.parseEvent(simulation, jobList);
 
             // Fire event.
-            data.simulation = simulation;
-            MOD.events.trigger("state:jobUpdate", data);
+            MOD.events.trigger("state:jobUpdate", _.extend(data, {
+                simulation: simulation
+            }));
         },
 
         // Simulation event handler.
         // @data    Event information received from server.
         processSimulationEvent = function (data) {
+            var relatedSimulation;
+
             // Map event data.
             data.jobList = _.map(data.jobList, MOD.mapJob);
 
             // Escape if a later try is already in memory.
-            if (_.has(MOD.state.simulationHashSet, data.simulation.hashid) &&
-                (MOD.state.simulationHashSet[data.simulation.hashid].tryID > data.simulation.tryID)) {
-                return;
+            if (_.has(MOD.state.simulationHashSet, data.simulation.hashid)) {
+                relatedSimulation = MOD.state.simulationHashSet[data.simulation.hashid];
+                if (moment(relatedSimulation.executionStartDate) > moment(data.simulation.executionStartDate)) {
+                    return;
+                }
             }
 
             // Update module state.
-            MOD.updateFilterCvTermsets(data.cvTerms);
+            MOD.state.cvTerms = _.union(MOD.state.cvTerms, data.cvTerms);
+            _.each(data.cvTerms, function (term) {
+                if (_.has(MOD.state.filterSet, term.typeof)) {
+                    MOD.state.filterSet[term.typeof].cvTerms.all.push(term);
+                }
+            });
             MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
                 return s.hashid !== data.simulation.hashid;
             });
@@ -80,5 +90,6 @@
 
 }(
     this.APP.modules.monitoring,
-    this._
+    this._,
+    this.moment
 ));

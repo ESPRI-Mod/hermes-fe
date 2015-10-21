@@ -47,6 +47,7 @@
         // Backbone: view initializer.
         initialize : function () {
             // Simulation update events.
+            MOD.events.on("state:simulationUpdate", this._updateCaption, this);
             MOD.events.on("state:simulationUpdate", this._updateOverview, this);
             MOD.events.on("state:simulationUpdate", this._updateJobCollections, this);
             MOD.events.on("state:simulationUpdate", this._updateJobCounts, this);
@@ -86,6 +87,10 @@
                 ei.eventTypeDescription = MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " " + ei.eventTypeDescription;
             }
             this._replaceNode('#notification', 'template-notification', ei);
+        },
+
+        _updateCaption: function () {
+            this._replaceNode("#caption", "template-caption", MOD.state);
         },
 
         _updateOverview: function () {

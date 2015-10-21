@@ -63,7 +63,7 @@
             FETCH_DETAIL: 'simulation/monitoring/fetch_detail?hashid={hashid}&tryID={tryID}',
 
             // Simulation detail page.
-            SIMULATION_DETAIL_PAGE: 'simulation.detail.html?hashid={hashid}&tryID={tryID}&uid={uid}',
+            SIMULATION_DETAIL_PAGE: 'simulation.detail.html?uid={uid}&hashid={hashid}&tryID={tryID}',
 
             // Simulation message page.
             SIMULATION_MESSAGES_PAGE: 'simulation.messages.html?simulationUID={uid}',

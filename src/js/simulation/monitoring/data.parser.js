@@ -4,55 +4,47 @@
     "use strict";
 
     // Closure vars.
-    var mapJob,
-        setExecutionState,
-        sortComputeJobset;
+    var
+        // Sets simulation's current execution status.
+        setExecutionState = function (simulation) {
+            simulation.executionState = MOD.getSimulationComputeState(simulation);
+            MOD.cv.setFieldDisplayName(simulation, 'simulation_state', 'executionState');
+        },
 
-    // Sets simulation's current execution status.
-    setExecutionState = function (simulation) {
-        simulation.executionState = MOD.getSimulationComputeState(simulation);
-        MOD.cv.setFieldDisplayName(simulation, 'simulation_state', 'executionState');
-    };
+        // Sorts a job set.
+        sortComputeJobset = function (simulation) {
+            if (simulation.jobs.compute.all.length > 1) {
+                simulation.jobs.compute.all = _.sortBy(simulation.jobs.compute.all, function (job) {
+                    return job.executionStartDate;
+                });
+            }
+        },
 
-    // Sorts a job set.
-    sortComputeJobset = function (simulation) {
-        if (simulation.jobs.compute.all.length > 1) {
-            simulation.jobs.compute.all = _.sortBy(simulation.jobs.compute.all, function (job) {
-                return job.executionStartDate;
-            });
-        }
-    };
+        // Maps a job to the relevant simulation job set.
+        mapJob = function (job) {
+            var jobs;
 
-    // Maps a job to the relevant simulation job set.
-    mapJob = function (job) {
-        var jobs;
+            if (_.has(MOD.state.simulationSet, job.simulationUID) === false) {
+                return;
+            }
 
-        if (_.has(MOD.state.simulationSet, job.simulationUID) === false) {
-            return;
-        }
-
-        jobs = MOD.state.simulationSet[job.simulationUID].jobs;
-        jobs.all.push(job);
-        switch (job.typeof) {
-        case 'computing':
-            jobs.compute.all.push(job);
-            jobs.compute[job.executionState].push(job);
-            break;
-        case 'post-processing':
-            jobs.postProcessing[job.executionState].push(job);
-            break;
-        case 'post-processing-from-checker':
-            jobs.postProcessingFromChecker[job.executionState].push(job);
-            break;
-        default:
-            break;
-        }
-    };
-
-    // Parses a simulation in readiness for processing.
-    MOD.parseSimulation = function (simulation, jobList) {
-        MOD.parseSimulations([simulation], jobList, _.indexBy([simulation], "uid"));
-    };
+            jobs = MOD.state.simulationSet[job.simulationUID].jobs;
+            jobs.all.push(job);
+            switch (job.typeof) {
+            case 'computing':
+                jobs.compute.all.push(job);
+                jobs.compute[job.executionState].push(job);
+                break;
+            case 'post-processing':
+                jobs.postProcessing[job.executionState].push(job);
+                break;
+            case 'post-processing-from-checker':
+                jobs.postProcessingFromChecker[job.executionState].push(job);
+                break;
+            default:
+                break;
+            }
+        };
 
     // Module data parser.
     MOD.parser = {
