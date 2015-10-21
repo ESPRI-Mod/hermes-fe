@@ -48,7 +48,6 @@
             spaceRaw: null,
             // ... extension fields
             ext: {
-                // ... user interface fields
                 activity: undefined,
                 computeNode: undefined,
                 computeNodeLogin: undefined,
@@ -57,12 +56,11 @@
                 executionState: undefined,
                 executionStartDate: "--",
                 experiment: undefined,
-                model: undefined,
-                space: undefined,
-                // ... helper fields
                 isSelectedForIM: false,
                 isRestart: simulation.tryID > 1,
-                modelSynonyms: []
+                model: undefined,
+                modelSynonyms: [],
+                space: undefined
             }
         });
     };

@@ -6,40 +6,43 @@
     var processSimulationEvent, processJobEvent;
 
     // Job event handler.
-    // @ei    Event information received from remote server.
-    processJobEvent = function (ei) {
+    // @data    Event information received from server.
+    processJobEvent = function (data) {
         var jobList;
 
         // Update simulation job list.
         jobList = _.filter(MOD.state.simulation.jobs.all, function (j) {
-            return j.jobUID !== ei.job.jobUID;
+            return j.jobUID !== data.job.jobUID;
         });
-        jobList.push(ei.job);
+        jobList.push(data.job);
 
         // Reparse simulation.
         MOD.parseSimulation(MOD.state.simulation, jobList);
 
         // Fire event.
-        ei.simulation = MOD.state.simulation;
-        MOD.events.trigger("state:jobListUpdate", ei);
+        data.simulation = MOD.state.simulation;
+        MOD.events.trigger("state:jobListUpdate", data);
     };
 
     // Simulation event handler.
-    // @ei    Event information received from remote server.
-    processSimulationEvent = function (ei) {
+    // @data    Event information received from server.
+    processSimulationEvent = function (data) {
+        // Map tuples to JSON objects.
+        data.jobList = _.map(data.jobList, MOD.mapJob);
+
         // Update cv terms.
         _.extend(MOD.state, {
-            cvTerms: _.union(MOD.state.cvTerms, ei.cvTerms)
+            cvTerms: _.union(MOD.state.cvTerms, data.cvTerms)
         });
 
         // Reparse simulation.
-        MOD.parseSimulation(ei.simulation, ei.jobList);
+        MOD.parseSimulation(data.simulation, data.jobList);
 
         // Update module state.
-        MOD.state.simulation = ei.simulation;
+        MOD.state.simulation = data.simulation;
 
         // Fire events.
-        MOD.events.trigger("state:simulationUpdate", ei);
+        MOD.events.trigger("state:simulationUpdate", data);
     };
 
     // Wire upto events streaming over the web-socket channel.

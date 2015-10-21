@@ -72,6 +72,9 @@
         // Map of simulation uid's to simulations.
         simulationSet: {},
 
+        // Map of simulation hash id's to simulations.
+        simulationHashSet: {},
+
         // Paging related state.
         paging: {
             current: undefined,

@@ -3,61 +3,72 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    var processSimulationEvent,
-        processJobEvent;
+    var
+        // Job event handler.
+        // @data    Event information received from server.
+        processJobEvent = function (data) {
+            var simulation, jobList;
 
-    // Job event handler.
-    // @ei    Event information received from remote server.
-    processJobEvent = function (ei) {
-        var simulation, jobList;
+            // Map event data.
+            data.job = MOD.mapJob(data.job);
 
-        // Escape if simulation is not in memory.
-        if (_.has(MOD.state.simulationSet, ei.job.simulationUID) === false) {
-            return;
-        }
+            // Escape if simulation is not in memory.
+            if (_.has(MOD.state.simulationSet, data.job.simulationUID) === false) {
+                return;
+            }
 
-        // Update simulation.
-        simulation = MOD.state.simulationSet[ei.job.simulationUID];
-        jobList = _.filter(simulation.jobs.all, function (j) {
-            return j.jobUID !== ei.job.jobUID;
-        });
-        jobList.push(ei.job);
+            // Update module state.
+            simulation = MOD.state.simulationSet[data.job.simulationUID];
+            jobList = _.filter(simulation.jobs.all, function (j) {
+                return j.jobUID !== data.job.jobUID;
+            });
+            jobList.push(data.job);
 
-        // Parse event data.
-        MOD.parser.parseEvent(simulation, jobList);
+            // Parse event data.
+            MOD.parser.parseEvent(simulation, jobList);
 
-        // Fire event.
-        ei.simulation = simulation;
-        MOD.events.trigger("state:jobUpdate", ei);
-    };
+            // Fire event.
+            data.simulation = simulation;
+            MOD.events.trigger("state:jobUpdate", data);
+        },
 
-    // Simulation event handler.
-    // @ei    Event information received from remote server.
-    processSimulationEvent = function (ei) {
-        // Update module state.
-        MOD.updateFilterCvTermsets(ei.cvTerms);
-        MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
-            return s.hashid !== ei.simulation.hashid && s.uid !== ei.simulation.uid;
-        });
-        MOD.state.simulationList.push(ei.simulation);
-        MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");
+        // Simulation event handler.
+        // @data    Event information received from server.
+        processSimulationEvent = function (data) {
+            // Map event data.
+            data.jobList = _.map(data.jobList, MOD.mapJob);
 
-        // Parse event data.
-        MOD.parser.parseEvent(ei.simulation, ei.jobList);
+            // Escape if a later try is already in memory.
+            if (_.has(MOD.state.simulationHashSet, data.simulation.hashid) &&
+                (MOD.state.simulationHashSet[data.simulation.hashid].tryID > data.simulation.tryID)) {
+                return;
+            }
 
-        // Update filtered simulations.
-        MOD.updateFilteredSimulationList();
+            // Update module state.
+            MOD.updateFilterCvTermsets(data.cvTerms);
+            MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
+                return s.hashid !== data.simulation.hashid;
+            });
+            MOD.state.simulationList.push(data.simulation);
+            MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");
+            MOD.state.simulationHashSet = _.indexBy(MOD.state.simulationList, "hashid");
 
-        // Update active filter terms.
-        MOD.updateActiveFilterTerms();
+            // Parse event data.
+            MOD.parser.parseEvent(data.simulation, data.jobList);
 
-        // Update pagination.
-        MOD.updatePagination(MOD.state.paging.current);
+            // Update filtered simulations.
+            MOD.updateFilteredSimulationList();
 
-        // Fire events.
-        MOD.events.trigger("state:simulationUpdate", ei);
-        MOD.events.trigger("state:simulationListUpdate");
-    };
+            // Update active filter terms.
+            MOD.updateActiveFilterTerms();
+
+            // Update pagination.
+            MOD.updatePagination(MOD.state.paging.current);
+
+            // Fire events.
+            MOD.events.trigger("state:simulationUpdate", data);
+            MOD.events.trigger("state:simulationListUpdate");
+        };
 
     // Wire upto events streaming over the web-socket channel.
     MOD.events.on("ws:jobComplete", processJobEvent);

@@ -187,8 +187,10 @@
 
             s = this._getSimulation(ei.simulation.uid);
             if (s) {
-                APP.utils.renderTemplate("grid-row-template", {s: ei.simulation});
-                this._replaceNode('#' + ei.simulation.uid, "grid-row-template", {s: ei.simulation});
+                this._replaceNode('#' + ei.simulation.uid, "grid-row-template", {
+                    s: ei.simulation,
+                    MOD: MOD
+                });
             }
         },
 

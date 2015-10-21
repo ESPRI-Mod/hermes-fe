@@ -3,29 +3,6 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    var
-        // Returns a mapped job.
-        mapJob = function (i) {
-            return {
-                accountingProject: i[0],
-                executionEndDate: i[1],
-                executionStartDate: i[2],
-                isComputeEnd: i[3],
-                isError: i[4],
-                jobUID: i[5],
-                postProcessingComponent: i[6],
-                postProcessingDate: i[7],
-                postProcessingDimension: i[8],
-                postProcessingFile: i[9],
-                postProcessingName: i[10],
-                simulationUID: i[11],
-                schedulerID: i[12],
-                submissionPath: i[13],
-                typeof: i[14],
-                warningDelay: i[15]
-            };
-        };
-
     // Controlled vocabularies loaded event handler.
     // @data     Data loaded from remote server.
     MOD.events.on("setup:cvDataLoaded", function (data) {
@@ -45,17 +22,17 @@
     });
 
     // Event handler: page data downloaded.
-    MOD.events.on("setup:pageDataDownloaded", function (ei) {
+    MOD.events.on("setup:pageDataDownloaded", function (data) {
         // Map tuples to JSON objects.
-        ei.jobList = _.map(ei.jobList, mapJob);
+        data.jobList = _.map(data.jobList, MOD.mapJob);
 
         // Parse data.
-        MOD.parseSimulation(ei.simulation, ei.jobList);
+        MOD.parseSimulation(data.simulation, data.jobList);
 
         // Update module state.
-        MOD.state.simulation = ei.simulation;
-        MOD.state.messageCount = ei.messageCount;
-        MOD.state.configCard = ei.configCard;
+        MOD.state.simulation = data.simulation;
+        MOD.state.messageCount = data.messageCount;
+        MOD.state.configCard = data.configCard;
 
         // Fire event.
         MOD.events.trigger("setup:complete", this);
