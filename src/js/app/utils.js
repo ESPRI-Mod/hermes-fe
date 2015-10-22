@@ -1,4 +1,4 @@
-(function (APP, constants, $, _, window) {
+(function (APP, constants, $, _, moment, window) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -240,6 +240,12 @@
         // Parses set of cv terms retrieved from server.
         parseCVTerms: function (terms) {
             return _.sortBy(_.map(terms, APP.utils.mapCVTerm), 'sortKey');
+        },
+
+        // Converts a YYYY-MM-DD HH:mm:ss.SSSSSS UTC string into a local datetime.
+        toLocalDateTimeString: function (val) {
+            return moment(val.slice(0, 19)).add(2, 'h').format("YYYY-MM-DD HH:mm:ss") +
+                   val.slice(19);
         }
     };
 
@@ -248,5 +254,6 @@
     this.APP.constants,
     this.$,
     this._,
+    this.moment,
     this.window
 ));

@@ -84,7 +84,7 @@
                 content: i[0],
                 emailID: i[1],
                 jobUID: i[2],
-                processed: i[3],
+                processed: APP.utils.toLocalDateTimeString(i[3]),
                 producerVersion: i[4],
                 timestamp: i[5],
                 typeID: i[6],
