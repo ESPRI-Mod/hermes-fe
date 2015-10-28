@@ -30,7 +30,6 @@
     MOD.extendSimulation02 = function (simulation) {
         _.defaults(simulation, {
             // ... misc. fields
-            executionEndDate: null,
             executionState: null,
             isError: false,
             // ... cv fields
@@ -69,9 +68,6 @@
     MOD.extendSimulation03 = function (simulation) {
         if (simulation.executionStartDate) {
             simulation.ext.executionStartDate = simulation.executionStartDate.slice(0, 19);
-        }
-        if (simulation.executionEndDate) {
-            simulation.ext.executionEndDate = simulation.executionEndDate.slice(0, 19);
         }
     };
 

@@ -11,6 +11,16 @@
             MOD.cv.setFieldDisplayName(simulation, 'simulation_state', 'executionState');
         },
 
+        // Sets simulation's execution end date.
+        setExecutionEndDate = function (simulation) {
+            var executionEndDate;
+
+            executionEndDate = MOD.getSimulationComputeEndDate(simulation);
+            if (executionEndDate) {
+                simulation.ext.executionEndDate = executionEndDate.slice(0, 19);
+            }
+        },
+
         // Sorts a job set.
         sortComputeJobset = function (simulation) {
             if (simulation.jobs.compute.all.length > 1) {
@@ -68,7 +78,11 @@
 
             // Set execution states.
             _.each(simulationList, setExecutionState);
-            MOD.log("timeslice simulation execution state assigned");
+            MOD.log("timeslice simulation compute state assigned");
+
+            // Set execution end dates.
+            _.each(simulationList, setExecutionEndDate);
+            MOD.log("timeslice simulation compute end date assigned");
         },
 
         // Parses web-socket event data.
@@ -87,6 +101,9 @@
 
             // Set execution state.
             setExecutionState(simulation);
+
+            // Set execution end date.
+            setExecutionEndDate(simulation);
         }
     };
 

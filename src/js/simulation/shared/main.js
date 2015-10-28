@@ -121,7 +121,7 @@
 
             // Fixed date if cmip5.
             if (simulation.activity === 'cmip5') {
-                return simulation.ext.executionEndDate;
+                return simulation.executionEndDate;
             }
 
             // Null if no compute jobs have started.

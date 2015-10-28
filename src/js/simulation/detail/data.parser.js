@@ -11,6 +11,16 @@
             MOD.cv.setFieldDisplayName(simulation, 'simulation_state', 'executionState');
         },
 
+        // Sets simulation's execution end date.
+        setExecutionEndDate = function (simulation) {
+            var executionEndDate;
+
+            executionEndDate = MOD.getSimulationComputeEndDate(simulation);
+            if (executionEndDate) {
+                simulation.ext.executionEndDate = executionEndDate.slice(0, 19);
+            }
+        },
+
         // Sorts a job set.
         sortJobset = function (jobSet) {
             if (jobSet.all.length > 1) {
@@ -66,8 +76,11 @@
         // Sort jobs.
         sortJobsets(simulation);
 
-        // Set execution states.
+        // Set derived execution states.
         setExecutionState(simulation);
+
+        // Set derived execution end date.
+        setExecutionEndDate(simulation);
     };
 
 }(
