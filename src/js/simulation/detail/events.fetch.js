@@ -1,4 +1,4 @@
-(function (APP, MOD, _, $) {
+(function (APP, MOD, window, _, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -32,7 +32,7 @@
         // Update module state.
         MOD.state.simulation = data.simulation;
         MOD.state.messageCount = data.messageCount;
-        MOD.state.configCard = data.configCard;
+        MOD.state.configCard = data.configCard ? window.atob(data.configCard) : null;
 
         // Fire event.
         MOD.events.trigger("setup:complete", this);
@@ -41,6 +41,7 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.window,
     this._,
     this.$
 ));
