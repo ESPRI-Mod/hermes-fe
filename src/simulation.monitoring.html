@@ -90,19 +90,19 @@
 <table class='table table-hover table-bordered table-condensed monitoring-table'>
     <thead>
         <tr>
-            <th title='Activity' class='text-center'><small>Activity</small></th>
+            <th title='Activity' class="text-center"><small>Activity</small></th>
             <th title='Name'><small>Name</small></th>
-            <th title='Try' class='text-center'><small>Try</small></th>
-            <th title='Compute Jobs' class='text-center'><small>Jobs (C)</small></th>
-            <th title='Post-Processing Jobs' class='text-center'><small>Jobs (PP)</small></th>
-            <th title='Node - Machine' class='text-center'><small>Node - Machine</small></th>
-            <th title='Login' class='text-center'><small>Login</small></th>
-            <th title='Tag / Model' class='text-center'><small>Tag / Model</small></th>
-            <th title='Space' class='text-center'><small>Space</small></th>
-            <th title='Experiment' class='text-center'><small>Experiment</small></th>
-            <th title='Start' class='text-center'><small>Start</small></th>
-            <th title='End' class='text-center'><small>End</small></th>
-            <th colspan="2" class='text-center' title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
+            <th title='Try' class="text-center"><small>Try</small></th>
+            <th title='Compute Jobs' class="text-center"><small>Jobs (C)</small></th>
+            <th title='Post-Processing Jobs' class="text-center"><small>Jobs (PP)</small></th>
+            <th title='Node - Machine' class="text-center"><small>Node - Machine</small></th>
+            <th title='Login' class="text-center"><small>Login</small></th>
+            <th title='Tag / Model' class="text-center"><small>Tag / Model</small></th>
+            <th title='Space' class="text-center"><small>Space</small></th>
+            <th title='Experiment' class="text-center"><small>Experiment</small></th>
+            <th title='Start' class="text-center"><small>Start</small></th>
+            <th title='End' class="text-center"><small>End</small></th>
+            <th colspan="2" class="text-center" title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
               <span class='glyphicon glyphicon-random'></span>
             </th>
         </tr>
@@ -142,24 +142,6 @@
 </table>
 </script>
 
-<!--                 <span class="pull-right">
-                    <span class="badge"
-                          title="<%- jobList.running.length %> running"
-                          style="background-color: #D9EDF7; color: #333;">
-                        <%- jobList.running.length %> RUNNING
-                    </span>
-                    <span class="badge"
-                          title="<%- jobList.complete.length %> complete"
-                          style="background-color: #DFF0D8; color: #333;">
-                        <%- jobList.complete.length %> COMPLETE
-                    </span>
-                    <span class="monitoring-state-running badge"
-                          title="<%- jobList.error.length %> in error"
-                          style="background-color: #F2DEDE; color: #333;">
-                        <%- jobList.error.length %> ERROR
-                    </span>
-                </span> -->
-
 <!-- Template: search result table body -->
 <script type="underscore/template" id="grid-body-template">
 <tbody>
@@ -172,17 +154,17 @@
 <!-- Template: search result table row -->
 <script type="underscore/template" id="grid-row-template">
 <tr id="<%= s.uid %>" class='monitoring-state-<%= s.executionState %>'>
-    <td class='text-center'>
+    <td class="text-center" title="<%= s.ext.activity %>">
         <small>
             <%= s.ext.activity %>
         </small>
     </td>
-    <td >
+    <td title="<%= s.name %>">
         <small>
-            <%= s.name %>
+            <%= s.name.slice(0, 30) + (s.name.length > 30 ? ' ...' : '') %>
         </small>
     </td>
-    <td class='text-center'>
+    <td class="text-center" title="<%= s.tryID %>">
         <small>
             <%= s.tryID %>
         </small>
@@ -203,44 +185,44 @@
             <%= s.jobs.postProcessing.error.length %>
         </small>
     </td>
-    <td class='text-center'>
+    <td class="text-center" title="<%= s.ext.computeNodeMachine %>">
         <small>
             <%= s.ext.computeNodeMachine %>
         </small>
     </td>
-    <td class='text-center'>
+    <td class="text-center" title="<%= s.computeNodeLogin %>">
         <small>
             <%= s.computeNodeLogin %>
         </small>
     </td>
-    <td class='text-center' >
+    <td class="text-center" title="<%= s.ext.model %>">
         <small>
             <%= s.ext.model %>
         </small>
     </td>
-    <td class='text-center' >
+    <td class="text-center" title="<%= s.ext.space %>">
         <small>
             <%= s.ext.space %>
         </small>
     </td>
-    <td class='text-center' >
+    <td class="text-center" title="<%= s.ext.experiment %>">
         <small>
             <%= s.ext.experiment %>
         </small>
     </td>
-    <td class='text-center' >
+    <td class="text-center" title="<%= s.ext.executionStartDate %>">
         <small>
             <%= s.ext.executionStartDate %>
         </small>
     </td>
-    <td class='text-center execution-end-date' >
+    <td class="text-center execution-end-date">
         <small>
             <%= (MOD.getSimulationComputeEndDate(s) || "--").slice(0, 19) %>
         </small>
     </td>
-    <td class='text-center monitoring' ><span class='glyphicon glyphicon-random'></span></td>
-    <td class='text-center inter-monitoring' >
-        <input type='checkbox' <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
+    <td class="text-center monitoring"><span class="glyphicon glyphicon-random"></span></td>
+    <td class="text-center inter-monitoring">
+        <input type="checkbox" <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
     </td>
 </tr>
 </script>

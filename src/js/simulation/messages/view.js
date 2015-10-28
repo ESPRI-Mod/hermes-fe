@@ -47,7 +47,6 @@
                 return m.uid === uid;
             });
             viewModel = $.parseJSON(viewModel.content);
-            // viewModel = _.omit(viewModel, ['configuration']);
             viewModel = _.map(_.keys(viewModel).sort(), function (key) {
                 var value;
 
