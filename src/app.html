@@ -95,7 +95,7 @@
             <th title='Try' class="text-center"><small>Try</small></th>
             <th title='Compute Jobs' class="text-center"><small>Jobs (C)</small></th>
             <th title='Post-Processing Jobs' class="text-center"><small>Jobs (PP)</small></th>
-            <th title='Node - Machine' class="text-center"><small>Node - Machine</small></th>
+            <th title='Node - Machine' class="text-center"><small>Machine</small></th>
             <th title='Login' class="text-center"><small>Login</small></th>
             <th title='Tag / Model' class="text-center"><small>Tag / Model</small></th>
             <th title='Space' class="text-center"><small>Space</small></th>
@@ -161,7 +161,7 @@
     </td>
     <td title="<%= s.name %>">
         <small>
-            <%= s.name.slice(0, 30) + (s.name.length > 30 ? ' ...' : '') %>
+            <%= s.name.slice(0, 30) + (s.name.length > 30 ? '...' : '') %>
         </small>
     </td>
     <td class="text-center" title="<%= s.tryID %>">
