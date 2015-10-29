@@ -39,8 +39,8 @@
             ], sortJobset);
         },
 
-        // Appends a job to the relevant simulation job set.
-        mapJob = function (simulation, job) {
+        // Parses a simulation job.
+        parseJob = function (simulation, job) {
             simulation.jobs.all.push(job);
             switch (job.typeof) {
             case 'computing':
@@ -50,6 +50,12 @@
             case 'post-processing':
                 simulation.jobs.postProcessing.all.push(job);
                 simulation.jobs.postProcessing[job.executionState].push(job);
+                if (job.postProcessingName === 'monitoring' &&
+                    job.executionEndDate &&
+                    job.isError === false &&
+                    _.has(MOD.urls.M, simulation.computeNode)) {
+                    simulation.jobs.postProcessing.hasMonitoring = true;
+                }
                 break;
             case 'post-processing-from-checker':
                 simulation.jobs.postProcessingFromChecker.all.push(job);
@@ -68,9 +74,9 @@
         // Extend jobs.
         _.each(jobList, MOD.extendJob);
 
-        // Map jobs to simulations.
+        // Parse jobs.
         _.each(jobList, function (job) {
-            mapJob(simulation, job);
+            parseJob(simulation, job);
         });
 
         // Sort jobs.

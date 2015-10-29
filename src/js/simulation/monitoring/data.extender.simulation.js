@@ -35,8 +35,7 @@
             // ... cv fields
             activity: null,
             activityRaw: null,
-            computeNode: null,
-            computeNodeRaw: null,
+            computeNode: simulation.computeNodeMachine ? simulation.computeNodeMachine.split("-")[0] : null,
             computeNodeLogin: null,
             computeNodeLoginRaw: null,
             experiment: null,

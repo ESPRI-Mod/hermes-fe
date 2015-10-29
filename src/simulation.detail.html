@@ -28,7 +28,7 @@
         <span class='pull-right'>
             <span class="simulation-messages glyphicon glyphicon-envelope <%= messageCount ? '' : 'hidden' %>"
                   title="View Simulation Messages"></span>
-            <span class="inter-monitoring glyphicon glyphicon-random"
+            <span class="inter-monitoring glyphicon glyphicon-random <%= simulation.jobs.postProcessing.hasMonitoring ? '' : 'hidden' %>"
                   title="Open Monitoring"></span>
         </span>
     </h2>
@@ -131,7 +131,9 @@
     <% // TAB CONTENT: config-card %>
     <% if (MOD.state.configCard) { %>
         <div role="tabpanel" class="tab-pane" id="tab-config-card">
-            <textarea id="simulation-config-card" class='form-control' rows='45' cols='40'><%- configCard %></textarea>
+            <textarea id="simulation-config-card" class='form-control' rows='45' cols='40'>
+                <%- configCard %>
+            </textarea>
         </div>
     <% } %>
     <% // TAB CONTENT: compute jobs %>
@@ -356,7 +358,7 @@
 <script type="underscore/template" id="template-job-detail">
 <tr id="<%= job.jobUID %>" class="<%= MOD.getStateCSS(job.executionState) %>">
     <td class='id text-center' title='<%= jobIndex %>'><%= jobIndex %></td>
-    <td class='postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.ext.postProcessingInfo %>'><%= job.ext.postProcessingInfo %></td>
+    <td class='postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.postProcessingInfo %>'><%= job.postProcessingInfo %></td>
     <td class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>
     <td class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>
     <td class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>

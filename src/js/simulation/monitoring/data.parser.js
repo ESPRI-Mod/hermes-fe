@@ -64,10 +64,6 @@
             _.each(simulationList, MOD.extendSimulation);
             MOD.log("timeslice simulations extended");
 
-            // Extend jobs.
-            _.each(jobList, MOD.extendJob);
-            MOD.log("timeslice jobs extended");
-
             // Map jobs to simulations.
             _.each(jobList, mapJob);
             MOD.log("timeslice jobs mapped");
@@ -89,9 +85,6 @@
         parseEvent: function (simulation, jobList) {
             // Extend simulation.
             MOD.extendSimulation(simulation);
-
-            // Extend jobs.
-            _.each(jobList, MOD.extendJob);
 
             // Map jobs to simulation.
             _.each(jobList, mapJob);

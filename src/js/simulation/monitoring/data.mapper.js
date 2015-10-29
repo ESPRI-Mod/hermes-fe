@@ -8,41 +8,41 @@
         return {
             executionEndDate: i[0],
             executionStartDate: i[1],
+            executionState: i[3] ? 'error' : i[0] ? 'complete' : 'running',
             isComputeEnd: i[2],
             isError: i[3],
+            isPostProcessing: i[6] !== 'computing',
             jobUID: i[4],
             simulationUID: i[5],
-            typeof: i[6]
+            typeof: i[6],
+            postProcessingName: i[2]
         };
     };
 
     // Returns a simulation object mapped form an array of values.
     MOD.mapSimulation = function (i) {
         return {
-            accountingProject: i[0],
-            activity: i[1],
-            activityRaw: i[2],
-            computeNode: i[3],
-            computeNodeRaw: i[4],
-            computeNodeLogin: i[5],
-            computeNodeLoginRaw: i[6],
-            computeNodeMachine: i[7],
-            computeNodeMachineRaw: i[8],
-            executionEndDate: i[9],
-            executionStartDate: i[10],
-            experiment: i[11],
-            experimentRaw: i[12],
-            isError: i[13],
-            hashid: i[14],
-            model: i[15],
-            modelRaw: i[16],
-            name: i[17],
-            outputEndDate: i[18],
-            outputStartDate: i[19],
-            space: i[20],
-            spaceRaw: i[21],
-            tryID: i[22],
-            uid: i[23]
+            activity: i[0],
+            activityRaw: i[1],
+            computeNodeLogin: i[2],
+            computeNodeLoginRaw: i[3],
+            computeNodeMachine: i[4],
+            computeNodeMachineRaw: i[5],
+            executionEndDate: i[6],
+            executionStartDate: i[7],
+            experiment: i[8],
+            experimentRaw: i[9],
+            isError: i[10],
+            hashid: i[11],
+            model: i[12],
+            modelRaw: i[13],
+            name: i[14],
+            outputEndDate: i[15],
+            outputStartDate: i[16],
+            space: i[17],
+            spaceRaw: i[18],
+            tryID: i[19],
+            uid: i[20]
         };
     };
 

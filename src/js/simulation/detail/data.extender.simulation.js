@@ -17,7 +17,8 @@
                 all: [],
                 complete: [],
                 error: [],
-                running: []
+                running: [],
+                hasMonitoring: simulation.activity === 'cmip5' || false
             },
             postProcessingFromChecker: {
                 all: [],
@@ -39,8 +40,7 @@
             // ... cv fields
             activity: null,
             activityRaw: null,
-            computeNode: null,
-            computeNodeRaw: null,
+            computeNode: simulation.computeNodeMachine ? simulation.computeNodeMachine.split("-")[0] : null,
             computeNodeLogin: null,
             computeNodeLoginRaw: null,
             experiment: null,
@@ -51,8 +51,7 @@
             spaceRaw: null,
             // ... extension fields
             ext: {
-                accountingProject: APP.utils.isNone(simulation.accountingProject) ? "--" :
-                                                                                    simulation.accountingProject,
+                accountingProject: APP.utils.isNone(simulation.accountingProject) ? "--" : simulation.accountingProject,
                 activity: undefined,
                 caption: undefined,
                 computeNode: undefined,
