@@ -48,7 +48,9 @@
                 break;
             case 'post-processing':
                 jobs.postProcessing[job.executionState].push(job);
-                if (job.isPostProcessingMonitoring) {
+                if (job.postProcessingName === 'monitoring' &&
+                    job.executionEndDate &&
+                    job.isError === false) {
                     simulation.hasMonitoring = true;
                 }
                 break;
