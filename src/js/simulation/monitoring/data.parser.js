@@ -30,8 +30,8 @@
             }
         },
 
-        // Maps a job to the relevant simulation job set.
-        mapJob = function (job) {
+        // Parses a simulation job to the relevant simulation job set.
+        parseJob = function (job) {
             var jobs;
 
             if (_.has(MOD.state.simulationSet, job.simulationUID) === false) {
@@ -47,6 +47,9 @@
                 break;
             case 'post-processing':
                 jobs.postProcessing[job.executionState].push(job);
+                if (job.isPostProcessingMonitoring) {
+                    jobs.postProcessing.hasMonitoring = true;
+                }
                 break;
             case 'post-processing-from-checker':
                 jobs.postProcessingFromChecker[job.executionState].push(job);
@@ -64,8 +67,8 @@
             _.each(simulationList, MOD.extendSimulation);
             MOD.log("timeslice simulations extended");
 
-            // Map jobs to simulations.
-            _.each(jobList, mapJob);
+            // Parse jobs.
+            _.each(jobList, parseJob);
             MOD.log("timeslice jobs mapped");
 
             // Sort compute jobs (required in order to determine simulation execution status).
@@ -79,6 +82,10 @@
             // Set execution end dates.
             _.each(simulationList, setExecutionEndDate);
             MOD.log("timeslice simulation compute end date assigned");
+
+            _.each(simulationList, function (simulation) {
+                console.log(simulation.name + " :: " + simulation.jobs.postProcessing.hasMonitoring);
+            });
         },
 
         // Parses web-socket event data.
@@ -86,8 +93,8 @@
             // Extend simulation.
             MOD.extendSimulation(simulation);
 
-            // Map jobs to simulation.
-            _.each(jobList, mapJob);
+            // Parse jobs.
+            _.each(jobList, parseJob);
 
             // Sort compute jobs (required in order to determine simulation execution status).
             sortComputeJobset(simulation);
@@ -99,7 +106,6 @@
             setExecutionEndDate(simulation);
         }
     };
-
 }(
     this.APP.modules.monitoring,
     this._

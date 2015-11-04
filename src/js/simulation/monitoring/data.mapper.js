@@ -12,10 +12,11 @@
             isComputeEnd: i[2],
             isError: i[3],
             isPostProcessing: i[6] !== 'computing',
+            isPostProcessingMonitoring: i[3] ? false : i[0] ? i[7] === 'monitoring' : false,
             jobUID: i[4],
             simulationUID: i[5],
             typeof: i[6],
-            postProcessingName: i[2]
+            ext: {}
         };
     };
 

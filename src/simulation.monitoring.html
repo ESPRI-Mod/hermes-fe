@@ -220,9 +220,11 @@
             <%= (MOD.getSimulationComputeEndDate(s) || "--").slice(0, 19) %>
         </small>
     </td>
-    <td class="text-center monitoring"><span class="glyphicon glyphicon-random"></span></td>
+    <td class="text-center monitoring">
+        <span class="glyphicon glyphicon-random <%= s.jobs.postProcessing.hasMonitoring ? '' : 'hidden' %>"></span>
+    </td>
     <td class="text-center inter-monitoring">
-        <input type="checkbox" <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
+        <input class="<%= s.jobs.postProcessing.hasMonitoring ? '' : 'hidden' %>" type="checkbox" <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
     </td>
 </tr>
 </script>

@@ -16,7 +16,8 @@
             postProcessing: {
                 complete: [],
                 error: [],
-                running: []
+                running: [],
+                hasMonitoring: simulation.activity === 'cmip5' || false
             },
             postProcessingFromChecker: {
                 complete: [],
