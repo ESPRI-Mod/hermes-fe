@@ -32,13 +32,14 @@
 
         // Parses a simulation job to the relevant simulation job set.
         parseJob = function (job) {
-            var jobs;
+            var simulation, jobs;
 
             if (_.has(MOD.state.simulationSet, job.simulationUID) === false) {
                 return;
             }
 
-            jobs = MOD.state.simulationSet[job.simulationUID].jobs;
+            simulation = MOD.state.simulationSet[job.simulationUID];
+            jobs = simulation.jobs;
             jobs.all.push(job);
             switch (job.typeof) {
             case 'computing':
@@ -48,7 +49,7 @@
             case 'post-processing':
                 jobs.postProcessing[job.executionState].push(job);
                 if (job.isPostProcessingMonitoring) {
-                    jobs.postProcessing.hasMonitoring = true;
+                    simulation.hasMonitoring = true;
                 }
                 break;
             case 'post-processing-from-checker':
@@ -82,10 +83,6 @@
             // Set execution end dates.
             _.each(simulationList, setExecutionEndDate);
             MOD.log("timeslice simulation compute end date assigned");
-
-            _.each(simulationList, function (simulation) {
-                console.log(simulation.name + " :: " + simulation.jobs.postProcessing.hasMonitoring);
-            });
         },
 
         // Parses web-socket event data.

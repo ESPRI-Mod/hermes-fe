@@ -221,10 +221,10 @@
         </small>
     </td>
     <td class="text-center monitoring">
-        <span class="glyphicon glyphicon-random <%= s.jobs.postProcessing.hasMonitoring ? '' : 'hidden' %>"></span>
+        <span class="glyphicon glyphicon-random <%= s.hasMonitoring ? '' : 'hidden' %>"></span>
     </td>
     <td class="text-center inter-monitoring">
-        <input class="<%= s.jobs.postProcessing.hasMonitoring ? '' : 'hidden' %>" type="checkbox" <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
+        <input class="<%= s.hasMonitoring ? '' : 'hidden' %>" type="checkbox" <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
     </td>
 </tr>
 </script>

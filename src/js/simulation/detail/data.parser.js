@@ -54,7 +54,7 @@
                     job.executionEndDate &&
                     job.isError === false &&
                     _.has(MOD.urls.M, simulation.computeNode)) {
-                    simulation.jobs.postProcessing.hasMonitoring = true;
+                    simulation.hasMonitoring = true;
                 }
                 break;
             case 'post-processing-from-checker':

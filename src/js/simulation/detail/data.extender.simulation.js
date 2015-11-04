@@ -5,6 +5,7 @@
 
     // Set simulation job collections.
     MOD.extendSimulation01 = function (simulation) {
+        simulation.hasMonitoring = simulation.activity === 'cmip5' || false;
         simulation.jobs = {
             all: [],
             compute: {
@@ -17,8 +18,7 @@
                 all: [],
                 complete: [],
                 error: [],
-                running: [],
-                hasMonitoring: simulation.activity === 'cmip5' || false
+                running: []
             },
             postProcessingFromChecker: {
                 all: [],
