@@ -289,31 +289,6 @@
 <table id="job-collection-<%= jobType %>"
        class='table table-hover table-bordered table-condensed job-history-table'>
     <thead>
-        <% if (jobList.all.length > pageSize ) { %>
-        <tr>
-            <th colspan="7"  style="padding: 4px; border-bottom: 0px">
-                <span class="pull-left" style="padding: 4px;">
-                    Total <%= jobTypeCaption %> Jobs: <%= jobList.all.length %>
-                </span>
-                <span id="pagination-<%= jobType %>" class="pull-right form-inline">
-                    <button type='button' class="btn btn-sm  btn-primary pagination-first">
-                        <strong><<</strong>
-                    </button>
-                    <button type='button' class="btn btn-sm  btn-primary pagination-previous">
-                        <strong>&nbsp;&lt;&nbsp;</strong>
-                    </button>
-                    <input type="text" class="pagination-info form-control input-sm"
-                           placeholder="Page <%= jobList.paging.current ? jobList.paging.current.id : '0' %> of <%= jobList.paging.count %>">
-                    <button type='button' class="btn btn-sm  btn-primary pagination-next">
-                        <strong>&nbsp;&gt;&nbsp;</strong>
-                    </button>
-                    <button type='button' class="btn btn-sm  btn-primary pagination-last">
-                        <strong>>></strong>
-                    </button>
-                </span>
-            </th>
-        </tr>
-        <% } %>
         <tr class="">
             <th title='Job ID' class='text-center'>
                 <small>#</small>
@@ -353,7 +328,10 @@
     <tfoot>
         <tr>
             <td colspan="7">
-                <span class="pull-left">
+                <span class="pull-left" style="padding-top: <%= jobList.all.length > pageSize ? 5 : 0 %>px">
+                    <span style="padding: 5px;">
+                        <strong><%= jobList.all.length %> <%= jobTypeCaption %> Jobs: </strong>
+                    </span>
                     <span class="badge"
                           title="<%- jobList.running.length %> running"
                           style="background-color: #D9EDF7; color: #333;">
@@ -370,7 +348,24 @@
                         <%- jobList.error.length %> ERROR
                     </span>
                 </span>
-
+                <% if (jobList.all.length > pageSize ) { %>
+                    <span id="pagination-<%= jobType %>" class="pull-right form-inline">
+                        <button type='button' class="btn btn-sm  btn-primary pagination-first">
+                            <strong><<</strong>
+                        </button>
+                        <button type='button' class="btn btn-sm  btn-primary pagination-previous">
+                            <strong>&nbsp;&lt;&nbsp;</strong>
+                        </button>
+                        <input type="text" class="pagination-info form-control input-sm"
+                               placeholder="Page <%= jobList.paging.current ? jobList.paging.current.id : '0' %> of <%= jobList.paging.count %>">
+                        <button type='button' class="btn btn-sm  btn-primary pagination-next">
+                            <strong>&nbsp;&gt;&nbsp;</strong>
+                        </button>
+                        <button type='button' class="btn btn-sm  btn-primary pagination-last">
+                            <strong>>></strong>
+                        </button>
+                    </span>
+                <% } %>
             </td>
         </tr>
     </tfoot>

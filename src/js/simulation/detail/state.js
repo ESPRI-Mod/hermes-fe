@@ -42,7 +42,7 @@
         messageCount: 0,
 
         // Size of job collection pages.
-        jobCollectionPageSize: 3,
+        jobCollectionPageSize: APP.constants.paging.itemsPerPage,
 
         // Returns job history collection by job type.
         getJobs: function (jobType) {
