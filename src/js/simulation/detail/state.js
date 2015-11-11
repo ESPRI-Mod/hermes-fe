@@ -41,6 +41,9 @@
         // Message count.
         messageCount: 0,
 
+        // Size of job collection pages.
+        jobCollectionPageSize: 3,
+
         // Returns job history collection by job type.
         getJobs: function (jobType) {
             switch (jobType) {

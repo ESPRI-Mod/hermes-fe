@@ -13,18 +13,33 @@
                 complete: [],
                 error: [],
                 running: [],
+                paging: {
+                    current: undefined,
+                    count: undefined,
+                    pages: []
+                }
             },
             postProcessing: {
                 all: [],
                 complete: [],
                 error: [],
-                running: []
+                running: [],
+                paging: {
+                    current: undefined,
+                    count: undefined,
+                    pages: []
+                }
             },
             postProcessingFromChecker: {
                 all: [],
                 complete: [],
                 error: [],
-                running: []
+                running: [],
+                paging: {
+                    current: undefined,
+                    count: undefined,
+                    pages: []
+                }
             }
         };
     };

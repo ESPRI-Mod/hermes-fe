@@ -1,10 +1,19 @@
-(function (MOD, _) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Closure vars.
     var
+        // Returns colleciton of managed job sets.
+        getJobSets = function (simulation) {
+            return [
+                simulation.jobs.compute,
+                simulation.jobs.postProcessing,
+                simulation.jobs.postProcessingFromChecker
+            ];
+        },
+
         // Sets simulation's current execution status.
         setExecutionState = function (simulation) {
             simulation.executionState = MOD.getSimulationComputeState(simulation);
@@ -26,17 +35,30 @@
             if (jobSet.all.length > 1) {
                 jobSet.all = _.sortBy(jobSet.all, function (job) {
                     return job.executionStartDate;
-                });
+                }).reverse();
             }
         },
 
-        // Sets different job sets.
-        sortJobsets = function (simulation) {
-            _.each([
-                simulation.jobs.compute,
-                simulation.jobs.postProcessing,
-                simulation.jobs.postProcessingFromChecker
-            ], sortJobset);
+        // Assigns job pagination.
+        setJobsetPagination = function (jobSet) {
+            var currentPage = jobSet.paging.current,
+                pages = APP.utils.getPages(jobSet.all, MOD.state.jobCollectionPageSize),
+                page;
+
+            // Reset pages.
+            jobSet.paging.count = pages.length;
+            jobSet.paging.current = pages ? pages[0] : null;
+            jobSet.paging.pages = pages;
+
+            // Ensure current page is respected when pages collection changes.
+            if (currentPage) {
+                page = _.find(pages, function (p) {
+                    return _.indexOf(p.data, currentPage.data[0]) !== -1;
+                });
+                if (page) {
+                    jobSet.paging.current = page;
+                }
+            }
         },
 
         // Parses a simulation job.
@@ -80,7 +102,10 @@
         });
 
         // Sort jobs.
-        sortJobsets(simulation);
+        _.each(getJobSets(simulation), sortJobset);
+
+        // Set job pagination state.
+        _.each(getJobSets(simulation), setJobsetPagination);
 
         // Set derived execution states.
         setExecutionState(simulation);
@@ -90,6 +115,7 @@
     };
 
 }(
+    this.APP,
     this.APP.modules.monitoring,
     this._
 ));

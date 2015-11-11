@@ -123,13 +123,14 @@
 
         // Gets count of pages to be rendered.
         // @data    Data to be displayed via pager.
-        getPageCount: function (data) {
+        getPageCount: function (data, itemsPerPage) {
             var pageCount = 0,
                 itemCount = _.isArray(data) ? data.length : data;
 
             if (itemCount) {
-                pageCount = parseInt(itemCount / constants.paging.itemsPerPage, 10);
-                if (itemCount / constants.paging.itemsPerPage > pageCount) {
+                itemsPerPage = itemsPerPage || constants.paging.itemsPerPage;
+                pageCount = parseInt(itemCount / itemsPerPage, 10);
+                if (itemCount / itemsPerPage > pageCount) {
                     pageCount += 1;
                 }
             }
@@ -139,11 +140,12 @@
 
         // Retrieves collection of pages to be rendered.
         // @data        Data to be displayed via pager.
-        getPages: function (data) {
-            return !_.isArray(data) ? [] : _.map(_.range(this.getPageCount(data)), function (id) {
+        getPages: function (data, itemsPerPage) {
+            itemsPerPage = itemsPerPage || constants.paging.itemsPerPage;
+            return !_.isArray(data) ? [] : _.map(_.range(this.getPageCount(data, itemsPerPage)), function (id) {
                 return {
                     id: id + 1,
-                    data: this.slice(id * constants.paging.itemsPerPage, ((id + 1) * constants.paging.itemsPerPage))
+                    data: this.slice(id * itemsPerPage, ((id + 1) * itemsPerPage))
                 };
             }, data);
         },

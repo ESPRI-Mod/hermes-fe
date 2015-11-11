@@ -39,7 +39,7 @@
 <script type="underscore/template" id="template-notification">
 <div id="notification"
          class="monitoring-state-<%= eventTypeDescription ? simulation.executionState : 'running' %>"
-         style="padding: 9px; margin-bottom: 2px;">
+         style="padding: 12px 17px; margin-bottom: 2px; .border-radius( 5px );">
     <strong>
     <% if (eventTypeDescription) { %>
         <%= eventTimestamp.slice(0, 19) %>&nbsp;::
@@ -107,14 +107,14 @@
                     <span class="badge"
                           title="<%- jobList.complete.length %> complete"
                           style="background-color: #DFF0D8; color: #333;">
-                          <span id="tab-job-count-<%= jobType %>-complete" class="<% new Date() %>">
+                          <span id="tab-job-count-<%= jobType %>-complete">
                             <%- jobList.complete.length %>
                           </span>
                     </span>
                     <span class="badge"
                           title="<%- jobList.error.length %> in error"
                           style="background-color: #F2DEDE; color: #333;">
-                          <span id="tab-job-count-<%= jobType %>-error" class="<% new Date() %>">
+                          <span id="tab-job-count-<%= jobType %>-error">
                             <%- jobList.error.length %>
                           </span>
                     </span>
@@ -150,6 +150,7 @@
                         jobList: jobList,
                         jobType: jobType,
                         jobTypeCaption: MOD.jobTypeDescriptions[jobType],
+                        pageSize: MOD.state.jobCollectionPageSize,
                         MOD: MOD
                     }) %>
                 </div>
@@ -286,8 +287,33 @@
 <!-- Template: job list -->
 <script type="underscore/template" id="template-job-collection">
 <table id="job-collection-<%= jobType %>"
-       class='table table-hover table-bordered table-condensed job-history-table <%= new Date() %>'>
+       class='table table-hover table-bordered table-condensed job-history-table'>
     <thead>
+        <% if (jobList.all.length > pageSize ) { %>
+        <tr>
+            <th colspan="7"  style="padding: 4px; border-bottom: 0px">
+                <span class="pull-left" style="padding: 4px;">
+                    Total <%= jobTypeCaption %> Jobs: <%= jobList.all.length %>
+                </span>
+                <span id="pagination-<%= jobType %>" class="pull-right form-inline">
+                    <button type='button' class="btn btn-sm  btn-primary pagination-first">
+                        <strong><<</strong>
+                    </button>
+                    <button type='button' class="btn btn-sm  btn-primary pagination-previous">
+                        <strong>&nbsp;&lt;&nbsp;</strong>
+                    </button>
+                    <input type="text" class="pagination-info form-control input-sm"
+                           placeholder="Page <%= jobList.paging.current ? jobList.paging.current.id : '0' %> of <%= jobList.paging.count %>">
+                    <button type='button' class="btn btn-sm  btn-primary pagination-next">
+                        <strong>&nbsp;&gt;&nbsp;</strong>
+                    </button>
+                    <button type='button' class="btn btn-sm  btn-primary pagination-last">
+                        <strong>>></strong>
+                    </button>
+                </span>
+            </th>
+        </tr>
+        <% } %>
         <tr class="">
             <th title='Job ID' class='text-center'>
                 <small>#</small>
@@ -313,25 +339,21 @@
         </tr>
     </thead>
     <tbody>
-        <% _.each(jobList.all.reverse(), function(job, jobIndex) { %>
+        <% _.each(jobList.paging.current.data, function(job, jobIndex) { %>
         <%= APP.utils.renderTemplate("template-job-detail", {
                 APP: APP,
                 MOD: MOD,
                 job: job,
-                jobIndex: jobList.all.length - jobIndex,
-                jobList,
+                jobIndex: ((jobList.paging.current.id - 1) * pageSize) + jobIndex + 1,
                 jobType: jobType,
                 hidePPInfo: hidePPInfo
             }) %>
         <% }); %>
     </tbody>
     <tfoot>
-        <tr  style="border: 0px;">
-            <td style="" colspan="7">
-                <span>
-                    <strong><%= MOD.jobTypeDescriptions[jobType] %> Jobs</strong>
-                </span>
-                <span class="pull-right">
+        <tr>
+            <td colspan="7">
+                <span class="pull-left">
                     <span class="badge"
                           title="<%- jobList.running.length %> running"
                           style="background-color: #D9EDF7; color: #333;">
@@ -348,6 +370,7 @@
                         <%- jobList.error.length %> ERROR
                     </span>
                 </span>
+
             </td>
         </tr>
     </tfoot>
@@ -357,13 +380,41 @@
 <!-- Template: job detail -->
 <script type="underscore/template" id="template-job-detail">
 <tr id="<%= job.jobUID %>" class="<%= MOD.getStateCSS(job.executionState) %>">
-    <td class='id text-center' title='<%= jobIndex %>'><%= jobIndex %></td>
-    <td class='postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.postProcessingInfo %>'><%= job.postProcessingInfo %></td>
-    <td class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'><%= job.ext.executionStartDate %></td>
-    <td class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'><%= job.ext.executionEndDate %></td>
-    <td class='duration text-center' title='<%= job.ext.duration %>'><%= job.ext.duration %></td>
-    <td class='lateness text-center' title='<%= job.ext.warningDelay %>'><%= job.ext.warningDelay %></td>
-    <td class='lateness text-center' title='<%= job.ext.lateness %>'><%= job.ext.lateness %></td>
+    <td class='id text-center' title='<%= jobIndex %>'>
+        <small>
+            <%= jobIndex %>
+        </small>
+    </td>
+    <td class='postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.postProcessingInfo %>'>
+        <small>
+            <%= job.postProcessingInfo %>
+        </small>
+    </td>
+    <td class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'>
+        <small>
+            <%= job.ext.executionStartDate %>
+        </small>
+    </td>
+    <td class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'>
+        <small>
+            <%= job.ext.executionEndDate %>
+        </small>
+    </td>
+    <td class='duration text-center' title='<%= job.ext.duration %>'>
+        <small>
+            <%= job.ext.duration %>
+        </small>
+    </td>
+    <td class='lateness text-center' title='<%= job.ext.warningDelay %>'>
+        <small>
+            <%= job.ext.warningDelay %>
+        </small>
+    </td>
+    <td class='lateness text-center' title='<%= job.ext.lateness %>'>
+        <small>
+            <%= job.ext.lateness %>
+        </small>
+    </td>
 </tr>
 </script>
 

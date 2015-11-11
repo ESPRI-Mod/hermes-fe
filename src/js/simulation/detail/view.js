@@ -41,6 +41,67 @@
             // Reopen page when web socket closed.
             'click #ws-close-dialog-refresh-page-button' : function () {
                 APP.utils.openURL();
+            },
+
+            // Pager: navigate to manually chosen page.
+            'change .pagination-info' : function (e) {
+                var jobType = $(e.target).parent().attr("id").slice(11),
+                    pageNumber = parseInt($(e.target).val(), 10),
+                    paging = MOD.state.getJobs(jobType).paging;
+
+                if (_.isNaN(pageNumber) === false &&
+                    pageNumber > 0 &&
+                    pageNumber <= paging.pages.length &&
+                    paging.current !== paging.pages[pageNumber - 1]) {
+                    paging.current = paging.pages[pageNumber - 1];
+                    this._updateJobCollection(jobType);
+                } else {
+                    $(e.target).val("");
+                }
+            },
+
+            // Pager: navigate to first page.
+            'click .pagination-first' : function (e) {
+                var jobType = ($(e.target).parent().attr("id") || $(e.target).parent().parent().attr("id")).slice(11),
+                    paging = MOD.state.getJobs(jobType).paging;
+
+                if (paging.pages.length && paging.current !== _.first(paging.pages)) {
+                    paging.current = _.first(paging.pages);
+                    this._updateJobCollection(jobType);
+                }
+            },
+
+            // Pager: navigate to previous page.
+            'click .pagination-previous' : function (e) {
+                var jobType = ($(e.target).parent().attr("id") || $(e.target).parent().parent().attr("id")).slice(11),
+                    paging = MOD.state.getJobs(jobType).paging;
+
+                if (paging.pages.length && paging.current !== _.first(paging.pages)) {
+                    paging.current = paging.pages[paging.current.id - 2];
+                    this._updateJobCollection(jobType);
+                }
+            },
+
+            // Pager: navigate to next page.
+            'click .pagination-next' : function (e) {
+                var jobType = ($(e.target).parent().attr("id") || $(e.target).parent().parent().attr("id")).slice(11),
+                    paging = MOD.state.getJobs(jobType).paging;
+
+                if (paging.pages.length && paging.current !== _.last(paging.pages)) {
+                    paging.current = paging.pages[paging.current.id];
+                    this._updateJobCollection(jobType);
+                }
+            },
+
+            // Pager: navigate to last page.
+            'click .pagination-last' : function (e) {
+                var jobType = ($(e.target).parent().attr("id") || $(e.target).parent().parent().attr("id")).slice(11),
+                    paging = MOD.state.getJobs(jobType).paging;
+
+                if (paging.pages.length && paging.current !== _.last(paging.pages)) {
+                    paging.current = _.last(paging.pages);
+                    this._updateJobCollection(jobType);
+                }
             }
         },
 
@@ -104,10 +165,11 @@
         _updateJobCollection : function (jobType) {
             this._replaceNode("#job-collection-" + jobType, "template-job-collection", {
                 APP: APP,
-                hidePPInfo: jobType === 'computing' ,
+                hidePPInfo: jobType === 'computing',
                 jobList: MOD.state.getJobs(jobType),
                 jobType: jobType,
                 jobTypeCaption: MOD.jobTypeDescriptions[jobType],
+                pageSize: MOD.state.jobCollectionPageSize,
                 MOD: MOD
             });
         },
@@ -116,7 +178,7 @@
             _.each(MOD.jobTypes, this._updateJobCount, this);
         },
 
-        _updateJobCount : function (jobType) {
+        _updateJobCount: function (jobType) {
             var jobs, selector;
 
             jobs = MOD.state.getJobs(jobType);
