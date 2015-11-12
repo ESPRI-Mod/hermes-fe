@@ -134,7 +134,6 @@
             _.each([
                 "notification-info-template",
                 "filter-panel-template",
-                "grid-header-template",
                 "grid-template",
                 "im-context-menu-template",
                 "ws-close-dialog-template"

@@ -55,7 +55,7 @@
 
 <!-- Template: tabs -->
 <script type="underscore/template" id="template-tabs">
-<ul class="nav nav-pills " role="tablist">
+<ul class="nav nav-tabs " role="tablist">
     <% // TAB NAV: overview %>
     <li role="presentation" class="active">
         <a  href="#tab-overview"
@@ -289,50 +289,34 @@
 <table id="job-collection-<%= jobType %>"
        class='table table-hover table-bordered table-condensed job-history-table'>
     <thead>
-
-        <tr style="background-color: white;">
+        <tr class="bg-primary">
             <th colspan="7">
                 <span class="pull-left" style="padding: 5px 0px 5px 0px">
                     <span style="padding: 5px;">
-                        <strong><%= jobList.all.length %> <%= jobTypeCaption %> Jobs: </strong>
-                    </span>
-                    <span class="badge"
-                          title="<%- jobList.running.length %> running"
-                          style="background-color: #D9EDF7; color: #333;">
-                        <%- jobList.running.length %> RUNNING
-                    </span>
-                    <span class="badge"
-                          title="<%- jobList.complete.length %> complete"
-                          style="background-color: #DFF0D8; color: #333;">
-                        <%- jobList.complete.length %> COMPLETE
-                    </span>
-                    <span class="badge"
-                          title="<%- jobList.error.length %> in error"
-                          style="background-color: #F2DEDE; color: #333;">
-                        <%- jobList.error.length %> ERROR
+                        <strong>Total <%= jobTypeCaption %> Jobs = <%= jobList.all.length %>.</strong>
                     </span>
                 </span>
                 <% if (jobList.all.length > pageSize ) { %>
                     <span id="pagination-<%= jobType %>" class="pull-right form-inline">
-                        <button type='button' class="btn btn-sm  btn-primary pagination-first">
-                            <strong><<</strong>
+                        <button type='button' class="btn btn-sm btn-default pagination-first">
+                            <strong class="text-muted"><<</strong>
                         </button>
-                        <button type='button' class="btn btn-sm  btn-primary pagination-previous">
-                            <strong>&nbsp;&lt;&nbsp;</strong>
+                        <button type='button' class="btn btn-sm btn-default pagination-previous">
+                            <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
                         </button>
                         <input type="text" class="pagination-info form-control input-sm"
-                               placeholder="Page <%= jobList.paging.current ? jobList.paging.current.id : '0' %> of <%= jobList.paging.count %>">
-                        <button type='button' class="btn btn-sm  btn-primary pagination-next">
-                            <strong>&nbsp;&gt;&nbsp;</strong>
+                               placeholder="Page <%= jobList.paging.current ? jobList.paging.current.id : '0' %> of <%= jobList.paging.count %>" />
+                        <button type='button' class="btn btn-sm btn-default pagination-next">
+                            <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
                         </button>
-                        <button type='button' class="btn btn-sm  btn-primary pagination-last">
-                            <strong>>></strong>
+                        <button type='button' class="btn btn-sm btn-default pagination-last">
+                            <strong class="text-muted">>></strong>
                         </button>
                     </span>
                 <% } %>
             </th>
         </tr>
-        <tr>
+        <tr class="prodiguer-table-header">
             <th title='Job ID' class='text-center'>
                 <small>#</small>
             </th>

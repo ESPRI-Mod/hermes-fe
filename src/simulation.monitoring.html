@@ -22,7 +22,7 @@
 <!-- Template: filter panel -->
 <script type="underscore/template" id="filter-panel-template">
 <div id="filter-panel" class='panel panel-info form-inline' style="margin-bottom: 2px;">
-    <div class='panel-body' style="padding: 10px; 0px; 7px; 0px;">
+    <div class='panel-body' style="padding: 10px 0px 10px 0px;">
         <% _.each(MOD.state.filters, function(filter, filterIndex) { %>
         <div class="col-md-3">
             <label style='width: 40%; margin-bottom: <%= filterIndex < 4 ? 5 : 0 %>px;'><%- filter.displayName %></label>
@@ -48,48 +48,43 @@
 </select>
 </script>
 
-<!-- Template: grid header -->
-<script type="underscore/template" id="grid-header-template">
-<div class='alert bg-primary' style="margin-bottom: 2px;">
-    <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
-    <span class='pagination pull-right <%= paging.count < 2 ? 'hidden' : '' %>' role='toolbar'>
-        <span class='btn-group' role='group'>
-            <button type='button' class='btn btn-default pagination-first'>
-                <strong class='text-primary'><<</strong>
-            </button>
-            <button type='button' class='btn btn-default pagination-previous'>
-                <strong class='text-primary'>&nbsp;&lt;&nbsp;</strong>
-            </button>
-        </span>
-        <span class='btn-group'>
-            <input type='text' class='pagination-info form-control'
-                   placeholder="Page <%= paging.current ? paging.current.id : '0' %> of <%= paging.count %>">
-        </span>
-        <span class='btn-group' role='group'>
-            <button type='button' class='btn btn-default pagination-next'>
-                <strong class='text-primary'>&nbsp;&gt;&nbsp;</strong>
-            </button>
-            <button type='button' class='btn btn-default pagination-last'>
-                <strong class='text-primary'>>></strong>
-            </button>
-        </span>
-    </span>
-</div>
-</script>
-
 <!-- Template: search statistics -->
 <script type="underscore/template" id="statistics-info-template">
-<span id='statistics-info'>
-    <strong>Total simulations = <%- simulationList.length %>.
-            Filtered simulations = <%- simulationListFiltered.length %>.</strong>
-</span>
+    <span class="pull-left" style="padding: 5px 0px 5px 5px">
+        <strong>
+            Total simulations = <%- simulationList.length %>.
+            Filtered simulations = <%- simulationListFiltered.length %>.
+        </strong>
+    </span>
 </script>
 
 <!-- Template: search result table -->
 <script type="underscore/template" id="grid-template">
 <table class='table table-hover table-bordered table-condensed monitoring-table'>
     <thead>
-        <tr>
+
+        <tr class="bg-primary">
+            <th colspan="14">
+                <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
+                <span class=' pull-right form-inline <%= paging.count < 2 ? 'hidden' : '' %>'>
+                    <button type='button' class='btn btn-sm btn-default pagination-first'>
+                        <strong class="text-muted"><<</strong>
+                    </button>
+                    <button type='button' class='btn btn-sm btn-default pagination-previous'>
+                        <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
+                    </button>
+                    <input type='text' class='pagination-info form-control input-sm'
+                           placeholder="Page <%= paging.current ? paging.current.id : '0' %> of <%= paging.count %>">
+                    <button type='button' class='btn btn-sm btn-default pagination-next'>
+                        <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
+                    </button>
+                    <button type='button' class='btn btn-sm btn-default pagination-last'>
+                        <strong class="text-muted">>></strong>
+                    </button>
+            </th>
+        </tr>
+
+        <tr class="prodiguer-table-header">
             <th title='Activity' class="text-center"><small>Activity</small></th>
             <th title='Name'><small>Name</small></th>
             <th title='Try' class="text-center"><small>Try</small></th>
