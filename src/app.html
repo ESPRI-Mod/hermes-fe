@@ -221,10 +221,18 @@
         </small>
     </td>
     <td class="text-center monitoring">
-        <span class="glyphicon glyphicon-random <%= s.hasMonitoring ? '' : 'hidden' %>"></span>
+        <% if (s.hasMonitoring) { %>
+            <span class="glyphicon glyphicon-random"></span>
+        <% } else { %>
+            <span >--</span>
+        <% } %>
     </td>
     <td class="text-center inter-monitoring">
-        <input class="<%= s.hasMonitoring ? '' : 'hidden' %>" type="checkbox" <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
+        <% if (s.hasMonitoring) { %>
+            <input type="checkbox" <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
+        <% } else { %>
+            <span >--</span>
+        <% } %>
     </td>
 </tr>
 </script>
