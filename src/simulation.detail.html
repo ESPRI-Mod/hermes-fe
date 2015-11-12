@@ -289,45 +289,9 @@
 <table id="job-collection-<%= jobType %>"
        class='table table-hover table-bordered table-condensed job-history-table'>
     <thead>
-        <tr class="">
-            <th title='Job ID' class='text-center'>
-                <small>#</small>
-            </th>
-            <th title='Job post processing information' class='<%= hidePPInfo ? 'hidden' : '' %>'>
-                <small>Info.</small>
-            </th>
-            <th title='Job start date' class='text-center'>
-                <small>Start Date</small>
-            </th>
-            <th title='Job end date' class='text-center'>
-                <small>End Date</small>
-            </th>
-            <th title='Job duration' class='text-center'>
-                <small>Duration</small>
-            </th>
-            <th title='Job warning delay' class='text-center'>
-                <small>Delay Warning</small>
-            </th>
-            <th title='Job lateness' class='text-center'>
-                <small>Lateness</small>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        <% _.each(jobList.paging.current.data, function(job, jobIndex) { %>
-        <%= APP.utils.renderTemplate("template-job-detail", {
-                APP: APP,
-                MOD: MOD,
-                job: job,
-                jobIndex: ((jobList.paging.current.id - 1) * pageSize) + jobIndex + 1,
-                jobType: jobType,
-                hidePPInfo: hidePPInfo
-            }) %>
-        <% }); %>
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="7">
+
+        <tr style="background-color: white;">
+            <th colspan="7">
                 <span class="pull-left" style="padding-top: <%= jobList.all.length > pageSize ? 5 : 0 %>px">
                     <span style="padding: 5px;">
                         <strong><%= jobList.all.length %> <%= jobTypeCaption %> Jobs: </strong>
@@ -366,6 +330,67 @@
                         </button>
                     </span>
                 <% } %>
+            </th>
+        </tr>
+        <tr>
+            <th title='Job ID' class='text-center'>
+                <small>#</small>
+            </th>
+            <th title='Job post processing information' class='<%= hidePPInfo ? 'hidden' : '' %>'>
+                <small>Info.</small>
+            </th>
+            <th title='Job start date' class='text-center'>
+                <small>Start Date</small>
+            </th>
+            <th title='Job end date' class='text-center'>
+                <small>End Date</small>
+            </th>
+            <th title='Job duration' class='text-center'>
+                <small>Duration</small>
+            </th>
+            <th title='Job warning delay' class='text-center'>
+                <small>Delay Warning</small>
+            </th>
+            <th title='Job lateness' class='text-center'>
+                <small>Lateness</small>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <% _.each(jobList.paging.current.data, function(job, jobIndex) { %>
+        <%= APP.utils.renderTemplate("template-job-detail", {
+                APP: APP,
+                MOD: MOD,
+                job: job,
+                jobIndex: ((jobList.paging.current.id - 1) * pageSize) + jobIndex + 1,
+                jobType: jobType,
+                hidePPInfo: hidePPInfo
+            }) %>
+        <% }); %>
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="7">
+                <span>
+                    <span class='monitoring-state-running badge'
+                          title='RUNNING'
+                          style="background-color: #D9EDF7; color: #333;">
+                        <small><strong><%- jobList.running.length %> RUNNING</strong></small>
+                    </span>
+                    <span class='monitoring-state-complete badge'
+                          title='COMPLETE'
+                          style="background-color: #DFF0D8; color: #333;">
+                        <small><strong><%- jobList.complete.length %> COMPLETE</strong></small>
+                    </span>
+                    <span class='monitoring-state-error badge'
+                          title='ERROR'
+                          style="background-color: #F2DEDE; color: #333;">
+                        <small><strong><%- jobList.error.length %> ERROR</strong></small>
+                    </small>
+                </span>
+                <span class='pull-right'>
+                    <small><strong><a href='http://prodiguer-docs.readthedocs.org/en/latest/' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- MOD.state.year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>
+                </span>
             </td>
         </tr>
     </tfoot>

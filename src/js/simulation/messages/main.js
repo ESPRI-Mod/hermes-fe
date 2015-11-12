@@ -145,7 +145,10 @@
             all: [],
             compute: [],
             postProcessing: []
-        }
+        },
+
+        // Size of message collection pages.
+        messageCollectionPageSize: APP.constants.paging.itemsPerPage
     };
 
     // Module initialisation event handler.

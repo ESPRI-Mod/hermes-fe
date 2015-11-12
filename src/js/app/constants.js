@@ -49,7 +49,7 @@
 
         // Paging defaults.
         paging: {
-            itemsPerPage: 20
+            itemsPerPage: 16
         }
     };
 
