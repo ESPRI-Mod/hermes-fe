@@ -286,8 +286,7 @@
 
 <!-- Template: job list -->
 <script type="underscore/template" id="template-job-collection">
-<table id="job-collection-<%= jobType %>"
-       class='table table-hover table-bordered table-condensed job-history-table'>
+<table id="job-collection-<%= jobType %>" class="table table-hover table-bordered table-condensed job-history-table">
     <thead>
         <tr class="bg-primary">
             <th colspan="7">
@@ -304,7 +303,8 @@
                         <button type='button' class="btn btn-sm btn-default pagination-previous">
                             <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
                         </button>
-                        <input type="text" class="pagination-info form-control input-sm"
+                        <input type="text"
+                               class="pagination-info form-control input-sm"
                                placeholder="Page <%= jobList.paging.current ? jobList.paging.current.id : '0' %> of <%= jobList.paging.count %>" />
                         <button type='button' class="btn btn-sm btn-default pagination-next">
                             <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>

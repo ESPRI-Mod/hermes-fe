@@ -2,11 +2,6 @@ span.pagination {
 	margin: -7px 0 0 0;
 }
 
-input.pagination-info {
-	width: 170px;
-	text-align: center;
-}
-
 table.monitoring-table tbody tr td:not(.inter-monitoring) {
 	cursor: pointer;
 }

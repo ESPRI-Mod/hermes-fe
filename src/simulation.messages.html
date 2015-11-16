@@ -12,6 +12,7 @@
     <!-- CSS -->
     <link href="css/app.css" rel="stylesheet" media="screen">
     <link href="css/simulation.messages.css" rel="stylesheet" media="screen">
+    <link href="css/simulation.shared.css" rel="stylesheet" media="screen">
     <link href="ext/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 
@@ -32,8 +33,10 @@
 </script>
 
 <script type="underscore/template" id="template-tabs">
-<ul class="nav nav-pills " role="tablist">
+<ul class="nav nav-tabs " role="tablist">
+    <% var MOD = APP.modules.messages; %>
     <% // TAB NAV: compute job messages %>
+    <% if (messageHistory.compute.all.length) { %>
     <li role="presentation" class="active">
         <a  href="#tab-jobs-compute"
             aria-controls="profile"
@@ -41,12 +44,13 @@
             title="Overview"
             data-toggle="tab">
             <strong class="text-uppercase">
-                Compute Job Messages (<%= messageHistory.compute.length %>)
+                Compute Job Messages (<%= messageHistory.compute.all.length %>)
             </strong>
         </a>
     </li>
+    <% } %>
     <% // TAB NAV: post-processing jobs %>
-    <% if (messageHistory.postProcessing.length) { %>
+    <% if (messageHistory.postProcessing.all.length) { %>
     <li role="presentation">
         <a  href="#tab-jobs-post-processing"
             aria-controls="profile"
@@ -54,7 +58,7 @@
             title="Overview"
             data-toggle="tab">
             <strong class="text-uppercase">
-                Post Processing Job Messages (<%= messageHistory.postProcessing.length %>)
+                Post Processing Job Messages (<%= messageHistory.postProcessing.all.length %>)
             </strong>
         </a>
     </li>
@@ -62,22 +66,28 @@
 </ul>
 <div class="tab-content">
     <% // TAB CONTENT: compute job messages %>
+    <% if (messageHistory.compute.all.length) { %>
     <div role="tabpanel" class="tab-pane active" id="tab-jobs-compute">
-        <%= APP.utils.renderTemplate("template-messages-collection", {
-            MOD: MOD,
+        <%= APP.utils.renderTemplate("template-message-collection", {
+            MOD: APP.modules.messages,
             messages: messageHistory.compute,
-            jobTypeDescription:'Compute',
-            displayJobInfo: false
+            messageType: 'compute',
+            messageTypeDescription: APP.modules.messages.messageTypeDescriptions['compute'],
+            displayPostProcessingJobInfo: false,
+            pageSize: APP.modules.messages.state.messageCollectionPageSize
         }) %>
     </div>
+    <% } %>
     <% // TAB CONTENT: post-processing jobs %>
-    <% if (messageHistory.postProcessing.length) { %>
+    <% if (messageHistory.postProcessing.all.length) { %>
     <div role="tabpanel" class="tab-pane" id="tab-jobs-post-processing">
-        <%= APP.utils.renderTemplate("template-messages-collection", {
-            MOD: MOD,
+        <%= APP.utils.renderTemplate("template-message-collection", {
+            MOD: APP.modules.messages,
             messages: messageHistory.postProcessing,
-            jobTypeDescription:'Post-Processing',
-            displayJobInfo: true
+            messageType: 'post-processing',
+            messageTypeDescription: APP.modules.messages.messageTypeDescriptions['post-processing'],
+            displayPostProcessingJobInfo: true,
+            pageSize: APP.modules.messages.state.messageCollectionPageSize
         }) %>
     </div>
     <% } %>
@@ -85,102 +95,130 @@
 </script>
 
 <!-- Template: messages collection -->
-<script type="underscore/template" id="template-messages-collection">
-    <table class="table table-hover table-bordered table-striped table-condensed message-history-table">
-        <thead>
-            <tr class="prodiguer-table-header">
-                <th title='ID' class='text-center'>
-                    <small>#</small>
-                </th>
-                <th title='Type' class='text-center'>
-                    <small>Type</small>
-                </th>
-                <% if (displayJobInfo) { %>
-                    <th title='Job Info.'>
-                        <small>Job Info.</small>
-                    </th>
-                <% } %>
-                <th title='Job UID' class='text-center'>
-                    <small>Job UID</small>
-                </th>
-                <th title='Timestamp' class='text-center'>
-                    <small>Timestamp</small>
-                </th>
-                <th title='Processed' class='text-center'>
-                    <small>Processed</small>
-                </th>
-                <th title='Latency' class='text-center'>
-                    <small>Latency</small>
-                </th>
-                <th title='Email ID' class='text-center'>
-                    <small>Email ID</small>
-                </th>
-                <th title='liblGCM version' class='text-center'>
-                    <small>liblGCM</small>
-                </th>
-                <th title='View message content' class='text-center'>
-                    <small>
-                        <span class='glyphicon glyphicon-envelope'></span>
-                    </small>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <% _.each(messages, function(message, messageIndex) { %>
-                <% if (_.indexOf(['1999', '2999', '3999'], message.typeID) != -1) { %>
-                <tr id="<%= message.uid %>" class="bg-danger" style="font-weight: bold;">
-                <% } else if (_.indexOf(['1900', '2900', '3900'], message.typeID) != -1) {%>
-                <tr id="<%= message.uid %>" class="bg-danger">
-                <% } else {%>
-                <tr id="<%= message.uid %>">
-                <% } %>
-                    <td style='width: 40px;' class='text-center'>
-                        <small><%= messageIndex + 1 %></small>
-                    </td>
-                    <td title='Message type' class='text-center'>
-                        <small><%= message.typeID %></small>
-                    </td>
-                    <% if (displayJobInfo) { %>
-                        <td title='Job information'>
-                            <small><%= message.jobInfo %></small>
-                        </td>
-                    <% } %>
-                    <td title='Job identifier' class='text-center'>
-                        <small><%= message.jobUID %></small>
-                    </td>
-                    <td title='Message timestamp' class='text-center'>
-                        <small><%= message.timestamp %></small>
-                    </td>
-                    <td title='Message processing date' class='text-center'>
-                        <small><%= message.processed %></small>
-                    </td>
-                    <td title='Message processing latency' class='text-center'>
-                        <small><%= message.latency %></small>
-                    </td>
-                    <td title='Email identifier' class='text-center'>
-                        <small><%= message.emailID || '--' %></small>
-                    </td>
-                    <td title='liblGCM version' class='text-center'>
-                        <small>v<%= message.producerVersion %></small>
-                    </td>
-                    <td title='View message content' class='message-content text-center' >
-                        <small><span class='glyphicon glyphicon-envelope'></span></small>
-                    </td>
-                </tr>
-            <% }); %>
-        </tbody>
-        <tfoot>
-            <tr  style="border: 0px;">
-                <td style="" colspan="10">
-                    <span>
-                        <strong><%= jobTypeDescription %> Job Messages</strong>
+<script type="underscore/template" id="template-message-collection">
+<table id="message-collection-<%= messageType %>" class="table table-hover table-bordered table-striped table-condensed">
+    <thead>
+        <tr class="bg-primary">
+            <th colspan="9">
+                <span class="pull-left" style="padding: 5px 0px 5px 0px">
+                    <span style="padding: 5px;">
+                        <strong>Total <%= messageTypeDescription %> Jobs = <%= messages.all.length %>.</strong>
                     </span>
-                    <span class="pull-right">
+                </span>
+                <% if (messages.all.length > pageSize ) { %>
+                    <span id="pagination-<%= messageType %>" class="pull-right form-inline">
+                        <button type='button' class="btn btn-sm btn-default pagination-first">
+                            <strong class="text-muted"><<</strong>
+                        </button>
+                        <button type='button' class="btn btn-sm btn-default pagination-previous">
+                            <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
+                        </button>
+                        <input type="text"
+                               class="pagination-info form-control input-sm"
+                               placeholder="Page <%= messages.paging.current ? messages.paging.current.id : '0' %> of <%= messages.paging.count %>" />
+                        <button type='button' class="btn btn-sm btn-default pagination-next">
+                            <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
+                        </button>
+                        <button type='button' class="btn btn-sm btn-default pagination-last">
+                            <strong class="text-muted">>></strong>
+                        </button>
                     </span>
+                <% } %>
+            </th>
+        </tr>
+        <tr class="prodiguer-table-header">
+            <th title='ID' class='text-center'>
+                <small>#</small>
+            </th>
+            <th title='Type' class='text-center'>
+                <small>Type</small>
+            </th>
+            <% if (displayPostProcessingJobInfo) { %>
+                <th title='Job Info.'>
+                    <small>Job Info.</small>
+                </th>
+            <% } %>
+            <th title='Job UID' class='text-center'>
+                <small>Job UID</small>
+            </th>
+            <th title='Timestamp' class='text-center'>
+                <small>Timestamp</small>
+            </th>
+            <th title='Processed' class='text-center'>
+                <small>Processed</small>
+            </th>
+            <th title='Latency' class='text-center'>
+                <small>Latency</small>
+            </th>
+            <th title='Email ID' class='text-center'>
+                <small>Email ID</small>
+            </th>
+            <th title='liblGCM version' class='text-center'>
+                <small>liblGCM</small>
+            </th>
+            <th title='View message content' class='text-center'>
+                <small>
+                    <span class='glyphicon glyphicon-envelope'></span>
+                </small>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <% _.each(messages.paging.current.data, function(message, messageIndex) { %>
+            <% if (_.indexOf(['1999', '2999', '3999'], message.typeID) != -1) { %>
+            <tr id="<%= message.uid %>" class="bg-danger" style="font-weight: bold;">
+            <% } else if (_.indexOf(['1900', '2900', '3900'], message.typeID) != -1) {%>
+            <tr id="<%= message.uid %>" class="bg-danger">
+            <% } else {%>
+            <tr id="<%= message.uid %>">
+            <% } %>
+                <td style='width: 40px;' class='text-center'>
+                    <small><%= messageIndex + 1 %></small>
+                </td>
+                <td title='Message type' class='text-center'>
+                    <small><%= message.typeID %></small>
+                </td>
+                <% if (displayPostProcessingJobInfo) { %>
+                    <td title='Job information'>
+                        <small><%= message.jobInfo %></small>
+                    </td>
+                <% } %>
+                <td title='Job identifier' class='text-center'>
+                    <small><%= message.jobUID %></small>
+                </td>
+                <td title='Message timestamp' class='text-center'>
+                    <small><%= message.timestamp %></small>
+                </td>
+                <td title='Message processing date' class='text-center'>
+                    <small><%= message.processed %></small>
+                </td>
+                <td title='Message processing latency' class='text-center'>
+                    <small><%= message.latency %></small>
+                </td>
+                <td title='Email identifier' class='text-center'>
+                    <small><%= message.emailID || '--' %></small>
+                </td>
+                <td title='liblGCM version' class='text-center'>
+                    <small>v<%= message.producerVersion %></small>
+                </td>
+                <td title='View message content' class='message-content text-center' >
+                    <small><span class='glyphicon glyphicon-envelope'></span></small>
                 </td>
             </tr>
-        </tfoot>
-    </table>
+        <% }); %>
+    </tbody>
+    <tfoot>
+        <tr  style="border: 0px;">
+            <td style="" colspan="10">
+                <span>
+                    <strong><%= messageTypeDescription %> Job Messages</strong>
+                </span>
+                <span class="pull-right">
+                </span>
+            </td>
+        </tr>
+    </tfoot>
+</table>
 </script>
 
 <!-- Template: message content dialog -->

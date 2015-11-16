@@ -22,6 +22,14 @@
                 "2000", "2100", "2900", "2999", "3000", "3100", "3900", "3999"
             ],
 
+            // Map of message types to descriptions.
+            messageTypeDescriptions: {
+                "compute": "Compute",
+                "post-processing": "Post Processing",
+                "post-processing-from-checker": "Post Processing (from checker)"
+            },
+
+
             // Returns flag indicating whether the messages is a compute message or not.
             isComputeMessage: function (msg) {
                 return _.indexOf(MOD.computeMessageTypes, msg.typeID) !== -1;
@@ -40,6 +48,38 @@
                 // Simulation detail page.
                 SIMULATION_DETAIL_PAGE: 'simulation.detail.html?uid={uid}&hashid={hashid}&tryID={tryID}',
             },
+
+            // Initial module state.
+            state: {
+                // Application pointer.
+                APP: APP,
+
+                // Copyright year.
+                year: new Date().getFullYear(),
+
+                // Simulation.
+                simulation: null,
+
+                // Simulation hash identifier.
+                simulationUID: APP.utils.getURLParam('simulationUID'),
+
+                // Size of message collection pages.
+                messageCollectionPageSize: APP.constants.paging.itemsPerPage,
+
+                // Returns related set of messages.
+                getMessageCollection: function (messageType) {
+                    switch (messageType) {
+                    case "compute":
+                        return MOD.state.messageHistory.compute;
+                    case "post-processing":
+                        return MOD.state.messageHistory.postProcessing;
+                    case "post-processing-from-checker":
+                        return MOD.state.messageHistory.postProcessingFromChecker;
+                    default:
+                        return [];
+                    }
+                }
+            }
         }),
 
         // Returns job post-processing information.
@@ -92,64 +132,52 @@
             };
         },
 
+        // Sets the pageable collection of messages.
+        setMessageCollectionPaging = function (collection) {
+            var pages = APP.utils.getPages(collection.all, MOD.state.messageCollectionPageSize);
+
+            collection.paging = {
+                current: pages ? pages[0] : null,
+                count: pages.length,
+                pages: pages
+            };
+        },
+
         // Page setup data download event handler.
         onPageSetUpDataDownloaded = function (data) {
-            // Map tuples to JSON objects.
+            // Map & parse downloaded data.
             data.messageHistory = _.map(data.messageHistory, mapMessage);
-
-            // Parse data.
             _.each(data.messageHistory, parseMessage);
 
-            // Update module state.
+            // Set module state.
             MOD.state.simulation = data.simulation;
             MOD.state.messageHistory = {
                 all: data.messageHistory,
-                compute: _.filter(data.messageHistory, function (m) {
-                    return MOD.isComputeMessage(m) === true;
-                }),
-                postProcessing: _.filter(data.messageHistory, function (m) {
-                    return MOD.isPostProcessingMessage(m) === true;
-                })
+                compute: {
+                    all: _.filter(data.messageHistory, function (m) {
+                        return MOD.isComputeMessage(m) === true;
+                    })
+                },
+                postProcessing: {
+                    all: _.filter(data.messageHistory, function (m) {
+                        return MOD.isPostProcessingMessage(m) === true;
+                    })
+                }
             };
+
+            // Set initial message collection paging state.
+            setMessageCollectionPaging(MOD.state.messageHistory.compute);
+            setMessageCollectionPaging(MOD.state.messageHistory.postProcessing);
 
             // // Render main view.
             MOD.view = new MOD.views.MainView();
             MOD.view.render();
-
-            // // Update DOM.
             $(".app-content").append(MOD.view.$el);
 
             // Fire events.
             APP.events.trigger("module:initialized", MOD);
         };
 
-    // Module view state.
-    MOD.state = {
-        // Application pointer.
-        APP: APP,
-
-        // Module pointer.
-        MOD: MOD,
-
-        // Copyright year.
-        year: new Date().getFullYear(),
-
-        // Simulation.
-        simulation: null,
-
-        // Simulation hash identifier.
-        simulationUID: APP.utils.getURLParam('simulationUID'),
-
-        // Simulation message history.
-        messageHistory: {
-            all: [],
-            compute: [],
-            postProcessing: []
-        },
-
-        // Size of message collection pages.
-        messageCollectionPageSize: APP.constants.paging.itemsPerPage
-    };
 
     // Module initialisation event handler.
     MOD.events.on("module:initialization", function () {

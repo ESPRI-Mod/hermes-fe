@@ -24,9 +24,3 @@ li:not(.active) > a > strong.text-uppercase {
 #caption {
 	margin-bottom: 2px;
 }
-
-input.pagination-info {
-	width: 170px;
-	text-align: center;
-}
-

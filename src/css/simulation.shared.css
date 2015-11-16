@@ -21,3 +21,8 @@
 table.table thead tr.prodiguer-table-header {
     background-color:#eceeef;
 }
+
+input.pagination-info {
+	width: 170px;
+	text-align: center;
+}
