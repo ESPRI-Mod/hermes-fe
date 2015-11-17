@@ -99,7 +99,7 @@
 <table id="message-collection-<%= messageType %>" class="table table-hover table-bordered table-striped table-condensed">
     <thead>
         <tr class="bg-primary">
-            <th colspan="9">
+            <th colspan="<%= displayPostProcessingJobInfo ? 10 : 9 %>">
                 <span class="pull-left" style="padding: 5px 0px 5px 0px">
                     <span style="padding: 5px;">
                         <strong>Total <%= messageTypeDescription %> Jobs = <%= messages.all.length %>.</strong>
