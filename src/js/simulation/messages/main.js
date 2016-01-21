@@ -61,7 +61,7 @@
                 simulation: null,
 
                 // Simulation hash identifier.
-                simulationUID: APP.utils.getURLParam('simulationUID'),
+                simulationUID: APP.utils.getURLParam('uid'),
 
                 // Size of message collection pages.
                 messageCollectionPageSize: APP.constants.paging.itemsPerPage,
