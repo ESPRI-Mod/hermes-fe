@@ -208,7 +208,8 @@
                 httpPostTarget: MOD.urls.IM.httpPostTarget,
                 urls: urls
             });
-            $(imForm).submit();
+            $(imForm).appendTo('body').submit();
+            $("#inter-monitoring-form").remove();
         },
 
         _getSimulation: function (uid) {
