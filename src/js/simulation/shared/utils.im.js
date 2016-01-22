@@ -12,7 +12,6 @@
         });
     };
 
-
     // Helper function: returns simulation monitor URL.
     getMonitorURL = function (s) {
         var url;
@@ -24,10 +23,12 @@
 
         url = [MOD.urls.M[s.computeNode]];
         url.push(s.computeNodeLogin);
-        if (s.ext.modelSynonyms.length) {
+        if (s.modelRaw) {
+            url.push(s.modelRaw);
+        } else if (s.ext.modelSynonyms.length) {
             url.push(s.ext.modelSynonyms[0]);
         } else {
-            url.push(s.modelRaw || s.model);
+            url.push(s.model);
         }
         url.push(s.spaceRaw || s.space);
         url.push(s.experimentRaw || s.ext.experiment);
@@ -39,24 +40,26 @@
     };
 
     // Helper function: returns simulation inter-monitor URL.
-    getInterMonitorURL = function (simulation) {
+    getInterMonitorURL = function (s) {
         var url;
 
         // Escape if simulation is not associated with an inter-monitoring server.
-        if (_.has(MOD.urls.IM, simulation.computeNode) === false) {
+        if (_.has(MOD.urls.IM, s.computeNode) === false) {
             return;
         }
 
-        url = [MOD.urls.IM[simulation.computeNode]];
-        url.push(simulation.computeNodeLogin);
-        if (simulation.ext.modelSynonyms.length) {
-            url.push(simulation.ext.modelSynonyms[0]);
+        url = [MOD.urls.IM[s.computeNode]];
+        url.push(s.computeNodeLogin);
+        if (s.modelRaw) {
+            url.push(s.modelRaw);
+        } else if (s.ext.modelSynonyms.length) {
+            url.push(s.ext.modelSynonyms[0]);
         } else {
-            url.push(simulation.modelRaw || simulation.model);
+            url.push(s.model);
         }
-        url.push(simulation.spaceRaw || simulation.space);
-        url.push(simulation.experimentRaw || simulation.ext.experiment);
-        url.push(simulation.name);
+        url.push(s.spaceRaw || s.space);
+        url.push(s.experimentRaw || s.ext.experiment);
+        url.push(s.name);
         url = url.join("/");
 
         return url;
