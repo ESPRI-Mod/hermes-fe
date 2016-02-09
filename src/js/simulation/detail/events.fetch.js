@@ -31,7 +31,7 @@
 
         // Update module state.
         MOD.state.simulation = data.simulation;
-        MOD.state.messageCount = data.messageCount;
+        MOD.state.hasMessages = data.hasMessages;
         MOD.state.configCard = data.configCard ? window.atob(data.configCard) : null;
 
         // Fire event.

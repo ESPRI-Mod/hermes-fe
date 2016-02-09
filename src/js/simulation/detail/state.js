@@ -38,8 +38,8 @@
         // Simulation.
         simulation: undefined,
 
-        // Message count.
-        messageCount: 0,
+        // Has associated messages.
+        hasMessages: false,
 
         // Size of job collection pages.
         jobCollectionPageSize: APP.constants.paging.itemsPerPage,

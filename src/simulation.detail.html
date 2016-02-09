@@ -26,7 +26,7 @@
         <%- simulation.space.toUpperCase() %> ->
         <%- simulation.name %> [<%- simulation.tryID %>]
         <span class='pull-right'>
-            <span class="simulation-messages glyphicon glyphicon-envelope <%= messageCount ? '' : 'hidden' %>"
+            <span class="simulation-messages glyphicon glyphicon-envelope <%= hasMessages ? '' : 'hidden' %>"
                   title="View Simulation Messages"></span>
             <span class="inter-monitoring glyphicon glyphicon-random <%= simulation.hasMonitoring ? '' : 'hidden' %>"
                   title="Open Monitoring"></span>
