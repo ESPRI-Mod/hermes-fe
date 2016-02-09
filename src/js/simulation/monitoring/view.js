@@ -222,6 +222,10 @@
             var s, url;
 
             s = this._getSimulation(uid);
+            if (_.isUndefined(s)) {
+                return "";
+            }
+
             url = APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE);
             url = url.replace("{hashid}", s.hashid);
             url = url.replace("{tryID}", s.tryID);
