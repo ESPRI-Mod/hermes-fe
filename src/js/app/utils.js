@@ -246,7 +246,7 @@
 
         // Converts a YYYY-MM-DD HH:mm:ss.SSSSSS UTC string into a local datetime.
         toLocalDateTimeString: function (val) {
-            return moment(val.slice(0, 19)).add(2, 'h').format("YYYY-MM-DD HH:mm:ss") +
+            return moment(val.slice(0, 19)).add(1, 'h').format("YYYY-MM-DD HH:mm:ss") +
                    val.slice(19);
         }
     };
