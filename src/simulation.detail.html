@@ -269,7 +269,7 @@
                     --
                 <% } else { %>
                 <% _.each(_.range(simulation.tryID - 1), function(tryID) { %>
-                <a href="<%- APP.utils.getBaseURL() %>?hashid=<%= simulationHashID %>&tryID=<%= tryID + 1 %>" target="_blank"><%- tryID + 1 %></a>&nbsp;
+                <a href="<%- APP.utils.getBaseURL() %>?uid=<%= simulationUID %>&tryID=<%= tryID + 1 %>" target="_blank"><%- tryID + 1 %></a>&nbsp;
                 <% }); %>
                 <% } %>
             </td>

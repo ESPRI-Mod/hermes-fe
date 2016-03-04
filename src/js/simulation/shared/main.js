@@ -60,10 +60,10 @@
             FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice?timeslice={timeslice}',
 
             // Fetch monitoring detail simulation endpoint.
-            FETCH_DETAIL: 'simulation/monitoring/fetch_detail?hashid={hashid}&tryID={tryID}',
+            FETCH_DETAIL: 'simulation/monitoring/fetch_detail?uid={uid}',
 
             // Simulation detail page.
-            SIMULATION_DETAIL_PAGE: 'simulation.detail.html?uid={uid}&hashid={hashid}&tryID={tryID}',
+            SIMULATION_DETAIL_PAGE: 'simulation.detail.html?uid={uid}',
 
             // Simulation message page.
             SIMULATION_MESSAGES_PAGE: 'simulation.messages.html?uid={uid}',

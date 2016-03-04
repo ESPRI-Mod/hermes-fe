@@ -46,7 +46,7 @@
                 FETCH: 'simulation/monitoring/fetch_messages?uid={uid}',
 
                 // Simulation detail page.
-                SIMULATION_DETAIL_PAGE: 'simulation.detail.html?uid={uid}&hashid={hashid}&tryID={tryID}',
+                SIMULATION_DETAIL_PAGE: 'simulation.detail.html?uid={uid}',
             },
 
             // Initial module state.

@@ -31,10 +31,11 @@
                 tryID = $(e.target).val();
                 if (tryID > 0) {
                     url = APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE);
-                    url = url.replace("{hashid}", MOD.state.simulation.hashid);
-                    url = url.replace("{tryID}", tryID);
-                    url = url.replace("{uid}", MOD.state.simulation.uid);
-                    APP.utils.openURL(url, true);
+                    alert("TODO: get uid from hashid / try");
+                    // url = url.replace("{hashid}", MOD.state.simulation.hashid);
+                    // url = url.replace("{tryID}", tryID);
+                    // url = url.replace("{uid}", MOD.state.simulation.uid);
+                    // APP.utils.openURL(url, true);
                 }
             },
 

@@ -13,8 +13,7 @@
 
         // Load page data & fire event.
         ep = APP.utils.getEndPoint(MOD.urls.FETCH_DETAIL);
-        ep = ep.replace("{hashid}", MOD.state.simulationHashID);
-        ep = ep.replace("{tryID}", MOD.state.simulationTryID);
+        ep = ep.replace("{uid}", MOD.state.simulationUID);
         $.getJSON(ep, function (data) {
             MOD.log("page data fetched");
             MOD.events.trigger("setup:pageDataDownloaded", data);

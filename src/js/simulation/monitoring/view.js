@@ -227,8 +227,6 @@
             }
 
             url = APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE);
-            url = url.replace("{hashid}", s.hashid);
-            url = url.replace("{tryID}", s.tryID);
             url = url.replace("{uid}", s.uid);
 
             return url;

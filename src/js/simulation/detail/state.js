@@ -26,12 +26,6 @@
         // Description of most recent web-socket event.
         eventTypeDescription: null,
 
-        // Simulation hash identifier.
-        simulationHashID: APP.utils.getURLParam('hashid'),
-
-        // Simulation try identifier.
-        simulationTryID: APP.utils.getURLParam('tryID'),
-
         // Simulation try identifier.
         simulationUID: APP.utils.getURLParam('uid'),
 
