@@ -61,6 +61,14 @@
         };
     };
 
+    // Maps previous try info from data returned from server.
+    MOD.mapPreviousTries = function (i) {
+        return {
+            tryID: i[0],
+            uid: i[1]
+        };
+    };
+
 }(
     this.APP,
     this.APP.modules.monitoring,

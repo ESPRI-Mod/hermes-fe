@@ -24,21 +24,6 @@
                 APP.utils.openURL(url, true);
             },
 
-            // Open previous try page.
-            'change #previous-try-select' : function (e) {
-                var tryID, url;
-
-                tryID = $(e.target).val();
-                if (tryID > 0) {
-                    url = APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE);
-                    alert("TODO: get uid from hashid / try");
-                    // url = url.replace("{hashid}", MOD.state.simulation.hashid);
-                    // url = url.replace("{tryID}", tryID);
-                    // url = url.replace("{uid}", MOD.state.simulation.uid);
-                    // APP.utils.openURL(url, true);
-                }
-            },
-
             // Reopen page when web socket closed.
             'click #ws-close-dialog-refresh-page-button' : function () {
                 APP.utils.openURL();

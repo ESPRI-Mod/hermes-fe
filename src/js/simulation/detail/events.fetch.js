@@ -24,12 +24,14 @@
     MOD.events.on("setup:pageDataDownloaded", function (data) {
         // Map tuples to JSON objects.
         data.jobList = _.map(data.jobList, MOD.mapJob);
+        data.previousTries = _.map(data.previousTries, MOD.mapPreviousTries);
 
         // Parse data.
         MOD.parseSimulation(data.simulation, data.jobList);
 
         // Update module state.
         MOD.state.simulation = data.simulation;
+        MOD.state.previousTries = _.sortBy(data.previousTries, 'tryID');
         MOD.state.hasMessages = data.hasMessages;
         MOD.state.configCard = data.configCard ? window.atob(data.configCard) : null;
 

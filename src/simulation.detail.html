@@ -265,12 +265,12 @@
                 <strong>Previous Tries</strong>
             </td>
             <td class="col-md-4">
-                <% if (simulation.tryID === 1) { %>
-                    --
+                <% if (simulation.tryID > 1) { %>
+                <% _.each(MOD.state.previousTries, function(tryInfo) { %>
+                <a href="<%- APP.utils.getBaseURL() %>?uid=<%= tryInfo.uid %>" target="_blank"><%- tryInfo.tryID %></a>&nbsp;
+                <% }) %>
                 <% } else { %>
-                <% _.each(_.range(simulation.tryID - 1), function(tryID) { %>
-                <a href="<%- APP.utils.getBaseURL() %>?uid=<%= simulationUID %>&tryID=<%= tryID + 1 %>" target="_blank"><%- tryID + 1 %></a>&nbsp;
-                <% }); %>
+                    --
                 <% } %>
             </td>
             <td class="col-md-2">

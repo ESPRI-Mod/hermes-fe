@@ -32,6 +32,9 @@
         // Simulation.
         simulation: undefined,
 
+        // Set of previous tries.
+        previousTries: {},
+
         // Has associated messages.
         hasMessages: false,
 
