@@ -49,13 +49,15 @@
                 }
             }
 
-            // Update module state.
+            // Update module state:
+            // ... new cv terms;
             MOD.state.cvTerms = _.union(MOD.state.cvTerms, data.cvTerms);
             _.each(data.cvTerms, function (term) {
                 if (_.has(MOD.state.filterSet, term.typeof)) {
                     MOD.state.filterSet[term.typeof].cvTerms.all.push(term);
                 }
             });
+            // ... new simulation.
             MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
                 return s.hashid !== data.simulation.hashid;
             });
