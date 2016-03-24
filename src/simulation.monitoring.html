@@ -66,7 +66,7 @@
         <tr class="bg-primary">
             <th colspan="14">
                 <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
-                <span class=' pull-right form-inline <%= paging.count < 2 ? 'hidden' : '' %>'>
+                <span class=' pull-right form-inline <%= paging.count < 2 ? '' : '' %>'>
                     <button type='button' class='btn btn-sm btn-default pagination-first'>
                         <strong class="text-muted"><<</strong>
                     </button>
@@ -81,6 +81,13 @@
                     <button type='button' class='btn btn-sm btn-default pagination-last'>
                         <strong class="text-muted">>></strong>
                     </button>
+                    <select class="pagination-page-size form-control input-sm" style="width: 90px">
+                        <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
+                        <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
+                            <%= pageSize %> / page
+                        </option>
+                        <% }); %>
+                    </select>
             </th>
         </tr>
 
@@ -296,6 +303,7 @@
 <script src="ext/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="ext/moment-2.10.6.min.js"></script>
 <script src="ext/numeral-1.5.3.js"></script>
+<script src="ext/js.cookie-2.1.0.js"></script>
 <!-- JS: 3rd party libraries (extensions) -->
 <script src="ext/backbone.1.2.3-options-patch.js"></script>
 <script src="ext/bootstrap-contextmenu/bootstrap-contextmenu.js"></script>

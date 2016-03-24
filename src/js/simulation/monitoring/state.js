@@ -1,7 +1,12 @@
-(function (APP, MOD, _) {
+(function (APP, MOD, _, cookies) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
+
+    // Initialise state backed by cookies.
+    if (_.isUndefined(cookies.get('simulation-monitoring-page-size'))) {
+        cookies.set('simulation-monitoring-page-size', 25);
+    }
 
     // Module state.
     MOD.state = {
@@ -75,6 +80,12 @@
         // Map of simulation hash id's to simulations.
         simulationHashSet: {},
 
+        // Size of grid pages.
+        pageSize: cookies.get('simulation-monitoring-page-size'),
+
+        // Set of grid page size options.
+        pageSizeOptions: [25, 50, 100],
+
         // Paging related state.
         paging: {
             current: undefined,
@@ -110,5 +121,6 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._
+    this._,
+    this.Cookies
 ));

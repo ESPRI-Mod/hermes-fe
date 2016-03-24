@@ -1,7 +1,12 @@
-(function (APP, MOD) {
+(function (APP, MOD, cookies) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
+
+    // Initialise state backed by cookies.
+    if (_.isUndefined(cookies.get('simulation-detail-page-size'))) {
+        cookies.set('simulation-detail-page-size', 25);
+    }
 
     // Module state.
     MOD.state = {
@@ -38,8 +43,11 @@
         // Has associated messages.
         hasMessages: false,
 
-        // Size of job collection pages.
-        jobCollectionPageSize: APP.constants.paging.itemsPerPage,
+        // Size of grid pages.
+        pageSize: cookies.get('simulation-detail-page-size'),
+
+        // Set of grid page size options.
+        pageSizeOptions: [25, 50, 100],
 
         // Returns job history collection by job type.
         getJobs: function (jobType) {
@@ -58,5 +66,6 @@
 
 }(
     this.APP,
-    this.APP.modules.monitoring
+    this.APP.modules.monitoring,
+    this.Cookies
 ));

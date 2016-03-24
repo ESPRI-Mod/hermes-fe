@@ -42,7 +42,7 @@
         // Assigns job pagination.
         setJobsetPagination = function (jobSet) {
             var currentPage = jobSet.paging.current,
-                pages = APP.utils.getPages(jobSet.all, MOD.state.jobCollectionPageSize),
+                pages = APP.utils.getPages(jobSet.all, MOD.state.pageSize),
                 page;
 
             // Reset pages.

@@ -1,7 +1,12 @@
-(function (APP, _, $, moment, numeral) {
+(function (APP, _, $, moment, numeral, cookies) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
+
+    // Initialise state backed by cookies.
+    if (_.isUndefined(cookies.get('simulation-message-page-size'))) {
+        cookies.set('simulation-message-page-size', 25);
+    }
 
     // Declare module.
     var
@@ -63,8 +68,11 @@
                 // Simulation hash identifier.
                 simulationUID: APP.utils.getURLParam('uid'),
 
-                // Size of message collection pages.
-                messageCollectionPageSize: APP.constants.paging.itemsPerPage,
+                // Size of grid pages.
+                pageSize: cookies.get('simulation-message-page-size'),
+
+                // Set of grid page size options.
+                pageSizeOptions: [25, 50, 100],
 
                 // Returns related set of messages.
                 getMessageCollection: function (messageType) {
@@ -134,7 +142,7 @@
 
         // Sets the pageable collection of messages.
         setMessageCollectionPaging = function (collection) {
-            var pages = APP.utils.getPages(collection.all, MOD.state.messageCollectionPageSize);
+            var pages = APP.utils.getPages(collection.all, MOD.state.pageSize);
 
             collection.paging = {
                 current: pages ? pages[0] : null,
@@ -194,7 +202,8 @@
     this._,
     this.$,
     this.moment,
-    this.numeral
+    this.numeral,
+    this.Cookies
 ));
 
 

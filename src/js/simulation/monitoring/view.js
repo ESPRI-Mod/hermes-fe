@@ -1,4 +1,4 @@
-(function (APP, MOD, PAGING, _, Backbone, $) {
+(function (APP, MOD, PAGING, _, Backbone, $, cookies) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -12,6 +12,7 @@
                 this._openSimulationDetailPage($(e.target).parent().attr("id") ||
                                                $(e.target).parent().parent().attr("id"));
             },
+
             // Open monitoring page.
             'click table tbody tr td.monitoring' : function (e) {
                 var s;
@@ -19,6 +20,7 @@
                 s = this._getSimulation($(e.target).parent().parent().attr("id"));
                 MOD.events.trigger("im:openMonitor", s);
             },
+
             // Toggle inter-monitoring selection.
             'change table tbody tr td.inter-monitoring > input' : function (e) {
                 var s;
@@ -26,14 +28,17 @@
                 s = this._getSimulation($(e.target).parent().parent().attr("id"));
                 s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
             },
+
             // Open inter-monitoring page.
             'click #inter-monitoring-context-menu a.open' : function () {
                 MOD.events.trigger("im:openInterMonitor");
             },
+
             // Clear inter-monitoring selections.
             'click #inter-monitoring-context-menu a.clear' : function () {
                 MOD.events.trigger("im:clearInterMonitor");
             },
+
             // Pager: navigate to manually chosen page.
             'change .pagination-info' : function (e) {
                 var pageNumber;
@@ -48,6 +53,7 @@
                     MOD.events.trigger('state:simulationPageUpdate');
                 }
             },
+
             // Pager: navigate to first page.
             'click .pagination-first' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.first(PAGING.pages)) {
@@ -55,6 +61,7 @@
                     MOD.events.trigger('state:simulationPageUpdate');
                 }
             },
+
             // Pager: navigate to previous page.
             'click .pagination-previous' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.first(PAGING.pages)) {
@@ -62,6 +69,7 @@
                     MOD.events.trigger('state:simulationPageUpdate');
                 }
             },
+
             // Pager: navigate to next page.
             'click .pagination-next' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.last(PAGING.pages)) {
@@ -69,6 +77,7 @@
                     MOD.events.trigger('state:simulationPageUpdate');
                 }
             },
+
             // Pager: navigate to last page.
             'click .pagination-last' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.last(PAGING.pages)) {
@@ -76,6 +85,13 @@
                     MOD.events.trigger('state:simulationPageUpdate');
                 }
             },
+
+            // Pager: page-size change.
+            'change .pagination-page-size' : function (e) {
+                cookies.set('simulation-monitoring-page-size', $(e.target).val());
+                MOD.events.trigger('state:paginationReset');
+            },
+
             // Reopen page when web socket closed.
             'click #ws-close-dialog-refresh-page-button' : function () {
                 var baseURL, url;
@@ -94,11 +110,13 @@
                 // Redirect.
                 APP.utils.openURL(url);
             },
+
             // Filter: value change.
-            'change select:not(.custom-filter)': function (e) {
+            'change select:not(.custom-filter):not(.pagination-page-size)': function (e) {
                 MOD.updateFilterValue($(e.target).attr("id").slice(16),
                                       $(e.target).val());
             },
+
             // Filter: value change (timeslice).
             'change #filter-selector-timeslice': function (e) {
                 MOD.fetchTimeSlice($(e.target).val(), true);
@@ -243,5 +261,6 @@
     this.APP.modules.monitoring.state.paging,
     this._,
     this.Backbone,
-    this.$
+    this.$,
+    this.Cookies
 ));

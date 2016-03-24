@@ -150,7 +150,6 @@
                         jobList: jobList,
                         jobType: jobType,
                         jobTypeCaption: MOD.jobTypeDescriptions[jobType],
-                        pageSize: MOD.state.jobCollectionPageSize,
                         MOD: MOD
                     }) %>
                 </div>
@@ -295,7 +294,7 @@
                         <strong>Total <%= jobTypeCaption %> Jobs = <%= jobList.all.length %>.</strong>
                     </span>
                 </span>
-                <% if (jobList.all.length > pageSize ) { %>
+                <% if (jobList.all.length > MOD.state.pageSize ) { %>
                     <span id="pagination-<%= jobType %>" class="pull-right form-inline">
                         <button type='button' class="btn btn-sm btn-default pagination-first">
                             <strong class="text-muted"><<</strong>
@@ -312,6 +311,13 @@
                         <button type='button' class="btn btn-sm btn-default pagination-last">
                             <strong class="text-muted">>></strong>
                         </button>
+                        <select class="pagination-page-size form-control input-sm" style="width: 90px;">
+                            <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
+                            <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
+                                <%= pageSize %> / page
+                            </option>
+                            <% }); %>
+                        </select>
                     </span>
                 <% } %>
             </th>
@@ -346,7 +352,7 @@
                 APP: APP,
                 MOD: MOD,
                 job: job,
-                jobIndex: ((jobList.paging.current.id - 1) * pageSize) + jobIndex + 1,
+                jobIndex: ((jobList.paging.current.id - 1) * MOD.state.pageSize) + jobIndex + 1,
                 jobType: jobType,
                 hidePPInfo: hidePPInfo
             }) %>
@@ -448,6 +454,7 @@
 <script src="ext/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="ext/moment-2.10.6.min.js"></script>
 <script src="ext/numeral-1.5.3.js"></script>
+<script src="ext/js.cookie-2.1.0.js"></script>
 
 <!-- JS: 3rd party libraries (extensions) -->
 <script src="ext/backbone.1.2.3-options-patch.js"></script>

@@ -73,8 +73,7 @@
             messages: messageHistory.compute,
             messageType: 'compute',
             messageTypeDescription: APP.modules.messages.messageTypeDescriptions['compute'],
-            displayPostProcessingJobInfo: false,
-            pageSize: APP.modules.messages.state.messageCollectionPageSize
+            displayPostProcessingJobInfo: false
         }) %>
     </div>
     <% } %>
@@ -86,8 +85,7 @@
             messages: messageHistory.postProcessing,
             messageType: 'post-processing',
             messageTypeDescription: APP.modules.messages.messageTypeDescriptions['post-processing'],
-            displayPostProcessingJobInfo: true,
-            pageSize: APP.modules.messages.state.messageCollectionPageSize
+            displayPostProcessingJobInfo: true
         }) %>
     </div>
     <% } %>
@@ -105,7 +103,7 @@
                         <strong>Total <%= messageTypeDescription %> Messages = <%= messages.all.length %>.</strong>
                     </span>
                 </span>
-                <% if (messages.all.length > pageSize ) { %>
+                <% if (messages.all.length > MOD.state.pageSize ) { %>
                     <span id="pagination-<%= messageType %>" class="pull-right form-inline">
                         <button type='button' class="btn btn-sm btn-default pagination-first">
                             <strong class="text-muted"><<</strong>
@@ -122,6 +120,13 @@
                         <button type='button' class="btn btn-sm btn-default pagination-last">
                             <strong class="text-muted">>></strong>
                         </button>
+                        <select class="pagination-page-size form-control input-sm" style="width: 90px;">
+                            <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
+                            <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
+                                <%= pageSize %> / page
+                            </option>
+                            <% }); %>
+                        </select>
                     </span>
                 <% } %>
             </th>
@@ -264,6 +269,7 @@
 <script src="ext/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="ext/moment-2.10.6.min.js"></script>
 <script src="ext/numeral-1.5.3.js"></script>
+<script src="ext/js.cookie-2.1.0.js"></script>
 
 <!-- JS: 3rd party libraries (extensions) -->
 <script src="ext/backbone.1.2.3-options-patch.js"></script>

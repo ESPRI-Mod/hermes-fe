@@ -1,4 +1,4 @@
-(function (APP, MOD, _, Backbone, $) {
+(function (APP, MOD, _, Backbone, $, cookies) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -95,6 +95,12 @@
                     paging.current = _.last(paging.pages);
                     this._updateMessageCollection(messageType, messageCollection);
                 }
+            },
+
+            // Pager: page-size change.
+            'change .pagination-page-size' : function (e) {
+                cookies.set('simulation-message-page-size', $(e.target).val());
+                MOD.events.trigger('state:paginationReset');
             }
         },
 
@@ -139,8 +145,7 @@
                 messages: messageCollection,
                 messageType: messageType,
                 messageTypeDescription: MOD.messageTypeDescriptions[messageType],
-                displayPostProcessingJobInfo: messageType !== "compute",
-                pageSize: MOD.state.messageCollectionPageSize
+                displayPostProcessingJobInfo: messageType !== "compute"
             });
         },
 
@@ -154,5 +159,6 @@
     this.APP.modules.messages,
     this._,
     this.Backbone,
-    this.$
+    this.$,
+    this.Cookies
 ));

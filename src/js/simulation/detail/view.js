@@ -1,4 +1,4 @@
-(function (APP, MOD, _, Backbone, $) {
+(function (APP, MOD, _, Backbone, $, cookies) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -88,6 +88,12 @@
                     paging.current = _.last(paging.pages);
                     this._updateJobCollection(jobType);
                 }
+            },
+
+            // Pager: page-size change.
+            'change .pagination-page-size' : function (e) {
+                cookies.set('simulation-detail-page-size', $(e.target).val());
+                MOD.events.trigger('state:paginationReset');
             }
         },
 
@@ -155,7 +161,6 @@
                 jobList: MOD.state.getJobs(jobType),
                 jobType: jobType,
                 jobTypeCaption: MOD.jobTypeDescriptions[jobType],
-                pageSize: MOD.state.jobCollectionPageSize,
                 MOD: MOD
             });
         },
@@ -188,5 +193,6 @@
     this.APP.modules.monitoring,
     this._,
     this.Backbone,
-    this.$
+    this.$,
+    this.Cookies
 ));
