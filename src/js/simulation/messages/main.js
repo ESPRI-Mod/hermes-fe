@@ -1,12 +1,7 @@
-(function (APP, _, $, moment, numeral, cookies) {
+(function (APP, _, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
-
-    // Initialise state backed by cookies.
-    if (_.isUndefined(cookies.get('simulation-message-page-size'))) {
-        cookies.set('simulation-message-page-size', 25);
-    }
 
     // Declare module.
     var
@@ -52,112 +47,18 @@
 
                 // Simulation detail page.
                 SIMULATION_DETAIL_PAGE: 'simulation.detail.html?uid={uid}',
-            },
-
-            // Initial module state.
-            state: {
-                // Application pointer.
-                APP: APP,
-
-                // Copyright year.
-                year: new Date().getFullYear(),
-
-                // Simulation.
-                simulation: null,
-
-                // Simulation hash identifier.
-                simulationUID: APP.utils.getURLParam('uid'),
-
-                // Size of grid pages.
-                pageSize: cookies.get('simulation-message-page-size'),
-
-                // Set of grid page size options.
-                pageSizeOptions: [25, 50, 100],
-
-                // Returns related set of messages.
-                getMessageCollection: function (messageType) {
-                    switch (messageType) {
-                    case "compute":
-                        return MOD.state.messageHistory.compute;
-                    case "post-processing":
-                        return MOD.state.messageHistory.postProcessing;
-                    case "post-processing-from-checker":
-                        return MOD.state.messageHistory.postProcessingFromChecker;
-                    default:
-                        return [];
-                    }
-                }
             }
         }),
 
-        // Returns job post-processing information.
-        getPostProcessingInfo = function (job) {
-            var ppFields = [];
-
-            if (job.postProcessingName && job.postProcessingName !== 'null') {
-                ppFields.push(job.postProcessingName);
-            }
-            if (job.postProcessingDate && job.postProcessingDate !== 'null') {
-                // ppFields.push(job.postProcessingDate);
-                ppFields.push(moment(job.postProcessingDate, "YYYYMMDD").format("YYYY-MM-DD"));
-            }
-            if (job.postProcessingDimension && job.postProcessingDimension !== 'null') {
-                ppFields.push(job.postProcessingDimension);
-            }
-            if (job.postProcessingComponent && job.postProcessingComponent !== 'null') {
-                ppFields.push(job.postProcessingComponent);
-            }
-            if (job.postProcessingFile && job.postProcessingFile !== 'null') {
-                ppFields.push(job.postProcessingFile);
-            }
-            return ppFields.join(".");
-        },
-
-        // Parses a message recieved from web-service.
-        parseMessage = function (msg) {
-            msg.latency = numeral(moment(msg.processed).diff(msg.timestamp, 's')).format("00:00:00");
-            if (msg.latency.length === 7) {
-                msg.latency = "0" + msg.latency;
-            }
-            if (msg.typeID === "2000" || msg.typeID === "3000") {
-                msg.jobInfo = getPostProcessingInfo($.parseJSON(msg.content));
-            } else {
-                msg.jobInfo = "--";
-            }
-        },
-
-        // Returns a mapped message.
-        mapMessage = function (i) {
-            return {
-                content: i[0],
-                emailID: i[1],
-                jobUID: i[2],
-                processed: APP.utils.toLocalDateTimeString(i[3]),
-                producerVersion: i[4],
-                timestamp: i[5],
-                typeID: i[6],
-                uid: i[7],
-            };
-        },
-
-        // Sets the pageable collection of messages.
-        setMessageCollectionPaging = function (collection) {
-            var pages = APP.utils.getPages(collection.all, MOD.state.pageSize);
-
-            collection.paging = {
-                current: pages ? pages[0] : null,
-                count: pages.length,
-                pages: pages
-            };
-        },
-
         // Page setup data download event handler.
         onPageSetUpDataDownloaded = function (data) {
-            // Map & parse downloaded data.
-            data.messageHistory = _.map(data.messageHistory, mapMessage);
-            _.each(data.messageHistory, parseMessage);
+            // Map downloaded message history data.
+            data.messageHistory = _.map(data.messageHistory, MOD.mapMessage);
 
-            // Set module state.
+            // Parse downloaded message history data.
+            _.each(data.messageHistory, MOD.parseMessage);
+
+            // Update module state.
             MOD.state.simulation = data.simulation;
             MOD.state.messageHistory = {
                 all: data.messageHistory,
@@ -174,8 +75,8 @@
             };
 
             // Set initial message collection paging state.
-            setMessageCollectionPaging(MOD.state.messageHistory.compute);
-            setMessageCollectionPaging(MOD.state.messageHistory.postProcessing);
+            MOD.setMessageSetPagination(MOD.state.messageHistory.compute);
+            MOD.setMessageSetPagination(MOD.state.messageHistory.postProcessing);
 
             // // Render main view.
             MOD.view = new MOD.views.MainView();
@@ -185,7 +86,6 @@
             // Fire events.
             APP.events.trigger("module:initialized", MOD);
         };
-
 
     // Module initialisation event handler.
     MOD.events.on("module:initialization", function () {
@@ -200,11 +100,5 @@
 }(
     this.APP,
     this._,
-    this.$,
-    this.moment,
-    this.numeral,
-    this.Cookies
+    this.$
 ));
-
-
-

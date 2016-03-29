@@ -1,12 +1,11 @@
-(function (APP, MOD, cookies) {
+(function (APP, MOD, _, cookies) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Initialise state backed by cookies.
-    if (_.isUndefined(cookies.get('simulation-detail-page-size'))) {
-        cookies.set('simulation-detail-page-size', 25);
-    }
+    cookies.set('simulation-detail-page-size',
+                cookies.get('simulation-detail-page-size') || 25);
 
     // Module state.
     MOD.state = {
@@ -47,25 +46,12 @@
         pageSize: cookies.get('simulation-detail-page-size'),
 
         // Set of grid page size options.
-        pageSizeOptions: [25, 50, 100],
-
-        // Returns job history collection by job type.
-        getJobs: function (jobType) {
-            switch (jobType) {
-            case "computing":
-                return MOD.state.simulation.jobs.compute;
-            case "post-processing":
-                return MOD.state.simulation.jobs.postProcessing;
-            case "post-processing-from-checker":
-                return MOD.state.simulation.jobs.postProcessingFromChecker;
-            default:
-                return [];
-            }
-        }
+        pageSizeOptions: [25, 50, 100]
     };
 
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this._,
     this.Cookies
 ));

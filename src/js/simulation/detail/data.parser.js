@@ -39,28 +39,6 @@
             }
         },
 
-        // Assigns job pagination.
-        setJobsetPagination = function (jobSet) {
-            var currentPage = jobSet.paging.current,
-                pages = APP.utils.getPages(jobSet.all, MOD.state.pageSize),
-                page;
-
-            // Reset pages.
-            jobSet.paging.count = pages.length;
-            jobSet.paging.current = pages ? pages[0] : null;
-            jobSet.paging.pages = pages;
-
-            // Ensure current page is respected when pages collection changes.
-            if (currentPage) {
-                page = _.find(pages, function (p) {
-                    return _.indexOf(p.data, currentPage.data[0]) !== -1;
-                });
-                if (page) {
-                    jobSet.paging.current = page;
-                }
-            }
-        },
-
         // Parses a simulation job.
         parseJob = function (simulation, job) {
             simulation.jobs.all.push(job);
@@ -105,7 +83,7 @@
         _.each(getJobSets(simulation), sortJobset);
 
         // Set job pagination state.
-        _.each(getJobSets(simulation), setJobsetPagination);
+        _.each(getJobSets(simulation), MOD.setJobsetPagination);
 
         // Set derived execution states.
         setExecutionState(simulation);

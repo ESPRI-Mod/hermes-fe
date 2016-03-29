@@ -103,32 +103,30 @@
                         <strong>Total <%= messageTypeDescription %> Messages = <%= messages.all.length %>.</strong>
                     </span>
                 </span>
-                <% if (messages.all.length > MOD.state.pageSize ) { %>
-                    <span id="pagination-<%= messageType %>" class="pull-right form-inline">
-                        <button type='button' class="btn btn-sm btn-default pagination-first">
-                            <strong class="text-muted"><<</strong>
-                        </button>
-                        <button type='button' class="btn btn-sm btn-default pagination-previous">
-                            <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
-                        </button>
-                        <input type="text"
-                               class="pagination-info form-control input-sm"
-                               placeholder="Page <%= messages.paging.current ? messages.paging.current.id : '0' %> of <%= messages.paging.count %>" />
-                        <button type='button' class="btn btn-sm btn-default pagination-next">
-                            <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
-                        </button>
-                        <button type='button' class="btn btn-sm btn-default pagination-last">
-                            <strong class="text-muted">>></strong>
-                        </button>
-                        <select class="pagination-page-size form-control input-sm" style="width: 90px;">
-                            <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
-                            <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
-                                <%= pageSize %> / page
-                            </option>
-                            <% }); %>
-                        </select>
-                    </span>
-                <% } %>
+                <span id="pagination-<%= messageType %>" class="pull-right form-inline">
+                    <button type='button' class="btn btn-sm btn-default pagination-first">
+                        <strong class="text-muted"><<</strong>
+                    </button>
+                    <button type='button' class="btn btn-sm btn-default pagination-previous">
+                        <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
+                    </button>
+                    <input type="text"
+                           class="pagination-info form-control input-sm"
+                           placeholder="Page <%= messages.paging.current ? messages.paging.current.id : '0' %> of <%= messages.paging.count %>" />
+                    <button type='button' class="btn btn-sm btn-default pagination-next">
+                        <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
+                    </button>
+                    <button type='button' class="btn btn-sm btn-default pagination-last">
+                        <strong class="text-muted">>></strong>
+                    </button>
+                    <select class="pagination-page-size form-control input-sm" style="width: 90px;">
+                        <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
+                        <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
+                            <%= pageSize %> / page
+                        </option>
+                        <% }); %>
+                    </select>
+                </span>
             </th>
         </tr>
         <tr class="prodiguer-table-header">
@@ -291,6 +289,10 @@
 
 <!-- JS - Module = monitoring (all) -->
 <script src="js/simulation/messages/main.js"></script>
+<script src="js/simulation/messages/state.js"></script>
+<script src="js/simulation/messages/state.utils.js"></script>
+<script src="js/simulation/messages/data.mapper.js"></script>
+<script src="js/simulation/messages/data.parser.js"></script>
 <script src="js/simulation/messages/view.js"></script>
 
 </body>

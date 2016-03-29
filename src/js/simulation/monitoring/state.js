@@ -4,9 +4,8 @@
     "use strict";
 
     // Initialise state backed by cookies.
-    if (_.isUndefined(cookies.get('simulation-monitoring-page-size'))) {
-        cookies.set('simulation-monitoring-page-size', 25);
-    }
+    cookies.set('simulation-monitoring-page-size',
+                cookies.get('simulation-monitoring-page-size') || 25);
 
     // Module state.
     MOD.state = {

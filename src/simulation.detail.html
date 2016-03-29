@@ -86,7 +86,7 @@
     <% // TAB NAV: post-processing jobs %>
     <% // TAB NAV: post-processing (from checker) jobs %>
     <%  _.each(MOD.jobTypes, function (jobType, jobTypeIndex) {  %>
-    <%      var jobList = MOD.state.getJobs(jobType); %>
+    <%      var jobList = MOD.getJobs(jobType); %>
     <%      if (jobList.all.length) { %>
             <li role="presentation" style="border-left: 1px solid lightgrey;">
                 <a  href="#tab-jobs-<%= jobType %>"
@@ -141,7 +141,7 @@
     <% // TAB CONTENT: post-processing (from checker) jobs %>
     <%  _.each(MOD.jobTypes, function (jobType) {  %>
     <%      var jobList, jobTypeCaption; %>
-    <%      jobList = MOD.state.getJobs(jobType); %>
+    <%      jobList = MOD.getJobs(jobType); %>
     <%      if (jobList.all.length) { %>
                 <div role="tabpanel" class="tab-pane" id="tab-jobs-<%= jobType %>">
                     <%= APP.utils.renderTemplate("template-job-collection", {
@@ -294,32 +294,30 @@
                         <strong>Total <%= jobTypeCaption %> Jobs = <%= jobList.all.length %>.</strong>
                     </span>
                 </span>
-                <% if (jobList.all.length > MOD.state.pageSize ) { %>
-                    <span id="pagination-<%= jobType %>" class="pull-right form-inline">
-                        <button type='button' class="btn btn-sm btn-default pagination-first">
-                            <strong class="text-muted"><<</strong>
-                        </button>
-                        <button type='button' class="btn btn-sm btn-default pagination-previous">
-                            <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
-                        </button>
-                        <input type="text"
-                               class="pagination-info form-control input-sm"
-                               placeholder="Page <%= jobList.paging.current ? jobList.paging.current.id : '0' %> of <%= jobList.paging.count %>" />
-                        <button type='button' class="btn btn-sm btn-default pagination-next">
-                            <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
-                        </button>
-                        <button type='button' class="btn btn-sm btn-default pagination-last">
-                            <strong class="text-muted">>></strong>
-                        </button>
-                        <select class="pagination-page-size form-control input-sm" style="width: 90px;">
-                            <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
-                            <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
-                                <%= pageSize %> / page
-                            </option>
-                            <% }); %>
-                        </select>
-                    </span>
-                <% } %>
+                <span id="pagination-<%= jobType %>" class="pull-right form-inline">
+                    <button type='button' class="btn btn-sm btn-default pagination-first">
+                        <strong class="text-muted"><<</strong>
+                    </button>
+                    <button type='button' class="btn btn-sm btn-default pagination-previous">
+                        <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
+                    </button>
+                    <input type="text"
+                           class="pagination-info form-control input-sm"
+                           placeholder="Page <%= jobList.paging.current ? jobList.paging.current.id : '0' %> of <%= jobList.paging.count %>" />
+                    <button type='button' class="btn btn-sm btn-default pagination-next">
+                        <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
+                    </button>
+                    <button type='button' class="btn btn-sm btn-default pagination-last">
+                        <strong class="text-muted">>></strong>
+                    </button>
+                    <select class="pagination-page-size form-control input-sm" style="width: 90px;">
+                        <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
+                        <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
+                            <%= pageSize %> / page
+                        </option>
+                        <% }); %>
+                    </select>
+                </span>
             </th>
         </tr>
         <tr class="prodiguer-table-header">
@@ -482,6 +480,7 @@
 <script src="js/simulation/shared/utils.ws.js"></script>
 <script src="js/simulation/detail/init.js"></script>
 <script src="js/simulation/detail/state.js"></script>
+<script src="js/simulation/detail/state.utils.js"></script>
 <script src="js/simulation/detail/data.extender.job.js"></script>
 <script src="js/simulation/detail/data.extender.simulation.js"></script>
 <script src="js/simulation/detail/data.mapper.js"></script>

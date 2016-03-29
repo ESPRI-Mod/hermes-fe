@@ -3,6 +3,12 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
+    // Returns job type from user event target.
+    var getJobType = function (e) {
+        return ($(e.target).parent().attr("id") ||
+                $(e.target).parent().parent().attr("id")).slice(11);
+    };
+
     // Main module level view.
     MOD.views.MainView = Backbone.View.extend({
         // Backbone: view HTML tag.
@@ -31,9 +37,9 @@
 
             // Pager: navigate to manually chosen page.
             'change .pagination-info' : function (e) {
-                var jobType = $(e.target).parent().attr("id").slice(11),
+                var jobType = getJobType(e),
                     pageNumber = parseInt($(e.target).val(), 10),
-                    paging = MOD.state.getJobs(jobType).paging;
+                    paging = MOD.getJobs(jobType).paging;
 
                 if (_.isNaN(pageNumber) === false &&
                     pageNumber > 0 &&
@@ -48,8 +54,8 @@
 
             // Pager: navigate to first page.
             'click .pagination-first' : function (e) {
-                var jobType = ($(e.target).parent().attr("id") || $(e.target).parent().parent().attr("id")).slice(11),
-                    paging = MOD.state.getJobs(jobType).paging;
+                var jobType = getJobType(e),
+                    paging = MOD.getJobs(jobType).paging;
 
                 if (paging.pages.length && paging.current !== _.first(paging.pages)) {
                     paging.current = _.first(paging.pages);
@@ -59,8 +65,8 @@
 
             // Pager: navigate to previous page.
             'click .pagination-previous' : function (e) {
-                var jobType = ($(e.target).parent().attr("id") || $(e.target).parent().parent().attr("id")).slice(11),
-                    paging = MOD.state.getJobs(jobType).paging;
+                var jobType = getJobType(e),
+                    paging = MOD.getJobs(jobType).paging;
 
                 if (paging.pages.length && paging.current !== _.first(paging.pages)) {
                     paging.current = paging.pages[paging.current.id - 2];
@@ -70,8 +76,8 @@
 
             // Pager: navigate to next page.
             'click .pagination-next' : function (e) {
-                var jobType = ($(e.target).parent().attr("id") || $(e.target).parent().parent().attr("id")).slice(11),
-                    paging = MOD.state.getJobs(jobType).paging;
+                var jobType = getJobType(e),
+                    paging = MOD.getJobs(jobType).paging;
 
                 if (paging.pages.length && paging.current !== _.last(paging.pages)) {
                     paging.current = paging.pages[paging.current.id];
@@ -81,8 +87,8 @@
 
             // Pager: navigate to last page.
             'click .pagination-last' : function (e) {
-                var jobType = ($(e.target).parent().attr("id") || $(e.target).parent().parent().attr("id")).slice(11),
-                    paging = MOD.state.getJobs(jobType).paging;
+                var jobType = getJobType(e),
+                    paging = MOD.getJobs(jobType).paging;
 
                 if (paging.pages.length && paging.current !== _.last(paging.pages)) {
                     paging.current = _.last(paging.pages);
@@ -92,8 +98,18 @@
 
             // Pager: page-size change.
             'change .pagination-page-size' : function (e) {
-                cookies.set('simulation-detail-page-size', $(e.target).val());
-                MOD.events.trigger('state:pageSizeChange', $(e.target).val());
+                var jobType = getJobType(e),
+                    pageSize = $(e.target).val();
+
+                // Update page size.
+                cookies.set('simulation-detail-page-size', pageSize);
+                MOD.state.pageSize = pageSize;
+
+                // Update job set pagination info.
+                MOD.setJobsetPagination(MOD.getJobs(jobType));
+
+                // Update view.
+                this._updateJobCollection(jobType);
             }
         },
 
@@ -158,7 +174,7 @@
             this._replaceNode("#job-collection-" + jobType, "template-job-collection", {
                 APP: APP,
                 hidePPInfo: jobType === 'computing',
-                jobList: MOD.state.getJobs(jobType),
+                jobList: MOD.getJobs(jobType),
                 jobType: jobType,
                 jobTypeCaption: MOD.jobTypeDescriptions[jobType],
                 MOD: MOD
@@ -172,7 +188,7 @@
         _updateJobCount: function (jobType) {
             var jobs, selector;
 
-            jobs = MOD.state.getJobs(jobType);
+            jobs = MOD.getJobs(jobType);
             selector = '#' + "tab-job-count-" + jobType + "-";
             this.$(selector + "running").text(jobs.running.length);
             this.$(selector + "complete").text(jobs.complete.length);
