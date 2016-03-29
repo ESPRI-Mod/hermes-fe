@@ -10,14 +10,16 @@
 	margin-top: 24px;
 }
 
-.app-header .btn-group .btn {
-	width: 120px;
+.app-header .btn-group .btn-app-support {
 	font-weight: bold;
+	margin-top: 10px;
+	width: 100px;
 }
 
-.app-header .btn-group .btn-app-support {
-	margin-top: 10px;
-	width: 120px;
+@media (max-width: 1020px) {
+	.app-header .btn-group .btn-app-support {
+	    display: none;
+	}
 }
 
 .app-header nav li {
@@ -25,13 +27,13 @@
 }
 
 .app-title {
-	font-size: 52px;
+	font-size: 1.2em;
 	color: #337AB7;
 	cursor: pointer;
 }
 
 .module-title {
-	font-size: 52px;
+	font-size: 1.2em;
 	color: #1e496d;
 }
 

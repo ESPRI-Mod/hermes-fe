@@ -214,9 +214,14 @@
         <tr  style="border: 0px;">
             <td style="" colspan="10">
                 <span>
-                    <strong><%= messageTypeDescription %> Job Messages</strong>
+                    <small>
+                        <strong>
+                            <%= messages.all.length %> <%= messageTypeDescription %> Job Messages
+                        </strong>
+                    </small>
                 </span>
-                <span class="pull-right">
+                <span class='pull-right'>
+                    <small><strong><a href='http://prodiguer-docs.readthedocs.org/en/latest/' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- MOD.state.year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>
                 </span>
             </td>
         </tr>
