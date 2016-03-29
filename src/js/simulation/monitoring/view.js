@@ -1,4 +1,4 @@
-(function (APP, MOD, PAGING, _, Backbone, $, cookies) {
+(function (APP, MOD, PAGING, _, Backbone, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -88,8 +88,7 @@
 
             // Pager: page-size change.
             'change .pagination-page-size' : function (e) {
-                cookies.set('simulation-monitoring-page-size', $(e.target).val());
-                MOD.events.trigger('state:paginationReset');
+                MOD.events.trigger('state:pageSizeChange', $(e.target).val());
             },
 
             // Reopen page when web socket closed.
@@ -261,6 +260,5 @@
     this.APP.modules.monitoring.state.paging,
     this._,
     this.Backbone,
-    this.$,
-    this.Cookies
+    this.$
 ));

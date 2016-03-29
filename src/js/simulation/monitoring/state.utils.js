@@ -111,7 +111,7 @@
         var pages, page, paging = MOD.state.paging;
 
         // Reset pages.
-        pages = APP.utils.getPages(MOD.state.simulationListFiltered);
+        pages = APP.utils.getPages(MOD.state.simulationListFiltered, MOD.state.pageSize);
         paging.count = pages.length;
         paging.current = pages ? pages[0] : null;
         paging.pages = pages;

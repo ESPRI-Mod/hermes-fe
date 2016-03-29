@@ -100,7 +100,7 @@
             // Pager: page-size change.
             'change .pagination-page-size' : function (e) {
                 cookies.set('simulation-message-page-size', $(e.target).val());
-                MOD.events.trigger('state:paginationReset');
+                MOD.events.trigger('state:pageSizeChange', $(e.target).val());
             }
         },
 

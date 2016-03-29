@@ -1,4 +1,4 @@
-(function (MOD) {
+(function (MOD, cookies) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -18,6 +18,22 @@
         MOD.events.trigger("state:simulationListUpdate");
     });
 
+    // Apply filter event handler.
+    MOD.events.on("state:pageSizeChange", function (pageSize) {
+        // Update cookie.
+        cookies.set('simulation-monitoring-page-size', pageSize);
+
+        // Update state.
+        MOD.state.pageSize = pageSize;
+
+        // Update pagination.
+        MOD.updatePagination();
+
+        // Fire event.
+        MOD.events.trigger("state:simulationListUpdate");
+    });
+
 }(
-    this.APP.modules.monitoring
+    this.APP.modules.monitoring,
+    this.Cookies
 ));
