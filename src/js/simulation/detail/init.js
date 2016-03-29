@@ -5,7 +5,7 @@
 
     // Module initialisation event handler.
     MOD.events.on("module:initialization", function () {
-        // Updae odule title.
+        // Updae module title.
         MOD.title = "Simulation Details";
 
         // Connect to web-socket channel.
