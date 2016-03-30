@@ -16,7 +16,7 @@
 	width: 100px;
 }
 
-@media (max-width: 1020px) {
+@media (max-width: 1050px) {
 	.app-header .btn-group .btn-app-support {
 	    display: none;
 	}

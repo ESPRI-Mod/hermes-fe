@@ -5,3 +5,21 @@ span.pagination {
 table.monitoring-table tbody tr td:not(.inter-monitoring) {
 	cursor: pointer;
 }
+
+/* Grid cell font size */
+tbody > tr > td > small {
+	font-size: 0.8em;
+}
+thead > tr > th > small {
+	font-size: 0.8em;
+}
+
+/* Grid cell font size - narrow screen */
+@media (max-width: 1050px) {
+	tbody > tr > td > small {
+		font-size: 0.7em;
+	}
+	thead > tr > th > small {
+		font-size: 0.7em;
+	}
+}

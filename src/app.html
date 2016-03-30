@@ -64,7 +64,7 @@
     <thead>
 
         <tr class="bg-primary">
-            <th colspan="14">
+            <th colspan="15">
                 <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
                 <span class=' pull-right form-inline <%= paging.count < 2 ? '' : '' %>'>
                     <button type='button' class='btn btn-sm btn-default pagination-first'>
@@ -98,6 +98,7 @@
             <th title='Compute Jobs' class="text-center"><small>Jobs (C)</small></th>
             <th title='Post-Processing Jobs' class="text-center"><small>Jobs (PP)</small></th>
             <th title='Node - Machine' class="text-center"><small>Machine</small></th>
+            <th title='Accounting Project' class="text-center"><small>Acc. Project</small></th>
             <th title='Login' class="text-center"><small>Login</small></th>
             <th title='Tag / Model' class="text-center"><small>Tag / Model</small></th>
             <th title='Space' class="text-center"><small>Space</small></th>
@@ -112,7 +113,7 @@
     <%= APP.utils.renderTemplate("grid-body-template", MOD.state) %>
     <tfoot>
         <tr>
-            <td colspan="14">
+            <td colspan="15">
                 <span>
                     <span class='monitoring-state-queued badge'
                           title='QUEUED'
@@ -192,6 +193,11 @@
             <%= s.ext.computeNodeMachine %>
         </small>
     </td>
+    <td class="text-center" title="<%= s.accountingProject %>">
+        <small>
+            <%= s.accountingProject %>
+        </small>
+    </td>
     <td class="text-center" title="<%= s.computeNodeLogin %>">
         <small>
             <%= s.computeNodeLogin %>
@@ -214,12 +220,12 @@
     </td>
     <td class="text-center" title="<%= s.ext.executionStartDate %>">
         <small>
-            <%= s.ext.executionStartDate %>
+            <%= s.ext.executionStartDate.slice(0, 16) %>
         </small>
     </td>
     <td class="text-center execution-end-date">
         <small>
-            <%= (MOD.getSimulationComputeEndDate(s) || "--").slice(0, 19) %>
+            <%= "2016-03-08 09:52" || (MOD.getSimulationComputeEndDate(s) || "--").slice(0, 16) %>
         </small>
     </td>
     <td class="text-center monitoring">
