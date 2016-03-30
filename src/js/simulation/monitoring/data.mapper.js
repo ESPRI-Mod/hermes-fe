@@ -23,7 +23,7 @@
     // Returns a simulation object mapped form an array of values.
     MOD.mapSimulation = function (i) {
         return {
-            accountingProject: i[0] ? i[0] : 'DSDSADSADS',
+            accountingProject: i[0] ? i[0] : '--',
             activity: i[1],
             activityRaw: i[2],
             computeNodeLogin: i[3],

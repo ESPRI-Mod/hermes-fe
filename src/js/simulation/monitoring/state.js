@@ -41,6 +41,10 @@
                 displayName: 'Machine'
             },
             {
+                key: 'accounting_project',
+                displayName: 'Acc. Project',
+            },
+            {
                 cvType: 'compute_node_login',
                 key: 'computeNodeLogin',
                 displayName: 'Login'
