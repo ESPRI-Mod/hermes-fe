@@ -22,10 +22,12 @@
 <!-- Template: filter panel -->
 <script type="underscore/template" id="filter-panel-template">
 <div id="filter-panel" class='panel panel-info form-inline' style="margin-bottom: 2px;">
-    <div class='panel-body' style="padding: 10px 0px 10px 0px;">
+    <div class='panel-body' style="padding: 5px 0px 0px 0px;">
         <% _.each(MOD.state.filters, function(filter, filterIndex) { %>
-        <div class="col-md-3">
-            <label style='width: 40%; margin-bottom: <%= filterIndex < 4 ? 5 : 0 %>px;'><%- filter.displayName %></label>
+        <div class="col-md-4">
+            <label style='width: 35%; font-size:0.9em;'>
+                <%- filter.displayName %>
+            </label>
             <%= APP.utils.renderTemplate("filter-selector-template", filter) %>
         </div>
         <% }); %>
@@ -37,7 +39,7 @@
 <script type="underscore/template" id="filter-selector-template">
 <select id="filter-selector-<%= key %>"
         class="<%= isCustom ? 'custom-filter' : '' %>"
-        style='width: 55%'>
+        style='width: 55%; font-size:0.9em;'>
     <% _.each(cvTerms.all, function(term) { %>
         <% if (isCustom || term.isActive) { %>
         <option <%= term.uid ? 'id=' + term.uid : '' %>
@@ -62,7 +64,6 @@
 <script type="underscore/template" id="grid-template">
 <table class='table table-hover table-bordered table-condensed monitoring-table'>
     <thead>
-
         <tr class="bg-primary">
             <th colspan="15">
                 <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
