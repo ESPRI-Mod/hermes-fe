@@ -41,7 +41,8 @@
                 displayName: 'Machine'
             },
             {
-                key: 'accounting_project',
+                cvType: 'accounting_project',
+                key: 'accountingProject',
                 displayName: 'Acc. Project',
             },
             {
