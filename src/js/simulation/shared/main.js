@@ -84,10 +84,10 @@
             // Inter-monitoring endpoints.
             IM: {
                 'httpPostTarget': 'http://webservices.ipsl.jussieu.fr/monitoring_fromprodiguer/index.php',
-                'ccrt': 'http://esgf.extra.cea.fr/thredds/dodsC/work',
-                'idris': 'http://prodn.idris.fr/thredds/dodsC/ipsl_public',
-                'ipsl': 'http://esgf-local.ipsl.fr/thredds/dodsC/ipsl_public',
-                'tgcc': 'http://esgf.extra.cea.fr/thredds/dodsC/work'
+                'ccrt': 'http://esgf.extra.cea.fr/thredds/catalog/work',
+                'idris': 'http://prodn.idris.fr/thredds/catalog/ipsl_public',
+                'ipsl': 'http://esgf-local.ipsl.fr/thredds/catalog/ipsl_public',
+                'tgcc': 'http://esgf.extra.cea.fr/thredds/catalog/work'
             }
         },
 
