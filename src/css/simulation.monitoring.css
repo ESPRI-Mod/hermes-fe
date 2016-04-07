@@ -23,3 +23,8 @@ thead > tr > th > small {
 		font-size: 0.7em;
 	}
 }
+
+.table-condensed > tbody > tr > td {
+    padding-left: 2px;
+    padding-right: 1px;
+}
