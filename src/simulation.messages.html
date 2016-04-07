@@ -119,7 +119,7 @@
                     <button type='button' class="btn btn-sm btn-default pagination-last">
                         <strong class="text-muted">>></strong>
                     </button>
-                    <select class="pagination-page-size form-control input-sm" style="width: 90px;">
+                    <select class="pagination-page-size form-control input-sm">
                         <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
                         <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
                             <%= pageSize %> / page

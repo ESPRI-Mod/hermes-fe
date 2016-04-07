@@ -26,3 +26,7 @@ input.pagination-info {
 	width: 170px;
 	text-align: center;
 }
+
+select.pagination-page-size {
+	width: 100px;
+}
