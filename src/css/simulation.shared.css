@@ -29,4 +29,5 @@ input.pagination-info {
 
 select.pagination-page-size {
 	width: 100px;
+	color: #999;
 }
