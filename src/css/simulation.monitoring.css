@@ -25,6 +25,6 @@ thead > tr > th > small {
 }
 
 .table-condensed > tbody > tr > td {
-    padding-left: 2px;
+    padding-left: 1px;
     padding-right: 1px;
 }
