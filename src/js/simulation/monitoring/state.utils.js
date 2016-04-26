@@ -1,4 +1,4 @@
-(function (APP, MOD, $, _) {
+(function (APP, MOD, $, _, cookies) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -7,6 +7,10 @@
     MOD.fetchTimeSlice = function (timeslice, triggerBackgroundEvents) {
         var ep;
 
+        // Remember when page is revisited.
+        cookies.set('simulation-monitoring-filter-timeslice', timeslice);
+
+        // Display user information.
         if (triggerBackgroundEvents === true) {
             APP.events.trigger("module:processingStarts", {
                 module: MOD,
@@ -14,6 +18,7 @@
             });
         }
 
+        // Fetch data from web-service.
         ep = APP.utils.getEndPoint(MOD.urls.FETCH_TIMESLICE);
         ep  = ep.replace('{timeslice}', timeslice);
         MOD.log("timeslice fetching begins");
@@ -70,6 +75,7 @@
 
     // Initializes filter cv termsets.
     MOD.initFilterCvTermsets = function () {
+        // Append global filter.
         _.each(MOD.state.filters, function (f) {
             if (f.supportsByAll) {
                 f.cvTerms.all.push({
@@ -81,14 +87,18 @@
                 });
             }
         });
+
+        // Push terms into filters.
         _.each(MOD.state.cvTerms, function (term) {
             if (_.has(MOD.state.filterSet, term.typeof)) {
                 MOD.state.filterSet[term.typeof].cvTerms.all.push(term);
             }
         });
+
+        // Set current term.
         _.each(MOD.state.filters, function (f) {
-            f.cvTerms.current = f.cvTerms.current || _.find(f.cvTerms.all, function (term) {
-                return term.name === (f.defaultValue || "*");
+            f.cvTerms.current = _.find(f.cvTerms.all, function (term) {
+                return term.name === f.initialValue;
             });
         });
     };
@@ -103,6 +113,9 @@
         filter.cvTerms.current = _.find(filter.cvTerms.all, function (t) {
             return t.name === filterOption;
         });
+        cookies.set('simulation-monitoring-filter-' + filter.cookieKey,
+                    filter.cvTerms.current.name);
+
         MOD.events.trigger('filter:updated', filter);
     };
 
@@ -130,7 +143,8 @@
     // Updates set of active cv terms used to filter simulation list.
     MOD.updateActiveFilterTerms = function () {
         _.each(MOD.state.filters, function (filter) {
-            var simulationList, activeTermNames;
+            var simulationList,
+                activeTermNames;
 
             // Escape if processing a custom filter.
             if (filter.isCustom) {
@@ -146,24 +160,41 @@
 
             // Set active term names collection.
             activeTermNames = _.pluck(simulationList, filter.key);
-            if (filter.defaultValue) {
-                activeTermNames.push(filter.defaultValue);
+            if (filter.forcedValue) {
+                activeTermNames.push(filter.forcedValue);
             }
             activeTermNames = _.uniq(activeTermNames);
 
             // Set term is active flag.
             _.each(filter.cvTerms.all, function (term) {
-                term.isActive = term.name === '*' ||
-                                _.indexOf(activeTermNames, term.name) >= 0;
+                term.isActive = (term.name === '*' || _.indexOf(activeTermNames, term.name) >= 0);
             });
 
             // Fire event.
             MOD.events.trigger("state:filterOptionsUpdate", filter);
         });
     };
+
+    // Returns a persistent URL to return to page state at a later date.
+    MOD.getPersistentURL = function () {
+        var url;
+
+        url = APP.utils.getPageURL(MOD.urls.SIMULATION_MONITORING_PAGE);
+        url += "?";
+        _.each(MOD.state.filters, function (filter) {
+            url += filter.cookieKey;
+            url += "=";
+            url += filter.cvTerms.current.name;
+            url += "&";
+        });
+
+        return url.slice(0, url.length - 1);
+    };
+
 }(
     this.APP,
     this.APP.modules.monitoring,
     this.$jq,
-    this._
+    this._,
+    this.Cookies
 ));

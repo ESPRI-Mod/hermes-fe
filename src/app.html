@@ -42,9 +42,9 @@
         style='width: 55%; font-size:0.9em;'>
     <% _.each(cvTerms.all, function(term) { %>
         <% if (isCustom || term.isActive) { %>
-        <option <%= term.uid ? 'id=' + term.uid : '' %>
-                value="<%= term.name %>"
-                <%= term === cvTerms.current ? 'selected' : '' %>><%- term.displayName %></option>
+        <option value="<%= term.name %>" <%= term === cvTerms.current ? 'selected' : '' %>>
+            <%- term.displayName %>
+        </option>
         <% } %>
     <% }); %>
 </select>
@@ -55,7 +55,7 @@
     <span id="statistics-info" class="pull-left" style="padding: 5px 0px 5px 5px">
         <strong>
             Total simulations = <%- simulationList.length %>.
-            Filtered simulations = <%- simulationListFiltered.length %>.
+            <a href='<%= MOD.getPersistentURL() %>' target='blank'>Filtered simulations = <%- simulationListFiltered.length %>.</a>
         </strong>
     </span>
 </script>
@@ -334,6 +334,7 @@
 <script src="js/simulation/shared/utils.im.js"></script>
 <script src="js/simulation/shared/utils.ws.js"></script>
 <script src="js/simulation/monitoring/init.js"></script>
+<script src="js/simulation/monitoring/cookies.js"></script>
 <script src="js/simulation/monitoring/state.js"></script>
 <script src="js/simulation/monitoring/state.utils.js"></script>
 <script src="js/simulation/monitoring/data.extender.simulation.js"></script>

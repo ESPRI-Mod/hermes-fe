@@ -61,6 +61,9 @@
             // Fetch monitoring detail simulation endpoint.
             FETCH_DETAIL: 'simulation/monitoring/fetch_detail?uid={uid}',
 
+            // Simulation monitoring page.
+            SIMULATION_MONITORING_PAGE: 'simulation.monitoring.html',
+
             // Simulation detail page.
             SIMULATION_DETAIL_PAGE: 'simulation.detail.html?uid={uid}',
 

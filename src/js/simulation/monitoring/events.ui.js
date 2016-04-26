@@ -4,7 +4,7 @@
     "use strict";
 
     // Apply filter event handler.
-    MOD.events.on("filter:updated", function () {
+    MOD.events.on("filter:updated", function (filter) {
         // Update filtered simulations.
         MOD.updateFilteredSimulationList();
 
@@ -13,6 +13,9 @@
 
         // Update pagination.
         MOD.updatePagination();
+
+        // Update cookie.
+        cookies.set(filter.cookieKey, filter.cvTerms.current.name);
 
         // Fire event.
         MOD.events.trigger("state:simulationListUpdate");

@@ -13,7 +13,7 @@
         MOD.initFilterCvTermsets();
 
         // Fetch timeslice.
-        MOD.fetchTimeSlice(MOD.defaults.timeslice);
+        MOD.fetchTimeSlice(MOD.state.filterSet['simulation_timeslice'].initialValue);
     });
 
     // Timeslice loaded event handler.

@@ -3,9 +3,7 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Initialise state backed by cookies.
-    cookies.set('simulation-monitoring-page-size',
-                cookies.get('simulation-monitoring-page-size') || 25);
+    var hasURLParams;
 
     // Module state.
     MOD.state = {
@@ -24,48 +22,86 @@
         // Filters.
         filters: [
             {
+                cookieKey: 'timeslice',
                 cvType: 'simulation_timeslice',
-                defaultValue: '1W',
-                key: 'timeslice',
+                defaultValue: "1W",
                 displayName: 'Start Date',
-                isCustom: true
+                isCustom: true,
+                key: 'timeslice',
+                supportsByAll: true
             },
             {
+                cookieKey: 'activity',
+                cvType: 'activity',
+                defaultValue: "ipsl",
+                displayName: 'Activity',
+                forcedValue: 'ipsl',
+                isCustom: false,
                 key: 'activity',
-                defaultValue: 'ipsl',
                 supportsByAll: false
             },
             {
+                cookieKey: 'machine',
                 cvType: 'compute_node_machine',
+                defaultValue: "*",
+                displayName: 'Machine',
+                isCustom: false,
                 key: 'computeNodeMachine',
-                displayName: 'Machine'
+                supportsByAll: true
             },
             {
+                cookieKey: 'accounting-project',
                 cvType: 'accounting_project',
-                key: 'accountingProject',
+                defaultValue: "*",
                 displayName: 'Acc. Project',
+                isCustom: false,
+                key: 'accountingProject',
+                supportsByAll: true
             },
             {
+                cookieKey: 'login',
                 cvType: 'compute_node_login',
+                defaultValue: "*",
+                displayName: 'Login',
+                isCustom: false,
                 key: 'computeNodeLogin',
-                displayName: 'Login'
+                supportsByAll: true
             },
             {
+                cookieKey: 'model',
+                cvType: 'model',
+                defaultValue: "*",
+                displayName: 'Tag / Model',
+                isCustom: false,
                 key: 'model',
-                displayName: 'Tag / Model'
+                supportsByAll: true
             },
             {
-                key: 'experiment'
+                cookieKey: 'experiment',
+                cvType: 'experiment',
+                defaultValue: "*",
+                displayName: 'Experiment',
+                isCustom: false,
+                key: 'experiment',
+                supportsByAll: true
             },
             {
+                cookieKey: 'space',
                 cvType: 'simulation_space',
+                defaultValue: "*",
+                displayName: 'Space',
+                isCustom: false,
                 key: 'space',
-                displayName: 'Space'
+                supportsByAll: true
             },
             {
+                cookieKey: 'state',
                 cvType: 'simulation_state',
+                defaultValue: "*",
+                displayName: 'State',
+                isCustom: false,
                 key: 'executionState',
-                displayName: 'State'
+                supportsByAll: true
             }
         ],
 
@@ -99,29 +135,32 @@
     };
 
     // Set filter defaults.
+    hasURLParams = false;
     _.each(MOD.state.filters, function (filter) {
-        var queryParamValue;
-
         _.defaults(filter, {
             cvTerms: {
                 all: [],
                 current: undefined
             },
-            cvType: filter.key,
-            defaultValue: null,
-            displayName: filter.key.substring(0, 1).toUpperCase() + filter.key.substring(1),
-            isCustom: false,
-            supportsByAll: true
+            cookieValue: cookies.get('simulation-monitoring-filter-' + (filter.cookieKey || filter.key)),
+            urlValue: APP.utils.getURLParam(filter.cookieKey || filter.key)
         });
-        queryParamValue = APP.utils.getURLParam(filter.key);
-        if (queryParamValue) {
-            filter.defaultValue = queryParamValue;
+        if (filter.urlValue) {
+            hasURLParams = true;
+        }
+    });
+
+    // Set filter initial value.
+    _.each(MOD.state.filters, function (filter) {
+        if (hasURLParams) {
+            filter.initialValue = filter.urlValue || filter.defaultValue;
+        } else {
+            filter.initialValue = filter.cookieValue;
         }
     });
 
     // Set filter map.
     MOD.state.filterSet = _.indexBy(MOD.state.filters, 'cvType');
-
 }(
     this.APP,
     this.APP.modules.monitoring,
