@@ -57,12 +57,11 @@
             Total simulations = <%- simulationList.length %>.
             Filtered simulations = <%- simulationListFiltered.length %>.
         </strong>
-        <button id="btn-permalink" type="button" class="btn btn-info btn-xs">
+        <button id="btn-permalink-open" type="button" class="btn btn-info btn-xs">
             <small>
                 Permalink
             </small>
         </button>
-        <p id="permalink" class="hidden"><%= MOD.getPersistentURL() %></p>
     </span>
 </script>
 
@@ -97,7 +96,25 @@
                     </select>
             </th>
         </tr>
-
+        <tr id="permalink-row" class="hidden bg-primary">
+            <th colspan="15">
+                <form>
+                    <div class="input-group" style="width: 100%" >
+                        <span>
+                        <input type="text" class="form-control" style="font-size: 12px;" value="<%= MOD.getPersistentURL() %>" id="permalink" ></ input>
+                        </span>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" id="btn-permalink-copy" title="Copy permalink to clipboard">
+                            Copy
+                            </button>
+                            <button class="btn btn-default" id="btn-permalink-close" title="Close permalink">
+                            Close
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </th>
+        </tr>
         <tr class="prodiguer-table-header">
             <th title='Activity' class="text-center"><small>Activity</small></th>
             <th title='Name'><small>Name</small></th>

@@ -119,6 +119,34 @@
             // Filter: value change (timeslice).
             'change #filter-selector-timeslice': function (e) {
                 MOD.fetchTimeSlice($(e.target).val(), true);
+            },
+
+            // Permalink open button click.
+            'click #btn-permalink-open': function (e) {
+                $("#permalink-row").removeClass('hidden');
+                $("#btn-permalink-open").addClass('hidden');
+            },
+
+            // Permalink copy button click.
+            'click #btn-permalink-copy': function (e) {
+                var permalink;
+
+                permalink = document.querySelector('#permalink');
+                permalink.setSelectionRange(0, permalink.value.length + 1);
+
+                document.execCommand('copy');
+
+
+                return false;
+            },
+
+            // Permalink close button click.
+            'click #btn-permalink-close': function (e) {
+                window.getSelection().removeAllRanges();
+                $("#permalink-row").addClass('hidden');
+                $("#btn-permalink-open").removeClass('hidden');
+
+                return false;
             }
         },
 
