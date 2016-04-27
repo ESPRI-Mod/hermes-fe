@@ -123,6 +123,7 @@
 
             // Permalink open button click.
             'click #btn-permalink-open': function (e) {
+                $("#permalink").val(MOD.getPersistentURL());
                 $("#permalink-row").removeClass('hidden');
                 $("#btn-permalink-open").addClass('hidden');
             },

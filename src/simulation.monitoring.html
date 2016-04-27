@@ -96,25 +96,7 @@
                     </select>
             </th>
         </tr>
-        <tr id="permalink-row" class="hidden bg-primary">
-            <th colspan="15">
-                <form>
-                    <div class="input-group" style="width: 100%" >
-                        <span>
-                        <input type="text" class="form-control" style="font-size: 12px;" value="<%= MOD.getPersistentURL() %>" id="permalink" ></ input>
-                        </span>
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" id="btn-permalink-copy" title="Copy permalink to clipboard">
-                            Copy
-                            </button>
-                            <button class="btn btn-default" id="btn-permalink-close" title="Close permalink">
-                            Close
-                            </button>
-                        </span>
-                    </div>
-                </form>
-            </th>
-        </tr>
+        <%= APP.utils.renderTemplate("permalink-template", {MOD: MOD}) %>
         <tr class="prodiguer-table-header">
             <th title='Activity' class="text-center"><small>Activity</small></th>
             <th title='Name'><small>Name</small></th>
@@ -167,6 +149,29 @@
         </tr>
     </tfoot>
 </table>
+</script>
+
+<!-- Template: permalink table header row -->
+<script type="underscore/template" id="permalink-template">
+<tr id="permalink-row" class="hidden bg-primary">
+    <th colspan="15">
+        <form>
+            <div class="input-group" style="width: 100%" >
+                <span>
+                <input id="permalink" type="text" class="form-control" style="font-size: 12px;"/>
+                </span>
+                <span class="input-group-btn">
+                    <button class="btn btn-default" id="btn-permalink-copy" title="Copy permalink to clipboard">
+                    <strong>Copy</strong>
+                    </button>
+                    <button class="btn btn-default" id="btn-permalink-close" title="Close permalink">
+                    <strong>Close</strong>
+                    </button>
+                </span>
+            </div>
+        </form>
+    </th>
+</tr>
 </script>
 
 <!-- Template: search result table body -->
