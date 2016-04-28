@@ -185,10 +185,14 @@
         url = APP.utils.getPageURL(MOD.urls.SIMULATION_MONITORING_PAGE);
         url += "?";
         _.each(MOD.state.filters, function (filter) {
-            url += filter.cookieKey;
-            url += "=";
-            url += filter.cvTerms.current.name;
-            url += "&";
+            if (filter.key === "timeslice" ||
+                filter.key === "activity" ||
+                filter.cvTerms.current.name != filter.defaultValue) {
+                url += filter.cookieKey;
+                url += "=";
+                url += filter.cvTerms.current.name;
+                url += "&";
+            }
         });
 
         return url.slice(0, url.length - 1);
