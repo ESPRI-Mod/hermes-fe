@@ -124,8 +124,8 @@
             // Permalink open button click.
             'click #btn-permalink-open': function (e) {
                 $("#permalink").val(MOD.getPersistentURL());
-                $("#permalink-row").removeClass('hidden');
-                $("#btn-permalink-open").addClass('hidden');
+                $("#grid-permalink-row").removeClass('hidden');
+                $("#grid-stats-pager-row").addClass('hidden');
             },
 
             // Permalink copy button click.
@@ -134,20 +134,18 @@
 
                 permalink = document.querySelector('#permalink');
                 permalink.setSelectionRange(0, permalink.value.length + 1);
-
                 document.execCommand('copy');
 
-
-                return false;
+                // return false;
             },
 
             // Permalink close button click.
             'click #btn-permalink-close': function (e) {
                 window.getSelection().removeAllRanges();
-                $("#permalink-row").addClass('hidden');
-                $("#btn-permalink-open").removeClass('hidden');
+                $("#grid-permalink-row").addClass('hidden');
+                $("#grid-stats-pager-row").removeClass('hidden');
 
-                return false;
+                // return false;
             }
         },
 
@@ -157,6 +155,7 @@
             MOD.events.on("state:simulationPageUpdate", this._updateGrid, this);
             MOD.events.on("state:simulationPageUpdate", this._updateGridPager, this);
             MOD.events.on("state:filterOptionsUpdate", this._updateFilterSelector, this);
+            MOD.events.on("state:filtersUpdated", this._updatePermlink, this);
 
             // Simulation list filtered event.
             MOD.events.on("state:simulationListUpdate", this._updateStatisticsInfo, this);
@@ -237,6 +236,10 @@
                     MOD: MOD
                 });
             }
+        },
+
+        _updatePermlink: function () {
+            $("#permalink").val(MOD.getPersistentURL());
         },
 
         _displayWebSocketClosedDialog: function () {

@@ -69,7 +69,7 @@
 <script type="underscore/template" id="grid-template">
 <table class='table table-hover table-bordered table-condensed monitoring-table'>
     <thead>
-        <tr class="bg-primary">
+        <tr id="grid-stats-pager-row" class="bg-primary">
             <th colspan="15">
                 <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
                 <span class=' pull-right form-inline <%= paging.count < 2 ? '' : '' %>'>
@@ -153,23 +153,21 @@
 
 <!-- Template: permalink table header row -->
 <script type="underscore/template" id="permalink-template">
-<tr id="permalink-row" class="hidden bg-primary">
+<tr id="grid-permalink-row" class="hidden bg-primary">
     <th colspan="15">
-        <form>
             <div class="input-group" style="width: 100%" >
                 <span>
                 <input id="permalink" type="text" class="form-control" style="font-size: 12px;"/>
                 </span>
                 <span class="input-group-btn">
-                    <button class="btn btn-default" id="btn-permalink-copy" title="Copy permalink to clipboard">
-                    <strong>Copy</strong>
+                    <button class="btn btn-primary active" id="btn-permalink-copy" title="Copy permalink to clipboard">
+                    Copy
                     </button>
                     <button class="btn btn-default" id="btn-permalink-close" title="Close permalink">
-                    <strong>Close</strong>
+                    Close
                     </button>
                 </span>
             </div>
-        </form>
     </th>
 </tr>
 </script>

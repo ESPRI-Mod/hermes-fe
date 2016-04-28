@@ -173,6 +173,9 @@
             // Fire event.
             MOD.events.trigger("state:filterOptionsUpdate", filter);
         });
+
+        // Fire event.
+        MOD.events.trigger("state:filtersUpdated");
     };
 
     // Returns a persistent URL to return to page state at a later date.
