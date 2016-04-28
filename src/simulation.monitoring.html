@@ -72,28 +72,7 @@
         <tr id="grid-stats-pager-row" class="bg-primary">
             <th colspan="15">
                 <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
-                <span class=' pull-right form-inline <%= paging.count < 2 ? '' : '' %>'>
-                    <button type='button' class='btn btn-sm btn-default pagination-first'>
-                        <strong class="text-muted"><<</strong>
-                    </button>
-                    <button type='button' class='btn btn-sm btn-default pagination-previous'>
-                        <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
-                    </button>
-                    <input type='text' class='pagination-info form-control input-sm'
-                           placeholder="Page <%= paging.current ? paging.current.id : '0' %> of <%= paging.count %>">
-                    <button type='button' class='btn btn-sm btn-default pagination-next'>
-                        <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
-                    </button>
-                    <button type='button' class='btn btn-sm btn-default pagination-last'>
-                        <strong class="text-muted">>></strong>
-                    </button>
-                    <select class="pagination-page-size form-control input-sm">
-                        <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
-                        <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
-                            <%= pageSize %> / page
-                        </option>
-                        <% }); %>
-                    </select>
+                <%= APP.utils.renderTemplate("grid-pager-template", MOD.state) %>
             </th>
         </tr>
         <%= APP.utils.renderTemplate("permalink-template", {MOD: MOD}) %>
@@ -157,7 +136,7 @@
     <th colspan="15">
             <div class="input-group" style="width: 100%" >
                 <span>
-                <input id="permalink" type="text" class="form-control" style="font-size: 12px;"/>
+                <input id="permalink" type="text" class="form-control" style="font-size: 12px;" value="<%= MOD.getPersistentURL() %>"/>
                 </span>
                 <span class="input-group-btn">
                     <button class="btn btn-primary active" id="btn-permalink-copy" title="Copy permalink to clipboard">
@@ -170,6 +149,33 @@
             </div>
     </th>
 </tr>
+</script>
+
+<!-- Template: permalink table header row -->
+<script type="underscore/template" id="grid-pager-template">
+<span class='pull-right form-inline <%= paging.count < 2 ? '' : '' %>'>
+    <button type='button' class='btn btn-sm btn-default pagination-first'>
+        <strong class="text-muted"><<</strong>
+    </button>
+    <button type='button' class='btn btn-sm btn-default pagination-previous'>
+        <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
+    </button>
+    <input type='text' class='pagination-info form-control input-sm'
+           placeholder="Page <%= paging.current ? paging.current.id : '0' %> of <%= paging.count %>">
+    <button type='button' class='btn btn-sm btn-default pagination-next'>
+        <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
+    </button>
+    <button type='button' class='btn btn-sm btn-default pagination-last'>
+        <strong class="text-muted">>></strong>
+    </button>
+    <select class="pagination-page-size form-control input-sm">
+        <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
+        <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
+            <%= pageSize %> / page
+        </option>
+        <% }); %>
+    </select>
+</span>
 </script>
 
 <!-- Template: search result table body -->

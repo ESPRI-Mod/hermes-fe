@@ -1,4 +1,4 @@
-(function (APP, MOD, PAGING, _, Backbone, $) {
+(function (document, APP, MOD, PAGING, _, Backbone, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -123,7 +123,6 @@
 
             // Permalink open button click.
             'click #btn-permalink-open': function (e) {
-                $("#permalink").val(MOD.getPersistentURL());
                 $("#grid-permalink-row").removeClass('hidden');
                 $("#grid-stats-pager-row").addClass('hidden');
             },
@@ -135,8 +134,6 @@
                 permalink = document.querySelector('#permalink');
                 permalink.setSelectionRange(0, permalink.value.length + 1);
                 document.execCommand('copy');
-
-                // return false;
             },
 
             // Permalink close button click.
@@ -144,8 +141,6 @@
                 window.getSelection().removeAllRanges();
                 $("#grid-permalink-row").addClass('hidden');
                 $("#grid-stats-pager-row").removeClass('hidden');
-
-                // return false;
             }
         },
 
@@ -287,6 +282,7 @@
     });
 
 }(
+    this.document,
     this.APP,
     this.APP.modules.monitoring,
     this.APP.modules.monitoring.state.paging,
