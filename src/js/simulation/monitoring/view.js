@@ -91,6 +91,13 @@
                 MOD.events.trigger('state:pageSizeChange', $(e.target).val());
             },
 
+            // Sorting: change sort field / order.
+            'click .sort-target' : function (e) {
+                MOD.updateSortedSimulationList(_.find($(e.target).attr('class').split(' '), function (cls) {
+                    return cls.startsWith('sort-target-');
+                }).slice(12));
+            },
+
             // Reopen page when web socket closed.
             'click #ws-close-dialog-refresh-page-button' : function () {
                 var baseURL, url;
@@ -146,6 +153,13 @@
 
         // Backbone: view initializer.
         initialize : function () {
+            // Sorting events.
+            MOD.events.on("state:simulationListSortOrderChanging", this._clearSortColumn, this);
+            MOD.events.on("state:simulationListSortOrderChanged", this._setSortColumn, this);
+            MOD.events.on("state:simulationListSortOrderToggled", this._toggleSortColumn, this);
+            MOD.events.on("state:simulationListSorted", this._updateGrid, this);
+            MOD.events.on("state:simulationListSorted", this._updateGridPager, this);
+
             // Pagination events.
             MOD.events.on("state:simulationPageUpdate", this._updateGrid, this);
             MOD.events.on("state:simulationPageUpdate", this._updateGridPager, this);
@@ -180,8 +194,27 @@
                 ], function (template) {
                 APP.utils.renderTemplate(template, MOD.state, this);
             }, this);
+            this._setSortColumn();
 
             return this;
+        },
+
+        _setSortColumn: function () {
+            if (MOD.state.sorting.direction === 'asc') {
+                this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).addClass('glyphicon-triangle-top');
+            } else {
+                this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).addClass('glyphicon-triangle-bottom');
+            }
+        },
+
+        _toggleSortColumn: function () {
+            this._clearSortColumn();
+            this._setSortColumn();
+        },
+
+        _clearSortColumn: function () {
+            this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).removeClass('glyphicon-triangle-top');
+            this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).removeClass('glyphicon-triangle-bottom');
         },
 
         _updateNotificationInfo: function (ei) {

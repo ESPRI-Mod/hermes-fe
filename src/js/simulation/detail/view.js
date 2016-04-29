@@ -102,7 +102,7 @@
                     pageSize = $(e.target).val();
 
                 // Update page size.
-                cookies.set('simulation-detail-page-size', pageSize);
+                cookies.set('simulation-detail-page-size', pageSize, { expires: 3650 });
                 MOD.state.pageSize = pageSize;
 
                 // Update job set pagination info.

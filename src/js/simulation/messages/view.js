@@ -100,7 +100,7 @@
                     pageSize = $(e.target).val();
 
                 // Update page size.
-                cookies.set('simulation-message-page-size', pageSize);
+                cookies.set('simulation-message-page-size', pageSize, { expires: 3650 });
                 MOD.state.pageSize = pageSize;
 
                 // Update message set pagination info.

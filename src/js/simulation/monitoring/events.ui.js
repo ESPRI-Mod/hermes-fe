@@ -15,7 +15,9 @@
         MOD.updatePagination();
 
         // Update cookie.
-        cookies.set('simulation-monitoring-filter-' + filter.cookieKey, filter.cvTerms.current.name);
+        cookies.set('simulation-monitoring-filter-' + filter.cookieKey,
+                    filter.cvTerms.current.name,
+                    { expires: 3650 });
 
         // Fire event.
         MOD.events.trigger("state:simulationListUpdate");
@@ -24,7 +26,7 @@
     // Apply filter event handler.
     MOD.events.on("state:pageSizeChange", function (pageSize) {
         // Update cookie.
-        cookies.set('simulation-monitoring-page-size', pageSize);
+        cookies.set('simulation-monitoring-page-size', pageSize, { expires: 3650 });
 
         // Update state.
         MOD.state.pageSize = pageSize;

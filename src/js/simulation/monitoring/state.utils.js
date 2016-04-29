@@ -8,7 +8,7 @@
         var ep;
 
         // Remember when page is revisited.
-        cookies.set('simulation-monitoring-filter-timeslice', timeslice);
+        cookies.set('simulation-monitoring-filter-timeslice', timeslice, { expires: 3650 });
 
         // Display user information.
         if (triggerBackgroundEvents === true) {
@@ -31,6 +31,38 @@
                 }, 250);
             }
         });
+    };
+
+    // Returns sorted collection of simulations.
+    var sortSimulationList = function (simulations) {
+        var sortField = MOD.state.sorting.field,
+            sortDirection = MOD.state.sorting.direction;
+
+        if (_.contains(['name', 'accountingProject', 'computeNodeLogin'], sortField)) {
+            simulations = _.sortBy(simulations, sortField);
+        }
+
+        if (_.contains(['computeNodeMachine', 'model', 'space', 'experiment'], sortField)) {
+            simulations = _.sortBy(simulations, function (s) {
+                return s.ext[sortField].toLowerCase();
+            });
+        }
+
+        if (_.contains(['executionStartDate', 'executionEndDate'], sortField)) {
+            simulations = _.sortBy(simulations, function (s) {
+                return s[sortField].valueOf();
+            });
+        }
+
+        if (_.contains(['executionStartDate', 'executionEndDate'], sortField)) {
+            if (sortDirection === 'desc') {
+                simulations = simulations.reverse();
+            }
+        } else if (sortDirection === 'desc') {
+            simulations = simulations.reverse();
+        }
+
+        return simulations;
     };
 
     // Returns collection of filtered simulations.
@@ -60,9 +92,7 @@
 
         // Sort (when not applying exclusions).
         if (_.isUndefined(exclusionFilter)) {
-            result = _.sortBy(result, function (s) {
-                return s.executionStartDate.valueOf();
-            }).reverse();
+            result = sortSimulationList(result);
         }
 
         return result;
@@ -71,6 +101,22 @@
     // Updates collection of filtered simulations.
     MOD.updateFilteredSimulationList = function () {
         MOD.state.simulationListFiltered = getFilteredSimulationList();
+    };
+
+    // Updates filtered simulations sort order.
+    MOD.updateSortedSimulationList = function (sortField) {
+        if (MOD.state.sorting.field === sortField) {
+            MOD.state.sorting.direction = (MOD.state.sorting.direction === 'asc' ? 'desc' : 'asc');
+            MOD.events.trigger('state:simulationListSortOrderToggled');
+        } else {
+            MOD.events.trigger('state:simulationListSortOrderChanging');
+            MOD.state.sorting.field = sortField;
+            MOD.state.sorting.direction = 'asc';
+            MOD.events.trigger('state:simulationListSortOrderChanged');
+        }
+        MOD.state.simulationListFiltered = sortSimulationList(MOD.state.simulationListFiltered);
+        MOD.updatePagination();
+        MOD.events.trigger('state:simulationListSorted');
     };
 
     // Initializes filter cv termsets.
@@ -114,7 +160,8 @@
             return t.name === filterOption;
         });
         cookies.set('simulation-monitoring-filter-' + filter.cookieKey,
-                    filter.cvTerms.current.name);
+                    filter.cvTerms.current.name,
+                    { expires: 3650 });
 
         MOD.events.trigger('filter:updated', filter);
     };

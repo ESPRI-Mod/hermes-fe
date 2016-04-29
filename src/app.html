@@ -77,19 +77,54 @@
         </tr>
         <%= APP.utils.renderTemplate("permalink-template", {MOD: MOD}) %>
         <tr class="prodiguer-table-header">
-            <th title='Activity' class="text-center"><small>Activity</small></th>
-            <th title='Name'><small>Name</small></th>
-            <th title='Try' class="text-center"><small>Try</small></th>
-            <th title='Compute Jobs' class="text-center"><small>Jobs (C)</small></th>
-            <th title='Post-Processing Jobs' class="text-center"><small>Jobs (PP)</small></th>
-            <th title='Node - Machine' class="text-center"><small>Machine</small></th>
-            <th title='Accounting Project' class="text-center"><small>Acc. Project</small></th>
-            <th title='Login' class="text-center"><small>Login</small></th>
-            <th title='Tag / Model' class="text-center"><small>Tag / Model</small></th>
-            <th title='Space' class="text-center"><small>Space</small></th>
-            <th title='Experiment' class="text-center"><small>Experiment</small></th>
-            <th title='Start' class="text-center"><small>Start</small></th>
-            <th title='End' class="text-center"><small>End</small></th>
+            <th title='Activity' class="text-center">
+                <small>Activity</small>
+            </th>
+            <th title='Name' class='sort-target sort-target-name'>
+                <small class='sort-target-name'>Name</small>
+                <span class='pull-right sort-target-name glyphicon' />
+            </th>
+            <th title='Try' class="text-center">
+                <small>Try</small>
+            </th>
+            <th title='Compute Jobs' class="text-center">
+                <small>Jobs (C)</small>
+            </th>
+            <th title='Post-Processing Jobs' class="text-center">
+                <small>Jobs (PP)</small>
+            </th>
+            <th title='Node - Machine' class="text-center sort-target sort-target-computeNodeMachine">
+                <small class='sort-target-computeNodeMachine'>Machine</small>
+                <span class='pull-right sort-target-computeNodeMachine glyphicon' />
+            </th>
+            <th title='Accounting Project' class="text-center sort-target sort-target-accountingProject">
+                <small class='sort-target-accountingProject'>Acc. Project</small>
+                <span class='pull-right sort-target-accountingProject glyphicon' />
+            </th>
+            <th title='Login' class="text-center sort-target sort-target-computeNodeLogin">
+                <small class='sort-target-computeNodeLogin'>Login</small>
+                <span class='pull-right sort-target-computeNodeLogin glyphicon' />
+            </th>
+            <th title='Tag / Model' class="text-center sort-target sort-target-model">
+                <small class='sort-target-model'>Tag / Model</small>
+                <span class='pull-right sort-target-model glyphicon' />
+            </th>
+            <th title='Space' class="text-center sort-target sort-target-space">
+                <small class='sort-target-space'>Space</small>
+                <span class='pull-right sort-target-space glyphicon' />
+            </th>
+            <th title='Experiment' class="text-center sort-target sort-target-experiment">
+                <small class='sort-target-experiment'>Experiment</small>
+                <span class='pull-right sort-target-experiment glyphicon' />
+            </th>
+            <th title='Start' class="text-center sort-target sort-target-executionStartDate">
+                <small class='sort-target-executionStartDate'>Start</small>
+                <span class='pull-right sort-target-executionStartDate glyphicon' />
+            </th>
+            <th title='End' class="text-center sort-target sort-target-executionEndDate">
+                <small class='sort-target-executionEndDate'>End</small>
+                <span class='pull-right sort-target-executionEndDate glyphicon' />
+            </th>
             <th colspan="2" class="text-center" title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
               <span class='glyphicon glyphicon-random'></span>
             </th>
@@ -343,6 +378,7 @@
 <script src="ext/moment-2.10.6.min.js"></script>
 <script src="ext/numeral-1.5.3.js"></script>
 <script src="ext/js.cookie-2.1.0.js"></script>
+<script src="ext/jsExtensions.js"></script>
 <!-- JS: 3rd party libraries (extensions) -->
 <script src="ext/backbone.1.2.3-options-patch.js"></script>
 <script src="ext/bootstrap-contextmenu/bootstrap-contextmenu.js"></script>

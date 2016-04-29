@@ -5,7 +5,7 @@
 
     // Initialise state backed by cookies.
     cookies.set('simulation-detail-page-size',
-                cookies.get('simulation-detail-page-size') || 25);
+                cookies.get('simulation-detail-page-size') || 25, { expires: 3650 });
 
     // Module state.
     MOD.state = {

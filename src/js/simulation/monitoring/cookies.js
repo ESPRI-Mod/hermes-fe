@@ -20,7 +20,8 @@
         ['state', "*"],
     ], function (spec) {
         cookies.set('simulation-monitoring-filter-' + spec[0],
-                    cookies.get('simulation-monitoring-filter-' + spec[0]) || spec[1]);
+                    cookies.get('simulation-monitoring-filter-' + spec[0]) || spec[1],
+                    { expires: 3650 });
     });
 
 }(
