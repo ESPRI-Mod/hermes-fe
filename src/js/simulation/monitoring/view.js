@@ -185,13 +185,10 @@
         },
 
         _updateNotificationInfo: function (ei) {
-            // Set event type description.
             if (ei.simulation) {
                 ei.simulationDetailURL = this._getSimulationDetailURL(ei.simulation.uid);
                 ei.eventTypeDescription = MOD.getEventDescription(ei);
             }
-
-            // Update UI.
             this._replaceNode('#notification-info', 'notification-info-template', ei);
         },
 
@@ -263,17 +260,7 @@
         },
 
         _getSimulationDetailURL: function (uid) {
-            var s, url;
-
-            s = this._getSimulation(uid);
-            if (_.isUndefined(s)) {
-                return "";
-            }
-
-            url = APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE);
-            url = url.replace("{uid}", s.uid);
-
-            return url;
+            return APP.utils.getPageURL(MOD.urls.SIMULATION_DETAIL_PAGE).replace("{uid}", uid);
         },
 
         _replaceNode: function (nodeSelector, template, templateData) {
