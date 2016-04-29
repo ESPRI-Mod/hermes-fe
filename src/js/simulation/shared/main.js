@@ -142,6 +142,7 @@
             if (last.executionState === 'complete' && last.isComputeEnd) {
                 return last.ext.executionEndDate || last.executionEndDate;
             }
+
             return null;
         },
 
