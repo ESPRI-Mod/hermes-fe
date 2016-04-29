@@ -131,6 +131,13 @@
             current: undefined,
             count: undefined,
             pages: []
+        },
+
+        // Column of grid to act as sort target.
+        sorting: {
+            allFields: ['name', 'computeNodeMachine', 'accountingProject', 'computeNodeLogin', 'model', 'space', 'experiment', 'executionStartDate'],
+            field: 'executionStartDate',
+            direction: 'desc'
         }
     };
 

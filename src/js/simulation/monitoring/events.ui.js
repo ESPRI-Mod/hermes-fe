@@ -15,7 +15,7 @@
         MOD.updatePagination();
 
         // Update cookie.
-        cookies.set(filter.cookieKey, filter.cvTerms.current.name);
+        cookies.set('simulation-monitoring-filter-' + filter.cookieKey, filter.cvTerms.current.name);
 
         // Fire event.
         MOD.events.trigger("state:simulationListUpdate");

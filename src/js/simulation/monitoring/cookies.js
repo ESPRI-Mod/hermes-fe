@@ -19,7 +19,6 @@
         ['space', "*"],
         ['state', "*"],
     ], function (spec) {
-        console.log(spec[0] + ":c:" + cookies.get('simulation-monitoring-filter-' + spec[0]));
         cookies.set('simulation-monitoring-filter-' + spec[0],
                     cookies.get('simulation-monitoring-filter-' + spec[0]) || spec[1]);
     });
