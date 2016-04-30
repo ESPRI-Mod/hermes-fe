@@ -46,7 +46,20 @@
         pageSize: cookies.get('simulation-detail-page-size'),
 
         // Set of grid page size options.
-        pageSizeOptions: [25, 50, 100]
+        pageSizeOptions: [25, 50, 100],
+
+        // Sorting related state.
+        sorting: {
+            allFields: ['id', 'info', 'executionStartDate', 'executionEndDate', 'duration', 'delayWarning', 'lateness'],
+            compute: {
+                field: 'id',
+                direction: 'asc'
+            },
+            postProcessing: {
+                field: 'id',
+                direction: 'asc'
+            }
+        }
     };
 
 }(

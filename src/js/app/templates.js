@@ -24,7 +24,7 @@
             "<div class='modal-dialog'>\n\
                 <div class='modal-content'>\n\
                     <div class='modal-header'>\n\
-                        <h4 class='modal-title'>Prodiguer <span class='feedback-module-title'></span>\n\
+                        <h4 class='modal-title'>HERMES <span class='feedback-module-title'></span>\n\
                             <small class='feedback-module-version'></small>\n\
                         </h4>\n\
                     </div>\n\

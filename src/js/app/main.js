@@ -34,7 +34,7 @@ window.$ = window.$jq = jQuery.noConflict();
         },
 
         // App title.
-        title: "Prodiguer",
+        title: "HERMES",
 
         // App version.
         version : "0.4.4",

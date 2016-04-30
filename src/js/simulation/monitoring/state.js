@@ -133,7 +133,7 @@
             pages: []
         },
 
-        // Column of grid to act as sort target.
+        // Sorting related state.
         sorting: {
             allFields: ['name', 'computeNodeMachine', 'accountingProject', 'computeNodeLogin', 'model', 'space', 'experiment', 'executionStartDate', 'executionEndDate'],
             field: 'executionStartDate',

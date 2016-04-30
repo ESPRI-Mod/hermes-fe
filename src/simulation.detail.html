@@ -6,7 +6,7 @@
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
     <link rel="shortcut icon" href="img/site-favicon-ipsl.png" type="image/x-icon" />
-    <title>IPSL - Prodiguer</title>
+    <title>IPSL - HERMES</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
@@ -320,27 +320,33 @@
                 </span>
             </th>
         </tr>
-        <tr class="prodiguer-table-header">
-            <th title='Job ID' class='text-center'>
-                <small>#</small>
+        <tr class="hermes-table-header">
+            <th title='Job ID' class='sort-target sort-target-id text-center'>
+                <small class='sort-target-id'>#</small>
             </th>
-            <th title='Job post processing information' class='<%= hidePPInfo ? 'hidden' : '' %>'>
-                <small>Info.</small>
+            <th title='Job post processing information' class='sort-target sort-target-info <%= hidePPInfo ? 'hidden' : '' %>'>
+                <small class='sort-target-info'>Info.</small>
+                <span class='pull-right sort-target-info glyphicon' />
             </th>
-            <th title='Job start date' class='text-center'>
-                <small>Start Date</small>
+            <th title='Job start date' class='sort-target sort-target-startDate text-center'>
+                <small class='sort-target-startDate'>Start Date</small>
+                <span class='pull-right sort-target-startDate glyphicon' />
             </th>
-            <th title='Job end date' class='text-center'>
-                <small>End Date</small>
+            <th title='Job end date' class='sort-target sort-target-endDate text-center'>
+                <small class='sort-target-endDate'>End Date</small>
+                <span class='pull-right sort-target-endDate glyphicon' />
             </th>
-            <th title='Job duration' class='text-center'>
-                <small>Duration</small>
+            <th title='Job duration' class='sort-target sort-target-duration text-center'>
+                <small class='sort-target-duration'>Duration</small>
+                <span class='pull-right sort-target-duration glyphicon' />
             </th>
-            <th title='Job warning delay' class='text-center'>
-                <small>Delay Warning</small>
+            <th title='Job warning delay' class='sort-target sort-target-delay text-center'>
+                <small class='sort-target-delay'>Delay Warning</small>
+                <span class='pull-right sort-target-delay glyphicon' />
             </th>
-            <th title='Job lateness' class='text-center'>
-                <small>Lateness</small>
+            <th title='Job lateness' class='sort-target sort-target-lateness text-center'>
+                <small class='sort-target-lateness'>Lateness</small>
+                <span class='pull-right sort-target-lateness glyphicon' />
             </th>
         </tr>
     </thead>
@@ -442,7 +448,7 @@
                 <h4 class='modal-title' id='ws-close-dialog-label'><%= APP.title %> <%= MOD.title %> v<%= APP.version %></h4>
             </div>
             <div class='modal-body'>
-                The Prodiguer web socket server connection has been interrupted.
+                The HERMES web socket server connection has been interrupted.
             </div>
             <div class='modal-footer'>
                 <button type='button' class='btn btn-primary' id='ws-close-dialog-refresh-page-button'>Refresh page</button>
