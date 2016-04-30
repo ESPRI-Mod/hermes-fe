@@ -144,8 +144,29 @@
                 ], function (template) {
                 APP.utils.renderTemplate(template, MOD.state, this);
             }, this);
+            _.each(MOD.jobTypes, function (jobType) {
+                this._setSortColumn(jobType);
+            }, this);
 
             return this;
+        },
+
+        _setSortColumn: function (jobType) {
+            var sortInfo, cssSelector;
+
+            sortInfo = MOD.state.sorting[jobType];
+            cssSelector = "#job-collection-";
+            cssSelector += jobType;
+            cssSelector += " ";
+            cssSelector += ".glyphicon.sort-target-";
+            cssSelector += sortInfo.field;
+            console.log(cssSelector);
+
+            if (sortInfo.direction === 'asc') {
+                this.$(cssSelector).addClass('glyphicon-triangle-top');
+            } else {
+                this.$(cssSelector).addClass('glyphicon-triangle-bottom');
+            }
         },
 
         _updateNotification: function (ei) {
