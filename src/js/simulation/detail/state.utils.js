@@ -1,4 +1,4 @@
-(function (APP, MOD, _) {
+(function (APP, MOD, _, cookies) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -79,14 +79,26 @@
             MOD.events.trigger('state:jobSetSortOrderChanged', jobType);
         }
 
+        // Update cookies.
+        cookies.set('simulation-detail-sort-field-' + jobType,
+                    sortInfo.field,
+                    { expires: 3650 });
+        cookies.set('simulation-detail-sort-direction-' + jobType,
+                    sortInfo.direction,
+                    { expires: 3650 });
+
+        // Update related state.
         jobSet = MOD.getJobs(jobType);
         MOD.sortJobset(jobSet);
         MOD.setJobsetPagination(jobSet, false);
+
+        // Fire event.
         MOD.events.trigger('state:jobSetSorted', jobType);
     };
 
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._
+    this._,
+    this.Cookies
 ));

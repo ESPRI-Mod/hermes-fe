@@ -5,7 +5,8 @@
 
     // Initialise state backed by cookies.
     cookies.set('simulation-message-page-size',
-                cookies.get('simulation-message-page-size') || 25, { expires: 3650 });
+                cookies.get('simulation-message-page-size') || 25,
+                { expires: 3650 });
 
     // Module state.
     MOD.state = {

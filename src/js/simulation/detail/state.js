@@ -3,10 +3,6 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Initialise state backed by cookies.
-    cookies.set('simulation-detail-page-size',
-                cookies.get('simulation-detail-page-size') || 25, { expires: 3650 });
-
     // Module state.
     MOD.state = {
         // Application pointer.
@@ -43,28 +39,23 @@
         hasMessages: false,
 
         // Size of grid pages.
-        pageSize: cookies.get('simulation-detail-page-size'),
+        pageSize: undefined,
 
         // Set of grid page size options.
         pageSizeOptions: [25, 50, 100],
 
         // Sorting related state.
-        sorting: {
-            allFields: ['postProcessingInfo', 'executionStartDate', 'executionEndDate', 'duration', 'delayWarning', 'lateness'],
-            computing: {
-                field: 'executionStartDate',
-                direction: 'desc'
-            },
-            'post-processing': {
-                field: 'executionStartDate',
-                direction: 'desc'
-            },
-            'post-processing-from-checker': {
-                field: 'executionStartDate',
-                direction: 'desc'
-            }
-        }
+        sorting: {}
     };
+
+    // Set state derived from cookies.
+    MOD.state.pageSize = cookies.get('simulation-detail-page-size');
+    _.each(MOD.jobTypes, function (jobType) {
+        MOD.state.sorting[jobType] = {
+            field: cookies.get('simulation-detail-sort-field-' + jobType),
+            direction: cookies.get('simulation-detail-sort-direction-' + jobType)
+        };
+    });
 
 }(
     this.APP,
