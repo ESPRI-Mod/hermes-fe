@@ -26,7 +26,7 @@
 
         // Set lateness.
         if (job.duration && job.duration > job.warningDelay) {
-            job.ext.lateness = numeral(job.duration - job.warningDelay).format('HH:mm:ss');
+            job.lateness = numeral(job.duration - job.warningDelay).format('HH:mm:ss');
         }
 
         // Remember.

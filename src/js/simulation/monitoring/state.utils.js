@@ -105,6 +105,7 @@
 
     // Updates filtered simulations sort order.
     MOD.updateSortedSimulationList = function (sortField) {
+        // Update sort fields.
         if (MOD.state.sorting.field === sortField) {
             MOD.state.sorting.direction = (MOD.state.sorting.direction === 'asc' ? 'desc' : 'asc');
             MOD.events.trigger('state:simulationListSortOrderToggled');
@@ -114,6 +115,8 @@
             MOD.state.sorting.direction = 'asc';
             MOD.events.trigger('state:simulationListSortOrderChanged');
         }
+
+        // Apply new sort field.
         MOD.state.simulationListFiltered = sortSimulationList(MOD.state.simulationListFiltered);
         MOD.updatePagination();
         MOD.events.trigger('state:simulationListSorted');

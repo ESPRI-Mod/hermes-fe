@@ -5,8 +5,16 @@
 
     // Returns job type from user event target.
     var getJobType = function (e) {
-        return ($(e.target).parent().attr("id") ||
-                $(e.target).parent().parent().attr("id")).slice(11);
+        var $node;
+
+        $node = $(e.target);
+        while (!$node.attr("id")) {
+            $node = $node.parent();
+        }
+
+        return $node.attr("id").startsWith('pagination') ?
+               $node.attr("id").slice(11) :
+               $node.attr("id").slice(15);
     };
 
     // Main module level view.
@@ -106,15 +114,28 @@
                 MOD.state.pageSize = pageSize;
 
                 // Update job set pagination info.
-                MOD.setJobsetPagination(MOD.getJobs(jobType));
+                MOD.setJobsetPagination(MOD.getJobs(jobType), true);
 
                 // Update view.
                 this._updateJobCollection(jobType);
+            },
+
+            // Sorting: change sort field / order.
+            'click .sort-target' : function (e) {
+                MOD.updateSortedJobSet(getJobType(e), _.find($(e.target).attr('class').split(' '), function (cls) {
+                    return cls.startsWith('sort-target-');
+                }).slice(12));
             }
         },
 
         // Backbone: view initializer.
         initialize : function () {
+            // Sorting events.
+            MOD.events.on("state:jobSetSortOrderChanging", this._clearSortColumn, this);
+            MOD.events.on("state:jobSetSortOrderChanged", this._setSortColumn, this);
+            MOD.events.on("state:jobSetSortOrderToggled", this._toggleSortColumn, this);
+            MOD.events.on("state:jobSetSorted", this._updateJobCollection, this);
+
             // Simulation update events.
             MOD.events.on("state:simulationUpdate", this._updateCaption, this);
             MOD.events.on("state:simulationUpdate", this._updateOverview, this);
@@ -151,7 +172,15 @@
             return this;
         },
 
-        _setSortColumn: function (jobType) {
+        _clearSortColumn: function (jobType) {
+            var cssSelector;
+
+            cssSelector = this._getSortCSSSelector(jobType);
+            this.$(cssSelector).removeClass('glyphicon-triangle-top');
+            this.$(cssSelector).removeClass('glyphicon-triangle-bottom');
+        },
+
+        _getSortCSSSelector: function (jobType) {
             var sortInfo, cssSelector;
 
             sortInfo = MOD.state.sorting[jobType];
@@ -160,13 +189,25 @@
             cssSelector += " ";
             cssSelector += ".glyphicon.sort-target-";
             cssSelector += sortInfo.field;
-            console.log(cssSelector);
 
+            return cssSelector;
+        },
+
+        _setSortColumn: function (jobType) {
+            var sortInfo, cssSelector;
+
+            sortInfo = MOD.state.sorting[jobType];
+            cssSelector = this._getSortCSSSelector(jobType);
             if (sortInfo.direction === 'asc') {
                 this.$(cssSelector).addClass('glyphicon-triangle-top');
             } else {
                 this.$(cssSelector).addClass('glyphicon-triangle-bottom');
             }
+        },
+
+        _toggleSortColumn: function (jobType) {
+            this._clearSortColumn(jobType);
+            this._setSortColumn(jobType);
         },
 
         _updateNotification: function (ei) {
@@ -192,14 +233,18 @@
         },
 
         _updateJobCollection : function (jobType) {
-            this._replaceNode("#job-collection-" + jobType, "template-job-collection", {
+            var ctx;
+
+            ctx = {
                 APP: APP,
                 hidePPInfo: jobType === 'computing',
                 jobList: MOD.getJobs(jobType),
                 jobType: jobType,
                 jobTypeCaption: MOD.jobTypeDescriptions[jobType],
                 MOD: MOD
-            });
+            };
+            this._replaceNode("#job-collection-" + jobType, "template-job-collection", ctx);
+            this._setSortColumn(jobType);
         },
 
         _updateJobCounts: function () {

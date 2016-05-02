@@ -42,6 +42,7 @@
             isError: i[3],
             isPostProcessing: i[6] !== 'computing',
             jobUID: i[4],
+            lateness: '--',
             simulationUID: i[5],
             typeof: i[6],
             accountingProject: APP.utils.isNone(i[7]) ? '--' : i[7],
@@ -55,7 +56,6 @@
                 executionEndDate: '--',
                 executionStartDate: '--',
                 extended: false,
-                lateness: '--',
                 warningDelay: numeral(i[15]).format('HH:mm:ss')
             }
         };

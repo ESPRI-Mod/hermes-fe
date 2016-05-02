@@ -12,6 +12,7 @@
                 all: [],
                 complete: [],
                 error: [],
+                jobType: 'computing',
                 running: [],
                 paging: {
                     current: undefined,
@@ -23,6 +24,7 @@
                 all: [],
                 complete: [],
                 error: [],
+                jobType: 'post-processing',
                 running: [],
                 paging: {
                     current: undefined,
@@ -34,6 +36,7 @@
                 all: [],
                 complete: [],
                 error: [],
+                jobType: 'post-processing-from-checker',
                 running: [],
                 paging: {
                     current: undefined,

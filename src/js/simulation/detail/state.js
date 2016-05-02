@@ -50,18 +50,18 @@
 
         // Sorting related state.
         sorting: {
-            allFields: ['id', 'info', 'executionStartDate', 'executionEndDate', 'duration', 'delayWarning', 'lateness'],
+            allFields: ['postProcessingInfo', 'executionStartDate', 'executionEndDate', 'duration', 'delayWarning', 'lateness'],
             computing: {
-                field: 'id',
-                direction: 'asc'
+                field: 'executionStartDate',
+                direction: 'desc'
             },
             'post-processing': {
-                field: 'info',
-                direction: 'asc'
+                field: 'executionStartDate',
+                direction: 'desc'
             },
             'post-processing-from-checker': {
-                field: 'info',
-                direction: 'asc'
+                field: 'executionStartDate',
+                direction: 'desc'
             }
         }
     };

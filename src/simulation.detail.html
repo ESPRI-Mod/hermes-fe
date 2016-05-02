@@ -287,126 +287,139 @@
 <script type="underscore/template" id="template-job-collection">
 <table id="job-collection-<%= jobType %>" class="table table-hover table-bordered table-condensed job-history-table">
     <thead>
-        <tr class="bg-primary">
-            <th colspan="7">
-                <span class="pull-left" style="padding: 5px 0px 5px 0px">
-                    <span style="padding: 5px;">
-                        <strong>Total <%= jobTypeCaption %> Jobs = <%= jobList.all.length %>.</strong>
-                    </span>
-                </span>
-                <span id="pagination-<%= jobType %>" class="pull-right form-inline">
-                    <button type='button' class="btn btn-sm btn-default pagination-first">
-                        <strong class="text-muted"><<</strong>
-                    </button>
-                    <button type='button' class="btn btn-sm btn-default pagination-previous">
-                        <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
-                    </button>
-                    <input type="text"
-                           class="pagination-info form-control input-sm"
-                           placeholder="Page <%= jobList.paging.current ? jobList.paging.current.id : '0' %> of <%= jobList.paging.count %>" />
-                    <button type='button' class="btn btn-sm btn-default pagination-next">
-                        <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
-                    </button>
-                    <button type='button' class="btn btn-sm btn-default pagination-last">
-                        <strong class="text-muted">>></strong>
-                    </button>
-                    <select class="pagination-page-size form-control input-sm">
-                        <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
-                        <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
-                            <%= pageSize %> / page
-                        </option>
-                        <% }); %>
-                    </select>
-                </span>
-            </th>
-        </tr>
-        <tr class="hermes-table-header">
-            <th title='Job ID' class='sort-target sort-target-id text-center'>
-                <small class='sort-target-id'>#</small>
-                <span class='pull-right sort-target-id glyphicon' />
-            </th>
-            <th title='Job post processing information' class='sort-target sort-target-info <%= hidePPInfo ? 'hidden' : '' %>'>
-                <small class='sort-target-info'>Info.</small>
-                <span class='pull-right sort-target-info glyphicon' />
-            </th>
-            <th title='Job start date' class='sort-target sort-target-startDate text-center'>
-                <small class='sort-target-startDate'>Start Date</small>
-                <span class='pull-right sort-target-startDate glyphicon' />
-            </th>
-            <th title='Job end date' class='sort-target sort-target-endDate text-center'>
-                <small class='sort-target-endDate'>End Date</small>
-                <span class='pull-right sort-target-endDate glyphicon' />
-            </th>
-            <th title='Job duration' class='sort-target sort-target-duration text-center'>
-                <small class='sort-target-duration'>Duration</small>
-                <span class='pull-right sort-target-duration glyphicon' />
-            </th>
-            <th title='Job warning delay' class='sort-target sort-target-delay text-center'>
-                <small class='sort-target-delay'>Delay Warning</small>
-                <span class='pull-right sort-target-delay glyphicon' />
-            </th>
-            <th title='Job lateness' class='sort-target sort-target-lateness text-center'>
-                <small class='sort-target-lateness'>Lateness</small>
-                <span class='pull-right sort-target-lateness glyphicon' />
-            </th>
-        </tr>
+        <%= APP.utils.renderTemplate("template-job-collection-header", {
+            jobList: jobList,
+            jobType: jobType,
+            jobTypeCaption: jobTypeCaption,
+            hidePPInfo: hidePPInfo,
+            MOD: MOD
+        }) %>
     </thead>
     <tbody>
-        <% _.each(jobList.paging.current.data, function(job, jobIndex) { %>
+        <% _.each(jobList.paging.current.data, function(job) { %>
         <%= APP.utils.renderTemplate("template-job-detail", {
                 APP: APP,
                 MOD: MOD,
                 job: job,
-                jobIndex: ((jobList.paging.current.id - 1) * MOD.state.pageSize) + jobIndex + 1,
+                jobTypeCaption: jobTypeCaption,
                 jobType: jobType,
                 hidePPInfo: hidePPInfo
             }) %>
         <% }); %>
     </tbody>
     <tfoot>
-        <tr>
-            <td colspan="7">
-                <span>
-                    <small>
-                        <strong>
-                            <%- jobList.all.length %> <%- jobTypeCaption %> Jobs:
-                        </strong>
-                    </small>
-                </span>
-                <span>
-                    <span class='monitoring-state-running badge'
-                          title='RUNNING'
-                          style="background-color: #D9EDF7; color: #333;">
-                        <small><strong><%- jobList.running.length %> RUNNING</strong></small>
-                    </span>
-                    <span class='monitoring-state-complete badge'
-                          title='COMPLETE'
-                          style="background-color: #DFF0D8; color: #333;">
-                        <small><strong><%- jobList.complete.length %> COMPLETE</strong></small>
-                    </span>
-                    <span class='monitoring-state-error badge'
-                          title='ERROR'
-                          style="background-color: #F2DEDE; color: #333;">
-                        <small><strong><%- jobList.error.length %> ERROR</strong></small>
-                    </small>
-                </span>
-                <span class='pull-right'>
-                    <small><strong><a href='http://prodiguer-docs.readthedocs.org/en/latest/' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- MOD.state.year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>
-                </span>
-            </td>
-        </tr>
+        <%= APP.utils.renderTemplate("template-job-collection-footer", {
+            APP: APP,
+            jobList: jobList,
+            jobType: jobType,
+            jobTypeCaption: jobTypeCaption,
+            MOD: MOD
+        }) %>
     </tfoot>
 </table>
+</script>
+
+<!-- Template: job collection header -->
+<script type="underscore/template" id="template-job-collection-header">
+<tr class="bg-primary">
+    <th colspan="7">
+        <span class="pull-left" style="padding: 5px 0px 5px 0px">
+            <span style="padding: 5px;">
+                <strong>Total <%= jobTypeCaption %> Jobs = <%= jobList.all.length %>.</strong>
+            </span>
+        </span>
+        <span id="pagination-<%= jobType %>" class="pull-right form-inline">
+            <button type='button' class="btn btn-sm btn-default pagination-first">
+                <strong class="text-muted"><<</strong>
+            </button>
+            <button type='button' class="btn btn-sm btn-default pagination-previous">
+                <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
+            </button>
+            <input type="text"
+                   class="pagination-info form-control input-sm"
+                   placeholder="Page <%= jobList.paging.current ? jobList.paging.current.id : '0' %> of <%= jobList.paging.count %>" />
+            <button type='button' class="btn btn-sm btn-default pagination-next">
+                <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
+            </button>
+            <button type='button' class="btn btn-sm btn-default pagination-last">
+                <strong class="text-muted">>></strong>
+            </button>
+            <select class="pagination-page-size form-control input-sm">
+                <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
+                <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
+                    <%= pageSize %> / page
+                </option>
+                <% }); %>
+            </select>
+        </span>
+    </th>
+</tr>
+<tr class="hermes-table-header">
+    <th title='Job post processing information' class='sort-target sort-target-postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>'>
+        <small class='sort-target-postProcessingInfo'>Info.</small>
+        <span class='pull-right sort-target-postProcessingInfo glyphicon' />
+    </th>
+    <th title='Job start date' class='sort-target sort-target-executionStartDate text-center'>
+        <small class='sort-target-executionStartDate'>Start Date</small>
+        <span class='pull-right sort-target-executionStartDate glyphicon' />
+    </th>
+    <th title='Job end date' class='sort-target sort-target-executionEndDate text-center'>
+        <small class='sort-target-executionEndDate'>End Date</small>
+        <span class='pull-right sort-target-executionEndDate glyphicon' />
+    </th>
+    <th title='Job duration' class='sort-target sort-target-duration text-center'>
+        <small class='sort-target-duration'>Duration</small>
+        <span class='pull-right sort-target-duration glyphicon' />
+    </th>
+    <th title='Job warning delay' class='sort-target sort-target-warningDelay text-center'>
+        <small class='sort-target-warningDelay'>Delay Warning</small>
+        <span class='pull-right sort-target-warningDelay glyphicon' />
+    </th>
+    <th title='Job lateness' class='sort-target sort-target-lateness text-center'>
+        <small class='sort-target-lateness'>Lateness</small>
+        <span class='pull-right sort-target-lateness glyphicon' />
+    </th>
+</tr>
+</script>
+
+<!-- Template: job collection footer -->
+<script type="underscore/template" id="template-job-collection-footer">
+<tr>
+    <td colspan="7">
+        <span>
+            <small>
+                <strong>
+                    <%- jobList.all.length %> <%- jobTypeCaption %> Jobs:
+                </strong>
+            </small>
+        </span>
+        <span>
+            <span class='monitoring-state-running badge'
+                  title='RUNNING'
+                  style="background-color: #D9EDF7; color: #333;">
+                <small><strong><%- jobList.running.length %> RUNNING</strong></small>
+            </span>
+            <span class='monitoring-state-complete badge'
+                  title='COMPLETE'
+                  style="background-color: #DFF0D8; color: #333;">
+                <small><strong><%- jobList.complete.length %> COMPLETE</strong></small>
+            </span>
+            <span class='monitoring-state-error badge'
+                  title='ERROR'
+                  style="background-color: #F2DEDE; color: #333;">
+                <small><strong><%- jobList.error.length %> ERROR</strong></small>
+            </small>
+        </span>
+        <span class='pull-right'>
+            <small><strong><a href='http://prodiguer-docs.readthedocs.org/en/latest/' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- MOD.state.year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>
+        </span>
+    </td>
+</tr>
 </script>
 
 <!-- Template: job detail -->
 <script type="underscore/template" id="template-job-detail">
 <tr id="<%= job.jobUID %>" class="<%= MOD.getStateCSS(job.executionState) %>">
-    <td class='id text-center' title='<%= jobIndex %>'>
-        <small>
-            <%= jobIndex %>
-        </small>
-    </td>
     <td class='postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.postProcessingInfo %>'>
         <small>
             <%= job.postProcessingInfo %>
@@ -432,9 +445,9 @@
             <%= job.ext.warningDelay %>
         </small>
     </td>
-    <td class='lateness text-center' title='<%= job.ext.lateness %>'>
+    <td class='lateness text-center' title='<%= job.lateness %>'>
         <small>
-            <%= job.ext.lateness %>
+            <%= job.lateness %>
         </small>
     </td>
 </tr>

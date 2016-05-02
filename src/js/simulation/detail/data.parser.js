@@ -30,15 +30,6 @@
             }
         },
 
-        // Sorts a job set.
-        sortJobset = function (jobSet) {
-            if (jobSet.all.length > 1) {
-                jobSet.all = _.sortBy(jobSet.all, function (job) {
-                    return job.executionStartDate;
-                }).reverse();
-            }
-        },
-
         // Parses a simulation job.
         parseJob = function (simulation, job) {
             simulation.jobs.all.push(job);
@@ -80,10 +71,12 @@
         });
 
         // Sort jobs.
-        _.each(getJobSets(simulation), sortJobset);
+        _.each(getJobSets(simulation), MOD.sortJobset);
 
         // Set job pagination state.
-        _.each(getJobSets(simulation), MOD.setJobsetPagination);
+        _.each(getJobSets(simulation), function (jobSet) {
+            MOD.setJobsetPagination(jobSet, true);
+        });
 
         // Set derived execution states.
         setExecutionState(simulation);

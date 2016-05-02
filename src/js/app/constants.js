@@ -17,7 +17,7 @@
             support : "platform-users@ipsl.jussieu.fr",
 
             // Default email subject.
-            defaultSubject: "IPSL PLATFORM SUPPORT",
+            defaultSubject: "IPSL :: HERMES SUPPORT",
 
             // Default email message.
             defaultMessage: "",
