@@ -18,57 +18,25 @@
     };
 
     MOD.sortJobset = function (jobSet) {
-        var sortInfo;
+        var field, direction;
 
-        if (jobSet.all.length === 0) {
+        if (!jobSet.all.length) {
             return;
         };
 
-        sortInfo = MOD.state.sorting[jobSet.jobType];
+        // Set sort fields.
+        field = MOD.state.sorting[jobSet.jobType].field;
+        direction = MOD.state.sorting[jobSet.jobType].direction;
 
         // Sort by field.
-        if (_.contains([
-            'postProcessingInfo',
-            'executionStartDate',
-            'executionEndDate',
-            'duration',
-            'warningDelay',
-            'lateness'], sortInfo.field)) {
-            jobSet.all = _.sortBy(jobSet.all, sortInfo.field);
-        }
+        jobSet.all = _.sortBy(jobSet.all, field);
 
         // Apply sort direction.
-        if (_.contains(['executionStartDate', 'executionEndDate'], sortInfo.field)) {
-            if (sortInfo.direction === 'desc') {
+        if (_.contains(['executionStartDate', 'executionEndDate'], field)) {
+            if (direction === 'desc') {
                 jobSet.all = jobSet.all.reverse();
             }
-        } else if (sortInfo.direction === 'desc') {
-            jobSet.all = jobSet.all.reverse();
-        }
-
-        return;
-
-        if (_.contains(['name', 'accountingProject', 'computeNodeLogin'], sortInfo.field)) {
-            jobSet.all = _.sortBy(jobSet.all, sortInfo.field);
-
-        } else if (_.contains(['computeNodeMachine', 'model', 'space', 'experiment'], sortInfo.field)) {
-            jobSet.all = _.sortBy(jobSet.all, function (s) {
-                return s.ext[sortInfo.field].toLowerCase();
-            });
-
-        } else if (_.contains(['executionStartDate', 'executionEndDate'], sortInfo.field)) {
-            jobSet.all = _.sortBy(jobSet.all, function (s) {
-                return s[sortInfo.field];
-                // return s[sortInfo.field].valueOf();
-            });
-        }
-
-        // Apply sort direction.
-        if (_.contains(['executionStartDate', 'executionEndDate'], sortInfo.field)) {
-            if (sortInfo.direction === 'desc') {
-                jobSet.all = jobSet.all.reverse();
-            }
-        } else if (sortInfo.direction === 'desc') {
+        } else if (direction === 'desc') {
             jobSet.all = jobSet.all.reverse();
         }
     };

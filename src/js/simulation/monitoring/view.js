@@ -201,9 +201,9 @@
 
         _setSortColumn: function () {
             if (MOD.state.sorting.direction === 'asc') {
-                this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).addClass('glyphicon-triangle-top');
+                this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).addClass('glyphicon-menu-up');
             } else {
-                this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).addClass('glyphicon-triangle-bottom');
+                this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).addClass('glyphicon-menu-down');
             }
         },
 
@@ -213,8 +213,8 @@
         },
 
         _clearSortColumn: function () {
-            this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).removeClass('glyphicon-triangle-top');
-            this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).removeClass('glyphicon-triangle-bottom');
+            this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).removeClass('glyphicon-menu-up');
+            this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).removeClass('glyphicon-menu-down');
         },
 
         _updateNotificationInfo: function (ei) {

@@ -176,8 +176,8 @@
             var cssSelector;
 
             cssSelector = this._getSortCSSSelector(jobType);
-            this.$(cssSelector).removeClass('glyphicon-triangle-top');
-            this.$(cssSelector).removeClass('glyphicon-triangle-bottom');
+            this.$(cssSelector).removeClass('glyphicon-menu-up');
+            this.$(cssSelector).removeClass('glyphicon-menu-down');
         },
 
         _getSortCSSSelector: function (jobType) {
@@ -199,9 +199,9 @@
             sortInfo = MOD.state.sorting[jobType];
             cssSelector = this._getSortCSSSelector(jobType);
             if (sortInfo.direction === 'asc') {
-                this.$(cssSelector).addClass('glyphicon-triangle-top');
+                this.$(cssSelector).addClass('glyphicon-menu-up');
             } else {
-                this.$(cssSelector).addClass('glyphicon-triangle-bottom');
+                this.$(cssSelector).addClass('glyphicon-menu-down');
             }
         },
 
