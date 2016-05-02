@@ -75,7 +75,11 @@
         } else {
             MOD.events.trigger('state:jobSetSortOrderChanging', jobType);
             sortInfo.field = sortField;
-            sortInfo.direction = 'asc';
+            if (_.contains(['executionStartDate', 'executionEndDate', 'duration', 'lateness'], sortField)) {
+                sortInfo.direction = 'desc';
+            } else {
+                sortInfo.direction = 'asc';
+            }
             MOD.events.trigger('state:jobSetSortOrderChanged', jobType);
         }
 

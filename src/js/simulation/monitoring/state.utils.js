@@ -50,7 +50,7 @@
 
         if (_.contains(['executionStartDate', 'executionEndDate'], sortField)) {
             simulations = _.sortBy(simulations, function (s) {
-                return s[sortField].valueOf();
+                return s[sortField] ? s[sortField].valueOf() : '--';
             });
         }
 
@@ -112,7 +112,12 @@
         } else {
             MOD.events.trigger('state:simulationListSortOrderChanging');
             MOD.state.sorting.field = sortField;
-            MOD.state.sorting.direction = 'asc';
+
+            if (_.contains(['executionStartDate', 'executionEndDate'], sortField)) {
+                MOD.state.sorting.direction = 'desc';
+            } else {
+                MOD.state.sorting.direction = 'asc';
+            }
             MOD.events.trigger('state:simulationListSortOrderChanged');
         }
 
