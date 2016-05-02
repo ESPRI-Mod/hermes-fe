@@ -136,8 +136,8 @@
         // Sorting related state.
         sorting: {
             allFields: ['name', 'computeNodeMachine', 'accountingProject', 'computeNodeLogin', 'model', 'space', 'experiment', 'executionStartDate', 'executionEndDate'],
-            field: 'executionStartDate',
-            direction: 'desc'
+            field: cookies.get('simulation-monitoring-sort-field'),
+            direction: cookies.get('simulation-monitoring-sort-direction')
         }
     };
 

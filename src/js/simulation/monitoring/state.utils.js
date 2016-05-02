@@ -116,6 +116,14 @@
             MOD.events.trigger('state:simulationListSortOrderChanged');
         }
 
+        // Update cookies.
+        cookies.set('simulation-monitoring-sort-field',
+                    MOD.state.sorting.field,
+                    { expires: 3650 });
+        cookies.set('simulation-monitoring-sort-direction',
+                    MOD.state.sorting.direction,
+                    { expires: 3650 });
+
         // Apply new sort field.
         MOD.state.simulationListFiltered = sortSimulationList(MOD.state.simulationListFiltered);
         MOD.updatePagination();

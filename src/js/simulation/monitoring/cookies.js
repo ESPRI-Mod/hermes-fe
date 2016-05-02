@@ -5,7 +5,18 @@
 
     // Grid page size.
     cookies.set('simulation-monitoring-page-size',
-                cookies.get('simulation-monitoring-page-size') || 25);
+                cookies.get('simulation-monitoring-page-size') || 25,
+                { expires: 3650 });
+
+    // Grid sort field.
+    cookies.set('simulation-monitoring-sort-field',
+                cookies.get('simulation-monitoring-sort-field') || 'executionStartDate',
+                { expires: 3650 });
+
+    // Grid sort direction.
+    cookies.set('simulation-monitoring-sort-direction',
+                cookies.get('simulation-monitoring-sort-direction') || 'desc',
+                { expires: 3650 });
 
     // Filters.
     _.each([
