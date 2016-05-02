@@ -242,6 +242,11 @@
 
         url = APP.utils.getPageURL(MOD.urls.SIMULATION_MONITORING_PAGE);
         url += "?";
+        url += "sortField=";
+        url += MOD.state.sorting.field;
+        url += "&sortDirection=";
+        url += MOD.state.sorting.direction;
+        url += "&";
         _.each(MOD.state.filters, function (filter) {
             if (filter.key === "timeslice" ||
                 filter.key === "activity" ||

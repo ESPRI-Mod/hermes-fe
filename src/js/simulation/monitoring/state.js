@@ -141,6 +141,14 @@
         }
     };
 
+    // Override state pulled from url parameters.
+    if (APP.utils.getURLParam("sortField")) {
+        MOD.state.sorting.field = APP.utils.getURLParam("sortField");
+    }
+    if (APP.utils.getURLParam("sortDirection")) {
+        MOD.state.sorting.direction = APP.utils.getURLParam("sortDirection");
+    }
+
     // Set filter defaults.
     hasURLParams = false;
     _.each(MOD.state.filters, function (filter) {
