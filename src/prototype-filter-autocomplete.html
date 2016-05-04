@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Document head -->
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <link rel="shortcut icon" href="img/site-favicon-ipsl.png" type="image/x-icon" />
+    <title>IPSL - HERMES</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link href="ext/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="ext/typeahead-0.11.1/typeahead.css" rel="stylesheet" media="screen">
+
+</head>
+
+<!-- Document body -->
+<body>
+
+<div class='form-inline' style="margin-left: 10px; width: 1140px; border: 1px solid rgb(188, 232, 241);">
+    <div class="row" style="margin: 3px 0 0 25px;">
+        <div id="filter-timeslice" class="col-md-4">
+            <label style="width: 25%; font-size: 0.9em;">
+                Start Date
+            </label>
+            <input class="typeahead form-control" type="text" placeholder="All">
+        </div>
+        <div id="filter-activity" class="col-md-4">
+            <label style="width: 25%; font-size: 0.9em;">
+                Activity
+            </label>
+            <input class="typeahead form-control" type="text">
+        </div>
+        <div id="filter-computeNodeMachine" class="col-md-4">
+            <label style="width: 25%; font-size: 0.9em;">
+                Machine
+            </label>
+            <input class="typeahead form-control" type="text">
+        </div>
+    </div>
+    <div class="row" style="margin: 3px 0 0 25px;">
+        <div id="filter-accountingProject" class="col-md-4">
+            <label style="width: 25%; font-size: 0.9em;">
+                Acc. project
+            </label>
+            <input class="typeahead form-control" type="text">
+        </div>
+        <div id="filter-computeNodeLogin" class="col-md-4">
+            <label style="width: 25%; font-size: 0.9em;">
+                Login
+            </label>
+            <input class="typeahead form-control" type="text">
+        </div>
+        <div id="filter-model" class="col-md-4">
+            <label style="width: 25%; font-size: 0.9em;">
+                Model
+            </label>
+            <input class="typeahead form-control" type="text">
+        </div>
+    </div>
+    <div class="row" style="margin: 3px 0 3px 25px;">
+        <div id="filter-experiment" class="col-md-4">
+            <label style="width: 25%; font-size: 0.9em;">
+                Experiment
+            </label>
+            <input class="typeahead form-control" type="text">
+        </div>
+        <div id="filter-space" class="col-md-4">
+            <label style="width: 25%; font-size: 0.9em;">
+                Space
+            </label>
+            <input class="typeahead form-control" type="text">
+        </div>
+        <div id="filter-executionState" class="col-md-4">
+            <label style="width: 25%; font-size: 0.9em;">
+                State
+            </label>
+            <input class="typeahead form-control" type="text">
+        </div>
+    </div>
+
+</div>
+
+<!-- JS: 3rd party libraries -->
+<script src="ext/jquery-2.1.4.min.js"></script>
+<script src="ext/underscore.1.8.3.min.js"></script>
+<script src="ext/backbone.1.2.3.min.js"></script>
+<script src="ext/backbone.1.2.3-options-patch.js"></script>
+<script src="ext/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="ext/bootstrap-contextmenu/bootstrap-contextmenu.js"></script>
+<script src="ext/moment-2.10.6.min.js"></script>
+<script src="ext/numeral-1.5.3.js"></script>
+<script src="ext/typeahead-0.11.1/typeahead.bundle.min.js"></script>
+<script src="ext/js.cookie-2.1.0.js"></script>
+
+<!-- JS: Application shell -->
+
+
+<script src="js/prototype-filter-autocomplete/main.js"></script>
+<script src="js/prototype-filter-autocomplete/constants.js"></script>
+<script src="js/prototype-filter-autocomplete/utils.js"></script>
+<script src="js/prototype-filter-autocomplete/fetch.js"></script>
+<script src="js/prototype-filter-autocomplete/state.js"></script>
+<script src="js/prototype-filter-autocomplete/state.utils.js"></script>
+<script src="js/prototype-filter-autocomplete/ui-bind.js"></script>
+<script src="js/prototype-filter-autocomplete/ui-init.js"></script>
+
+</body>
+
+</html>
