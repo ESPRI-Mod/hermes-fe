@@ -5,19 +5,6 @@
 
     // Initializes filter cv termsets.
     APP.initFilterCvTermsets = function () {
-        // Append global filter.
-        _.each(APP.state.filters, function (f) {
-            if (f.supportsByAll) {
-                f.cvTerms.all.push({
-                    typeof: f.cvType,
-                    name: '*',
-                    displayName: '*',
-                    synonyms: [],
-                    sortKey: "AAA"
-                });
-            }
-        });
-
         // Push terms into filters.
         _.each(APP.state.cvTerms, function (term) {
             if (_.has(APP.state.filterSet, term.typeof)) {
