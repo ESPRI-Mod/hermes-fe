@@ -14,6 +14,8 @@
     <link href="css/app.css" rel="stylesheet" media="screen">
     <link href="css/simulation.monitoring.css" rel="stylesheet" media="screen">
     <link href="css/simulation.shared.css" rel="stylesheet" media="screen">
+    <link href="ext/select2-4.0.2/css/select2.min.css" rel="stylesheet" media="screen">
+    <link href="ext/select2-4.0.2/css/select2-bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 
 <!-- Document body -->
@@ -23,29 +25,22 @@
 <script type="underscore/template" id="filter-panel-template">
 <div id="filter-panel" class='panel panel-info form-inline' style="margin-bottom: 2px;">
     <div class='panel-body' style="padding: 5px 0px 0px 15px;">
-        <% _.each(MOD.state.filters, function(filter, filterIndex) { %>
-        <div class="col-md-4">
+        <% _.each(MOD.state.filters, function(filter) { %>
+        <div class="col-md-4" style='margin-bottom: 3px;'>
             <label style='width: 35%; font-size:0.9em;'>
                 <%- filter.displayName %>
             </label>
-            <%= APP.utils.renderTemplate("filter-selector-template", filter) %>
+            <select id="filter-selector2-<%= filter.key %>"
+                    class="temporary <%= filter.isCustom ? 'custom-filter' : '' %>"
+                    style='width: 55%; font-size:0.9em;'>
+            </select>
+            <!--
+            <button class="btn btn-default btn-sm glyphicon glyphicon-refresh" type="text" />
+            -->
         </div>
         <% }); %>
     </div>
 </div>
-</script>
-
-<!-- Template: filter selector -->
-<script type="underscore/template" id="filter-selector-template">
-<select id="filter-selector-<%= key %>"
-        class="<%= isCustom ? 'custom-filter' : '' %>"
-        style='width: 55%; font-size:0.9em;'>
-        <% _.each(cvTerms.active, function(term) { %>
-        <option value="<%= term.name %>" <%= term === cvTerms.current ? 'selected' : '' %>>
-            <%- term.displayName %>
-        </option>
-        <% }); %>
-</select>
 </script>
 
 <!-- Template: search statistics -->
@@ -379,7 +374,7 @@
 <script src="ext/numeral-1.5.3.js"></script>
 <script src="ext/js.cookie-2.1.0.js"></script>
 <script src="ext/jsExtensions.js"></script>
-<script src="ext/typeahead-0.11.1/typeahead.bundle.min.js"></script>
+<script src="ext/select2-4.0.2/js/select2.min.js"></script>
 
 <!-- JS: Application shell -->
 <script src="js/app/main.js"></script>
@@ -403,7 +398,10 @@
 <script src="js/simulation/monitoring/init.js"></script>
 <script src="js/simulation/monitoring/cookies.js"></script>
 <script src="js/simulation/monitoring/state.js"></script>
-<script src="js/simulation/monitoring/state.utils.js"></script>
+<script src="js/simulation/monitoring/state.utils.1.js"></script>
+<script src="js/simulation/monitoring/state.utils.2.js"></script>
+<script src="js/simulation/monitoring/state.utils.3.js"></script>
+<script src="js/simulation/monitoring/fetch.js"></script>
 <script src="js/simulation/monitoring/data.extender.simulation.js"></script>
 <script src="js/simulation/monitoring/data.parser.js"></script>
 <script src="js/simulation/monitoring/data.mapper.js"></script>
