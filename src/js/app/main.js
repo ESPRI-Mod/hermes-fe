@@ -100,6 +100,10 @@ window.$ = window.$jq = jQuery.noConflict();
                 // Module logger.
                 log: function (msg) {
                     APP.utils.log(key.toUpperCase() + ' :: ' + msg);
+                },
+
+                logWarning: function (msg) {
+                    APP.utils.logWarning(key.toUpperCase() + ' :: ' + msg);
                 }
             });
 

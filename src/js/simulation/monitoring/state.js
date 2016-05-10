@@ -26,7 +26,6 @@
                 cvType: 'simulation_timeslice',
                 defaultValue: "1W",
                 displayName: 'Start Date',
-                isCustom: true,
                 key: 'timeslice',
                 supportsByAll: true
             },
@@ -36,7 +35,6 @@
                 defaultValue: "ipsl",
                 displayName: 'Activity',
                 forcedValue: 'ipsl',
-                isCustom: false,
                 key: 'activity',
                 supportsByAll: false
             },
@@ -45,7 +43,6 @@
                 cvType: 'compute_node_machine',
                 defaultValue: "*",
                 displayName: 'Machine',
-                isCustom: false,
                 key: 'computeNodeMachine',
                 supportsByAll: true
             },
@@ -54,7 +51,6 @@
                 cvType: 'accounting_project',
                 defaultValue: "*",
                 displayName: 'Acc. Project',
-                isCustom: false,
                 key: 'accountingProject',
                 supportsByAll: true
             },
@@ -63,7 +59,6 @@
                 cvType: 'compute_node_login',
                 defaultValue: "*",
                 displayName: 'Login',
-                isCustom: false,
                 key: 'computeNodeLogin',
                 supportsByAll: true
             },
@@ -72,7 +67,6 @@
                 cvType: 'model',
                 defaultValue: "*",
                 displayName: 'Tag / Model',
-                isCustom: false,
                 key: 'model',
                 supportsByAll: true
             },
@@ -81,7 +75,6 @@
                 cvType: 'experiment',
                 defaultValue: "*",
                 displayName: 'Experiment',
-                isCustom: false,
                 key: 'experiment',
                 supportsByAll: true
             },
@@ -90,7 +83,6 @@
                 cvType: 'simulation_space',
                 defaultValue: "*",
                 displayName: 'Space',
-                isCustom: false,
                 key: 'space',
                 supportsByAll: true
             },
@@ -99,7 +91,6 @@
                 cvType: 'simulation_state',
                 defaultValue: "*",
                 displayName: 'State',
-                isCustom: false,
                 key: 'executionState',
                 supportsByAll: true
             }
@@ -154,11 +145,13 @@
     _.each(MOD.state.filters, function (filter) {
         _.defaults(filter, {
             cvTerms: {
+                active: [],
                 all: [],
                 current: undefined
             },
             cookieValue: cookies.get('simulation-monitoring-filter-' + (filter.cookieKey || filter.key)),
-            urlValue: APP.utils.getURLParam(filter.cookieKey || filter.key)
+            urlValue: APP.utils.getURLParam(filter.cookieKey || filter.key),
+            $view: undefined
         });
         if (filter.urlValue) {
             hasURLParams = true;
@@ -172,6 +165,7 @@
         } else {
             filter.initialValue = filter.cookieValue;
         }
+        console.log("Filter init val: " + filter.key + " :: " + filter.initialValue);
     });
 
     // Set filter map.

@@ -44,7 +44,7 @@
 
         // Logging related.
         logging: {
-            PREFIX: "PRODIGUER :: "
+            PREFIX: "HERMES :: "
         },
 
         // Paging defaults.

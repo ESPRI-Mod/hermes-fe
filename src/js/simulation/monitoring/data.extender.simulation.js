@@ -77,7 +77,6 @@
 
         // Update case sensitive CV fields.
         MOD.cv.setFieldDisplayName(simulation, 'activity');
-        MOD.cv.setFieldDisplayName(simulation, 'compute_node', 'computeNode');
         MOD.cv.setFieldDisplayName(simulation, 'compute_node_login', 'computeNodeLogin');
         MOD.cv.setFieldDisplayName(simulation, 'compute_node_machine', 'computeNodeMachine');
         MOD.cv.setFieldDisplayName(simulation, 'experiment');

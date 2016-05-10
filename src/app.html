@@ -40,13 +40,11 @@
 <select id="filter-selector-<%= key %>"
         class="<%= isCustom ? 'custom-filter' : '' %>"
         style='width: 55%; font-size:0.9em;'>
-    <% _.each(cvTerms.all, function(term) { %>
-        <% if (isCustom || term.isActive) { %>
+        <% _.each(cvTerms.active, function(term) { %>
         <option value="<%= term.name %>" <%= term === cvTerms.current ? 'selected' : '' %>>
             <%- term.displayName %>
         </option>
-        <% } %>
-    <% }); %>
+        <% }); %>
 </select>
 </script>
 

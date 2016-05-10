@@ -118,14 +118,9 @@
             },
 
             // Filter: value change.
-            'change select:not(.custom-filter):not(.pagination-page-size)': function (e) {
-                MOD.updateFilterValue($(e.target).attr("id").slice(16),
+            'select2:select': function (e) {
+                MOD.updateFilterValue($(e.target).attr("id").split("-")[2],
                                       $(e.target).val());
-            },
-
-            // Filter: value change (timeslice).
-            'change #filter-selector-timeslice': function (e) {
-                MOD.fetchTimeSlice($(e.target).val(), true);
             },
 
             // Permalink open button click.
@@ -154,16 +149,24 @@
         // Backbone: view initializer.
         initialize : function () {
             // Sorting events.
+            MOD.events.on("ui:initialized", this._setSortColumn, this);
             MOD.events.on("state:simulationListSortOrderChanging", this._clearSortColumn, this);
             MOD.events.on("state:simulationListSortOrderChanged", this._setSortColumn, this);
             MOD.events.on("state:simulationListSortOrderToggled", this._toggleSortColumn, this);
             MOD.events.on("state:simulationListSorted", this._updateGrid, this);
             MOD.events.on("state:simulationListSorted", this._updateGridPager, this);
 
+            // MOD.events.on("state:timesliceLoaded", this._updatePermlink, this);
+
             // Pagination events.
             MOD.events.on("state:simulationPageUpdate", this._updateGrid, this);
             MOD.events.on("state:simulationPageUpdate", this._updateGridPager, this);
-            MOD.events.on("state:filterOptionsUpdate", this._updateFilterSelector, this);
+
+            // Filter events.
+            MOD.events.on("ui:initialized", function () {
+                _.each(MOD.state.filters, this._setFilterSelector, this);
+            }, this);
+            MOD.events.on("state:filterOptionsUpdate", this._setFilterSelector, this);
             MOD.events.on("state:filtersUpdated", this._updatePermlink, this);
 
             // Simulation list filtered event.
@@ -194,9 +197,23 @@
                 ], function (template) {
                 APP.utils.renderTemplate(template, MOD.state, this);
             }, this);
-            this._setSortColumn();
 
             return this;
+        },
+
+        _setFilterSelector: function (f) {
+            if (f.$view) {
+                f.$view.select2("destroy");
+                f.$view.html("");
+            }
+            f.$view = $("#filter-selector2-" + f.key);
+            f.$view.select2({
+                allowClear: false,
+                minimumResultsForSearch: 10,
+                placeholder: "All",
+                data: f.cvTerms.active
+            });
+            f.$view.val(f.cvTerms.current.id).trigger("change");
         },
 
         _setSortColumn: function () {
@@ -223,10 +240,6 @@
                 ei.eventTypeDescription = MOD.getEventDescription(ei);
             }
             this._replaceNode('#notification-info', 'notification-info-template', ei);
-        },
-
-        _updateFilterSelector: function (filter) {
-            this._replaceNode("#filter-selector-" + filter.key, "filter-selector-template", filter);
         },
 
         _updateStatisticsInfo: function () {
@@ -264,6 +277,7 @@
         },
 
         _updatePermlink: function () {
+            console.log(MOD.getPersistentURL());
             $("#permalink").val(MOD.getPersistentURL());
         },
 

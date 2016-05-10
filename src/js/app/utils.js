@@ -7,10 +7,16 @@
     var templateCache = {};
 
     APP.utils = {
-        // Outputs message to brwoser logging console.
+        // Outputs info message to brwoser logging console.
         // @msg          Logging message.
         log: function (msg) {
-            console.log(new Date() + " :: " + constants.logging.PREFIX + msg);
+            console.log(new Date() + " :: [INFO] :: " + constants.logging.PREFIX + msg);
+        },
+
+        // Outputs warning message to brwoser logging console.
+        // @msg          Logging message.
+        logWarning: function (msg) {
+            console.log(new Date() + " :: [WARNING] :: " + constants.logging.PREFIX + msg);
         },
 
         // Returns an endpoint address on the test server.
@@ -231,9 +237,11 @@
         mapCVTerm: function (term) {
             return {
                 displayName: term[0],
+                id: term[1],
                 name: term[1],
                 sortKey: (term[4] + ":" + (term[2] || term[1])).toLowerCase(),
                 synonyms: _.isString(term[3]) ? term[3].split(', ') : term[3],
+                text: term[0],
                 typeof: term[4],
                 uid: term[5]
             };

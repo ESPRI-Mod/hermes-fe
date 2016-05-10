@@ -3,7 +3,6 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-
     // Event handler: websocket initialized.
     MOD.events.on("ws:initialized", function () {
         var ep;
