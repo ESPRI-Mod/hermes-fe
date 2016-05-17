@@ -156,8 +156,6 @@
             MOD.events.on("state:simulationListSorted", this._updateGrid, this);
             MOD.events.on("state:simulationListSorted", this._updateGridPager, this);
 
-            // MOD.events.on("state:timesliceLoaded", this._updatePermlink, this);
-
             // Pagination events.
             MOD.events.on("state:simulationPageUpdate", this._updateGrid, this);
             MOD.events.on("state:simulationPageUpdate", this._updateGridPager, this);
@@ -206,10 +204,10 @@
                 f.$view.select2("destroy");
                 f.$view.html("");
             }
-            f.$view = $("#filter-selector2-" + f.key);
+            f.$view = $("#filter-selector-" + f.key);
             f.$view.select2({
                 allowClear: false,
-                minimumResultsForSearch: 10,
+                minimumResultsForSearch: 8,
                 placeholder: "All",
                 data: f.cvTerms.active
             });

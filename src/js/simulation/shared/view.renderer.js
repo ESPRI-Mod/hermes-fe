@@ -3,18 +3,6 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Event handler: websocket initialized.
-    MOD.events.on("ws:initialized", function () {
-        var ep;
-
-        // Load cv data & fire event.
-        ep = APP.utils.getEndPoint(MOD.urls.FETCH_CV);
-        $.getJSON(ep, function (data) {
-            MOD.log("cv fetched");
-            MOD.events.trigger("setup:cvDataLoaded", data);
-        });
-    });
-
     // Event handler: setup complete.
     MOD.events.on("setup:complete", function () {
 

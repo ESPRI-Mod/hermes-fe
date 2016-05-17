@@ -30,7 +30,7 @@
             <label style='width: 35%; font-size:0.9em;'>
                 <%- filter.displayName %>
             </label>
-            <select id="filter-selector2-<%= filter.key %>"
+            <select id="filter-selector-<%= filter.key %>"
                     class="temporary <%= filter.isCustom ? 'custom-filter' : '' %>"
                     style='width: 55%; font-size:0.9em;'>
             </select>
@@ -391,10 +391,10 @@
 <script src="js/app/view.js"></script>
 <!-- JS: Module = monitoring (all) -->
 <script src="js/simulation/shared/main.js"></script>
-<script src="js/simulation/shared/events.js"></script>
 <script src="js/simulation/shared/utils.cv.js"></script>
 <script src="js/simulation/shared/utils.im.js"></script>
 <script src="js/simulation/shared/utils.ws.js"></script>
+<script src="js/simulation/shared/view.renderer.js"></script>
 <script src="js/simulation/monitoring/init.js"></script>
 <script src="js/simulation/monitoring/cookies.js"></script>
 <script src="js/simulation/monitoring/state.js"></script>

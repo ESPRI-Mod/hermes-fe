@@ -1,4 +1,4 @@
-(function (APP, MOD, WebSocket, _) {
+(function (APP, MOD, WebSocket, $, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -100,9 +100,22 @@
         buffer = [];
     });
 
+    // Event handler: websocket initialized.
+    MOD.events.on("ws:initialized", function () {
+        var ep;
+
+        // Load cv data & fire event.
+        ep = APP.utils.getEndPoint(MOD.urls.FETCH_CV);
+        $.getJSON(ep, function (data) {
+            MOD.log("cv fetched");
+            MOD.events.trigger("setup:cvDataLoaded", data);
+        });
+    });
+
 }(
     this.APP,
     this.APP.modules.monitoring,
     this.WebSocket,
+    this.$,
     this._
 ));
