@@ -1,4 +1,4 @@
-(function (MOD, _) {
+(function (MOD) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -49,6 +49,5 @@
     };
 
 }(
-    this.APP.modules.monitoring,
-    this._
+    this.APP.modules.monitoring
 ));
