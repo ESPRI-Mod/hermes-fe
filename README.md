@@ -1,4 +1,4 @@
-prodiguer-fe
+hermes-fe
 ============
 
-Prodiguer front end web application
+HERMES front end web application
