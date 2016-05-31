@@ -19,12 +19,6 @@
             console.log(new Date() + " :: [WARNING] :: " + constants.logging.PREFIX + msg);
         },
 
-        // Returns an endpoint address on the test server.
-        // @ep          Endpoint to be invoked.
-        getTestServerEndPoint: function (ep) {
-            return "https://prodiguer-test-web.ipsl.fr/api/1/{0}".replace("{0}", ep);
-        },
-
         // Returns an endpoint address.
         // @ep          Endpoint to be invoked.
         // @protocol    Communications protocol (ws | http).
