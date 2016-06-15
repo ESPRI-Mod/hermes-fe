@@ -37,7 +37,7 @@ window.$ = window.$jq = jQuery.noConflict();
         title: "HERMES",
 
         // App version.
-        version : "0.4.5.0",
+        version : "1.0.0.0",
 
         // App copyright statement.
         copyrightYear: new Date().getFullYear(),
