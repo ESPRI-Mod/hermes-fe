@@ -12,6 +12,7 @@
                 all: [],
                 complete: [],
                 error: [],
+                first: undefined,
                 jobType: 'computing',
                 running: [],
                 paging: {
@@ -86,7 +87,8 @@
                 // ... helper fields
                 isSelectedForIM: false,
                 isRestart: simulation.tryID > 1,
-                modelSynonyms: []
+                modelSynonyms: [],
+                submissionPath: "--"
             }
         });
     };

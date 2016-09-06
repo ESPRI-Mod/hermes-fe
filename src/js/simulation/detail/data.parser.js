@@ -14,6 +14,13 @@
             ];
         },
 
+        // Sets simulation's submission path information.
+        setSubmissionPath = function (simulation) {
+            if (simulation.jobs.compute.first) {
+                simulation.ext.submissionPath = simulation.jobs.compute.first.submissionPath;
+            }
+        },
+
         // Sets simulation's current execution status.
         setExecutionState = function (simulation) {
             simulation.executionState = MOD.getSimulationComputeState(simulation);
@@ -37,6 +44,9 @@
             case 'computing':
                 simulation.jobs.compute.all.push(job);
                 simulation.jobs.compute[job.executionState].push(job);
+                if (!simulation.jobs.compute.first) {
+                    simulation.jobs.compute.first = job;
+                }
                 break;
             case 'post-processing':
                 simulation.jobs.postProcessing.all.push(job);
@@ -83,6 +93,8 @@
 
         // Set derived execution end date.
         setExecutionEndDate(simulation);
+
+        setSubmissionPath(simulation);
     };
 
 }(
