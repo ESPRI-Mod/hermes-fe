@@ -27,6 +27,7 @@
     <div class='panel-body' style="padding: 5px 0px 0px 15px;">
         <% _.each(MOD.state.filters, function(filter) { %>
         <div class="col-md-4" style='margin-bottom: 3px;'>
+            <% if (filter.uiType === 'select') { %>
             <label style='width: 35%; font-size:0.9em;'>
                 <%- filter.displayName %>
             </label>
@@ -34,9 +35,13 @@
                     class="temporary <%= filter.isCustom ? 'custom-filter' : '' %>"
                     style='width: 55%; font-size:0.9em;'>
             </select>
+            <% } else { %>
+
             <!--
-            <button class="btn btn-default btn-sm glyphicon glyphicon-refresh" type="text" />
-            -->
+            <input id="filter-text-<%= filter.key %>" type="text" class="form-control" style="width: 55%; height: 28px; font-size: 0.9em;"/>
+             -->
+
+            <% } %>
         </div>
         <% }); %>
     </div>
@@ -70,8 +75,9 @@
         </tr>
         <%= APP.utils.renderTemplate("permalink-template", {MOD: MOD}) %>
         <tr class="hermes-table-header">
-            <th title='Activity' class="text-center">
-                <small>Activity</small>
+            <th title='Accounting Project' class="text-center sort-target sort-target-accountingProject">
+                <small class='sort-target-accountingProject'>Acc. Project</small>
+                <span class='pull-right sort-target-accountingProject glyphicon' />
             </th>
             <th title='Name' class='sort-target sort-target-name'>
                 <small class='sort-target-name'>Name</small>
@@ -90,10 +96,6 @@
                 <small class='sort-target-computeNodeMachine'>Machine</small>
                 <span class='pull-right sort-target-computeNodeMachine glyphicon' />
             </th>
-            <th title='Accounting Project' class="text-center sort-target sort-target-accountingProject">
-                <small class='sort-target-accountingProject'>Acc. Project</small>
-                <span class='pull-right sort-target-accountingProject glyphicon' />
-            </th>
             <th title='Login' class="text-center sort-target sort-target-computeNodeLogin">
                 <small class='sort-target-computeNodeLogin'>Login</small>
                 <span class='pull-right sort-target-computeNodeLogin glyphicon' />
@@ -102,13 +104,13 @@
                 <small class='sort-target-model'>Tag / Model</small>
                 <span class='pull-right sort-target-model glyphicon' />
             </th>
-            <th title='Space' class="text-center sort-target sort-target-space">
-                <small class='sort-target-space'>Space</small>
-                <span class='pull-right sort-target-space glyphicon' />
-            </th>
             <th title='Experiment' class="text-center sort-target sort-target-experiment">
                 <small class='sort-target-experiment'>Experiment</small>
                 <span class='pull-right sort-target-experiment glyphicon' />
+            </th>
+            <th title='Space' class="text-center sort-target sort-target-space">
+                <small class='sort-target-space'>Space</small>
+                <span class='pull-right sort-target-space glyphicon' />
             </th>
             <th title='Start' class="text-center sort-target sort-target-executionStartDate">
                 <small class='sort-target-executionStartDate'>Start</small>
@@ -218,9 +220,9 @@
 <!-- Template: search result table row -->
 <script type="underscore/template" id="grid-row-template">
 <tr id="<%= s.uid %>" class='monitoring-state-<%= s.executionState %>'>
-    <td class="text-center" title="<%= s.ext.activity %>">
+    <td class="text-center" title="<%= s.accountingProject %>">
         <small>
-            <%= s.ext.activity %>
+            <%= s.accountingProject %>
         </small>
     </td>
     <td title="<%= s.name %>">
@@ -254,11 +256,6 @@
             <%= s.ext.computeNodeMachine %>
         </small>
     </td>
-    <td class="text-center" title="<%= s.accountingProject %>">
-        <small>
-            <%= s.accountingProject %>
-        </small>
-    </td>
     <td class="text-center" title="<%= s.computeNodeLogin %>">
         <small>
             <%= s.computeNodeLogin %>
@@ -269,14 +266,14 @@
             <%= s.ext.model %>
         </small>
     </td>
-    <td class="text-center" title="<%= s.ext.space %>">
-        <small>
-            <%= s.ext.space %>
-        </small>
-    </td>
     <td class="text-center" title="<%= s.ext.experiment %>">
         <small>
             <%= s.ext.experiment %>
+        </small>
+    </td>
+    <td class="text-center" title="<%= s.ext.space %>">
+        <small>
+            <%= s.ext.space %>
         </small>
     </td>
     <td class="text-center" title="<%= s.ext.executionStartDate %>">

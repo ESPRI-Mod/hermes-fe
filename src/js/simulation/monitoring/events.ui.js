@@ -3,8 +3,8 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Apply filter event handler.
-    MOD.events.on("filter:updated", function (filter) {
+    // Apply select filter event handler.
+    MOD.events.on("selectFilter:updated", function (filter) {
         // Update filtered simulations.
         MOD.updateFilteredSimulationList();
 
@@ -18,6 +18,21 @@
         cookies.set('simulation-monitoring-filter-' + filter.cookieKey,
                     filter.cvTerms.current.name,
                     { expires: 3650 });
+
+        // Fire event.
+        MOD.events.trigger("state:simulationListUpdate");
+    });
+
+    // Apply text filter event handler.
+    MOD.events.on("textFilter:updated", function (filter) {
+        // Update filtered simulations.
+        MOD.updateFilteredSimulationList();
+
+        // Update active filter terms.
+        MOD.updateActiveFilterTerms();
+
+        // Update pagination.
+        MOD.updatePagination();
 
         // Fire event.
         MOD.events.trigger("state:simulationListUpdate");

@@ -15,13 +15,15 @@
         url += MOD.state.sorting.direction;
         url += "&";
         _.each(MOD.state.filters, function (filter) {
-            if (filter.key === "timeslice" ||
-                filter.key === "activity" ||
-                filter.cvTerms.current.name != filter.defaultValue) {
-                url += filter.cookieKey;
-                url += "=";
-                url += filter.cvTerms.current.name;
-                url += "&";
+            if (filter.uiType === 'select') {
+                if (filter.key === "timeslice" ||
+                    filter.key === "activity" ||
+                    filter.cvTerms.current.name != filter.defaultValue) {
+                    url += filter.cookieKey;
+                    url += "=";
+                    url += filter.cvTerms.current.name;
+                    url += "&";
+                }
             }
         });
 

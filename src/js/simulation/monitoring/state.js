@@ -27,24 +27,8 @@
                 defaultValue: "1W",
                 displayName: 'Start Date',
                 key: 'timeslice',
-                supportsByAll: true
-            },
-            {
-                cookieKey: 'activity',
-                cvType: 'activity',
-                defaultValue: "ipsl",
-                displayName: 'Activity',
-                forcedValue: 'ipsl',
-                key: 'activity',
-                supportsByAll: false
-            },
-            {
-                cookieKey: 'machine',
-                cvType: 'compute_node_machine',
-                defaultValue: "*",
-                displayName: 'Machine',
-                key: 'computeNodeMachine',
-                supportsByAll: true
+                supportsByAll: true,
+                uiType: 'select'
             },
             {
                 cookieKey: 'accounting-project',
@@ -52,7 +36,17 @@
                 defaultValue: "*",
                 displayName: 'Acc. Project',
                 key: 'accountingProject',
-                supportsByAll: true
+                supportsByAll: true,
+                uiType: 'select'
+            },
+            {
+                cookieKey: 'machine',
+                cvType: 'compute_node_machine',
+                defaultValue: "*",
+                displayName: 'Machine',
+                key: 'computeNodeMachine',
+                supportsByAll: true,
+                uiType: 'select'
             },
             {
                 cookieKey: 'login',
@@ -60,7 +54,8 @@
                 defaultValue: "*",
                 displayName: 'Login',
                 key: 'computeNodeLogin',
-                supportsByAll: true
+                supportsByAll: true,
+                uiType: 'select'
             },
             {
                 cookieKey: 'model',
@@ -68,7 +63,8 @@
                 defaultValue: "*",
                 displayName: 'Tag / Model',
                 key: 'model',
-                supportsByAll: true
+                supportsByAll: true,
+                uiType: 'select'
             },
             {
                 cookieKey: 'experiment',
@@ -76,7 +72,8 @@
                 defaultValue: "*",
                 displayName: 'Experiment',
                 key: 'experiment',
-                supportsByAll: true
+                supportsByAll: true,
+                uiType: 'select'
             },
             {
                 cookieKey: 'space',
@@ -84,7 +81,8 @@
                 defaultValue: "*",
                 displayName: 'Space',
                 key: 'space',
-                supportsByAll: true
+                supportsByAll: true,
+                uiType: 'select'
             },
             {
                 cookieKey: 'state',
@@ -92,7 +90,15 @@
                 defaultValue: "*",
                 displayName: 'State',
                 key: 'executionState',
-                supportsByAll: true
+                supportsByAll: true,
+                uiType: 'select'
+            },
+            {
+                cookieKey: 'name',
+                defaultValue: "*",
+                displayName: 'Name',
+                key: 'name',
+                uiType: 'text'
             }
         ],
 

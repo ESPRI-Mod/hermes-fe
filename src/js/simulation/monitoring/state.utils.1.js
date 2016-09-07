@@ -39,8 +39,8 @@
         });
     };
 
-    // Updates current filter value.
-    MOD.updateFilterValue = function (filterKey, filterOption) {
+    // Updates current select filter value.
+    MOD.updateSelectFilterValue = function (filterKey, filterOption) {
         var filter;
 
         filter = _.find(MOD.state.filters, function (f) {
@@ -57,8 +57,13 @@
         if (filterKey === 'timeslice') {
             MOD.fetchTimeSlice(true);
         } else {
-            MOD.events.trigger('filter:updated', filter);
+            MOD.events.trigger('selectFilter:updated', filter);
         }
+    };
+
+    // Updates current text filter value.
+    MOD.updateTextFilterValue = function (filterKey, text) {
+        console.log(filterKey + ": " + text);
     };
 
     // Updates set of active cv terms used to filter simulation list.
@@ -66,6 +71,11 @@
         _.each(MOD.state.filters, function (filter) {
             var simulationList,
                 activeTermNames;
+
+            // Escape if processing text filter.
+            if (filter.uiType !== 'select') {
+                return;
+            }
 
             // Escape if processing timeslice filter.
             if (filter.key === 'timeslice') {

@@ -105,6 +105,7 @@
                 // Construct URL.
                 url = baseURL = APP.utils.getBaseURL();
                 _.each(MOD.state.filters, function (filter) {
+                    if (filter.uiType !== 'select') return;
                     if (filter.cvTerms.current && filter.cvTerms.current.name !== '*') {
                         url += url === baseURL ? '?' : '&';
                         url += filter.key;
@@ -117,10 +118,16 @@
                 APP.utils.openURL(url);
             },
 
-            // Filter: value change.
+            // Filter: select value change.
             'select2:select': function (e) {
-                MOD.updateFilterValue($(e.target).attr("id").split("-")[2],
-                                      $(e.target).val());
+                MOD.updateSelectFilterValue($(e.target).attr("id").split("-")[2],
+                                            $(e.target).val());
+            },
+
+            // Filter: text value change.
+            'change #filter-panel input': function (e) {
+                MOD.updateTextFilterValue($(e.target).attr("id").split("-")[2],
+                                          $(e.target).val());
             },
 
             // Permalink open button click.
@@ -200,6 +207,7 @@
         },
 
         _setFilterSelector: function (f) {
+            if (f.uiType !== 'select') return;
             if (f.$view) {
                 f.$view.select2("destroy");
                 f.$view.html("");
@@ -275,7 +283,7 @@
         },
 
         _updatePermlink: function () {
-            console.log(MOD.getPersistentURL());
+            MOD.log("permalink updated: " + MOD.getPersistentURL());
             $("#permalink").val(MOD.getPersistentURL());
         },
 
