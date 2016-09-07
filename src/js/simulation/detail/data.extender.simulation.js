@@ -5,7 +5,7 @@
 
     // Set simulation job collections.
     MOD.extendSimulation01 = function (simulation) {
-        simulation.hasMonitoring = simulation.activity === 'cmip5' || false;
+        simulation.hasMonitoring = simulation.accountingProject === 'cmip5' || false;
         simulation.jobs = {
             all: [],
             compute: {
@@ -57,8 +57,6 @@
             outputStartDate: null,
             outputEndDate: null,
             // ... cv fields
-            activity: null,
-            activityRaw: null,
             computeNode: simulation.computeNodeMachine ? simulation.computeNodeMachine.split("-")[0] : null,
             computeNodeLogin: null,
             computeNodeLoginRaw: null,
@@ -71,7 +69,6 @@
             // ... extension fields
             ext: {
                 accountingProject: APP.utils.isNone(simulation.accountingProject) ? "--" : simulation.accountingProject,
-                activity: undefined,
                 caption: undefined,
                 computeNode: undefined,
                 computeNodeLogin: undefined,
@@ -111,7 +108,6 @@
         var model;
 
         // Update case sensitive CV fields.
-        MOD.cv.setFieldDisplayName(simulation, 'activity');
         MOD.cv.setFieldDisplayName(simulation, 'compute_node_login', 'computeNodeLogin');
         MOD.cv.setFieldDisplayName(simulation, 'compute_node_machine', 'computeNodeMachine');
         MOD.cv.setFieldDisplayName(simulation, 'experiment');

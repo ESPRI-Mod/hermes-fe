@@ -21,7 +21,6 @@
     // Filters.
     _.each([
         ['timeslice', "1W"],
-        ['activity', "ipsl"],
         ['machine', "*"],
         ['accounting-project', "*"],
         ['login', "*"],

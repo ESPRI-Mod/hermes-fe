@@ -122,7 +122,7 @@
             var last;
 
             // Fixed date if cmip5.
-            if (simulation.activity === 'cmip5') {
+            if (simulation.accountingProject === 'cmip5') {
                 return simulation.executionEndDate;
             }
 
@@ -151,7 +151,7 @@
             var last;
 
             // Complete if cmip5.
-            if (simulation.activity === 'cmip5') {
+            if (simulation.accountingProject === 'cmip5') {
                 return 'complete';
             }
 

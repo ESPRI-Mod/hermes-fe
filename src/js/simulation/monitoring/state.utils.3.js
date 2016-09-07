@@ -17,7 +17,6 @@
         _.each(MOD.state.filters, function (filter) {
             if (filter.uiType === 'select') {
                 if (filter.key === "timeslice" ||
-                    filter.key === "activity" ||
                     filter.cvTerms.current.name != filter.defaultValue) {
                     url += filter.cookieKey;
                     url += "=";
