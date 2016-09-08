@@ -84,7 +84,6 @@
     <% } %>
     <% // TAB NAV: compute jobs %>
     <% // TAB NAV: post-processing jobs %>
-    <% // TAB NAV: post-processing (from checker) jobs %>
     <%  _.each(MOD.jobTypes, function (jobType, jobTypeIndex) {  %>
     <%      var jobList = MOD.getJobs(jobType); %>
     <%      if (jobList.all.length) { %>
@@ -138,7 +137,6 @@
     <% } %>
     <% // TAB CONTENT: compute jobs %>
     <% // TAB CONTENT: post-processing jobs %>
-    <% // TAB CONTENT: post-processing (from checker) jobs %>
     <%  _.each(MOD.jobTypes, function (jobType) {  %>
     <%      var jobList, jobTypeCaption; %>
     <%      jobList = MOD.getJobs(jobType); %>
@@ -267,7 +265,7 @@
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong>Submission Path</strong>
+                <strong>Submit</strong>
             </td>
             <td colspan="3">
                 <%- simulation.ext.submissionPath %>

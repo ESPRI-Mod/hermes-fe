@@ -24,8 +24,7 @@
         // Map of message types to descriptions.
         messageTypeDescriptions: {
             "compute": "Compute",
-            "post-processing": "Post Processing",
-            "post-processing-from-checker": "Post Processing (from checker)"
+            "post-processing": "Post Processing"
         },
 
 

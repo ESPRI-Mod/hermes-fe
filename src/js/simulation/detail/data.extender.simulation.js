@@ -32,18 +32,6 @@
                     count: undefined,
                     pages: []
                 }
-            },
-            postProcessingFromChecker: {
-                all: [],
-                complete: [],
-                error: [],
-                jobType: 'post-processing-from-checker',
-                running: [],
-                paging: {
-                    current: undefined,
-                    count: undefined,
-                    pages: []
-                }
             }
         };
     };

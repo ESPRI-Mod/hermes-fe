@@ -10,8 +10,6 @@
             return MOD.state.simulation.jobs.compute;
         case "post-processing":
             return MOD.state.simulation.jobs.postProcessing;
-        case "post-processing-from-checker":
-            return MOD.state.simulation.jobs.postProcessingFromChecker;
         default:
             return [];
         }

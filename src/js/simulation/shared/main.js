@@ -17,15 +17,13 @@
         // Map of job types to captions.
         jobTypeDescriptions: {
             "computing": "Compute",
-            "post-processing": "Post Processing",
-            "post-processing-from-checker": "Post Processing (from checker)"
+            "post-processing": "Post Processing"
         },
 
         // Set of job types.
         jobTypes: [
             "computing",
-            "post-processing",
-            "post-processing-from-checker"
+            "post-processing"
         ],
 
         // Map of execution states to css classes.

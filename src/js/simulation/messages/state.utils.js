@@ -10,8 +10,6 @@
             return MOD.state.messageHistory.compute;
         case "post-processing":
             return MOD.state.messageHistory.postProcessing;
-        case "post-processing-from-checker":
-            return MOD.state.messageHistory.postProcessingFromChecker;
         default:
             return [];
         }

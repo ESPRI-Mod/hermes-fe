@@ -54,9 +54,6 @@
                     simulation.hasMonitoring = true;
                 }
                 break;
-            case 'post-processing-from-checker':
-                jobs.postProcessingFromChecker[job.executionState].push(job);
-                break;
             default:
                 break;
             }

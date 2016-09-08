@@ -9,8 +9,7 @@
         getJobSets = function (simulation) {
             return [
                 simulation.jobs.compute,
-                simulation.jobs.postProcessing,
-                simulation.jobs.postProcessingFromChecker
+                simulation.jobs.postProcessing
             ];
         },
 
@@ -57,10 +56,6 @@
                     _.has(MOD.urls.M, simulation.computeNode)) {
                     simulation.hasMonitoring = true;
                 }
-                break;
-            case 'post-processing-from-checker':
-                simulation.jobs.postProcessingFromChecker.all.push(job);
-                simulation.jobs.postProcessingFromChecker[job.executionState].push(job);
                 break;
             default:
                 break;

@@ -18,11 +18,6 @@
                 complete: [],
                 error: [],
                 running: []
-            },
-            postProcessingFromChecker: {
-                complete: [],
-                error: [],
-                running: []
             }
         };
     };
