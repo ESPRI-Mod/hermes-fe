@@ -247,14 +247,8 @@
         },
 
         _updateStatisticsInfo: function () {
-            var text;
-
-            text = "Total simulations = ";
-            text += MOD.state.simulationList.length;
-            text += ". Filtered simulations = ";
-            text += MOD.state.simulationListFiltered.length;
-            text += ".";
-            this.$('.simulation-stats').text(text);
+            this.$('.' + 'total-simulation-count').text(MOD.state.simulationList.length);
+            this.$('.' + 'filtered-simulation-count').text(MOD.state.simulationListFiltered.length);
         },
 
         _updateGridPager: function () {
