@@ -51,6 +51,7 @@
                 isRestart: simulation.tryID > 1,
                 model: undefined,
                 modelSynonyms: [],
+                name: simulation.name.trim().toLowerCase(),
                 space: undefined
             }
         });

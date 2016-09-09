@@ -24,7 +24,12 @@
     });
 
     // Apply text filter event handler.
-    MOD.events.on("textFilter:updated", function (filter) {
+    MOD.events.on("textFilter:updated", function (text) {
+        if (MOD.state.textFilter === text.trim().toLowerCase()) return;
+
+        // Update state.
+        MOD.state.textFilter = text.trim().toLowerCase();
+
         // Update filtered simulations.
         MOD.updateFilteredSimulationList();
 

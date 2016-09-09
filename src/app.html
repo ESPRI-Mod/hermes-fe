@@ -24,43 +24,20 @@
 <!-- Template: filter panel -->
 <script type="underscore/template" id="filter-panel-template">
 <div id="filter-panel" class='panel panel-info form-inline' style="margin-bottom: 2px;">
-    <div class='panel-body' style="padding: 5px 0px 0px 15px;">
+    <div class='panel-body' style="padding: 9px 0px 5px 15px;">
         <% _.each(MOD.state.filters, function(filter) { %>
-        <div class="col-md-4" style='margin-bottom: 3px;'>
-            <% if (filter.uiType === 'select') { %>
-            <label style='width: 35%; font-size:0.9em;'>
+        <div class="col-md-3" style='margin-bottom: 3px;'>
+            <label style='width: 38%; font-size:0.9em;'>
                 <%- filter.displayName %>
             </label>
             <select id="filter-selector-<%= filter.key %>"
                     class="temporary <%= filter.isCustom ? 'custom-filter' : '' %>"
-                    style='width: 55%; font-size:0.9em;'>
+                    style='width: 60%; font-size:0.9em;'>
             </select>
-            <% } else { %>
-
-            <!--
-            <input id="filter-text-<%= filter.key %>" type="text" class="form-control" style="width: 55%; height: 28px; font-size: 0.9em;"/>
-             -->
-
-            <% } %>
         </div>
         <% }); %>
     </div>
 </div>
-</script>
-
-<!-- Template: search statistics -->
-<script type="underscore/template" id="statistics-info-template">
-    <span id="statistics-info" class="pull-left" style="padding: 5px 0px 5px 5px">
-        <strong>
-            Total simulations = <%- simulationList.length %>.
-            Filtered simulations = <%- simulationListFiltered.length %>.
-        </strong>
-        <button id="btn-permalink-open" type="button" class="btn btn-info btn-xs">
-            <small>
-                Permalink
-            </small>
-        </button>
-    </span>
 </script>
 
 <!-- Template: search result table -->
@@ -69,7 +46,12 @@
     <thead>
         <tr id="grid-stats-pager-row" class="bg-primary">
             <th colspan="15">
-                <%= APP.utils.renderTemplate("statistics-info-template", MOD.state) %>
+                <span id="statistics-info" class="form-inline">
+                    <label>
+                        &nbsp;&nbsp;Filter by name:&nbsp;&nbsp;&nbsp;&nbsp;
+                    </label>
+                    <input id="text-filter" type='text' class='form-control input-sm' style="width: 25%; font-weight: normal;">
+                </span>
                 <%= APP.utils.renderTemplate("grid-pager-template", MOD.state) %>
             </th>
         </tr>
@@ -170,7 +152,7 @@
                 </span>
                 <span class="input-group-btn">
                     <button class="btn btn-primary active" id="btn-permalink-copy" title="Copy permalink to clipboard">
-                    Copy
+                    &nbsp;Copy&nbsp;
                     </button>
                     <button class="btn btn-default" id="btn-permalink-close" title="Close permalink">
                     Close
@@ -205,6 +187,9 @@
         </option>
         <% }); %>
     </select>
+    <button id="btn-permalink-open" type="button" class="btn btn-info btn-sm">
+        Permalink
+    </button>
 </span>
 </script>
 
@@ -336,6 +321,10 @@
     <% } else { %>
         Awaiting simulation events ...
     <% } %>
+    </strong>
+    <strong class='pull-right simulation-stats'>
+        Total simulations = <%- simulationList.length %>.
+        Filtered simulations = <%- simulationListFiltered.length %>
     </strong>
 </div>
 </script>

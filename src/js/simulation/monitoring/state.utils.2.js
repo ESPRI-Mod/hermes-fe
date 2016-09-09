@@ -45,7 +45,7 @@
             return _.isNull(s.executionStartDate);
         });
 
-        // Apply filters.
+        // Apply select filters.
         filters = MOD.state.filters;
         if (exclusionFilter) {
             filters = _.without(filters, exclusionFilter);
@@ -59,6 +59,13 @@
                 });
             }
         });
+
+        // Apply text filter.
+        if (MOD.state.textFilter) {
+            result = _.filter(result, function (s) {
+                return s.ext.name.includes(MOD.state.textFilter);
+            });
+        }
 
         // Sort (when not applying exclusions).
         if (_.isUndefined(exclusionFilter)) {

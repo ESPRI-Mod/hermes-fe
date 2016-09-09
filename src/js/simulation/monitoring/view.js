@@ -105,7 +105,6 @@
                 // Construct URL.
                 url = baseURL = APP.utils.getBaseURL();
                 _.each(MOD.state.filters, function (filter) {
-                    if (filter.uiType !== 'select') return;
                     if (filter.cvTerms.current && filter.cvTerms.current.name !== '*') {
                         url += url === baseURL ? '?' : '&';
                         url += filter.key;
@@ -122,12 +121,6 @@
             'select2:select': function (e) {
                 MOD.updateSelectFilterValue($(e.target).attr("id").split("-")[2],
                                             $(e.target).val());
-            },
-
-            // Filter: text value change.
-            'change #filter-panel input': function (e) {
-                MOD.updateTextFilterValue($(e.target).attr("id").split("-")[2],
-                                          $(e.target).val());
             },
 
             // Permalink open button click.
@@ -150,13 +143,22 @@
                 window.getSelection().removeAllRanges();
                 $("#grid-permalink-row").addClass('hidden');
                 $("#grid-stats-pager-row").removeClass('hidden');
+            },
+
+            'keyup #text-filter': function (e) {
+                MOD.events.trigger('textFilter:updated', $(e.target).val());
             }
         },
 
         // Backbone: view initializer.
         initialize : function () {
-            // Sorting events.
+            // UI initialisation events.
             MOD.events.on("ui:initialized", this._setSortColumn, this);
+            MOD.events.on("ui:initialized", function () {
+                _.each(MOD.state.filters, this._setFilterSelector, this);
+            }, this);
+
+            // Sorting events.
             MOD.events.on("state:simulationListSortOrderChanging", this._clearSortColumn, this);
             MOD.events.on("state:simulationListSortOrderChanged", this._setSortColumn, this);
             MOD.events.on("state:simulationListSortOrderToggled", this._toggleSortColumn, this);
@@ -168,9 +170,6 @@
             MOD.events.on("state:simulationPageUpdate", this._updateGridPager, this);
 
             // Filter events.
-            MOD.events.on("ui:initialized", function () {
-                _.each(MOD.state.filters, this._setFilterSelector, this);
-            }, this);
             MOD.events.on("state:filterOptionsUpdate", this._setFilterSelector, this);
             MOD.events.on("state:filtersUpdated", this._updatePermlink, this);
 
@@ -207,7 +206,6 @@
         },
 
         _setFilterSelector: function (f) {
-            if (f.uiType !== 'select') return;
             if (f.$view) {
                 f.$view.select2("destroy");
                 f.$view.html("");
@@ -249,7 +247,14 @@
         },
 
         _updateStatisticsInfo: function () {
-            this._replaceNode('#statistics-info', 'statistics-info-template', MOD.state);
+            var text;
+
+            text = "Total simulations = ";
+            text += MOD.state.simulationList.length;
+            text += ". Filtered simulations = ";
+            text += MOD.state.simulationListFiltered.length;
+            text += ".";
+            this.$('.simulation-stats').text(text);
         },
 
         _updateGridPager: function () {

@@ -15,14 +15,12 @@
         url += MOD.state.sorting.direction;
         url += "&";
         _.each(MOD.state.filters, function (filter) {
-            if (filter.uiType === 'select') {
-                if (filter.key === "timeslice" ||
-                    filter.cvTerms.current.name != filter.defaultValue) {
-                    url += filter.cookieKey;
-                    url += "=";
-                    url += filter.cvTerms.current.name;
-                    url += "&";
-                }
+            if (filter.key === "timeslice" ||
+                filter.cvTerms.current.name != filter.defaultValue) {
+                url += filter.cookieKey;
+                url += "=";
+                url += filter.cvTerms.current.name;
+                url += "&";
             }
         });
 

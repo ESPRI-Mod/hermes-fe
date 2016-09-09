@@ -19,7 +19,7 @@
         // CV terms.
         cvTerms: [],
 
-        // Filters.
+        // Select filters.
         filters: [
             {
                 cookieKey: 'timeslice',
@@ -27,8 +27,7 @@
                 defaultValue: "1W",
                 displayName: 'Start Date',
                 key: 'timeslice',
-                supportsByAll: true,
-                uiType: 'select'
+                supportsByAll: true
             },
             {
                 cookieKey: 'accounting-project',
@@ -36,8 +35,7 @@
                 defaultValue: "*",
                 displayName: 'Acc. Project',
                 key: 'accountingProject',
-                supportsByAll: true,
-                uiType: 'select'
+                supportsByAll: true
             },
             {
                 cookieKey: 'machine',
@@ -45,8 +43,7 @@
                 defaultValue: "*",
                 displayName: 'Machine',
                 key: 'computeNodeMachine',
-                supportsByAll: true,
-                uiType: 'select'
+                supportsByAll: true
             },
             {
                 cookieKey: 'login',
@@ -54,8 +51,7 @@
                 defaultValue: "*",
                 displayName: 'Login',
                 key: 'computeNodeLogin',
-                supportsByAll: true,
-                uiType: 'select'
+                supportsByAll: true
             },
             {
                 cookieKey: 'model',
@@ -63,8 +59,7 @@
                 defaultValue: "*",
                 displayName: 'Tag / Model',
                 key: 'model',
-                supportsByAll: true,
-                uiType: 'select'
+                supportsByAll: true
             },
             {
                 cookieKey: 'experiment',
@@ -72,8 +67,7 @@
                 defaultValue: "*",
                 displayName: 'Experiment',
                 key: 'experiment',
-                supportsByAll: true,
-                uiType: 'select'
+                supportsByAll: true
             },
             {
                 cookieKey: 'space',
@@ -81,8 +75,7 @@
                 defaultValue: "*",
                 displayName: 'Space',
                 key: 'space',
-                supportsByAll: true,
-                uiType: 'select'
+                supportsByAll: true
             },
             {
                 cookieKey: 'state',
@@ -90,17 +83,12 @@
                 defaultValue: "*",
                 displayName: 'State',
                 key: 'executionState',
-                supportsByAll: true,
-                uiType: 'select'
-            },
-            {
-                cookieKey: 'name',
-                defaultValue: "*",
-                displayName: 'Name',
-                key: 'name',
-                uiType: 'text'
+                supportsByAll: true
             }
         ],
+
+        // Current text filter value.
+        textFilter: undefined,
 
         // Current simulation being processed.
         simulation: null,
