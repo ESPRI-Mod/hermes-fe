@@ -53,6 +53,10 @@
         }
 
         url = [MOD.urls.IM[s.computeNode]];
+        // CMIP6 is served at work_thredds not work.
+        if (s.accountingProject.endsWith('cmip6')) {
+            url[0] += '_thredds';
+        }
         url.push(s.computeNodeLogin);
         if (s.modelRaw) {
             url.push(s.modelRaw);
