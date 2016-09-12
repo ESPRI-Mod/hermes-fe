@@ -243,6 +243,8 @@
                 ei.simulationDetailURL = this._getSimulationDetailURL(ei.simulation.uid);
                 ei.eventTypeDescription = MOD.getEventDescription(ei);
             }
+            ei.simulationList = MOD.state.simulationList;
+            ei.simulationListFiltered = MOD.state.simulationListFiltered;
             this._replaceNode('#notification-info', 'notification-info-template', ei);
         },
 

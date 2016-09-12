@@ -16,6 +16,7 @@
             if (_.has(MOD.state.simulationSet, data.job.simulationUID) === false) {
                 return;
             }
+            MOD.log("WS :: job event processing");
 
             // Update module state.
             simulation = MOD.state.simulationSet[data.job.simulationUID];
@@ -48,6 +49,7 @@
                     return;
                 }
             }
+            MOD.log("WS :: simulation event processing");
 
             // Update module state:
             // ... new cv terms;
