@@ -1,4 +1,4 @@
-(function (APP, MOD, _, Backbone, $, cookies) {
+(function (APP, MOD, _, Backbone, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -110,7 +110,7 @@
                     pageSize = $(e.target).val();
 
                 // Update page size.
-                cookies.set('simulation-detail-page-size', pageSize, { expires: 3650 });
+                MOD.setCookie('detail-page-size', pageSize);
                 MOD.state.pageSize = pageSize;
 
                 // Update job set pagination info.
@@ -275,6 +275,5 @@
     this.APP.modules.monitoring,
     this._,
     this.Backbone,
-    this.$,
-    this.Cookies
+    this.$
 ));

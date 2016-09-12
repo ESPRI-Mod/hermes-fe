@@ -1,4 +1,4 @@
-(function (APP, MOD, _, cookies) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -99,12 +99,8 @@
         }
 
         // Update cookies.
-        cookies.set('simulation-monitoring-sort-field',
-                    MOD.state.sorting.field,
-                    { expires: 3650 });
-        cookies.set('simulation-monitoring-sort-direction',
-                    MOD.state.sorting.direction,
-                    { expires: 3650 });
+        MOD.setCookie('sort-field', MOD.state.sorting.field);
+        MOD.setCookie('sort-direction', MOD.state.sorting.direction);
 
         // Apply new sort field.
         MOD.state.simulationListFiltered = MOD.sortSimulationList(MOD.state.simulationListFiltered);
@@ -136,6 +132,5 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._,
-    this.Cookies
+    this._
 ));

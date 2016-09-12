@@ -1,4 +1,4 @@
-(function (APP, MOD, _, cookies) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -49,17 +49,16 @@
     };
 
     // Set state derived from cookies.
-    MOD.state.pageSize = cookies.get('simulation-detail-page-size');
+    MOD.state.pageSize = MOD.getCookie('detail-page-size');
     _.each(MOD.jobTypes, function (jobType) {
         MOD.state.sorting[jobType] = {
-            field: cookies.get('simulation-detail-sort-field-' + jobType),
-            direction: cookies.get('simulation-detail-sort-direction-' + jobType)
+            field: MOD.getCookie('detail-sort-field-' + jobType),
+            direction: MOD.getCookie('detail-sort-direction-' + jobType)
         };
     });
 
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._,
-    this.Cookies
+    this._
 ));

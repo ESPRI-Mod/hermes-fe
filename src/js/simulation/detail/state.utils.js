@@ -1,4 +1,4 @@
-(function (APP, MOD, _, cookies) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -82,12 +82,8 @@
         }
 
         // Update cookies.
-        cookies.set('simulation-detail-sort-field-' + jobType,
-                    sortInfo.field,
-                    { expires: 3650 });
-        cookies.set('simulation-detail-sort-direction-' + jobType,
-                    sortInfo.direction,
-                    { expires: 3650 });
+        MOD.setCookie('detail-sort-field-' + jobType, sortInfo.field);
+        MOD.setCookie('detail-sort-direction-' + jobType, sortInfo.direction);
 
         // Update related state.
         jobSet = MOD.getJobs(jobType);
@@ -101,6 +97,5 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._,
-    this.Cookies
+    this._
 ));

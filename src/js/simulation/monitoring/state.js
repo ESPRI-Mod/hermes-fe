@@ -1,4 +1,4 @@
-(function (APP, MOD, _, cookies) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -106,7 +106,7 @@
         simulationHashSet: {},
 
         // Size of grid pages.
-        pageSize: cookies.get('simulation-monitoring-page-size'),
+        pageSize: MOD.getCookie('page-size'),
 
         // Set of grid page size options.
         pageSizeOptions: [25, 50, 100],
@@ -121,8 +121,8 @@
         // Sorting related state.
         sorting: {
             allFields: ['name', 'computeNodeMachine', 'accountingProject', 'computeNodeLogin', 'model', 'space', 'experiment', 'executionStartDate', 'executionEndDate'],
-            field: cookies.get('simulation-monitoring-sort-field'),
-            direction: cookies.get('simulation-monitoring-sort-direction')
+            field: MOD.getCookie('sort-field'),
+            direction: MOD.getCookie('sort-direction')
         }
     };
 
@@ -143,8 +143,8 @@
                 all: [],
                 current: undefined
             },
-            cookieValue: cookies.get('simulation-monitoring-filter-' + (filter.cookieKey || filter.key)),
-            urlValue: APP.utils.getURLParam(filter.cookieKey || filter.key),
+            cookieValue: MOD.getCookie('filter-' + filter.cookieKey),
+            urlValue: APP.utils.getURLParam(filter.cookieKey),
             $view: undefined
         });
         if (filter.urlValue) {
@@ -157,7 +157,7 @@
         if (hasURLParams) {
             filter.initialValue = filter.urlValue || filter.defaultValue;
         } else {
-            filter.initialValue = filter.cookieValue;
+            filter.initialValue = filter.cookieValue || filter.defaultValue;
         }
         console.log("Filter init val: " + filter.key + " :: " + filter.initialValue);
     });
@@ -167,6 +167,5 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._,
-    this.Cookies
+    this._
 ));

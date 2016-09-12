@@ -37,7 +37,7 @@ window.$ = window.$jq = jQuery.noConflict();
         title: "HERMES",
 
         // App version.
-        version : "1.0.2.2",
+        version : "1.0.2.3",
 
         // App copyright statement.
         copyrightYear: new Date().getFullYear(),
@@ -104,6 +104,20 @@ window.$ = window.$jq = jQuery.noConflict();
 
                 logWarning: function (msg) {
                     APP.utils.logWarning(key.toUpperCase() + ' :: ' + msg);
+                },
+
+                // Module cookies.
+                setCookie: function (name, value) {
+                    name = key + "-" + name;
+                    APP.setCookie(name, value);
+                },
+                setCookieDefault: function (name, defaultValue) {
+                    name = key + "-" + name;
+                    APP.setCookieDefault(name, defaultValue);
+                },
+                getCookie: function (name) {
+                    name = key + "-" + name;
+                    return APP.getCookie(name);
                 }
             });
 

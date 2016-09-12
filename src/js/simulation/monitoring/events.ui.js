@@ -1,4 +1,4 @@
-(function (MOD, cookies) {
+(function (APP, MOD) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -15,9 +15,7 @@
         MOD.updatePagination();
 
         // Update cookie.
-        cookies.set('simulation-monitoring-filter-' + filter.cookieKey,
-                    filter.cvTerms.current.name,
-                    { expires: 3650 });
+        MOD.setCookie('filter-' + filter.cookieKey, filter.cvTerms.current.name);
 
         // Fire event.
         MOD.events.trigger("state:simulationListUpdate");
@@ -46,7 +44,7 @@
     // Apply filter event handler.
     MOD.events.on("state:pageSizeChange", function (pageSize) {
         // Update cookie.
-        cookies.set('simulation-monitoring-page-size', pageSize, { expires: 3650 });
+        MOD.setCookie('page-size', pageSize);
 
         // Update state.
         MOD.state.pageSize = pageSize;
@@ -59,6 +57,6 @@
     });
 
 }(
-    this.APP.modules.monitoring,
-    this.Cookies
+    this.APP,
+    this.APP.modules.monitoring
 ));

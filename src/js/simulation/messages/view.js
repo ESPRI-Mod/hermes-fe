@@ -1,4 +1,4 @@
-(function (APP, MOD, _, Backbone, $, cookies) {
+(function (APP, MOD, _, Backbone, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -100,7 +100,7 @@
                     pageSize = $(e.target).val();
 
                 // Update page size.
-                cookies.set('simulation-message-page-size', pageSize, { expires: 3650 });
+                MOD.setCookie('message-page-size', pageSize);
                 MOD.state.pageSize = pageSize;
 
                 // Update message set pagination info.
@@ -166,6 +166,5 @@
     this.APP.modules.messages,
     this._,
     this.Backbone,
-    this.$,
-    this.Cookies
+    this.$
 ));

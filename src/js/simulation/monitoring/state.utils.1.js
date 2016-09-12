@@ -1,4 +1,4 @@
-(function (MOD, _, cookies) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -50,9 +50,7 @@
             return t.name === filterOption;
         });
 
-        cookies.set('simulation-monitoring-filter-' + filter.cookieKey,
-                    filter.cvTerms.current.name,
-                    { expires: 3650 });
+        MOD.setCookie('filter-' + filter.cookieKey, filter.cvTerms.current.name);
 
         if (filterKey === 'timeslice') {
             MOD.fetchTimeSlice(true);
@@ -100,7 +98,7 @@
     };
 
 }(
+    this.APP,
     this.APP.modules.monitoring,
-    this._,
-    this.Cookies
+    this._
 ));
