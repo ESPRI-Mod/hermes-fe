@@ -1,4 +1,4 @@
-(function (MOD, numeral, moment) {
+(function (MOD, $, numeral, moment) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -26,21 +26,22 @@
         return ppFields.join(".");
     };
 
-    // Parses a message in readiness for processing.
+    // Parses a message in readiness for rendering.
     MOD.parseMessage = function (msg) {
-        msg.latency = numeral(moment(msg.processed).diff(msg.timestamp, 's')).format("00:00:00");
-        if (msg.latency.length === 7) {
-            msg.latency = "0" + msg.latency;
-        }
+        // Set post-processing job information.
         if (msg.typeID === "2000" || msg.typeID === "3000") {
             msg.jobInfo = getPostProcessingInfo($.parseJSON(msg.content));
-        } else {
-            msg.jobInfo = "--";
+        }
+        // Set message processing latency.
+        if (msg.timestamp && msg.processed) {
+            msg.latency = msg.processed.diff(msg.timestamp, 's');
+            msg.latency = numeral(msg.latency);
         }
     };
 
 }(
     this.APP.modules.messages,
+    this.$,
     this.numeral,
     this.moment
 ));

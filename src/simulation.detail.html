@@ -97,21 +97,18 @@
                         <%= MOD.jobTypeDescriptions[jobType] %> Jobs
                     </strong>
                     <span class="badge"
-                          title="<%- jobList.running.length %> running"
                           style="background-color: #D9EDF7; color: #333;">
                           <span id="tab-job-count-<%= jobType %>-running">
                             <%- jobList.running.length %>
                           </span>
                     </span>
                     <span class="badge"
-                          title="<%- jobList.complete.length %> complete"
                           style="background-color: #DFF0D8; color: #333;">
                           <span id="tab-job-count-<%= jobType %>-complete">
                             <%- jobList.complete.length %>
                           </span>
                     </span>
                     <span class="badge"
-                          title="<%- jobList.error.length %> in error"
                           style="background-color: #F2DEDE; color: #333;">
                           <span id="tab-job-count-<%= jobType %>-error">
                             <%- jobList.error.length %>
@@ -198,7 +195,7 @@
                 <strong>Compute start date</strong>
             </td>
             <td>
-                <%- simulation.ext.executionStartDate %>
+                <%= APP.utils.renderDateTime(simulation.executionStartDate) %>
             </td>
         </tr>
         <tr>
@@ -212,7 +209,7 @@
                 <strong>Compute end date</strong>
             </td>
             <td>
-                <%= (MOD.getSimulationComputeEndDate(simulation) || "--").slice(0, 19) %>
+                <%= APP.utils.renderDateTime(simulation.executionEndDate) %>
             </td>
         </tr>
         <tr>
@@ -240,7 +237,7 @@
                 <strong>Output start date</strong>
             </td>
             <td>
-                <%- simulation.ext.outputStartDate %>
+                <%= APP.utils.renderDate(simulation.outputStartDate) %>
             </td>
         </tr>
         <tr>
@@ -260,7 +257,7 @@
                 <strong>Output end date</strong>
             </td>
             <td>
-                <%- simulation.ext.outputEndDate %>
+                <%= APP.utils.renderDate(simulation.outputEndDate) %>
             </td>
         </tr>
         <tr>
@@ -387,17 +384,14 @@
         </span>
         <span>
             <span class='monitoring-state-running badge'
-                  title='RUNNING'
                   style="background-color: #D9EDF7; color: #333;">
                 <small><strong><%- jobList.running.length %> RUNNING</strong></small>
             </span>
             <span class='monitoring-state-complete badge'
-                  title='COMPLETE'
                   style="background-color: #DFF0D8; color: #333;">
                 <small><strong><%- jobList.complete.length %> COMPLETE</strong></small>
             </span>
             <span class='monitoring-state-error badge'
-                  title='ERROR'
                   style="background-color: #F2DEDE; color: #333;">
                 <small><strong><%- jobList.error.length %> ERROR</strong></small>
             </small>
@@ -412,34 +406,34 @@
 <!-- Template: job detail -->
 <script type="underscore/template" id="template-job-detail">
 <tr id="<%= job.jobUID %>" class="<%= MOD.getStateCSS(job.executionState) %>">
-    <td class='postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>' title='<%= job.postProcessingInfo %>'>
+    <td class='postProcessingInfo <%= hidePPInfo ? 'hidden' : '' %>'>
         <small>
             <%= job.postProcessingInfo %>
         </small>
     </td>
-    <td class='executionStartDate text-center' title='<%= job.ext.executionStartDate %>'>
+    <td class='executionStartDate text-center'>
         <small>
-            <%= job.ext.executionStartDate %>
+            <%= APP.utils.renderDateTime(job.executionStartDate) %>
         </small>
     </td>
-    <td class='executionEndDate text-center' title='<%= job.ext.executionEndDate %>'>
+    <td class='executionEndDate text-center'>
         <small>
-            <%= job.ext.executionEndDate %>
+            <%= APP.utils.renderDateTime(job.executionEndDate) %>
         </small>
     </td>
-    <td class='duration text-center' title='<%= job.ext.duration %>'>
+    <td class='duration text-center'>
         <small>
-            <%= job.ext.duration %>
+            <%= APP.utils.renderDuration(job.duration) %>
         </small>
     </td>
-    <td class='lateness text-center' title='<%= job.ext.warningDelay %>'>
+    <td class='lateness text-center'>
         <small>
-            <%= job.ext.warningDelay %>
+            <%= APP.utils.renderDuration(job.warningDelay) %>
         </small>
     </td>
-    <td class='lateness text-center' title='<%= job.lateness %>'>
+    <td class='lateness text-center'>
         <small>
-            <%= job.lateness %>
+            <%= APP.utils.renderDuration(job.lateness) %>
         </small>
     </td>
 </tr>

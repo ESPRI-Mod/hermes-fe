@@ -115,35 +115,6 @@
             }
         },
 
-        // Returns compute execution end date of a simulation.
-        getSimulationComputeEndDate: function (simulation) {
-            var last;
-
-            // Fixed date if cmip5.
-            if (simulation.accountingProject === 'cmip5') {
-                return simulation.executionEndDate;
-            }
-
-            // Null if no compute jobs have started.
-            if (simulation.jobs.compute.all.length === 0) {
-                return null;
-            }
-
-            // Derive from last compute job.
-            last = _.last(simulation.jobs.compute.all);
-            if (last.executionState === 'running') {
-                return null;
-            }
-            if (last.executionState === 'error') {
-                return last.ext.executionEndDate || last.executionEndDate;
-            }
-            if (last.executionState === 'complete' && last.isComputeEnd) {
-                return last.ext.executionEndDate || last.executionEndDate;
-            }
-
-            return null;
-        },
-
         // Returns compute execution state of a simulation.
         getSimulationComputeState: function (simulation) {
             var last;

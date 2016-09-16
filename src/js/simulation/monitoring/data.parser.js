@@ -5,20 +5,21 @@
 
     // Closure vars.
     var
+        // Sets simulation's execution end date.
+        setExecutionEndDate = function (s) {
+            // Escape if non-derivable.
+            if (s.executionEndDate ||
+                s.jobs.compute.all.length === 0 ||
+                s.jobs.postProcessing.all.length === 0) return;
+
+            // Derive from last compute job.
+            s.executionEndDate = s.jobs.compute.all[0].executionEndDate;
+        },
+
         // Sets simulation's current execution status.
         setExecutionState = function (simulation) {
             simulation.executionState = MOD.getSimulationComputeState(simulation);
             MOD.cv.setFieldDisplayName(simulation, 'simulation_state', 'executionState');
-        },
-
-        // Sets simulation's execution end date.
-        setExecutionEndDate = function (simulation) {
-            var executionEndDate;
-
-            executionEndDate = MOD.getSimulationComputeEndDate(simulation);
-            if (executionEndDate) {
-                simulation.ext.executionEndDate = executionEndDate.slice(0, 19);
-            }
         },
 
         // Sorts a job set.
@@ -47,6 +48,7 @@
                 jobs.compute[job.executionState].push(job);
                 break;
             case 'post-processing':
+                jobs.postProcessing.all.push(job);
                 jobs.postProcessing[job.executionState].push(job);
                 if (job.postProcessingName === 'monitoring' &&
                     job.executionEndDate &&
@@ -75,17 +77,25 @@
             _.each(simulationList, sortComputeJobset);
             MOD.log("timeslice compute jobs sorted");
 
+            // Set execution end dates.
+            _.each(simulationList, setExecutionEndDate);
+            MOD.log("timeslice simulation end dates assigned");
+
             // Set execution states.
             _.each(simulationList, setExecutionState);
             MOD.log("timeslice simulation compute state assigned");
-
-            // Set execution end dates.
-            _.each(simulationList, setExecutionEndDate);
-            MOD.log("timeslice simulation compute end date assigned");
         },
 
         // Parses web-socket event data.
         parseEvent: function (simulation, jobList) {
+            // Parse simulation date information.
+            if (simulation.executionEndDate) {
+                simulation.executionEndDate = moment(simulation.executionEndDate);
+            }
+            if (simulation.executionStartDate) {
+                simulation.executionStartDate = moment(simulation.executionStartDate);
+            }
+
             // Extend simulation.
             MOD.extendSimulation(simulation);
 
@@ -95,11 +105,11 @@
             // Sort compute jobs (required in order to determine simulation execution status).
             sortComputeJobset(simulation);
 
+            // Set derived execution end date (necessary if 0100 not sent).
+            setExecutionEndDate(simulation);
+
             // Set execution state.
             setExecutionState(simulation);
-
-            // Set execution end date.
-            setExecutionEndDate(simulation);
         }
     };
 }(

@@ -38,11 +38,12 @@
             executionEndDate: i[0] ? moment(i[0]) : null,
             executionStartDate: i[1] ? moment(i[1]) : null,
             executionState: i[3] ? 'error' : i[0] ? 'complete' : 'running',
+            extended: false,
             isComputeEnd: i[2],
             isError: i[3],
             isPostProcessing: i[6] !== 'computing',
             jobUID: i[4],
-            lateness: '--',
+            lateness: null,
             simulationUID: i[5],
             typeof: i[6],
             accountingProject: APP.utils.isNone(i[7]) ? '--' : i[7],
@@ -50,14 +51,7 @@
             postProcessingName: i[12],
             schedulerID: i[13],
             submissionPath: i[14],
-            warningDelay: i[15],
-            ext: {
-                duration: '--',
-                executionEndDate: '--',
-                executionStartDate: '--',
-                extended: false,
-                warningDelay: numeral(i[15]).format('HH:mm:ss')
-            }
+            warningDelay: numeral(i[15])
         };
     };
 

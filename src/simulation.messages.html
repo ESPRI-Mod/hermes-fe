@@ -178,33 +178,33 @@
                 <td style='width: 40px;' class='text-center'>
                     <small><%= messageIndex + 1 %></small>
                 </td>
-                <td title='Message type' class='text-center'>
+                <td class='text-center'>
                     <small><%= message.typeID %></small>
                 </td>
                 <% if (displayPostProcessingJobInfo) { %>
-                    <td title='Job information'>
-                        <small><%= message.jobInfo %></small>
+                    <td>
+                        <small><%= message.jobInfo || "--" %></small>
                     </td>
                 <% } %>
-                <td title='Job identifier' class='text-center'>
+                <td class='text-center'>
                     <small><%= message.jobUID %></small>
                 </td>
-                <td title='Message timestamp' class='text-center'>
-                    <small><%= message.timestamp %></small>
+                <td class='text-center'>
+                    <small><%= APP.utils.renderDateTime(message.timestamp) %></small>
                 </td>
-                <td title='Message processing date' class='text-center'>
-                    <small><%= message.processed %></small>
+                <td class='text-center'>
+                    <small><%= APP.utils.renderDateTime(message.processed) %></small>
                 </td>
-                <td title='Message processing latency' class='text-center'>
-                    <small><%= message.latency %></small>
+                <td class='text-center'>
+                    <small><%= APP.utils.renderDuration(message.latency) %></small>
                 </td>
-                <td title='Email identifier' class='text-center'>
+                <td class='text-center'>
                     <small><%= message.emailID || '--' %></small>
                 </td>
-                <td title='liblGCM version' class='text-center'>
+                <td class='text-center'>
                     <small>v<%= message.producerVersion %></small>
                 </td>
-                <td title='View message content' class='message-content text-center' >
+                <td class='message-content text-center' >
                     <small><span class='glyphicon glyphicon-envelope'></span></small>
                 </td>
             </tr>
@@ -249,8 +249,8 @@
                     <tbody>
                         <% _.each(fields, function(field) { %>
                         <tr>
-                            <td title='Field Name' title='<%= field[0] %>'><strong><%= field[0] %></strong></td>
-                            <td title='Field Value' title='<%= field[1] %>'><%= field[1] %></td>
+                            <td ><strong><%= field[0] %></strong></td>
+                            <td ><%= field[1] %></td>
                         </tr>
                         <% }); %>
                     </tbody>

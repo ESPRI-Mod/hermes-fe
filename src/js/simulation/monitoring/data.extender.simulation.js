@@ -15,6 +15,7 @@
                 running: [],
             },
             postProcessing: {
+                all: [],
                 complete: [],
                 error: [],
                 running: []
@@ -43,9 +44,7 @@
                 computeNode: undefined,
                 computeNodeLogin: undefined,
                 computeNodeMachine: undefined,
-                executionEndDate: "--",
                 executionState: undefined,
-                executionStartDate: "--",
                 experiment: undefined,
                 isSelectedForIM: false,
                 isRestart: simulation.tryID > 1,
@@ -57,15 +56,8 @@
         });
     };
 
-    // Set simulation date fields.
-    MOD.extendSimulation03 = function (simulation) {
-        if (simulation.executionStartDate) {
-            simulation.ext.executionStartDate = simulation.executionStartDate.slice(0, 19);
-        }
-    };
-
     // Set simulation cv fields for UI.
-    MOD.extendSimulation04 = function (simulation) {
+    MOD.extendSimulation03 = function (simulation) {
         var model;
 
         // Update case sensitive CV fields.
@@ -88,7 +80,6 @@
         if (_.has(simulation, 'ext') === false) {
             MOD.extendSimulation02(simulation);
             MOD.extendSimulation03(simulation);
-            MOD.extendSimulation04(simulation);
         }
     };
 

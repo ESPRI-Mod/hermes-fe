@@ -121,6 +121,27 @@
             }
         },
 
+        // Renders a date tie field.
+        renderDateTime: function (value) {
+            return value ? value.format("DD-MM-YYYY HH:mm:ss") : "--";
+        },
+
+        // Renders a date field.
+        renderDate: function (value) {
+            return value ? value.format("DD-MM-YYYY") : "--";
+        },
+
+        // Renders a time duration field.
+        renderDuration: function (value) {
+            var formatted;
+
+            formatted = value ? value.format("HH:mm:ss") : "--";
+            if (formatted.length === 7) {
+                formatted = "0" + formatted;
+            }
+            return formatted;
+        },
+
         // Gets count of pages to be rendered.
         // @data    Data to be displayed via pager.
         getPageCount: function (data, itemsPerPage) {

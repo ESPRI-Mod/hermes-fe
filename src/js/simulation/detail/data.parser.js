@@ -14,26 +14,27 @@
         },
 
         // Sets simulation's submission path information.
-        setSubmissionPath = function (simulation) {
+        setSubmissionInfo = function (simulation) {
             if (simulation.jobs.compute.first) {
                 simulation.ext.submissionPath = simulation.jobs.compute.first.submissionPath;
             }
+        },
+
+        // Sets simulation's execution end date.
+        setExecutionEndDate = function (s) {
+            // Escape if non-derivable.
+            if (s.executionEndDate ||
+                s.jobs.compute.all.length === 0 ||
+                s.jobs.postProcessing.all.length === 0) return;
+
+            // Derive from last compute job.
+            s.executionEndDate = s.jobs.compute.all[0].executionEndDate;
         },
 
         // Sets simulation's current execution status.
         setExecutionState = function (simulation) {
             simulation.executionState = MOD.getSimulationComputeState(simulation);
             MOD.cv.setFieldDisplayName(simulation, 'simulation_state', 'executionState');
-        },
-
-        // Sets simulation's execution end date.
-        setExecutionEndDate = function (simulation) {
-            var executionEndDate;
-
-            executionEndDate = MOD.getSimulationComputeEndDate(simulation);
-            if (executionEndDate) {
-                simulation.ext.executionEndDate = executionEndDate.slice(0, 19);
-            }
         },
 
         // Parses a simulation job.
@@ -83,13 +84,14 @@
             MOD.setJobsetPagination(jobSet, true);
         });
 
-        // Set derived execution states.
+        // Set derived execution state.
         setExecutionState(simulation);
 
-        // Set derived execution end date.
+        // Set derived execution end date (necessary if 0100 not sent).
         setExecutionEndDate(simulation);
 
-        setSubmissionPath(simulation);
+        // Set submission information.
+        setSubmissionInfo(simulation);
     };
 
 }(

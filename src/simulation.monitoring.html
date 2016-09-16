@@ -205,70 +205,68 @@
 <!-- Template: search result table row -->
 <script type="underscore/template" id="grid-row-template">
 <tr id="<%= s.uid %>" class='monitoring-state-<%= s.executionState %>'>
-    <td class="text-center" title="<%= s.accountingProject %>">
+    <td class="text-center">
         <small>
             <%= s.accountingProject %>
         </small>
     </td>
-    <td title="<%= s.name %>">
+    <td>
         <small>
             <%= s.name.slice(0, 30) + (s.name.length > 30 ? '...' : '') %>
         </small>
     </td>
-    <td class="text-center" title="<%= s.tryID %>">
+    <td class="text-center">
         <small>
             <%= s.tryID %>
         </small>
     </td>
-    <td class="text-center compute-job-count <%= s.jobs.compute.error.length ? 'bg-danger' : ''%>"
-        title='Compute Job Count (#running : #complete : #errors)'>
+    <td class="text-center compute-job-count <%= s.jobs.compute.error.length ? 'bg-danger' : ''%>">
         <small>
             <%= s.jobs.compute.running.length %> |
             <%= s.jobs.compute.complete.length %> |
             <%= s.jobs.compute.error.length %>
         </small>
     </td>
-    <td class="text-center post-processing-job-count <%= s.jobs.postProcessing.error.length ? 'bg-danger' : ''%>"
-        title='Post-Processing Job Count (#running : #complete : #errors)'>
+    <td class="text-center post-processing-job-count <%= s.jobs.postProcessing.error.length ? 'bg-danger' : ''%>">
         <small>
             <%= s.jobs.postProcessing.running.length %> |
             <%= s.jobs.postProcessing.complete.length %> |
             <%= s.jobs.postProcessing.error.length %>
         </small>
     </td>
-    <td class="text-center" title="<%= s.ext.computeNodeMachine %>">
+    <td class="text-center">
         <small>
             <%= s.ext.computeNodeMachine %>
         </small>
     </td>
-    <td class="text-center" title="<%= s.computeNodeLogin %>">
+    <td class="text-center">
         <small>
             <%= s.computeNodeLogin %>
         </small>
     </td>
-    <td class="text-center" title="<%= s.ext.model %>">
+    <td class="text-center">
         <small>
             <%= s.ext.model %>
         </small>
     </td>
-    <td class="text-center" title="<%= s.ext.experiment %>">
+    <td class="text-center">
         <small>
             <%= s.ext.experiment %>
         </small>
     </td>
-    <td class="text-center" title="<%= s.ext.space %>">
+    <td class="text-center">
         <small>
             <%= s.ext.space %>
         </small>
     </td>
-    <td class="text-center" title="<%= s.ext.executionStartDate %>">
+    <td class="text-center">
         <small>
-            <%= s.ext.executionStartDate.slice(0, 16) %>
+            <%= APP.utils.renderDateTime(s.executionStartDate) %>
         </small>
     </td>
     <td class="text-center execution-end-date">
         <small>
-            <%= (MOD.getSimulationComputeEndDate(s) || "--").slice(0, 16) %>
+            <%= APP.utils.renderDateTime(s.executionEndDate) %>
         </small>
     </td>
     <td class="text-center monitoring">

@@ -1,4 +1,4 @@
-(function (APP, MOD, _) {
+(function (APP, MOD, _, moment) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -39,39 +39,21 @@
     // Sets simulation default values.
     MOD.extendSimulation02 = function (simulation) {
         _.defaults(simulation, {
-            // ... misc. fields
+            computeNode: simulation.computeNodeMachine ? simulation.computeNodeMachine.split("-")[0] : null,
             executionState: null,
             isError: false,
-            outputStartDate: null,
-            outputEndDate: null,
-            // ... cv fields
-            computeNode: simulation.computeNodeMachine ? simulation.computeNodeMachine.split("-")[0] : null,
-            computeNodeLogin: null,
-            computeNodeLoginRaw: null,
-            experiment: null,
-            experimentRaw: null,
-            model: null,
-            modelRaw: null,
-            space: null,
-            spaceRaw: null,
-            // ... extension fields
             ext: {
                 accountingProject: APP.utils.isNone(simulation.accountingProject) ? "--" : simulation.accountingProject,
                 caption: undefined,
                 computeNode: undefined,
                 computeNodeLogin: undefined,
                 computeNodeMachine: undefined,
-                executionEndDate: "--",
                 executionState: undefined,
-                executionStartDate: "--",
                 experiment: undefined,
                 model: undefined,
-                outputEndDate: "--",
-                outputStartDate: "--",
                 space: undefined,
                 // ... helper fields
                 isSelectedForIM: false,
-                isRestart: simulation.tryID > 1,
                 modelSynonyms: [],
                 submissionPath: "--"
             }
@@ -80,14 +62,17 @@
 
     // Set simulation date fields.
     MOD.extendSimulation03 = function (simulation) {
+        if (simulation.executionEndDate) {
+            simulation.executionEndDate = moment(simulation.executionEndDate);
+        }
         if (simulation.executionStartDate) {
-            simulation.ext.executionStartDate = simulation.executionStartDate.slice(0, 19);
+            simulation.executionStartDate = moment(simulation.executionStartDate);
         }
         if (simulation.outputStartDate) {
-            simulation.ext.outputStartDate = simulation.outputStartDate.slice(0, 10);
+            simulation.outputStartDate = moment(simulation.outputStartDate);
         }
         if (simulation.outputEndDate) {
-            simulation.ext.outputEndDate = simulation.outputEndDate.slice(0, 10);
+            simulation.outputEndDate = moment(simulation.outputEndDate);
         }
     };
 
@@ -122,5 +107,6 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._
+    this._,
+    this.moment
 ));

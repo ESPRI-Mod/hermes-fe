@@ -37,29 +37,32 @@
         // Simulation event handler.
         // @data    Event information received from server.
         processSimulationEvent = function (data) {
-            var relatedSimulation;
-
-            // Map event data.
-            data.jobList = _.map(data.jobList, MOD.mapJob);
+            var jobList = data.jobList,
+                simulation = data.simulation,
+                relatedSimulation;
 
             // Escape if a later try is already in memory.
-            if (_.has(MOD.state.simulationHashSet, data.simulation.hashid)) {
-                relatedSimulation = MOD.state.simulationHashSet[data.simulation.hashid];
-                if (moment(relatedSimulation.executionStartDate) > moment(data.simulation.executionStartDate)) {
+            if (_.has(MOD.state.simulationHashSet, simulation.hashid)) {
+                relatedSimulation = MOD.state.simulationHashSet[simulation.hashid];
+                if (relatedSimulation.executionStartDate > moment(simulation.executionStartDate)) {
                     return;
                 }
             }
+
             MOD.log("WS :: simulation event processing");
 
-            // Update module state:
-            // ... new cv terms;
+            // Map jobs.
+            jobList = _.map(jobList, MOD.mapJob);
+
+            // Update cv terms.
             MOD.state.cvTerms = _.union(MOD.state.cvTerms, data.cvTerms);
             _.each(data.cvTerms, function (term) {
                 if (_.has(MOD.state.filterSet, term.typeof)) {
                     MOD.state.filterSet[term.typeof].cvTerms.all.push(term);
                 }
             });
-            // ... new simulation.
+
+            // Update simulations.
             MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
                 return s.hashid !== data.simulation.hashid;
             });
