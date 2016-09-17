@@ -33,31 +33,36 @@
 
         // Parses a simulation job to the relevant simulation job set.
         parseJob = function (job) {
-            var simulation, jobs;
+            var simulation;
 
+            // Set associated simulation.
             if (_.has(MOD.state.simulationSet, job.simulationUID) === false) {
                 return;
             }
-
             simulation = MOD.state.simulationSet[job.simulationUID];
-            jobs = simulation.jobs;
-            jobs.all.push(job);
+
+            // Push jobs into relevant collections.
+            simulation.jobs.all.push(job);
             switch (job.typeof) {
             case 'computing':
-                jobs.compute.all.push(job);
-                jobs.compute[job.executionState].push(job);
+                simulation.jobs.compute.all.push(job);
+                simulation.jobs.compute[job.executionState].push(job);
                 break;
             case 'post-processing':
-                jobs.postProcessing.all.push(job);
-                jobs.postProcessing[job.executionState].push(job);
-                if (job.postProcessingName === 'monitoring' &&
-                    job.executionEndDate &&
-                    job.isError === false) {
-                    simulation.hasMonitoring = true;
-                }
+                simulation.jobs.postProcessing.all.push(job);
+                simulation.jobs.postProcessing[job.executionState].push(job);
                 break;
             default:
                 break;
+            }
+
+            // Set flag indicating whether the simulation has a monitoring job.
+            if (simulation.hasMonitoring === false &&
+                job.typeof === 'post-processing' &&
+                job.postProcessingName === 'monitoring' &&
+                job.executionEndDate &&
+                job.isError === false) {
+                simulation.hasMonitoring = true;
             }
         };
 

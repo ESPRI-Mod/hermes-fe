@@ -16,6 +16,8 @@
             if (_.has(MOD.state.simulationSet, data.job.simulationUID) === false) {
                 return;
             }
+
+            // Log event processing.
             MOD.log("WS :: job event processing");
 
             // Update module state.
@@ -37,24 +39,23 @@
         // Simulation event handler.
         // @data    Event information received from server.
         processSimulationEvent = function (data) {
-            var jobList = data.jobList,
-                simulation = data.simulation,
-                relatedSimulation;
+            var relatedSimulation;
 
             // Escape if a later try is already in memory.
-            if (_.has(MOD.state.simulationHashSet, simulation.hashid)) {
-                relatedSimulation = MOD.state.simulationHashSet[simulation.hashid];
-                if (relatedSimulation.executionStartDate > moment(simulation.executionStartDate)) {
+            if (_.has(MOD.state.simulationHashSet, data.simulation.hashid)) {
+                relatedSimulation = MOD.state.simulationHashSet[data.simulation.hashid];
+                if (relatedSimulation.executionStartDate > moment(data.simulation.executionStartDate)) {
                     return;
                 }
             }
 
+            // Log event processing.
             MOD.log("WS :: simulation event processing");
 
             // Map jobs.
-            jobList = _.map(jobList, MOD.mapJob);
+            data.jobList = _.map(data.jobList, MOD.mapJob);
 
-            // Update cv terms.
+            // Update state: cv terms.
             MOD.state.cvTerms = _.union(MOD.state.cvTerms, data.cvTerms);
             _.each(data.cvTerms, function (term) {
                 if (_.has(MOD.state.filterSet, term.typeof)) {
@@ -62,7 +63,7 @@
                 }
             });
 
-            // Update simulations.
+            // Update state: simulations.
             MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
                 return s.hashid !== data.simulation.hashid;
             });

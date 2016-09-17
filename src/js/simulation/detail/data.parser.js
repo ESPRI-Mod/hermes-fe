@@ -13,13 +13,6 @@
             ];
         },
 
-        // Sets simulation's submission path information.
-        setSubmissionInfo = function (simulation) {
-            if (simulation.jobs.compute.first) {
-                simulation.ext.submissionPath = simulation.jobs.compute.first.submissionPath;
-            }
-        },
-
         // Sets simulation's execution end date.
         setExecutionEndDate = function (s) {
             // Escape if non-derivable.
@@ -39,27 +32,34 @@
 
         // Parses a simulation job.
         parseJob = function (simulation, job) {
+            // Push jobs into relevant collections.
             simulation.jobs.all.push(job);
             switch (job.typeof) {
             case 'computing':
                 simulation.jobs.compute.all.push(job);
                 simulation.jobs.compute[job.executionState].push(job);
-                if (!simulation.jobs.compute.first) {
-                    simulation.jobs.compute.first = job;
-                }
                 break;
             case 'post-processing':
                 simulation.jobs.postProcessing.all.push(job);
                 simulation.jobs.postProcessing[job.executionState].push(job);
-                if (job.postProcessingName === 'monitoring' &&
-                    job.executionEndDate &&
-                    job.isError === false &&
-                    _.has(MOD.urls.M, simulation.computeNode)) {
-                    simulation.hasMonitoring = true;
-                }
                 break;
             default:
                 break;
+            }
+
+            // Set simulation submission path.
+            if (!simulation.ext.submissionPath && job.typeof === 'computing') {
+                simulation.ext.submissionPath = job.submissionPath;
+            }
+
+            // Set flag indicating whether the simulation has a monitoring job.
+            if (simulation.hasMonitoring === false &&
+                job.typeof === 'post-processing' &&
+                job.postProcessingName === 'monitoring' &&
+                job.executionEndDate &&
+                job.isError === false &&
+                _.has(MOD.urls.M, simulation.computeNode)) {
+                simulation.hasMonitoring = true;
             }
         };
 
@@ -89,9 +89,6 @@
 
         // Set derived execution end date (necessary if 0100 not sent).
         setExecutionEndDate(simulation);
-
-        // Set submission information.
-        setSubmissionInfo(simulation);
     };
 
 }(

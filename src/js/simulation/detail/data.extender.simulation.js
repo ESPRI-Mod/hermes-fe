@@ -12,7 +12,6 @@
                 all: [],
                 complete: [],
                 error: [],
-                first: undefined,
                 jobType: 'computing',
                 running: [],
                 paging: {
@@ -55,7 +54,7 @@
                 // ... helper fields
                 isSelectedForIM: false,
                 modelSynonyms: [],
-                submissionPath: "--"
+                submissionPath: undefined
             }
         });
     };
