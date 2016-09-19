@@ -129,6 +129,11 @@
                 return 'queued';
             }
 
+            // Complete if there are post-processing jobs.
+            if (simulation.jobs.compute.postProcessing.all.length > 0) {
+                return 'complete';
+            }
+
             // Derive from last compute job.
             last = _.last(simulation.jobs.compute.all);
             if (last.executionState === 'running') {

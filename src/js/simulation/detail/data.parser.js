@@ -23,7 +23,7 @@
                 s.jobs.postProcessing.all.length === 0) return;
 
             // Derive from last compute job.
-            last = s.jobs.compute.allUnsorted[s.jobs.compute.allUnsorted.length - 1];
+            last = _.last(s.jobs.compute.allUnsorted);
             s.executionEndDate = last.executionEndDate || last.executionStartDate;
         },
 
