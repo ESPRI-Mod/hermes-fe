@@ -130,7 +130,7 @@
             }
 
             // Complete if there are post-processing jobs.
-            if (simulation.jobs.compute.postProcessing.all.length > 0) {
+            if (simulation.jobs.postProcessing.all.length > 0) {
                 return 'complete';
             }
 
