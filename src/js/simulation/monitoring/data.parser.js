@@ -7,13 +7,16 @@
     var
         // Sets simulation's execution end date.
         setExecutionEndDate = function (s) {
+            var last;
+
             // Escape if non-derivable.
             if (s.executionEndDate ||
                 s.jobs.compute.all.length === 0 ||
                 s.jobs.postProcessing.all.length === 0) return;
 
             // Derive from last compute job.
-            s.executionEndDate = s.jobs.compute.allUnsorted[s.jobs.compute.allUnsorted.length - 1].executionEndDate;
+            last = s.jobs.compute.allUnsorted[s.jobs.compute.allUnsorted.length - 1];
+            s.executionEndDate = last.executionEndDate || last.executionStartDate;
         },
 
         // Sets simulation's current execution status.
