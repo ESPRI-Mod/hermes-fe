@@ -10,6 +10,7 @@
             all: [],
             compute: {
                 all: [],
+                allUnsorted: [],
                 complete: [],
                 error: [],
                 running: [],

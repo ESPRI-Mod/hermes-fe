@@ -13,7 +13,7 @@
                 s.jobs.postProcessing.all.length === 0) return;
 
             // Derive from last compute job.
-            s.executionEndDate = s.jobs.compute.all[0].executionEndDate;
+            s.executionEndDate = s.jobs.compute.allUnsorted[s.jobs.compute.allUnsorted.length - 1].executionEndDate;
         },
 
         // Sets simulation's current execution status.
@@ -46,6 +46,7 @@
             switch (job.typeof) {
             case 'computing':
                 simulation.jobs.compute.all.push(job);
+                simulation.jobs.compute.allUnsorted.push(job);
                 simulation.jobs.compute[job.executionState].push(job);
                 break;
             case 'post-processing':
