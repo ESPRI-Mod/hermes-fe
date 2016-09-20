@@ -123,6 +123,9 @@
 
         // Renders a date tie field.
         renderDateTime: function (value) {
+            if (value === 'N/A') {
+                return value;
+            }
             return value ? value.format("DD-MM-YYYY HH:mm:ss") : "--";
         },
 

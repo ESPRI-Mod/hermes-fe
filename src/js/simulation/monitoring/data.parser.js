@@ -3,122 +3,53 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Closure vars.
-    var
-        // Sets simulation's execution end date.
-        setExecutionEndDate = function (s) {
-            var last;
-
-            // Escape if non-derivable.
-            if (s.executionEndDate ||
-                s.jobs.compute.all.length === 0 ||
-                s.jobs.postProcessing.all.length === 0) return;
-
-            // Derive from last compute job.
-            last = _.last(s.jobs.compute.allUnsorted);
-            s.executionEndDate = last.executionEndDate || last.executionStartDate;
-        },
-
-        // Sets simulation's current execution status.
-        setExecutionState = function (simulation) {
-            simulation.executionState = MOD.getSimulationComputeState(simulation);
-            MOD.cv.setFieldDisplayName(simulation, 'simulation_state', 'executionState');
-        },
-
-        // Sorts a job set.
-        sortComputeJobset = function (simulation) {
-            if (simulation.jobs.compute.all.length > 1) {
-                simulation.jobs.compute.all = _.sortBy(simulation.jobs.compute.all, function (job) {
-                    return job.executionStartDate;
-                });
-            }
-        },
-
-        // Parses a simulation job to the relevant simulation job set.
-        parseJob = function (job) {
-            var simulation;
-
-            // Set associated simulation.
-            if (_.has(MOD.state.simulationSet, job.simulationUID) === false) {
-                return;
-            }
-            simulation = MOD.state.simulationSet[job.simulationUID];
-
-            // Push jobs into relevant collections.
-            simulation.jobs.all.push(job);
-            switch (job.typeof) {
-            case 'computing':
-                simulation.jobs.compute.all.push(job);
-                simulation.jobs.compute.allUnsorted.push(job);
-                simulation.jobs.compute[job.executionState].push(job);
-                break;
-            case 'post-processing':
-                simulation.jobs.postProcessing.all.push(job);
-                simulation.jobs.postProcessing[job.executionState].push(job);
-                break;
-            default:
-                break;
-            }
-
-            // Set flag indicating whether the simulation has a monitoring job.
-            if (simulation.hasMonitoring === false &&
-                job.typeof === 'post-processing' &&
-                job.postProcessingName === 'monitoring' &&
-                job.executionEndDate &&
-                job.isError === false) {
-                simulation.hasMonitoring = true;
-            }
-        };
-
     // Module data parser.
     MOD.parser = {
         // Parses loaded timeslice.
-        parseTimeslice: function (simulationList, jobList) {
+        parseTimeslice: function (simulations, jobs) {
             // Extend simulations.
-            _.each(simulationList, MOD.extendSimulation);
+            _.each(simulations, MOD.extendSimulation);
             MOD.log("timeslice simulations extended");
 
             // Parse jobs.
-            _.each(jobList, parseJob);
+            _.each(jobs, function (j) {
+                MOD.parseJob(MOD.state.simulationSet[j.simulationUID], j)
+            });
             MOD.log("timeslice jobs mapped");
 
             // Sort compute jobs (required in order to determine simulation execution status).
-            _.each(simulationList, sortComputeJobset);
+            _.each(simulations, function (s) {
+                s.jobs.compute.all = _.sortBy(s.jobs.compute.all, 'executionStartDate');
+            });
             MOD.log("timeslice compute jobs sorted");
 
             // Set execution end dates.
-            _.each(simulationList, setExecutionEndDate);
+            _.each(simulations, MOD.setSimulationExecutionEndDate);
             MOD.log("timeslice simulation end dates assigned");
 
             // Set execution states.
-            _.each(simulationList, setExecutionState);
+            _.each(simulations, MOD.setSimulationExecutionState);
             MOD.log("timeslice simulation compute state assigned");
         },
 
         // Parses web-socket event data.
-        parseEvent: function (simulation, jobList) {
-            // Parse simulation date information.
-            if (simulation.executionEndDate) {
-                simulation.executionEndDate = moment(simulation.executionEndDate);
-            }
-            if (simulation.executionStartDate) {
-                simulation.executionStartDate = moment(simulation.executionStartDate);
-            }
-
+        parseEvent: function (s, jobs) {
             // Extend simulation.
-            MOD.extendSimulation(simulation);
+            MOD.extendSimulation(s);
 
             // Parse jobs.
-            _.each(jobList, parseJob);
+            _.each(jobs, function (j) {
+                MOD.parseJob(s, j);
+            });
 
             // Sort compute jobs (required in order to determine simulation execution status).
-            sortComputeJobset(simulation);
+            s.jobs.compute.all = _.sortBy(s.jobs.compute.all, 'executionStartDate');
 
             // Set derived execution end date (necessary if 0100 not sent).
-            setExecutionEndDate(simulation);
+            MOD.setSimulationExecutionEndDate(s);
 
             // Set execution state.
-            setExecutionState(simulation);
+            MOD.setSimulationExecutionState(s);
         }
     };
 }(

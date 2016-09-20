@@ -4,9 +4,9 @@
     "use strict";
 
     // Set simulation job collections.
-    MOD.extendSimulation01 = function (simulation) {
-        simulation.hasMonitoring = simulation.accountingProject === 'cmip5' || false;
-        simulation.jobs = {
+    MOD.extendSimulation01 = function (s) {
+        s.hasMonitoring = s.accountingProject === 'cmip5' || false;
+        s.jobs = {
             all: [],
             compute: {
                 all: [],
@@ -23,6 +23,7 @@
             },
             postProcessing: {
                 all: [],
+                allUnsorted: [],
                 complete: [],
                 error: [],
                 jobType: 'post-processing',
@@ -37,70 +38,69 @@
     };
 
     // Sets simulation default values.
-    MOD.extendSimulation02 = function (simulation) {
-        _.defaults(simulation, {
-            computeNode: simulation.computeNodeMachine ? simulation.computeNodeMachine.split("-")[0] : null,
+    MOD.extendSimulation02 = function (s) {
+        _.defaults(s, {
+            computeNode: s.computeNodeMachine ? s.computeNodeMachine.split("-")[0] : null,
             executionState: null,
             isError: false,
             ext: {
-                accountingProject: APP.utils.isNone(simulation.accountingProject) ? "--" : simulation.accountingProject,
+                accountingProject: APP.utils.isNone(s.accountingProject) ? "--" : s.accountingProject,
                 caption: undefined,
                 computeNode: undefined,
                 computeNodeLogin: undefined,
                 computeNodeMachine: undefined,
                 executionState: undefined,
                 experiment: undefined,
-                model: undefined,
-                space: undefined,
-                // ... helper fields
                 isSelectedForIM: false,
+                model: undefined,
                 modelSynonyms: [],
+                space: undefined,
                 submissionPath: undefined
             }
         });
     };
 
     // Set simulation date fields.
-    MOD.extendSimulation03 = function (simulation) {
-        if (simulation.executionEndDate) {
-            simulation.executionEndDate = moment(simulation.executionEndDate);
+    MOD.extendSimulation03 = function (s) {
+        if (s.executionEndDate) {
+            s.executionEndDate = moment(s.executionEndDate);
         }
-        if (simulation.executionStartDate) {
-            simulation.executionStartDate = moment(simulation.executionStartDate);
+        if (s.executionStartDate) {
+            s.executionStartDate = moment(s.executionStartDate);
         }
-        if (simulation.outputStartDate) {
-            simulation.outputStartDate = moment(simulation.outputStartDate);
+        if (s.outputStartDate) {
+            s.outputStartDate = moment(s.outputStartDate);
         }
-        if (simulation.outputEndDate) {
-            simulation.outputEndDate = moment(simulation.outputEndDate);
+        if (s.outputEndDate) {
+            s.outputEndDate = moment(s.outputEndDate);
         }
     };
 
     // Set simulation cv fields.
-    MOD.extendSimulation04 = function (simulation) {
+    MOD.extendSimulation04 = function (s) {
         var model;
 
         // Update case sensitive CV fields.
-        MOD.cv.setFieldDisplayName(simulation, 'compute_node_login', 'computeNodeLogin');
-        MOD.cv.setFieldDisplayName(simulation, 'compute_node_machine', 'computeNodeMachine');
-        MOD.cv.setFieldDisplayName(simulation, 'experiment');
-        MOD.cv.setFieldDisplayName(simulation, 'model');
-        MOD.cv.setFieldDisplayName(simulation, 'simulation_space', 'space');
+        MOD.cv.setFieldDisplayName(s, 'compute_node_login', 'computeNodeLogin');
+        MOD.cv.setFieldDisplayName(s, 'compute_node_machine', 'computeNodeMachine');
+        MOD.cv.setFieldDisplayName(s, 'experiment');
+        MOD.cv.setFieldDisplayName(s, 'model');
+        MOD.cv.setFieldDisplayName(s, 'simulation_space', 'space');
 
         // Set model synonyms.
-        model = MOD.cv.getTerm('model', simulation.model);
+        model = MOD.cv.getTerm('model', s.model);
         if (model && model.synonyms) {
-            simulation.ext.modelSynonyms = model.synonyms;
+            s.ext.modelSynonyms = model.synonyms;
         }
     };
 
     // Extends a simulation in readiness for processing.
-    MOD.extendSimulation = function (simulation) {
-        MOD.extendSimulation01(simulation);
-        if (_.has(simulation, 'ext') === false) {
-            MOD.extendSimulation02(simulation);
-            MOD.extendSimulation03(simulation);
-            MOD.extendSimulation04(simulation);
+    MOD.extendSimulation = function (s) {
+        MOD.extendSimulation01(s);
+        if (_.has(s, 'ext') === false) {
+            MOD.extendSimulation02(s);
+            MOD.extendSimulation03(s);
+            MOD.extendSimulation04(s);
         }
     };
 

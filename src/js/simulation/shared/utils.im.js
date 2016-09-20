@@ -96,4 +96,9 @@
         }
     });
 
-}(this.APP, this.APP.modules.monitoring, this._, this.$jq));
+}(
+    this.APP,
+    this.APP.modules.monitoring,
+    this._,
+    this.$jq
+));

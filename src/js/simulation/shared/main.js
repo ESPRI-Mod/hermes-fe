@@ -1,4 +1,4 @@
-(function (APP, _) {
+(function (APP) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -90,65 +90,9 @@
                 'ipsl': 'http://esgf-local.ipsl.fr/thredds/catalog/ipsl_public',
                 'tgcc': 'http://esgf.extra.cea.fr/thredds/catalog/work'
             }
-        },
-
-        // Returns description of a simulation related event.
-        getEventDescription: function (ei) {
-            switch (ei.eventType) {
-            case 'simulationComplete':
-                return "SIMULATION COMPLETED";
-            case 'simulationError':
-                return "SIMULATION ERROR";
-            case 'simulationStart':
-                if (ei.simulation.ext.isRestart == false) {
-                    return "SIMULATION STARTED";
-                }
-                return "SIMULATION RESTARTED";
-            case 'jobComplete':
-                return "JOB COMPLETED";
-            case 'jobError':
-                return "JOB ERROR";
-            case 'jobStart':
-                return "JOB STARTED";
-            default:
-                break;
-            }
-        },
-
-        // Returns compute execution state of a simulation.
-        getSimulationComputeState: function (simulation) {
-            var last;
-
-            // Complete if cmip5.
-            if (simulation.accountingProject === 'cmip5') {
-                return 'complete';
-            }
-
-            // Queued if no compute jobs have started.
-            if (simulation.jobs.compute.all.length === 0) {
-                return 'queued';
-            }
-
-            // Complete if there are post-processing jobs.
-            if (simulation.jobs.postProcessing.all.length > 0) {
-                return 'complete';
-            }
-
-            // Derive from last compute job.
-            last = _.last(simulation.jobs.compute.all);
-            if (last.executionState === 'running') {
-                return 'running';
-            }
-            if (last.executionState === 'error') {
-                return 'error';
-            }
-            if (last.executionState === 'complete' && last.isComputeEnd) {
-                return 'complete';
-            }
-            return 'queued';
         }
     });
+
 }(
-    this.APP,
-    this._
+    this.APP
 ));
