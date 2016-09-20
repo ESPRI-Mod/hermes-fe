@@ -23,7 +23,7 @@
             }
 
             // Derive from last compute job.
-            last = _.last(s.jobs.compute.all);
+            last = _.last(s.jobs.compute.allUnsorted);
             if (last.executionState === 'running') {
                 return 'running';
             }
@@ -115,7 +115,7 @@
                     job.executionState = 'complete';
                     job.executionEndDate = 'N/A';
                 }
-            } else {
+            } else if (!job.executionEndDate) {
                 if (_.find(s.jobs.postProcessing.allUnsorted, function (j) {
                     return j.executionStartDate.diff(job.executionStartDate) >= 0;
                 })) {

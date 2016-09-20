@@ -7,7 +7,7 @@
         // Job event handler.
         // @data    Event information received from server.
         processJobEvent = function (data) {
-            var simulation, jobList;
+            var s, jobs;
 
             // Map event data.
             data.job = MOD.mapJob(data.job);
@@ -21,18 +21,18 @@
             MOD.log("WS :: job event processing");
 
             // Update module state.
-            simulation = MOD.state.simulationSet[data.job.simulationUID];
-            jobList = _.filter(simulation.jobs.all, function (j) {
+            s = MOD.state.simulationSet[data.job.simulationUID];
+            jobs = _.filter(s.jobs.all, function (j) {
                 return j.jobUID !== data.job.jobUID;
             });
-            jobList.push(data.job);
+            jobs.push(data.job);
 
             // Parse event data.
-            MOD.parser.parseEvent(simulation, jobList);
+            MOD.parser.parseEvent(s, jobs);
 
             // Fire event.
             MOD.events.trigger("state:jobUpdate", _.extend(data, {
-                simulation: simulation
+                simulation: s
             }));
         },
 
