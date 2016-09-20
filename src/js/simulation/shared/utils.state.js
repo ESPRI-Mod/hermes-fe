@@ -110,11 +110,13 @@
     MOD.setSimulationExecutionState = function (s) {
         // Override compute job execution state when a later job has started.
         _.each(s.jobs.compute.allUnsorted, function (job, idx) {
+            // ... did another compute job run afterwards ?
             if (job != _.last(s.jobs.compute.allUnsorted)) {
                 if (job.executionState === 'running') {
                     job.executionState = 'complete';
                     job.executionEndDate = 'N/A';
                 }
+            // ... did a post=processing job run afterwards ?
             } else if (!job.executionEndDate) {
                 if (_.find(s.jobs.postProcessing.allUnsorted, function (j) {
                     return j.executionStartDate.diff(job.executionStartDate) >= 0;
