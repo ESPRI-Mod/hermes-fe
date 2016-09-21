@@ -51,11 +51,11 @@
             }
             return "SIMULATION RESTARTED";
         case 'jobComplete':
-            return MOD.jobTypeDescriptions[ei.job.jobType].toUpperCase() +   " JOB COMPLETED";
+            return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() +   " JOB COMPLETED";
         case 'jobError':
-            return MOD.jobTypeDescriptions[ei.job.jobType].toUpperCase() +   " JOB ERROR";
+            return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() +   " JOB ERROR";
         case 'jobStart':
-            return MOD.jobTypeDescriptions[ei.job.jobType].toUpperCase() +   " JOB STARTED";
+            return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() +   " JOB STARTED";
         default:
             break;
         }
