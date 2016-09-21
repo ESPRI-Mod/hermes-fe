@@ -3,90 +3,93 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    var
-        // Job event handler.
-        // @data    Event information received from server.
-        processJobEvent = function (data) {
-            var s, jobs;
+    // Forward declare.
+    var processJobEvent,
+        processSimulationEvent;
 
-            // Map event data.
-            data.job = MOD.mapJob(data.job);
+    // Job event handler.
+    // @data    Event information received from server.
+    processJobEvent = function (data) {
+        var s, jobs;
 
-            // Escape if simulation is not in memory.
-            if (_.has(MOD.state.simulationSet, data.job.simulationUID) === false) {
+        // Map event data.
+        data.job = MOD.mapJob(data.job);
+
+        // Escape if simulation is not in memory.
+        if (_.has(MOD.state.simulationSet, data.job.simulationUID) === false) {
+            return;
+        }
+
+        // Log event processing.
+        MOD.log("WS :: job event processing");
+
+        // Update module state.
+        s = MOD.state.simulationSet[data.job.simulationUID];
+        jobs = _.filter(s.jobs.all, function (j) {
+            return j.jobUID !== data.job.jobUID;
+        });
+        jobs.push(data.job);
+
+        // Parse event data.
+        MOD.parseEvent(s, jobs);
+
+        // Fire event.
+        MOD.events.trigger("state:jobUpdate", _.extend(data, {
+            simulation: s
+        }));
+    };
+
+    // Simulation event handler.
+    // @data    Event information received from server.
+    processSimulationEvent = function (data) {
+        var relatedSimulation;
+
+        // Escape if a later try is already in memory.
+        if (_.has(MOD.state.simulationHashSet, data.simulation.hashid)) {
+            relatedSimulation = MOD.state.simulationHashSet[data.simulation.hashid];
+            if (relatedSimulation.executionStartDate > moment(data.simulation.executionStartDate)) {
                 return;
             }
+        }
 
-            // Log event processing.
-            MOD.log("WS :: job event processing");
+        // Log event processing.
+        MOD.log("WS :: simulation event processing");
 
-            // Update module state.
-            s = MOD.state.simulationSet[data.job.simulationUID];
-            jobs = _.filter(s.jobs.all, function (j) {
-                return j.jobUID !== data.job.jobUID;
-            });
-            jobs.push(data.job);
+        // Map jobs.
+        data.jobList = _.map(data.jobList, MOD.mapJob);
 
-            // Parse event data.
-            MOD.parser.parseEvent(s, jobs);
-
-            // Fire event.
-            MOD.events.trigger("state:jobUpdate", _.extend(data, {
-                simulation: s
-            }));
-        },
-
-        // Simulation event handler.
-        // @data    Event information received from server.
-        processSimulationEvent = function (data) {
-            var relatedSimulation;
-
-            // Escape if a later try is already in memory.
-            if (_.has(MOD.state.simulationHashSet, data.simulation.hashid)) {
-                relatedSimulation = MOD.state.simulationHashSet[data.simulation.hashid];
-                if (relatedSimulation.executionStartDate > moment(data.simulation.executionStartDate)) {
-                    return;
-                }
+        // Update state: cv terms.
+        MOD.state.cvTerms = _.union(MOD.state.cvTerms, data.cvTerms);
+        _.each(data.cvTerms, function (term) {
+            if (_.has(MOD.state.filterSet, term.typeof)) {
+                MOD.state.filterSet[term.typeof].cvTerms.all.push(term);
             }
+        });
 
-            // Log event processing.
-            MOD.log("WS :: simulation event processing");
+        // Update state: simulations.
+        MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
+            return s.hashid !== data.simulation.hashid;
+        });
+        MOD.state.simulationList.push(data.simulation);
+        MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");
+        MOD.state.simulationHashSet = _.indexBy(MOD.state.simulationList, "hashid");
 
-            // Map jobs.
-            data.jobList = _.map(data.jobList, MOD.mapJob);
+        // Parse event data.
+        MOD.parseEvent(data.simulation, data.jobList);
 
-            // Update state: cv terms.
-            MOD.state.cvTerms = _.union(MOD.state.cvTerms, data.cvTerms);
-            _.each(data.cvTerms, function (term) {
-                if (_.has(MOD.state.filterSet, term.typeof)) {
-                    MOD.state.filterSet[term.typeof].cvTerms.all.push(term);
-                }
-            });
+        // Update filtered simulations.
+        MOD.updateFilteredSimulationList();
 
-            // Update state: simulations.
-            MOD.state.simulationList = _.filter(MOD.state.simulationList, function (s) {
-                return s.hashid !== data.simulation.hashid;
-            });
-            MOD.state.simulationList.push(data.simulation);
-            MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");
-            MOD.state.simulationHashSet = _.indexBy(MOD.state.simulationList, "hashid");
+        // Update active filter terms.
+        MOD.updateActiveFilterTerms();
 
-            // Parse event data.
-            MOD.parser.parseEvent(data.simulation, data.jobList);
+        // Update pagination.
+        MOD.updatePagination(MOD.state.paging.current);
 
-            // Update filtered simulations.
-            MOD.updateFilteredSimulationList();
-
-            // Update active filter terms.
-            MOD.updateActiveFilterTerms();
-
-            // Update pagination.
-            MOD.updatePagination(MOD.state.paging.current);
-
-            // Fire events.
-            MOD.events.trigger("state:simulationUpdate", data);
-            MOD.events.trigger("state:simulationListUpdate");
-        };
+        // Fire events.
+        MOD.events.trigger("state:simulationUpdate", data);
+        MOD.events.trigger("state:simulationListUpdate");
+    };
 
     // Wire upto events streaming over the web-socket channel.
     MOD.events.on("ws:jobComplete", processJobEvent);

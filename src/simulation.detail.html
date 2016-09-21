@@ -158,13 +158,17 @@
     <tbody>
         <tr>
             <td class="col-md-2">
-                <strong>Acc. Project</strong>
+                <strong data-toggle="tooltip" title="Accounting Project">
+                    Acc. Project
+                </strong>
             </td>
             <td class="col-md-4">
                 <%- simulation.ext.accountingProject %>
             </td>
             <td class="col-md-2">
-                <strong>Experiment</strong>
+                <strong data-toggle="tooltip" title="Experiment being conducted">
+                    Experiment
+                </strong>
             </td>
             <td>
                 <%- simulation.ext.experiment %>
@@ -172,13 +176,17 @@
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong>Space</strong>
+                <strong data-toggle="tooltip" title="Output storage space">
+                    Space
+                </strong>
             </td>
             <td class="col-md-4">
                 <%- simulation.ext.space %>
             </td>
             <td class="col-md-2">
-                <strong>Model</strong>
+                <strong data-toggle="tooltip" title="Model being ran">
+                    Model
+                </strong>
             </td>
             <td class="col-md-4">
                 <%- simulation.ext.model %>
@@ -186,13 +194,17 @@
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong>Machine</strong>
+                <strong data-toggle="tooltip" title="Machine upon whcih simulation ran">
+                    Machine
+                </strong>
             </td>
             <td>
                 <%- simulation.ext.computeNodeMachine %>
             </td>
             <td class="col-md-2">
-                <strong>Compute start date</strong>
+                <strong data-toggle="tooltip" title="Date upon which computation started">
+                    Compute start date
+                </strong>
             </td>
             <td>
                 <%= APP.utils.renderDateTime(simulation.executionStartDate) %>
@@ -200,13 +212,17 @@
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong>Login</strong>
+                <strong data-toggle="tooltip" title="User login under which simulation ran">
+                    Login
+                </strong>
             </td>
             <td class="col-md-4">
                 <%- simulation.ext.computeNodeLogin %>
             </td>
             <td class="col-md-2">
-                <strong>Compute end date</strong>
+                <strong data-toggle="tooltip" title="Date upon which computation ended">
+                    Compute end date
+                </strong>
             </td>
             <td>
                 <%= APP.utils.renderDateTime(simulation.executionEndDate) %>
@@ -214,13 +230,17 @@
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong>Name</strong>
+                <strong data-toggle="tooltip" title="Simulation name">
+                    Name
+                </strong>
             </td>
             <td class="col-md-4">
                 <%- simulation.name %>
             </td>
             <td class="col-md-2">
-                <strong>Compute Status</strong>
+                <strong data-toggle="tooltip" title="Status of compute run">
+                    Compute status
+                </strong>
             </td>
             <td class="">
                 <%- simulation.ext.executionState %>
@@ -228,13 +248,17 @@
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong>Try</strong>
+                <strong data-toggle="tooltip" title="Number of times simulation has been launched">
+                    Try
+                </strong>
             </td>
             <td>
                 <%- simulation.tryID %>
             </td>
             <td class="col-md-2">
-                <strong>Output start date</strong>
+                <strong data-toggle="tooltip" title="Start date of simulation output">
+                    Output end date
+                </strong>
             </td>
             <td>
                 <%= APP.utils.renderDate(simulation.outputStartDate) %>
@@ -242,7 +266,9 @@
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong>Previous Tries</strong>
+                <strong data-toggle="tooltip" title="Links to previous simulation tries">
+                    Previous Tries
+                </strong>
             </td>
             <td class="col-md-4">
                 <% if (simulation.tryID > 1) { %>
@@ -254,7 +280,9 @@
                 <% } %>
             </td>
             <td class="col-md-2">
-                <strong>Output end date</strong>
+                <strong data-toggle="tooltip" title="End date of simulation output">
+                    Output end date
+                </strong>
             </td>
             <td>
                 <%= APP.utils.renderDate(simulation.outputEndDate) %>
@@ -262,10 +290,48 @@
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong>Submit</strong>
+                <strong data-toggle="tooltip"
+                        title="Submit directory and job localisation">
+                    Submission Path
+                </strong>
             </td>
             <td colspan="3">
-                <%- simulation.ext.submissionPath || "--" %>
+                <%- simulation.submissionPath || 
+                    simulation.jobs.compute.all.length ? 
+                    simulation.jobs.compute.all[0].submissionPath : "--" %>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2">
+                <strong data-toggle="tooltip"
+                        title="R_SAVE variable in libIGCM. Output tree located on ARCHIVE">
+                    Archive Path
+                </strong>
+            </td>
+            <td colspan="3">
+                <%- simulation.archivePath || "--" %>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2">
+                <strong data-toggle="tooltip"
+                        title="R_BUFR variable in libIGCM.Output tree located on STORAGE (files waiting treatment, or file location when SpaceName=TEST)">
+                    Storage Path
+                </strong>
+            </td>
+            <td colspan="3">
+                <%- simulation.storagePath || "--" %>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2">
+                <strong data-toggle="tooltip"
+                        title="R_FIGR variable in libIGCM : Output tree located on STORAGE hosting figures (monitoring and atlas, and/or small files)">
+                    Storage (Small) Path
+                </strong>
+            </td>
+            <td colspan="3">
+                <%- simulation.storageSmallPath || "--" %>
             </td>
         </tr>
     </tbody>

@@ -3,19 +3,8 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Returns job type from user event target.
-    var getJobType = function (e) {
-        var $node;
-
-        $node = $(e.target);
-        while (!$node.attr("id")) {
-            $node = $node.parent();
-        }
-
-        return $node.attr("id").startsWith('pagination') ?
-               $node.attr("id").slice(11) :
-               $node.attr("id").slice(15);
-    };
+    // Forward declare helper vars.
+    var getJobType;
 
     // Main module level view.
     MOD.views.MainView = Backbone.View.extend({
@@ -169,6 +158,11 @@
                 this._setSortColumn(jobType);
             }, this);
 
+            // Initialise tooltips.
+            this.$('[data-toggle="tooltip"]').tooltip({
+                placement: 'right'
+            });
+
             return this;
         },
 
@@ -269,6 +263,20 @@
             this.$(nodeSelector).replaceWith(APP.utils.renderTemplate(template, templateData));
         }
     });
+
+    // Returns job type from user event target.
+    getJobType = function (e) {
+        var $node;
+
+        $node = $(e.target);
+        while (!$node.attr("id")) {
+            $node = $node.parent();
+        }
+
+        return $node.attr("id").startsWith('pagination') ?
+               $node.attr("id").slice(11) :
+               $node.attr("id").slice(15);
+    };
 
 }(
     this.APP,

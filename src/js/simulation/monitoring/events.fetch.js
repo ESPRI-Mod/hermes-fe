@@ -30,7 +30,7 @@
         MOD.log("timeslice assigned");
 
         // Parse timeslice.
-        MOD.parser.parseTimeslice(data.simulationList, data.jobList);
+        MOD.parseTimeslice(data.simulationList, data.jobList);
         MOD.log("timeslice parsed");
 
         // Update filtered simulations.

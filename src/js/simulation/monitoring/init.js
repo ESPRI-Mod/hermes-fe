@@ -5,7 +5,6 @@
 
     // Module initialisation event handler.
     MOD.events.on("module:initialization", function () {
-        // Connect to web-socket channel.
         MOD.ws.connect();
     });
 

@@ -3,53 +3,55 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    var
-        // Job event handler.
-        // @data    Event information received from server.
-        processJobEvent = function (data) {
-            var jobList;
+    var processJobEvent,
+        processSimulationEvent;
 
-            // Map event data.
-            data.job = MOD.mapJob(data.job);
+    // Job event handler.
+    // @data    Event information received from server.
+    processJobEvent = function (data) {
+        var jobList;
 
-            // Escape if simulation is not in memory.
-            if (MOD.state.simulation.uid !== data.job.simulationUID) {
-                return;
-            }
+        // Map event data.
+        data.job = MOD.mapJob(data.job);
 
-            // Update simulation job list.
-            jobList = _.filter(MOD.state.simulation.jobs.all, function (j) {
-                return j.jobUID !== data.job.jobUID;
-            });
-            jobList.push(data.job);
+        // Escape if simulation is not in memory.
+        if (MOD.state.simulation.uid !== data.job.simulationUID) {
+            return;
+        }
 
-            // Reparse simulation.
-            MOD.parseSimulation(MOD.state.simulation, jobList);
+        // Update simulation job list.
+        jobList = _.filter(MOD.state.simulation.jobs.all, function (j) {
+            return j.jobUID !== data.job.jobUID;
+        });
+        jobList.push(data.job);
 
-            // Fire event.
-            MOD.events.trigger("state:jobListUpdate", _.extend(data, {
-                simulation: MOD.state.simulation
-            }));
-        },
+        // Reparse simulation.
+        MOD.parseSimulation(MOD.state.simulation, jobList);
 
-        // Simulation event handler.
-        // @data    Event information received from server.
-        processSimulationEvent = function (data) {
-            // Map tuples to JSON objects.
-            data.jobList = _.map(data.jobList, MOD.mapJob);
+        // Fire event.
+        MOD.events.trigger("state:jobListUpdate", _.extend(data, {
+            simulation: MOD.state.simulation
+        }));
+    };
 
-            // Update cv terms.
-            MOD.state.cvTerms = _.union(MOD.state.cvTerms, data.cvTerms);
+    // Simulation event handler.
+    // @data    Event information received from server.
+    processSimulationEvent = function (data) {
+        // Map tuples to JSON objects.
+        data.jobList = _.map(data.jobList, MOD.mapJob);
 
-            // Reparse simulation.
-            MOD.parseSimulation(data.simulation, data.jobList);
+        // Update cv terms.
+        MOD.state.cvTerms = _.union(MOD.state.cvTerms, data.cvTerms);
 
-            // Update module state.
-            MOD.state.simulation = data.simulation;
+        // Reparse simulation.
+        MOD.parseSimulation(data.simulation, data.jobList);
 
-            // Fire events.
-            MOD.events.trigger("state:simulationUpdate", data);
-        };
+        // Update module state.
+        MOD.state.simulation = data.simulation;
+
+        // Fire events.
+        MOD.events.trigger("state:simulationUpdate", data);
+    };
 
     // Wire upto events streaming over the web-socket channel.
     MOD.events.on("ws:jobComplete", processJobEvent);
