@@ -1,4 +1,4 @@
-(function (APP, MOD, _, moment, numeral) {
+(function (APP, MOD, numeral) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -35,8 +35,8 @@
     MOD.mapJob = function (i) {
         return {
             duration: null,
-            executionEndDate: i[0] ? moment(i[0]) : null,
-            executionStartDate: i[1] ? moment(i[1]) : null,
+            executionEndDate: i[0],
+            executionStartDate: i[1],
             executionState: i[3] ? 'error' : i[0] ? 'complete' : 'running',
             extended: false,
             isComputeEnd: i[2],
@@ -66,7 +66,5 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._,
-    this.moment,
     this.numeral
 ));

@@ -123,15 +123,30 @@
 
         // Renders a date tie field.
         renderDateTime: function (value) {
-            if (value === 'N/A') {
-                return value;
+            if (_.isNull(value)) {
+                return "--";
             }
-            return value ? value.format("DD-MM-YYYY HH:mm:ss") : "--";
+            if (_.isUndefined(value)) {
+                return "N/A";
+            }
+            if (_.isString(value)) {
+                value = moment(value);
+            }
+            return value.format("DD-MM-YYYY HH:mm:ss");
         },
 
         // Renders a date field.
         renderDate: function (value) {
-            return value ? value.format("DD-MM-YYYY") : "--";
+            if (_.isNull(value)) {
+                return "--";
+            }
+            if (_.isUndefined(value)) {
+                return "N/A";
+            }
+            if (_.isString(value)) {
+                value = moment(value);
+            }
+            return value.format("DD-MM-YYYY");
         },
 
         // Renders a time duration field.

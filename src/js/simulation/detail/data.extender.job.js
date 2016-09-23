@@ -1,4 +1,4 @@
-(function (MOD, numeral) {
+(function (MOD, moment, numeral) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -12,7 +12,8 @@
 
         // Set duration.
         if (job.executionStartDate && job.executionEndDate) {
-            job.duration = numeral(job.executionEndDate.diff(job.executionStartDate, 's'));
+            job.duration = numeral(moment(job.executionEndDate).diff
+                                  (moment(job.executionStartDate), 's'));
         }
 
         // Set lateness.
@@ -26,5 +27,6 @@
 
 }(
     this.APP.modules.monitoring,
+    this.moment,
     this.numeral
 ));

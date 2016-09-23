@@ -1,4 +1,4 @@
-(function (APP, MOD, _) {
+(function (APP, MOD, _, moment) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -104,7 +104,7 @@
 
     // Sets simulation's execution end date.
     MOD.setSimulationExecutionEndDate = function (s) {
-        var last;
+        var lastJob;
 
         // Escape if non-derivable.
         if (s.executionEndDate ||
@@ -114,8 +114,8 @@
         }
 
         // Derive from last compute job.
-        last = _.last(s.jobs.compute.allUnsorted);
-        s.executionEndDate = last.executionEndDate || last.executionStartDate;
+        lastJob = _.last(s.jobs.compute.allUnsorted);
+        s.executionEndDate = lastJob.executionEndDate || lastJob.executionStartDate;
     };
 
     // Sets simulation's current execution status.
@@ -127,15 +127,15 @@
             if (job != lastJob) {
                 if (job.executionState === 'running') {
                     job.executionState = 'complete';
-                    job.executionEndDate = 'N/A';
+                    job.executionEndDate = undefined;
                 }
             // A post=processing job ran afterwards.
             } else if (!job.executionEndDate) {
                 if (_.find(s.jobs.postProcessing.allUnsorted, function (j) {
-                    return j.executionStartDate.diff(job.executionStartDate) >= 0;
+                    return moment(j.executionStartDate).diff(moment(job.executionStartDate)) >= 0;
                 })) {
                     job.executionState = 'complete';
-                    job.executionEndDate = 'N/A';
+                    job.executionEndDate = undefined;
                 }
             }
         });
@@ -164,5 +164,6 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._
+    this._,
+    this.moment
 ));

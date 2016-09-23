@@ -11,7 +11,6 @@
             ppFields.push(job.postProcessingName);
         }
         if (job.postProcessingDate && job.postProcessingDate !== 'null') {
-            // ppFields.push(job.postProcessingDate);
             ppFields.push(moment(job.postProcessingDate, "YYYYMMDD").format("YYYY-MM-DD"));
         }
         if (job.postProcessingDimension && job.postProcessingDimension !== 'null') {

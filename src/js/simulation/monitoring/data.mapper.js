@@ -1,4 +1,4 @@
-(function (MOD, moment) {
+(function (MOD) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -6,8 +6,8 @@
     // Returns a job object mapped form an array of values.
     MOD.mapJob = function (i) {
         return {
-            executionEndDate: i[0] ? moment(i[0]) : null,
-            executionStartDate: i[1] ? moment(i[1]) : null,
+            executionEndDate: i[0],
+            executionStartDate: i[1],
             executionState: i[3] ? 'error' : i[0] ? 'complete' : 'running',
             isComputeEnd: i[2],
             isError: i[3],
@@ -28,8 +28,8 @@
             computeNodeLoginRaw: i[2],
             computeNodeMachine: i[3],
             computeNodeMachineRaw: i[4],
-            executionEndDate: i[5] ? moment(i[5]) : null,
-            executionStartDate: i[6] ? moment(i[6]) : null,
+            executionEndDate: i[5],
+            executionStartDate: i[6],
             experiment: i[7],
             experimentRaw: i[8],
             isError: i[9],
@@ -45,6 +45,5 @@
     };
 
 }(
-    this.APP.modules.monitoring,
-    this.moment
+    this.APP.modules.monitoring
 ));

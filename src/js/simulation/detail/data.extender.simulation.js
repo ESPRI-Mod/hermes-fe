@@ -1,4 +1,4 @@
-(function (APP, MOD, _, moment) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -60,24 +60,8 @@
         });
     };
 
-    // Set simulation date fields.
-    MOD.extendSimulation03 = function (s) {
-        if (s.executionEndDate) {
-            s.executionEndDate = moment(s.executionEndDate);
-        }
-        if (s.executionStartDate) {
-            s.executionStartDate = moment(s.executionStartDate);
-        }
-        if (s.outputStartDate) {
-            s.outputStartDate = moment(s.outputStartDate);
-        }
-        if (s.outputEndDate) {
-            s.outputEndDate = moment(s.outputEndDate);
-        }
-    };
-
     // Set simulation cv fields.
-    MOD.extendSimulation04 = function (s) {
+    MOD.extendSimulation03 = function (s) {
         var model;
 
         // Update case sensitive CV fields.
@@ -100,13 +84,11 @@
         if (_.has(s, 'ext') === false) {
             MOD.extendSimulation02(s);
             MOD.extendSimulation03(s);
-            MOD.extendSimulation04(s);
         }
     };
 
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._,
-    this.moment
+    this._
 ));

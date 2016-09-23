@@ -47,7 +47,7 @@
         // Escape if a later try is already in memory.
         if (_.has(MOD.state.simulationHashSet, data.simulation.hashid)) {
             relatedSimulation = MOD.state.simulationHashSet[data.simulation.hashid];
-            if (relatedSimulation.executionStartDate > moment(data.simulation.executionStartDate)) {
+            if (moment(relatedSimulation.executionStartDate) > moment(data.simulation.executionStartDate)) {
                 return;
             }
         }
