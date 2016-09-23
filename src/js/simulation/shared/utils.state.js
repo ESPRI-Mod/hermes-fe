@@ -51,11 +51,23 @@
             }
             return "SIMULATION RESTARTED";
         case 'jobComplete':
-            return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " JOB COMPLETED";
+            if (_.has(MOD.jobTypeDescriptions, ei.job.typeof)) {
+                return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " JOB COMPLETED";
+            } else {
+                return "JOB COMPLETED";
+            }
         case 'jobError':
-            return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " JOB ERROR";
+            if (_.has(MOD.jobTypeDescriptions, ei.job.typeof)) {
+                return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " JOB ERROR";
+            } else {
+                return "JOB ERROR";
+            }
         case 'jobStart':
-            return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " JOB STARTED";
+            if (_.has(MOD.jobTypeDescriptions, ei.job.typeof)) {
+                return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " JOB STARTED";
+            } else {
+                return "JOB STARTED";
+            }
         default:
             break;
         }
