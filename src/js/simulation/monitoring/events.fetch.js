@@ -19,10 +19,15 @@
     // Timeslice loaded event handler.
     // @data    Data loaded from remote server.
     MOD.events.on("state:timesliceLoaded", function (data) {
-        // Map tuples to JSON objects.
+        // Map simulations.
+        MOD.log("timeslice simulations = " + data.simulationList.length);
         data.simulationList = _.map(data.simulationList, MOD.mapSimulation);
+        MOD.log("timeslice simulations unpacked");
+
+        // Map jobs.
+        MOD.log("timeslice jobs = " + data.jobList.length);
         data.jobList = _.map(data.jobList, MOD.mapJob);
-        MOD.log("timeslice unpacked");
+        MOD.log("timeslice jobs unpacked");
 
         // Update module state.
         MOD.state.simulationList = data.simulationList;
