@@ -33,7 +33,7 @@
         }
         // Set message processing latency.
         if (msg.timestamp && msg.processed) {
-            msg.latency = msg.processed.diff(msg.timestamp, 's');
+            msg.latency = moment(msg.processed).diff(moment(msg.timestamp), 's');
             msg.latency = numeral(msg.latency);
         }
     };
