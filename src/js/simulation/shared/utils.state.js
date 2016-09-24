@@ -1,4 +1,4 @@
-(function (APP, MOD, _, moment) {
+(function (APP, MOD, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -129,14 +129,14 @@
                     job.executionState = 'complete';
                     job.executionEndDate = undefined;
                 }
-            // A post=processing job ran afterwards.
-            } else if (!job.executionEndDate) {
-                if (_.find(s.jobs.postProcessing.allUnsorted, function (j) {
-                    return moment(j.executionStartDate).diff(moment(job.executionStartDate)) >= 0;
-                })) {
-                    job.executionState = 'complete';
-                    job.executionEndDate = undefined;
-                }
+            // // A post=processing job ran afterwards.
+            // } else if (!job.executionEndDate) {
+            //     if (_.find(s.jobs.postProcessing.allUnsorted, function (j) {
+            //         return moment(j.executionStartDate).diff(moment(job.executionStartDate)) >= 0;
+            //     })) {
+            //         job.executionState = 'complete';
+            //         job.executionEndDate = undefined;
+            //     }
             }
         });
 
@@ -164,6 +164,5 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
-    this._,
-    this.moment
+    this._
 ));
