@@ -17,11 +17,6 @@
                 return 'queued';
             }
 
-            // // Complete if there are post-processing jobs.
-            // if (s.jobs.postProcessing.all.length > 0) {
-            //     return 'complete';
-            // }
-
             // Derive from last compute job.
             last = _.last(s.jobs.compute.allUnsorted);
             if (last.executionState === 'running') {
