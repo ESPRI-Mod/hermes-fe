@@ -41,7 +41,6 @@
             extended: false,
             isComputeEnd: i[2],
             isError: i[3],
-            isPostProcessing: i[6] !== 'computing',
             jobUID: i[4],
             lateness: null,
             simulationUID: i[5],
