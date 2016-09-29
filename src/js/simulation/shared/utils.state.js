@@ -79,7 +79,7 @@
             s.jobs.compute.all.push(j);
             s.jobs.compute.allUnsorted.push(j);
             break;
-        case 'pp':
+        case 'p':
             s.jobs.postProcessing.all.push(j);
             s.jobs.postProcessing.allUnsorted.push(j);
             break;
@@ -89,7 +89,7 @@
 
         // Set flag indicating whether the simulation has a monitoring job.
         if (s.hasMonitoring === false &&
-            j.typeof === 'pp' &&
+            j.typeof === 'p' &&
             j.isIM === true,
             j.executionEndDate &&
             j.isError === false) {
@@ -139,7 +139,7 @@
             case 'c':
                 s.jobs.compute[job.executionState].push(job);
                 break;
-            case 'pp':
+            case 'p':
                 s.jobs.postProcessing[job.executionState].push(job);
                 break;
             default:

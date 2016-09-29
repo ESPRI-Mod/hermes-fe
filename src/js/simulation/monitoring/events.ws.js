@@ -16,7 +16,7 @@
         data.job = MOD.mapJob(data.job);
 
         // Escape if simulation is not in memory.
-        if (_.has(MOD.state.simulationSet, data.job.simulationUID) === false) {
+        if (_.has(MOD.state.simulationSet, data.job.simulationID) === false) {
             return;
         }
 
@@ -24,9 +24,9 @@
         MOD.log("WS :: job event processing");
 
         // Update module state.
-        s = MOD.state.simulationSet[data.job.simulationUID];
+        s = MOD.state.simulationSet[data.job.simulationID];
         jobs = _.filter(s.jobs.all, function (j) {
-            return j.jobUID !== data.job.jobUID;
+            return j.id !== data.job.id;
         });
         jobs.push(data.job);
 
@@ -71,7 +71,7 @@
             return s.hashid !== data.simulation.hashid;
         });
         MOD.state.simulationList.push(data.simulation);
-        MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "uid");
+        MOD.state.simulationSet = _.indexBy(MOD.state.simulationList, "id");
         MOD.state.simulationHashSet = _.indexBy(MOD.state.simulationList, "hashid");
 
         // Parse event data.

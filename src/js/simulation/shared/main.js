@@ -17,13 +17,13 @@
         // Map of job types to captions.
         jobTypeDescriptions: {
             "c": "Compute",
-            "pp": "Post Processing"
+            "p": "Post Processing"
         },
 
         // Set of job types.
         jobTypes: [
             "c",
-            "pp"
+            "p"
         ],
 
         // Map of execution states to css classes.

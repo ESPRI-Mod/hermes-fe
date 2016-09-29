@@ -8,7 +8,7 @@
         switch (jobType) {
         case "c":
             return MOD.state.simulation.jobs.compute;
-        case "pp":
+        case "p":
             return MOD.state.simulation.jobs.postProcessing;
         default:
             return [];

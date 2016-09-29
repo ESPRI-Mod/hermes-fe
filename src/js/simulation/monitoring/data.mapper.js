@@ -9,14 +9,13 @@
             executionEndDate: i[0],
             executionStartDate: i[1],
             executionState: i[3] ? 'error' : i[0] ? 'complete' : 'running',
-            executionState1: i[8],
-            isComputeEnd: i[2],
-            isError: i[3],
-            isIM: i[9],
-            jobUID: i[4],
-            postProcessingName: i[7],
-            simulationUID: i[5],
-            typeof: i[6],
+            executionState1: i[6],
+            isComputeEnd: i[2] === 1,
+            isError: i[3] === 1,
+            isIM: i[7] === 1,
+            id: i[4],
+            simulationID: i[8],
+            typeof: i[5],
             ext: {}
         };
     };
@@ -39,7 +38,8 @@
             space: i[12],
             spaceRaw: i[13],
             tryID: i[14],
-            uid: i[15]
+            uid: i[15],
+            id: i[16]
         };
     };
 

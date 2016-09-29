@@ -99,7 +99,7 @@
         // List of filtered simulations.
         simulationListFiltered: [],
 
-        // Map of simulation uid's to simulations.
+        // Map of simulation id's to simulations.
         simulationSet: {},
 
         // Map of simulation hash id's to simulations.

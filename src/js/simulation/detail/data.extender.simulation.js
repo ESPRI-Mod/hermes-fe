@@ -26,7 +26,7 @@
                 allUnsorted: [],
                 complete: [],
                 error: [],
-                jobType: 'pp',
+                jobType: 'p',
                 running: [],
                 paging: {
                     current: undefined,

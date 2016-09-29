@@ -24,7 +24,7 @@
         // Map of message types to descriptions.
         messageTypeDescriptions: {
             "c": "Compute",
-            "pp": "Post Processing"
+            "p": "Post Processing"
         },
 
 

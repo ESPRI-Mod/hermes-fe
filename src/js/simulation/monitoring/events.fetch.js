@@ -31,7 +31,7 @@
 
         // Update module state.
         MOD.state.simulationList = data.simulationList;
-        MOD.state.simulationSet = _.indexBy(data.simulationList, "uid");
+        MOD.state.simulationSet = _.indexBy(data.simulationList, "id");
         MOD.log("timeslice assigned");
 
         // Parse timeslice.

@@ -11,7 +11,7 @@
 
         // Parse jobs.
         _.each(jobs, function (j) {
-            MOD.parseJob(MOD.state.simulationSet[j.simulationUID], j)
+            MOD.parseJob(MOD.state.simulationSet[j.simulationID], j)
         });
         MOD.log("timeslice jobs mapped");
 
