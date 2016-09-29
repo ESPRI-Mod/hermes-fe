@@ -13,7 +13,7 @@
                 allUnsorted: [],
                 complete: [],
                 error: [],
-                jobType: 'computing',
+                jobType: 'c',
                 running: [],
                 paging: {
                     current: undefined,
@@ -26,7 +26,7 @@
                 allUnsorted: [],
                 complete: [],
                 error: [],
-                jobType: 'post-processing',
+                jobType: 'pp',
                 running: [],
                 paging: {
                     current: undefined,

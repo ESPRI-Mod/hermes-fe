@@ -6,9 +6,9 @@
     // Returns job history collection by job type.
     MOD.getJobs = function (jobType) {
         switch (jobType) {
-        case "computing":
+        case "c":
             return MOD.state.simulation.jobs.compute;
-        case "post-processing":
+        case "pp":
             return MOD.state.simulation.jobs.postProcessing;
         default:
             return [];

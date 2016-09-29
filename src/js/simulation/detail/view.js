@@ -231,7 +231,7 @@
 
             ctx = {
                 APP: APP,
-                hidePPInfo: jobType === 'computing',
+                hidePPInfo: jobType === 'c',
                 jobList: MOD.getJobs(jobType),
                 jobType: jobType,
                 jobTypeCaption: MOD.jobTypeDescriptions[jobType],

@@ -75,11 +75,11 @@
         // Push jobs into relevant collections.
         s.jobs.all.push(j);
         switch (j.typeof) {
-        case 'computing':
+        case 'c':
             s.jobs.compute.all.push(j);
             s.jobs.compute.allUnsorted.push(j);
             break;
-        case 'post-processing':
+        case 'pp':
             s.jobs.postProcessing.all.push(j);
             s.jobs.postProcessing.allUnsorted.push(j);
             break;
@@ -89,8 +89,8 @@
 
         // Set flag indicating whether the simulation has a monitoring job.
         if (s.hasMonitoring === false &&
-            j.typeof === 'post-processing' &&
-            j.postProcessingName === 'monitoring' &&
+            j.typeof === 'pp' &&
+            j.isIM === true,
             j.executionEndDate &&
             j.isError === false) {
             s.hasMonitoring = true;
@@ -124,14 +124,6 @@
                     job.executionState = 'complete';
                     job.executionEndDate = undefined;
                 }
-            // // A post=processing job ran afterwards.
-            // } else if (!job.executionEndDate) {
-            //     if (_.find(s.jobs.postProcessing.allUnsorted, function (j) {
-            //         return moment(j.executionStartDate).diff(moment(job.executionStartDate)) >= 0;
-            //     })) {
-            //         job.executionState = 'complete';
-            //         job.executionEndDate = undefined;
-            //     }
             }
         });
 
@@ -144,10 +136,10 @@
         // Set job type collections.
         _.each(s.jobs.all, function (job) {
             switch (job.typeof) {
-            case 'computing':
+            case 'c':
                 s.jobs.compute[job.executionState].push(job);
                 break;
-            case 'post-processing':
+            case 'pp':
                 s.jobs.postProcessing[job.executionState].push(job);
                 break;
             default:
