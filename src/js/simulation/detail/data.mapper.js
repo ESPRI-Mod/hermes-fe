@@ -8,24 +8,24 @@
         var ppFields = [];
 
         // Post-processing name.
-        if (i[12]) {
-            ppFields.push(i[12]);
+        if (i[15]) {
+            ppFields.push(i[15]);
         }
         // Post-processing date.
-        if (i[9]) {
-            ppFields.push(i[9].slice(0, 10));
+        if (i[12]) {
+            ppFields.push(i[12].slice(0, 10));
         }
         // Post-processing dimension.
-        if (i[10]) {
-            ppFields.push(i[10]);
+        if (i[13]) {
+            ppFields.push(i[13]);
         }
         // Post-processing component.
-        if (i[8]) {
-            ppFields.push(i[8]);
-        }
-        // Post-processing file.
         if (i[11]) {
             ppFields.push(i[11]);
+        }
+        // Post-processing file.
+        if (i[14]) {
+            ppFields.push(i[14]);
         }
 
         return ppFields.length ? ppFields.join(".") : "--";
@@ -34,25 +34,30 @@
     // Maps job info from data returned from server.
     MOD.mapJob = function (i) {
         return {
-            duration: null,
+            // ... core fields
             executionEndDate: i[0],
             executionStartDate: i[1],
-            executionState: i[3] ? 'error' : i[0] ? 'complete' : 'running',
-            executionState1: i[16],
+            executionState: i[5] === 1 ? 'error' : i[0] ? 'complete' : 'running',
+            executionState1: i[2],
+            id: i[3],
+            isComputeEnd: i[4] === 1,
+            isError: i[5] === 1,
+            isIM: i[6] === 1,
+            simulationID: i[8],
+            typeof: i[7],
+            // ... non-core fields.
+            accountingProject: APP.utils.isNone(i[9]) ? '--' : i[9],
+            jobUID: i[10],
+            postProcessingInfo: i[7] !== 'c' ? mapJobPostProcessingInfo(i) : null,
+            postProcessingName: i[15],
+            schedulerID: i[16],
+            simulationUID: i[19],
+            submissionPath: i[17],
+            warningDelay: numeral(i[18]),
+            // ... other fields
+            duration: null,
             extended: false,
-            isComputeEnd: i[2],
-            isError: i[3],
-            jobUID: i[4],
-            isIM: i[17],
-            lateness: null,
-            simulationUID: i[5],
-            typeof: i[6],
-            accountingProject: APP.utils.isNone(i[7]) ? '--' : i[7],
-            postProcessingInfo: i[6] !== 'c' ? mapJobPostProcessingInfo(i) : null,
-            postProcessingName: i[12],
-            schedulerID: i[13],
-            submissionPath: i[14],
-            warningDelay: numeral(i[15])
+            lateness: null
         };
     };
 

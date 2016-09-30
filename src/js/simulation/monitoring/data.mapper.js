@@ -8,14 +8,14 @@
         return {
             executionEndDate: i[0],
             executionStartDate: i[1],
-            executionState: i[3] ? 'error' : i[0] ? 'complete' : 'running',
-            executionState1: i[6],
-            isComputeEnd: i[2] === 1,
-            isError: i[3] === 1,
-            isIM: i[7] === 1,
-            id: i[4],
+            executionState: i[5] === 1 ? 'error' : i[0] ? 'complete' : 'running',
+            executionState1: i[2],
+            id: i[3],
+            isComputeEnd: i[4] === 1,
+            isError: i[5] === 1,
+            isIM: i[6] === 1,
             simulationID: i[8],
-            typeof: i[5],
+            typeof: i[7],
             ext: {}
         };
     };
@@ -32,14 +32,14 @@
             experimentRaw: i[6],
             isError: i[7],
             hashid: i[8],
-            model: i[9],
-            modelRaw: i[10],
-            name: i[11],
-            space: i[12],
-            spaceRaw: i[13],
-            tryID: i[14],
-            uid: i[15],
-            id: i[16]
+            id: i[9],
+            model: i[10],
+            modelRaw: i[11],
+            name: i[12],
+            space: i[13],
+            spaceRaw: i[14],
+            tryID: i[15],
+            uid: i[16]
         };
     };
 
