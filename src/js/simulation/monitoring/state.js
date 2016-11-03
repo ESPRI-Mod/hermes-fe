@@ -105,6 +105,9 @@
         // Map of simulation hash id's to simulations.
         simulationHashSet: {},
 
+        // Map of simulation uid's to simulations.
+        simulationUIDSet: {},
+
         // Size of grid pages.
         pageSize: MOD.getCookie('page-size'),
 

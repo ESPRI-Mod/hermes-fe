@@ -185,6 +185,10 @@
             MOD.events.on("state:jobUpdate", this._updateNotificationInfo, this);
             MOD.events.on("state:jobUpdate", this._updateGridRow, this);
 
+            // Job period update events.
+            // MOD.events.on("state:jobPeriodUpdate", this._updateNotificationInfo, this);
+            MOD.events.on("state:jobPeriodUpdate", this._updateGridRow, this);
+
             // Other events.
             MOD.events.on("ws:socketClosed", this._displayWebSocketClosedDialog, this);
             MOD.events.on("im:postInterMonitorForm", this._openInterMonitoringPage, this);

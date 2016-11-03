@@ -18,13 +18,13 @@
             });
         }
 
-        if (_.contains(['executionStartDate', 'executionEndDate'], sortField)) {
+        if (sortField === 'outputDateRange') {
             simulations = _.sortBy(simulations, function (s) {
-                return s[sortField] ? s[sortField].valueOf() : '--';
+                return s.ext.outputDateRange || '--';
             });
         }
 
-        if (_.contains(['executionStartDate', 'executionEndDate'], sortField)) {
+        if (sortField === 'outputStartDate') {
             if (sortDirection === 'desc') {
                 simulations = simulations.reverse();
             }

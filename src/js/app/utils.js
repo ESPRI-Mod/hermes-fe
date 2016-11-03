@@ -149,6 +149,14 @@
             return value.format("DD-MM-YYYY");
         },
 
+        // Converts a date field to number of days.
+        convertDateToDays: function (value) {
+            // Assumes value format = "YYYY-MM-DD".
+            return (parseInt(value.substring(0, 4)) * 365) +
+                   ((parseInt(value.substring(5, 7)) - 1) * 30) +
+                   (parseInt(value.substring(8, 10)));
+        },
+
         // Renders a time duration field.
         renderDuration: function (value) {
             var formatted;

@@ -94,13 +94,13 @@
                 <small class='sort-target-space'>Space</small>
                 <span class='pull-right sort-target-space glyphicon' />
             </th>
-            <th title='Start' class="text-center sort-target sort-target-executionStartDate">
-                <small class='sort-target-executionStartDate'>Start</small>
-                <span class='pull-right sort-target-executionStartDate glyphicon' />
+            <th title='Output Date' class="text-center sort-target sort-target-outputDateRange">
+                <small class='sort-target-outputDateRange'>Output Date Range</small>
+                <span class='pull-right sort-target-outputDateRange glyphicon' />
             </th>
-            <th title='End' class="text-center sort-target sort-target-executionEndDate">
-                <small class='sort-target-executionEndDate'>End</small>
-                <span class='pull-right sort-target-executionEndDate glyphicon' />
+            <th title='Output Progress' class="text-center sort-target sort-target-executionProgress">
+                <strong class='sort-target-executionProgress'>%</strong>
+                <span class='pull-right sort-target-executionProgress glyphicon' />
             </th>
             <th colspan="2" class="text-center" title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
               <span class='glyphicon glyphicon-random'></span>
@@ -261,12 +261,13 @@
     </td>
     <td class="text-center">
         <small>
-            <%= APP.utils.renderDateTime(s.executionStartDate) %>
+            <%= APP.utils.renderDate(s.outputStartDate) %> ... 
+            <%= APP.utils.renderDate(s.outputEndDate) %>
         </small>
     </td>
-    <td class="text-center execution-end-date">
+    <td class="text-center execution-progress">
         <small>
-            <%= APP.utils.renderDateTime(s.executionEndDate) %>
+            <%= s.ext.executionProgressInPercent %>
         </small>
     </td>
     <td class="text-center monitoring">

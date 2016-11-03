@@ -1,4 +1,4 @@
-(function (MOD) {
+(function (APP, MOD) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -20,6 +20,14 @@
         };
     };
 
+    // Returns a job period object mapped form an array of values.
+    MOD.mapJobPeriod = function (i) {
+        return {
+            simulationID: i[0],
+            endDate: i[1]
+        };
+    };
+
     // Returns a simulation object mapped form an array of values.
     MOD.mapSimulation = function (i) {
         return {
@@ -28,6 +36,7 @@
             computeNodeMachine: i[2],
             executionEndDate: i[3],
             executionStartDate: i[4],
+            executionProgress: i[3] ? 100 : 0,
             experiment: i[5],
             experimentRaw: i[6],
             isError: i[7],
@@ -39,10 +48,13 @@
             space: i[13],
             spaceRaw: i[14],
             tryID: i[15],
-            uid: i[16]
+            uid: i[16],
+            outputStartDate: i[17],
+            outputEndDate: i[18]
         };
     };
 
 }(
+    this.APP,
     this.APP.modules.monitoring
 ));

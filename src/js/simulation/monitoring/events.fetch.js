@@ -22,20 +22,27 @@
         // Map simulations.
         MOD.log("timeslice simulations = " + data.simulationList.length);
         data.simulationList = _.map(data.simulationList, MOD.mapSimulation);
-        MOD.log("timeslice simulations unpacked");
+        MOD.log("timeslice simulations mapped");
 
         // Map jobs.
         MOD.log("timeslice jobs = " + data.jobList.length);
         data.jobList = _.map(data.jobList, MOD.mapJob);
-        MOD.log("timeslice jobs unpacked");
+        MOD.log("timeslice jobs mapped");
+
+        // Map job periods.
+        MOD.log("timeslice job periods = " + data.jobPeriodList.length);
+        data.jobPeriodList = _.map(data.jobPeriodList, MOD.mapJobPeriod);
+        MOD.log("timeslice job periods mapped");
 
         // Update module state.
         MOD.state.simulationList = data.simulationList;
         MOD.state.simulationSet = _.indexBy(data.simulationList, "id");
+        MOD.state.simulationHashSet = _.indexBy(data.simulationList, "hashid");
+        MOD.state.simulationUIDSet = _.indexBy(data.simulationList, "uid");
         MOD.log("timeslice assigned");
 
         // Parse timeslice.
-        MOD.parseTimeslice(data.simulationList, data.jobList);
+        MOD.parseTimeslice(data.simulationList, data.jobList, data.jobPeriodList);
         MOD.log("timeslice parsed");
 
         // Update filtered simulations.

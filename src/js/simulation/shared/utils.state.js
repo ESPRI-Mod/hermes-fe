@@ -68,7 +68,7 @@
         }
     };
 
-    // Parses a simulation job in readiness for further processing.
+    // Parses a job in readiness for further processing.
     MOD.parseJob = function (s, j) {
         if (_.isUndefined(s)) return;
 
@@ -95,6 +95,31 @@
             j.isError === false) {
             s.hasMonitoring = true;
         }
+    };
+
+    // Parses a job period in readiness for further processing.
+    MOD.parseJobPeriod = function (s, jp) {
+        var endDate, endDateInDays, executionProgress;
+        if (APP.utils.isNone(s) || APP.utils.isNone(jp)) return;
+
+        // Calculate simulation execution progress.
+        endDate = jp.endDate.toString();
+        endDate = endDate.substring(0, 4) + "-" +
+                  endDate.substring(4, 6) + "-" +
+                  endDate.substring(6);
+        endDateInDays = APP.utils.convertDateToDays(endDate);
+        executionProgress = (endDateInDays - s.ext.outputStartDateInDays) / s.ext.outputTimeSpanInDays;
+
+        // Escape if event sequence disrupted due to network issues.
+        if (executionProgress <= s.ext.executionProgress) {
+            return;
+        }
+
+        // Update state: simulation progress.
+        s.ext.executionProgress = executionProgress;
+        s.ext.executionProgressInPercent = parseInt(executionProgress * 100);
+
+        return executionProgress;
     };
 
     // Sets simulation's execution end date.

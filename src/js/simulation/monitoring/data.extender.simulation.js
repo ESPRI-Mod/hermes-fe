@@ -36,15 +36,21 @@
                 computeNodeLogin: undefined,
                 computeNodeMachine: undefined,
                 executionState: undefined,
+                executionProgress: s.executionEndDate ? (s.isError ? NaN : 100) : 0,
                 experiment: undefined,
                 isSelectedForIM: false,
                 isRestart: s.tryID > 1,
                 model: undefined,
                 modelSynonyms: [],
                 name: s.name.trim().toLowerCase(),
+                outputEndDateInDays: APP.utils.convertDateToDays(s.outputEndDate),
+                outputStartDateInDays: APP.utils.convertDateToDays(s.outputStartDate),
+                outputDateRange: s.outputStartDate + "--" + s.outputEndDate,
                 space: undefined
             }
         });
+        s.ext.outputTimeSpanInDays = s.ext.outputEndDateInDays - s.ext.outputStartDateInDays;
+        s.ext.executionProgressInPercent = _.isNaN(s.ext.executionProgress) ? "--" : parseInt(s.ext.executionProgress * 100);
     };
 
     // Set simulation cv fields for UI.
