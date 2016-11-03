@@ -63,6 +63,8 @@
             } else {
                 return "JOB STARTED";
             }
+        case 'jobPeriodUpdate':
+            return "OUTPUT PERIOD UPDATED";
         default:
             break;
         }

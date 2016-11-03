@@ -186,7 +186,7 @@
             MOD.events.on("state:jobUpdate", this._updateGridRow, this);
 
             // Job period update events.
-            // MOD.events.on("state:jobPeriodUpdate", this._updateNotificationInfo, this);
+            MOD.events.on("state:jobPeriodUpdate", this._updateNotificationInfo, this);
             MOD.events.on("state:jobPeriodUpdate", this._updateGridRow, this);
 
             // Other events.
