@@ -27,7 +27,7 @@
         data.previousTries = _.map(data.previousTries, MOD.mapPreviousTries);
         if (data.latestJobPeriod) {
             data.latestJobPeriod = {
-                endDate: data.latestJobPeriod.periodDateEnd
+                startDate: data.latestJobPeriod.periodDateBegin
             };
         }
 

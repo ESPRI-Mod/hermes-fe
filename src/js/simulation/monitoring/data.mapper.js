@@ -24,7 +24,7 @@
     MOD.mapJobPeriod = function (i) {
         return {
             simulationID: i[0],
-            endDate: i[1]
+            startDate: i[1]
         };
     };
 

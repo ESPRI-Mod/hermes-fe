@@ -88,7 +88,7 @@
         // Map job period.
         if (data.jobPeriod) {
             data.jobPeriod = {
-                endDate: data.jobPeriod.periodDateEnd
+                startDate: data.jobPeriod.periodDateBegin
             };
         }
 

@@ -101,7 +101,7 @@
 
     // Parses a job period in readiness for further processing.
     MOD.parseJobPeriod = function (s, jp) {
-        var endDate, endDateInDays, executionProgress;
+        var startDate, startDateInDays, executionProgress;
 
         if (APP.utils.isNone(s) || APP.utils.isNone(jp)) return;
 
@@ -112,12 +112,12 @@
 
         // ... derive from delta between last job period update and output start date.
         } else {
-            endDate = jp.endDate.toString();
-            endDate = endDate.substring(0, 4) + "-" +
-                      endDate.substring(4, 6) + "-" +
-                      endDate.substring(6);
-            endDateInDays = APP.utils.convertDateToDays(endDate);
-            executionProgress = (endDateInDays - s.ext.outputStartDateInDays) / s.ext.outputTimeSpanInDays;
+            startDate = jp.startDate.toString();
+            startDate = startDate.substring(0, 4) + "-" +
+                        startDate.substring(4, 6) + "-" +
+                        startDate.substring(6);
+            startDateInDays = APP.utils.convertDateToDays(startDate);
+            executionProgress = (startDateInDays - s.ext.outputStartDateInDays) / s.ext.outputTimeSpanInDays;
             // ... misconfigured output end date correction.
             if (executionProgress > 1) {
                 executionProgress = 0;
