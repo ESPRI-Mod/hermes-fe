@@ -102,7 +102,10 @@
                 <strong class='sort-target-executionProgress'>%</strong>
                 <span class='pull-right sort-target-executionProgress glyphicon' />
             </th>
-            <th colspan="2" class="text-center" title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
+            <th class="text-center" title='Open monitoring'>
+              <span>M</span>
+            </th>
+            <th class="text-center" title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
               <span>IM</span>
             </th>
         </tr>
@@ -289,7 +292,7 @@
     </td>
     <td class="text-center monitoring">
         <% if (s.hasMonitoring) { %>
-            <span><strong>M</strong></span>
+            <span class='glyphicon glyphicon-random'></span>
         <% } else { %>
             --
         <% } %>
