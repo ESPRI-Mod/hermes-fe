@@ -6,6 +6,9 @@
     // Cache of loaded templates.
     var templateCache = {};
 
+    // Array used to determine month offsets.
+    var DAYS_ELAPSED = [31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365];
+
     APP.utils = {
         // Outputs info message to brwoser logging console.
         // @msg          Logging message.
@@ -150,11 +153,26 @@
         },
 
         // Converts a date field to number of days.
+        // Assumes value format = "YYYY-MM-DD".
         convertDateToDays: function (value) {
-            // Assumes value format = "YYYY-MM-DD".
-            return (parseInt(value.substring(0, 4)) * 365) +
-                   ((parseInt(value.substring(5, 7)) - 1) * 30) +
-                   (parseInt(value.substring(8, 10)));
+            var year, month, day, result;
+
+            year = parseInt(value.substring(0, 4), 10);
+            month = parseInt(value.substring(5, 7), 10);
+            day = parseInt(value.substring(8, 10), 10);
+
+            result = parseInt(year * 365.25, 10) +
+                   DAYS_ELAPSED[month - 1] +
+                   day - 1;
+
+            console.log("----");
+            console.log(value);
+            console.log(year);
+            console.log(month);
+            console.log(day);
+            console.log(result);
+
+            return result;
         },
 
         // Renders a time duration field.

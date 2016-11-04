@@ -117,7 +117,6 @@
                         startDate.substring(4, 6) + "-" +
                         startDate.substring(6);
             startDateInDays = APP.utils.convertDateToDays(startDate);
-            // startDateInDays = startDateInDays - 1;  // only necessary when output period = 1D ?
             executionProgress = (startDateInDays - s.ext.outputStartDateInDays) / s.ext.outputTimeSpanInDays;
             // ... misconfigured output end date correction.
             if (executionProgress > 1 || executionProgress < 0) {

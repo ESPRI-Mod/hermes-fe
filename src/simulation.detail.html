@@ -208,7 +208,7 @@
             </td>
             <td>
                 <% if (simulation.ext.executionProgress > 0) { %>
-                    <%- parseInt(simulation.ext.executionProgress * 100) %> %
+                    <%- numeral(simulation.ext.executionProgress).format('0 %') %>
                 <% } else { %>
                     --
                 <% } %>

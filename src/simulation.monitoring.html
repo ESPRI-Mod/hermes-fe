@@ -284,7 +284,7 @@
     <td class="text-center execution-progress">
         <small>
             <% if (s.ext.executionProgress > 0) { %>
-                <%- parseInt(s.ext.executionProgress * 100) %>
+                <%- numeral(s.ext.executionProgress * 100).format('0') %>
             <% } else { %>
                 --
             <% } %>
