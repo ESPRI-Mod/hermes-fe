@@ -108,7 +108,7 @@
         // Calculate simulation progress:
         // ... 100% if sucessfully completed;
         if (s.executionEndDate && s.isError === false) {
-            executionProgress = 100;
+            executionProgress = 1;
 
         // ... derive from delta between last job period update and output start date.
         } else {
