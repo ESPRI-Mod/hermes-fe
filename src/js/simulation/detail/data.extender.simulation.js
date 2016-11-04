@@ -50,7 +50,7 @@
                 computeNodeLogin: undefined,
                 computeNodeMachine: undefined,
                 executionState: undefined,
-                executionProgress: s.executionEndDate ? (s.isError ? NaN : 100) : 0,
+                executionProgress: s.executionEndDate ? (s.isError ? NaN : 1) : 0,
                 experiment: undefined,
                 isSelectedForIM: false,
                 model: undefined,
