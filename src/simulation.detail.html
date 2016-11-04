@@ -248,44 +248,44 @@
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Number of times simulation has been launched">
-                    Try
-                </strong>
-            </td>
-            <td>
-                <%- simulation.tryID %>
-            </td>
-            <td class="col-md-2">
                 <strong data-toggle="tooltip" title="Start date of simulation output">
-                    Output end date
+                    Output start date
                 </strong>
             </td>
             <td>
                 <%= APP.utils.renderDate(simulation.outputStartDate) %>
             </td>
-        </tr>
-        <tr>
             <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Links to previous simulation tries">
-                    Previous Tries
+                <strong data-toggle="tooltip" title="Number of times simulation has been launched">
+                    Compute Progress
                 </strong>
             </td>
-            <td class="col-md-4">
-                <% if (simulation.tryID > 1) { %>
-                <% _.each(MOD.state.previousTries, function(tryInfo) { %>
-                <a href="<%- APP.utils.getBaseURL() %>?uid=<%= tryInfo.uid %>" target="_blank"><%- tryInfo.tryID %></a>&nbsp;
-                <% }) %>
-                <% } else { %>
-                    --
-                <% } %>
+            <td>
+                ???
             </td>
+        </tr>
+        <tr>
             <td class="col-md-2">
                 <strong data-toggle="tooltip" title="End date of simulation output">
                     Output end date
                 </strong>
             </td>
-            <td>
+            <td class="col-md-4">
                 <%= APP.utils.renderDate(simulation.outputEndDate) %>
+            </td>
+            <td class="col-md-2">
+                <strong data-toggle="tooltip" title="Links to previous simulation tries">
+                    Try<% if (simulation.tryID > 1) { %>/ Previous Tries<% } %>
+                </strong>
+            </td>
+            <td>
+                <%- simulation.tryID %>
+                <% if (simulation.tryID > 1) { %>
+                /&nbsp;
+                <% _.each(MOD.state.previousTries, function(tryInfo) { %>
+                <a href="<%- APP.utils.getBaseURL() %>?uid=<%= tryInfo.uid %>" target="_blank"><%- tryInfo.tryID %></a>&nbsp;
+                <% }) %>
+                <% } %>
             </td>
         </tr>
         <tr>
