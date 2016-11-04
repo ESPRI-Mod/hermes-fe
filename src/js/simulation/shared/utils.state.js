@@ -105,13 +105,20 @@
 
         if (APP.utils.isNone(s) || APP.utils.isNone(jp)) return;
 
-        // Calculate simulation execution progress.
-        endDate = jp.endDate.toString();
-        endDate = endDate.substring(0, 4) + "-" +
-                  endDate.substring(4, 6) + "-" +
-                  endDate.substring(6);
-        endDateInDays = APP.utils.convertDateToDays(endDate);
-        executionProgress = (endDateInDays - s.ext.outputStartDateInDays) / s.ext.outputTimeSpanInDays;
+        // Calculate simulation progress:
+        // ... 100% if sucessfully completed;
+        if (s.executionEndDate && s.isError === false) {
+            executionProgress = 100;
+
+        // ... derive from delta between last job period update and output start date.
+        } else {
+            endDate = jp.endDate.toString();
+            endDate = endDate.substring(0, 4) + "-" +
+                      endDate.substring(4, 6) + "-" +
+                      endDate.substring(6);
+            endDateInDays = APP.utils.convertDateToDays(endDate);
+            executionProgress = (endDateInDays - s.ext.outputStartDateInDays) / s.ext.outputTimeSpanInDays;
+        }
 
         // Update state (if appropriate).
         if (executionProgress > s.ext.executionProgress) {
