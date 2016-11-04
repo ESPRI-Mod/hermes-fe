@@ -261,7 +261,11 @@
                 </strong>
             </td>
             <td>
-                <%- simulation.ext.executionProgressInPercent %> %
+                <% if (simulation.ext.executionProgress > 0) { %>
+                    <%- parseInt(simulation.ext.executionProgress * 100) %> %
+                <% } else { %>
+                    "--"
+                <% } %>
             </td>
         </tr>
         <tr>

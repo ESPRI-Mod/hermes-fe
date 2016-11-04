@@ -267,7 +267,11 @@
     </td>
     <td class="text-center execution-progress">
         <small>
-            <%= s.ext.executionProgressInPercent %>
+            <% if (s.ext.executionProgress > 0) { %>
+                <%- parseInt(s.ext.executionProgress * 100) %>
+            <% } else { %>
+                "--"
+            <% } %>
         </small>
     </td>
     <td class="text-center monitoring">

@@ -50,7 +50,7 @@
                 computeNodeLogin: undefined,
                 computeNodeMachine: undefined,
                 executionState: undefined,
-                executionProgress: s.executionEndDate ? (s.isError ? NaN : 1) : 0,
+                executionProgress: s.executionEndDate ? (s.isError ? 0 : 1) : 0,
                 experiment: undefined,
                 isSelectedForIM: false,
                 model: undefined,
@@ -63,7 +63,6 @@
             }
         });
         s.ext.outputTimeSpanInDays = s.ext.outputEndDateInDays - s.ext.outputStartDateInDays;
-        s.ext.executionProgressInPercent = _.isNaN(s.ext.executionProgress) || s.ext.executionProgress === 0 ? "--" : parseInt(s.ext.executionProgress * 100);
     };
 
     // Set simulation cv fields.

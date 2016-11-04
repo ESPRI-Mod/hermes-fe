@@ -102,6 +102,7 @@
     // Parses a job period in readiness for further processing.
     MOD.parseJobPeriod = function (s, jp) {
         var endDate, endDateInDays, executionProgress;
+
         if (APP.utils.isNone(s) || APP.utils.isNone(jp)) return;
 
         // Calculate simulation execution progress.
@@ -112,16 +113,11 @@
         endDateInDays = APP.utils.convertDateToDays(endDate);
         executionProgress = (endDateInDays - s.ext.outputStartDateInDays) / s.ext.outputTimeSpanInDays;
 
-        // Escape if event sequence disrupted due to network issues.
-        if (executionProgress <= s.ext.executionProgress) {
-            return;
+        // Update state (if appropriate).
+        if (executionProgress > s.ext.executionProgress) {
+            s.ext.executionProgress = executionProgress;
+            return executionProgress;
         }
-
-        // Update state: simulation progress.
-        s.ext.executionProgress = executionProgress;
-        s.ext.executionProgressInPercent = parseInt(executionProgress * 100);
-
-        return executionProgress;
     };
 
     // Sets simulation's execution end date.
