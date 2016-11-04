@@ -118,6 +118,10 @@
                       endDate.substring(6);
             endDateInDays = APP.utils.convertDateToDays(endDate);
             executionProgress = (endDateInDays - s.ext.outputStartDateInDays) / s.ext.outputTimeSpanInDays;
+            // ... misconfigured output end date correction.
+            if (executionProgress > 1) {
+                executionProgress = 0;
+            }
         }
 
         // Update state (if appropriate).
