@@ -50,7 +50,7 @@
             }
         });
         s.ext.outputTimeSpanInDays = s.ext.outputEndDateInDays - s.ext.outputStartDateInDays;
-        s.ext.executionProgressInPercent = _.isNaN(s.ext.executionProgress) ? "--" : parseInt(s.ext.executionProgress * 100);
+        s.ext.executionProgressInPercent = _.isNaN(s.ext.executionProgress) || s.ext.executionProgress === 0 ? "--" : parseInt(s.ext.executionProgress * 100);
     };
 
     // Set simulation cv fields for UI.
