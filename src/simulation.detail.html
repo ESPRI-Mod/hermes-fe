@@ -282,8 +282,7 @@
                 <%- simulation.tryID %>
                 <% if (simulation.tryID > 1) { %>
                 &nbsp;[<% _.each(MOD.state.previousTries, function(tryInfo) { %>
-                <a href="<%- APP.utils.getBaseURL() %>?uid=<%= tryInfo.uid %>" target="_blank"><%- tryInfo.tryID %></a>
-                <% }) %>]
+                <a href="<%- APP.utils.getBaseURL() %>?uid=<%= tryInfo.uid %>" target="_blank"><%- tryInfo.tryID %></a><% }) %>]
                 <% } %>
             </td>
         </tr>
