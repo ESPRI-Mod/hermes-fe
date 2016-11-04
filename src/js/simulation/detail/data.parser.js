@@ -4,17 +4,20 @@
     "use strict";
 
     // Parses a simulation in readiness for processing.
-    MOD.parseSimulation = function (s, jobs) {
+    MOD.parseSimulation = function (s, jList, jp) {
         // Extend simulation.
         MOD.extendSimulation(s);
 
         // Extend jobs.
-        _.each(jobs, MOD.extendJob);
+        _.each(jList, MOD.extendJob);
 
         // Parse jobs.
-        _.each(jobs, function (j) {
+        _.each(jList, function (j) {
             MOD.parseJob(s, j);
         });
+
+        // Parse job period.
+        MOD.parseJobPeriod(s, jp);
 
         // Sort jobsets.
         MOD.sortJobset(s.jobs.compute);

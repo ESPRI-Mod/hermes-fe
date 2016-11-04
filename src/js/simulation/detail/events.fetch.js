@@ -25,9 +25,14 @@
         // Map tuples to JSON objects.
         data.jobList = _.map(data.jobList, MOD.mapJob);
         data.previousTries = _.map(data.previousTries, MOD.mapPreviousTries);
+        if (data.latestJobPeriod) {
+            data.latestJobPeriod = {
+                endDate: data.latestJobPeriod.periodDateEnd
+            };
+        }
 
         // Parse data.
-        MOD.parseSimulation(data.simulation, data.jobList);
+        MOD.parseSimulation(data.simulation, data.jobList, data.latestJobPeriod);
 
         // Update module state.
         MOD.state.simulation = data.simulation;
