@@ -166,66 +166,12 @@
                 <%- simulation.ext.accountingProject %>
             </td>
             <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Experiment being conducted">
-                    Experiment
+                <strong data-toggle="tooltip" title="Start date of simulation output">
+                    Output Start Date
                 </strong>
             </td>
             <td>
-                <%- simulation.ext.experiment %>
-            </td>
-        </tr>
-        <tr>
-            <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Output storage space">
-                    Space
-                </strong>
-            </td>
-            <td class="col-md-4">
-                <%- simulation.ext.space %>
-            </td>
-            <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Model being ran">
-                    Model
-                </strong>
-            </td>
-            <td class="col-md-4">
-                <%- simulation.ext.model %>
-            </td>
-        </tr>
-        <tr>
-            <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Machine upon whcih simulation ran">
-                    Machine
-                </strong>
-            </td>
-            <td>
-                <%- simulation.ext.computeNodeMachine %>
-            </td>
-            <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Date upon which computation started">
-                    Compute start date
-                </strong>
-            </td>
-            <td>
-                <%= APP.utils.renderDateTime(simulation.executionStartDate) %>
-            </td>
-        </tr>
-        <tr>
-            <td class="col-md-2">
-                <strong data-toggle="tooltip" title="User login under which simulation ran">
-                    Login
-                </strong>
-            </td>
-            <td class="col-md-4">
-                <%- simulation.ext.computeNodeLogin %>
-            </td>
-            <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Date upon which computation ended">
-                    Compute end date
-                </strong>
-            </td>
-            <td>
-                <%= APP.utils.renderDateTime(simulation.executionEndDate) %>
+                <%= APP.utils.renderDate(simulation.outputStartDate) %>
             </td>
         </tr>
         <tr>
@@ -238,26 +184,26 @@
                 <%- simulation.name %>
             </td>
             <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Status of compute run">
-                    Compute status
+                <strong data-toggle="tooltip" title="End date of simulation output">
+                    Output End Date
                 </strong>
             </td>
-            <td class="">
-                <%- simulation.ext.executionState %>
+            <td class="col-md-4">
+                <%= APP.utils.renderDate(simulation.outputEndDate) %>
             </td>
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Start date of simulation output">
-                    Output start date
+                <strong data-toggle="tooltip" title="Machine upon whcih simulation ran">
+                    Machine
                 </strong>
             </td>
             <td>
-                <%= APP.utils.renderDate(simulation.outputStartDate) %>
+                <%- simulation.ext.computeNodeMachine %>
             </td>
             <td class="col-md-2">
-                <strong data-toggle="tooltip" title="Number of times simulation has been launched">
-                    Compute Progress
+                <strong data-toggle="tooltip" title="Percentage computation completion">
+                    Output Progress
                 </strong>
             </td>
             <td>
@@ -270,12 +216,66 @@
         </tr>
         <tr>
             <td class="col-md-2">
-                <strong data-toggle="tooltip" title="End date of simulation output">
-                    Output end date
+                <strong data-toggle="tooltip" title="User login under which simulation ran">
+                    Login
                 </strong>
             </td>
             <td class="col-md-4">
-                <%= APP.utils.renderDate(simulation.outputEndDate) %>
+                <%- simulation.ext.computeNodeLogin %>
+            </td>
+            <td class="col-md-2">
+                <strong data-toggle="tooltip" title="Date upon which computation started">
+                    Compute Start Date
+                </strong>
+            </td>
+            <td>
+                <%= APP.utils.renderDateTime(simulation.executionStartDate) %>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2">
+                <strong data-toggle="tooltip" title="Experiment being conducted">
+                    Experiment
+                </strong>
+            </td>
+            <td class="col-md-4">
+                <%- simulation.ext.experiment %>
+            </td>
+            <td class="col-md-2">
+                <strong data-toggle="tooltip" title="Date upon which computation ended">
+                    Compute End Date
+                </strong>
+            </td>
+            <td class="">
+                <%= APP.utils.renderDateTime(simulation.executionEndDate) %>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2">
+                <strong data-toggle="tooltip" title="Model being ran">
+                    Model
+                </strong>
+            </td>
+            <td>
+                <%- simulation.ext.model %>
+            </td>
+            <td class="col-md-2">
+                <strong data-toggle="tooltip" title="Status of compute run">
+                    Compute Status
+                </strong>
+            </td>
+            <td>
+                <%- simulation.ext.executionState %>
+            </td>
+        </tr>
+        <tr>
+            <td class="col-md-2">
+                <strong data-toggle="tooltip" title="Output storage space">
+                    Space
+                </strong>
+            </td>
+            <td class="col-md-4">
+                <%- simulation.ext.space %>
             </td>
             <td class="col-md-2">
                 <strong data-toggle="tooltip" title="Links to previous simulation tries">
@@ -329,7 +329,7 @@
             <td class="col-md-2">
                 <strong data-toggle="tooltip"
                         title="R_FIGR variable in libIGCM : Output tree located on STORAGE hosting figures (monitoring and atlas, and/or small files)">
-                    Storage (Small) Path
+                    Storage Path (Small)
                 </strong>
             </td>
             <td colspan="3">
