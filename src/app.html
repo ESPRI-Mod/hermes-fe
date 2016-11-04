@@ -103,7 +103,7 @@
                 <span class='pull-right sort-target-executionProgress glyphicon' />
             </th>
             <th colspan="2" class="text-center" title='Open inter-monitoring menu' data-toggle='context' data-target='#inter-monitoring-context-menu'>
-              <span class='glyphicon glyphicon-random'></span>
+              <span>IM</span>
             </th>
         </tr>
     </thead>
@@ -130,8 +130,21 @@
                     <span class='monitoring-state-error badge'
                           title='ERROR'
                           style="background-color: #F2DEDE; color: #333;">
-                        <small><strong>&nbsp;ERROR&nbsp;</strong>
-                    </small>
+                        <small><strong>&nbsp;ERROR&nbsp;</strong></small>
+                    </span>
+                    <span>
+                        &nbsp;&nbsp;&nbsp;
+                    </span>
+                    <span class='badge'
+                          title='Monitoring'
+                          style="background-color: #eceeef; color: black;">
+                        <small><strong>M = Monitoring</strong></small>
+                    </span>
+                    <span class='badge'
+                          title='Inter-Monitoring'
+                          style="background-color: #eceeef; color: black;">
+                        <small><strong>IM = Inter-Monitoring</strong></small>
+                    </span>
                 </span>
                 <span class='pull-right'>
                     <small><strong><a href='http://prodiguer-docs.readthedocs.org/en/latest/' target='blank'><%- APP.title %></a> <%- MOD.title %> v<%- APP.version %> © <%- year %> <a href='<%- APP.institute.homePage %>' target='_blank'>IPSL</a></strong></small>
@@ -276,9 +289,9 @@
     </td>
     <td class="text-center monitoring">
         <% if (s.hasMonitoring) { %>
-            <span class="glyphicon glyphicon-random"></span>
+            <span><strong>M</strong></span>
         <% } else { %>
-            <span >--</span>
+            --
         <% } %>
     </td>
     <td class="text-center inter-monitoring">

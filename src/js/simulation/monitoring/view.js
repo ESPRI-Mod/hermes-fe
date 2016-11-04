@@ -17,8 +17,10 @@
             'click table tbody tr td.monitoring' : function (e) {
                 var s;
 
-                s = this._getSimulation($(e.target).parent().parent().attr("id"));
-                MOD.events.trigger("im:openMonitor", s);
+                s = this._getSimulation($(e.target).parent().parent().parent().attr("id"));
+                if (s) {
+                    MOD.events.trigger("im:openMonitor", s);
+                }
             },
 
             // Toggle inter-monitoring selection.
@@ -26,7 +28,9 @@
                 var s;
 
                 s = this._getSimulation($(e.target).parent().parent().attr("id"));
-                s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
+                if (s) {
+                    s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
+                }
             },
 
             // Open inter-monitoring page.
