@@ -275,13 +275,13 @@
             </td>
             <td class="col-md-2">
                 <strong data-toggle="tooltip" title="Links to previous simulation tries">
-                    Try<% if (simulation.tryID > 1) { %>/ Previous Tries<% } %>
+                    Try<% if (simulation.tryID > 1) { %> / Previous Tries<% } %>
                 </strong>
             </td>
             <td>
                 <%- simulation.tryID %>
                 <% if (simulation.tryID > 1) { %>
-                /&nbsp;
+                &nbsp;/
                 <% _.each(MOD.state.previousTries, function(tryInfo) { %>
                 <a href="<%- APP.utils.getBaseURL() %>?uid=<%= tryInfo.uid %>" target="_blank"><%- tryInfo.tryID %></a>&nbsp;
                 <% }) %>
