@@ -13,7 +13,7 @@
 
         // Set of message types related to compute jobs.
         computeMessageTypes: [
-            "0000", "0100", "1000", "1100", "1900", "1999"
+            "0000", "0100", "1000", "1001", "1100", "1900", "1999"
         ],
 
         // Set of message types related to post processing jobs.
