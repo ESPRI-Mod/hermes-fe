@@ -92,7 +92,7 @@
         // Set flag indicating whether the simulation has a monitoring job.
         if (s.hasMonitoring === false &&
             j.typeof === 'p' &&
-            j.isIM === true &&,
+            j.isIM === true &&
             j.executionEndDate &&
             j.isError === false) {
             s.hasMonitoring = true;
