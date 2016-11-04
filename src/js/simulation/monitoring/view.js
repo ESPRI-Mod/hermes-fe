@@ -17,12 +17,10 @@
             'click table tbody tr td.monitoring' : function (e) {
                 var s;
 
-                // s = this._getSimulation($(e.target).parent().parent().parent().attr("id"));
-                s = this._getSimulation($(e.target).parent().parent().attr("id"));
+                s = this._getSimulation($(e.target).parent().parent().parent().attr("id"));
                 if (s) {
                     MOD.events.trigger("im:openMonitor", s);
                 }
-                console.log(s);
             },
 
             // Toggle inter-monitoring selection.
