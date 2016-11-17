@@ -68,10 +68,10 @@
             <th title='Try' class="text-center">
                 <small>Try</small>
             </th>
-            <th title='Compute Jobs' class="text-center">
+            <th title="Compute Jobs (Running | Error | Complete)" class="text-center">
                 <small>Jobs (C)</small>
             </th>
-            <th title='Post-Processing Jobs' class="text-center">
+            <th title="Post-Processing Jobs (Running | Error | Complete)" class="text-center">
                 <small>Jobs (PP)</small>
             </th>
             <th title='Node - Machine' class="text-center sort-target sort-target-computeNodeMachine">
@@ -236,14 +236,16 @@
             <%= s.tryID %>
         </small>
     </td>
-    <td class="text-center compute-job-count <%= s.jobs.compute.error.length ? 'bg-danger' : ''%>">
+    <td class="text-center compute-job-count <%= s.jobs.compute.error.length ? 'bg-danger' : ''%>"
+        title="Running = <%= s.jobs.compute.running.length %> | In Error = <%= s.jobs.compute.error.length %> | Complete = <%= s.jobs.compute.complete.length %>">
         <small>
             <%= s.jobs.compute.running.length %> |
             <%= s.jobs.compute.complete.length %> |
             <%= s.jobs.compute.error.length %>
         </small>
     </td>
-    <td class="text-center post-processing-job-count <%= s.jobs.postProcessing.error.length ? 'bg-danger' : ''%>">
+    <td class="text-center post-processing-job-count <%= s.jobs.postProcessing.error.length ? 'bg-danger' : ''%>"
+        title="Running = <%= s.jobs.postProcessing.running.length %> | In Error = <%= s.jobs.postProcessing.error.length %> | Complete = <%= s.jobs.postProcessing.complete.length %>">
         <small>
             <%= s.jobs.postProcessing.running.length %> |
             <%= s.jobs.postProcessing.complete.length %> |
@@ -277,7 +279,7 @@
     </td>
     <td class="text-center">
         <small>
-            <%= APP.utils.renderDate(s.outputStartDate) %> ... 
+            <%= APP.utils.renderDate(s.outputStartDate) %> - 
             <%= APP.utils.renderDate(s.outputEndDate) %>
         </small>
     </td>
