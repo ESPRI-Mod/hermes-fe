@@ -273,14 +273,18 @@
         </small>
     </td>
     <td class="text-center" title="<%= APP.utils.renderDate(s.outputStartDate) %> = <%= APP.utils.renderDate(s.outputEndDate) %>">
-        <span class="progress">
-            <span class="progress-bar actual" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
-                <%- numeral(s.ext.executionProgress * 100).format('0') %> %
+        <% if (s.ext.executionProgress > 0) { %>
+            <span class="progress">
+                <span class="progress-bar actual" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
+                    <%- numeral(s.ext.executionProgress * 100).format('0') %> %
+                </span>
+                <span class="progress-bar remaining" style="width: <%- 100 - numeral(s.ext.executionProgress * 100).format('0') %>%;">
+                    &nbsp;
+                </span>
             </span>
-            <span class="progress-bar remaining" style="width: <%- 100 - numeral(s.ext.executionProgress * 100).format('0') %>%;">
-                &nbsp;
-            </span>
-        </span>
+        <% } else { %>
+            --
+        <% } %>
     </td>
     <td class="text-center monitoring">
         <% if (s.hasMonitoring) { %>
