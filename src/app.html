@@ -273,7 +273,11 @@
         </small>
     </td>
     <td class="text-center" title="<%= APP.utils.renderDate(s.outputStartDate) %> - <%= APP.utils.renderDate(s.outputEndDate) %>">
-        <% if (s.ext.executionProgress > 0) { %>
+        <% if (s.ext.executionProgress === 0) { %>
+            --
+        <% } else if (s.ext.executionProgress === 1) { %>
+            100 %
+        <% } else { %>
             <span class="progress">
                 <span class="progress-bar actual" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
                     <%- numeral(s.ext.executionProgress * 100).format('0') %> %
@@ -282,8 +286,6 @@
                     &nbsp;
                 </span>
             </span>
-        <% } else { %>
-            --
         <% } %>
     </td>
     <td class="text-center monitoring">
