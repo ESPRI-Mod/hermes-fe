@@ -279,10 +279,10 @@
             100 %
         <% } else { %>
             <span class="progress">
-                <span class="progress-bar actual" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
+                <span class="progress-bar progress-bar-striped active" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
                     <%- numeral(s.ext.executionProgress * 100).format('0') %> %
                 </span>
-                <span class="progress-bar remaining" style="width: <%- 100 - numeral(s.ext.executionProgress * 100).format('0') %>%;">
+                <span class="progress-bar" style="width: <%- 100 - numeral(s.ext.executionProgress * 100).format('0') %>%;">
                     &nbsp;
                 </span>
             </span>

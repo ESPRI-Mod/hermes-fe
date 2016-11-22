@@ -30,11 +30,11 @@ thead > tr > th > small {
 }
 
 
-.progress-bar.actual {
+.progress-bar.active {
 	min-width: 25%;
 }
 
-.progress-bar.remaining {
+.progress-bar:not(.active) {
 	background-color: white;
 	max-width: 75%;
 }
