@@ -10,7 +10,8 @@
             // Open simulation detail page.
             'click table tbody tr td:not(.monitoring):not(.inter-monitoring)' : function (e) {
                 this._openSimulationDetailPage($(e.target).parent().attr("id") ||
-                                               $(e.target).parent().parent().attr("id"));
+                                               $(e.target).parent().parent().attr("id") ||
+                                               $(e.target).parent().parent().parent().attr("id"));
             },
 
             // Open monitoring page.
