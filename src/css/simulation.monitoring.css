@@ -31,10 +31,10 @@ thead > tr > th > small {
 
 
 .progress-bar.actual {
-	min-width: 20%;
+	min-width: 25%;
 }
 
 .progress-bar.remaining {
 	background-color: white;
-	max-width: 80%;
+	max-width: 75%;
 }
