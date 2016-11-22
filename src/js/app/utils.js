@@ -165,13 +165,6 @@
                    DAYS_ELAPSED[month - 1] +
                    day - 1;
 
-            console.log("----");
-            console.log(value);
-            console.log(year);
-            console.log(month);
-            console.log(day);
-            console.log(result);
-
             return result;
         },
 

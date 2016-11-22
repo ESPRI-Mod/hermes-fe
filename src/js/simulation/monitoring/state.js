@@ -162,7 +162,6 @@
         } else {
             filter.initialValue = filter.cookieValue || filter.defaultValue;
         }
-        console.log("Filter init val: " + filter.key + " :: " + filter.initialValue);
     });
 
     // Set filter map.
