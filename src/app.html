@@ -272,7 +272,7 @@
             <%= s.ext.space %>
         </small>
     </td>
-    <td class="text-center" title="<%= APP.utils.renderDate(s.outputStartDate) %> = <%= APP.utils.renderDate(s.outputEndDate) %>">
+    <td class="text-center" title="<%= APP.utils.renderDate(s.outputStartDate) %> - <%= APP.utils.renderDate(s.outputEndDate) %>">
         <% if (s.ext.executionProgress > 0) { %>
             <span class="progress">
                 <span class="progress-bar actual" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
