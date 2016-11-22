@@ -279,12 +279,12 @@
             100 %
         <% } else { %>
             <span class="progress">
-                <% if (s.executionState === 'running') { %>
-                    <span class="progress-bar progress-bar-striped actual" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
+                <% if (s.executionState === 'running' || s.executionState === 'queued') { %>
+                    <span class="progress-bar progress-bar-striped active actual" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
                         <%- numeral(s.ext.executionProgress * 100).format('0') %> %
                     </span>
                 <% } else { %>
-                    <span class="progress-bar progress-bar-striped active actual" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
+                    <span class="progress-bar progress-bar-striped actual" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
                         <%- numeral(s.ext.executionProgress * 100).format('0') %> %
                     </span>
                 <% } %>
