@@ -68,10 +68,10 @@
             <th title='Try' class="text-center">
                 <small>Try</small>
             </th>
-            <th title="Compute Jobs (Running | Complete | In Error)" class="text-center">
+            <th title="Compute Jobs (Running | Complete | Error)" class="text-center">
                 <small>Jobs (C)</small>
             </th>
-            <th title="Post-Processing Jobs (Running | Complete | In Error)" class="text-center">
+            <th title="Post-Processing Jobs (Running | Complete | Error)" class="text-center">
                 <small>Jobs (PP)</small>
             </th>
             <th title='Node - Machine' class="text-center sort-target sort-target-computeNodeMachine">
@@ -232,7 +232,7 @@
         </small>
     </td>
     <td class="text-center compute-job-count <%= s.jobs.compute.error.length ? 'bg-danger' : ''%>"
-        title="Running = <%= s.jobs.compute.running.length %> | Complete = <%= s.jobs.compute.complete.length %> | In Error = <%= s.jobs.compute.error.length %>">
+        title="Running = <%= s.jobs.compute.running.length %> | Complete = <%= s.jobs.compute.complete.length %> | Error = <%= s.jobs.compute.error.length %>">
         <small>
             <%= s.jobs.compute.running.length %> |
             <%= s.jobs.compute.complete.length %> |
@@ -240,7 +240,7 @@
         </small>
     </td>
     <td class="text-center post-processing-job-count <%= s.jobs.postProcessing.error.length ? 'bg-danger' : ''%>"
-        title="Running = <%= s.jobs.postProcessing.running.length %> | Complete = <%= s.jobs.postProcessing.complete.length %> | In Error = <%= s.jobs.postProcessing.error.length %>">
+        title="Running = <%= s.jobs.postProcessing.running.length %> | Complete = <%= s.jobs.postProcessing.complete.length %> | Error = <%= s.jobs.postProcessing.error.length %>">
         <small>
             <%= s.jobs.postProcessing.running.length %> |
             <%= s.jobs.postProcessing.complete.length %> |
