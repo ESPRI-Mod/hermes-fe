@@ -53,19 +53,29 @@
 
         // Returns URL to a static page within the application.
         // @page         Page name.
-        getPageURL: function (page) {
-            var protocol;
+        getPageURL: function (page, letServerRewrite) {
+            var protocol, host, url;
 
             // Set protocol.
             protocol = APP.constants.protocols.HTTP;
-
-            // Append protocol suffix for secure endpoints.
             if (window.location.protocol.indexOf("s") !== -1) {
                 protocol += "s";
             }
 
-            // Derive url.
-            return "{0}://{1}/static/{2}"
+            if (!window.location.host) {
+                host = "localhost:8888";
+            } else {
+                host = window.location.host;
+            }
+
+            // If rewriting on the server then omit the page part.
+            if (host !== "localhost:8888" && letServerRewrite === true) {
+                url = "{0}://{1}";
+            } else {
+                url = "{0}://{1}/static/{2}";
+            }
+
+            return url
                 .replace("{0}", protocol)
                 .replace("{1}", window.location.host)
                 .replace("{2}", page);

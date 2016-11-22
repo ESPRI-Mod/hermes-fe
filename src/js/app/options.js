@@ -1,9 +1,5 @@
-// --------------------------------------------------------
-// app/options.js
-// Application options manager.
-// --------------------------------------------------------
-(function(APP, _) {
-    
+(function( APP, _) {
+
     // ECMAScript 5 Strict Mode
     "use strict";
 

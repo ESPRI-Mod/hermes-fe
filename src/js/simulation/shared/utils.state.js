@@ -126,7 +126,6 @@
 
         // Update state (if appropriate).
         if (executionProgress > s.ext.executionProgress) {
-            console.log("progress = " + executionProgress);
             s.ext.executionProgress = executionProgress;
             return executionProgress;
         }
