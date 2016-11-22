@@ -94,13 +94,8 @@
                 <small class='sort-target-space'>Space</small>
                 <span class='pull-right sort-target-space glyphicon' />
             </th>
-            <th title='Output Date' class="text-center sort-target sort-target-outputDateRange">
-                <small class='sort-target-outputDateRange'>Output Date Range</small>
-                <span class='pull-right sort-target-outputDateRange glyphicon' />
-            </th>
-            <th title='Output Progress' class="text-center sort-target sort-target-executionProgress">
-                <strong class='sort-target-executionProgress'>%</strong>
-                <span class='pull-right sort-target-executionProgress glyphicon' />
+            <th title='Output Progress (%)' class="text-center">
+                <small>Output Progress (%)</small>
             </th>
             <th class="text-center" title='Open monitoring'>
               <span>M</span>
@@ -277,20 +272,15 @@
             <%= s.ext.space %>
         </small>
     </td>
-    <td class="text-center">
-        <small>
-            <%= APP.utils.renderDate(s.outputStartDate) %> - 
-            <%= APP.utils.renderDate(s.outputEndDate) %>
-        </small>
-    </td>
-    <td class="text-center execution-progress">
-        <small>
-            <% if (s.ext.executionProgress > 0) { %>
-                <%- numeral(s.ext.executionProgress * 100).format('0') %>
-            <% } else { %>
-                --
-            <% } %>
-        </small>
+    <td class="text-center" title="<%= APP.utils.renderDate(s.outputStartDate) %> = <%= APP.utils.renderDate(s.outputEndDate) %>">
+        <span class="progress">
+            <span class="progress-bar actual" style="width: <%- numeral(s.ext.executionProgress * 100).format('0') %>%;">
+                <%- numeral(s.ext.executionProgress * 100).format('0') %> %
+            </span>
+            <span class="progress-bar remaining" style="width: <%- 100 - numeral(s.ext.executionProgress * 100).format('0') %>%;">
+                &nbsp;
+            </span>
+        </span>
     </td>
     <td class="text-center monitoring">
         <% if (s.hasMonitoring) { %>

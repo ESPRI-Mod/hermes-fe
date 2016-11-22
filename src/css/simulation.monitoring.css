@@ -29,3 +29,13 @@ thead > tr > th > small {
     padding-right: 1px;
 }
 
+
+.progress-bar.actual {
+	background-color: darkgrey;
+	min-width: 18%;
+}
+
+.progress-bar.remaining {
+	background-color: lightgrey;
+	max-width: 82%;
+}
