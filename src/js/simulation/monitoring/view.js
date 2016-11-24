@@ -9,28 +9,37 @@
         events : {
             // Open simulation detail page.
             'click table tbody tr td:not(.monitoring):not(.inter-monitoring)' : function (e) {
-                this._openSimulationDetailPage($(e.target).parent().attr("id") ||
-                                               $(e.target).parent().parent().attr("id") ||
-                                               $(e.target).parent().parent().parent().attr("id"));
+                var sUID;
+
+                sUID = this._getSimulationUID(e);
+                if (sUID) {
+                    APP.utils.openURL(this._getSimulationDetailURL(sUID), true);
+                }
             },
 
             // Open monitoring page.
             'click table tbody tr td.monitoring' : function (e) {
-                var s;
+                var sUID, s;
 
-                s = this._getSimulation($(e.target).parent().parent().parent().attr("id"));
-                if (s) {
-                    MOD.events.trigger("im:openMonitor", s);
+                sUID = this._getSimulationUID(e);
+                if (sUID) {
+                    s = this._getSimulation(sUID);
+                    if (s) {
+                        MOD.events.trigger("im:openMonitor", s);
+                    }
                 }
             },
 
             // Toggle inter-monitoring selection.
             'change table tbody tr td.inter-monitoring > input' : function (e) {
-                var s;
+                var sUID, s;
 
-                s = this._getSimulation($(e.target).parent().parent().attr("id"));
-                if (s) {
-                    s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
+                sUID = this._getSimulationUID(e);
+                if (sUID) {
+                    s = this._getSimulation(sUID);
+                    if (s) {
+                        s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
+                    }
                 }
             },
 
@@ -214,6 +223,17 @@
             return this;
         },
 
+        _getSimulationUID: function (e) {
+            var cell;
+
+            // Depending on where in the cell the user clicks the simulation id is derived differently.
+            cell = $(e.target);
+            return cell.parent().attr("id") ||
+                   cell.parent().parent().attr("id") ||
+                   cell.parent().parent().parent().attr("id") ||
+                   cell.parent().parent().parent().parent().attr("id");
+        },
+
         _setFilterSelector: function (f) {
             if (f.$view) {
                 f.$view.select2("destroy");
@@ -301,10 +321,6 @@
             this.$('#ws-close-dialog').modal('show');
         },
 
-        _openSimulationDetailPage: function (uid) {
-            APP.utils.openURL(this._getSimulationDetailURL(uid), true);
-        },
-
         _openInterMonitoringPage: function (urls) {
             var imForm;
 
@@ -317,9 +333,11 @@
         },
 
         _getSimulation: function (uid) {
-            return _.find(MOD.state.paging.current.data, function (s) {
-                return s.uid === uid;
-            });
+            if (_.isUndefined(uid) === false) {
+                return _.find(MOD.state.paging.current.data, function (s) {
+                    return s.uid === uid;
+                });
+            };
         },
 
         _getSimulationDetailURL: function (uid) {
