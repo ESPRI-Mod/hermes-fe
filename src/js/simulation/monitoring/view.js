@@ -217,17 +217,6 @@
             return this;
         },
 
-        _getSimulationUID: function (e) {
-            var cell;
-
-            // Depending on where in the cell the user clicks the simulation id is derived differently.
-            cell = $(e.target);
-            return cell.parent().attr("id") ||
-                   cell.parent().parent().attr("id") ||
-                   cell.parent().parent().parent().attr("id") ||
-                   cell.parent().parent().parent().parent().attr("id");
-        },
-
         _setFilterSelector: function (f) {
             if (f.$view) {
                 f.$view.select2("destroy");
@@ -324,6 +313,17 @@
             });
             $(imForm).appendTo('body').submit();
             $("#inter-monitoring-form").remove();
+        },
+
+        _getSimulationUID: function (e) {
+            var cell;
+
+            // Depending on where in the cell the user clicks the simulation id is derived differently.
+            cell = $(e.target);
+            return cell.parent().attr("id") ||
+                   cell.parent().parent().attr("id") ||
+                   cell.parent().parent().parent().attr("id") ||
+                   cell.parent().parent().parent().parent().attr("id");
         },
 
         _getSimulation: function (uid) {
