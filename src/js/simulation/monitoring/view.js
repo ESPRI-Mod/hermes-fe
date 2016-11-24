@@ -19,27 +19,21 @@
 
             // Open monitoring page.
             'click table tbody tr td.monitoring' : function (e) {
-                var sUID, s;
+                var s;
 
-                sUID = this._getSimulationUID(e);
-                if (sUID) {
-                    s = this._getSimulation(sUID);
-                    if (s) {
-                        MOD.events.trigger("im:openMonitor", s);
-                    }
+                s = this._getSimulation(this._getSimulationUID(e));
+                if (s) {
+                    MOD.events.trigger("im:openMonitor", s);
                 }
             },
 
             // Toggle inter-monitoring selection.
             'change table tbody tr td.inter-monitoring > input' : function (e) {
-                var sUID, s;
+                var s;
 
-                sUID = this._getSimulationUID(e);
-                if (sUID) {
-                    s = this._getSimulation(sUID);
-                    if (s) {
-                        s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
-                    }
+                s = this._getSimulation(this._getSimulationUID(e));
+                if (s) {
+                    s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
                 }
             },
 
