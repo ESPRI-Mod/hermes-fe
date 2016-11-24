@@ -8,7 +8,6 @@
         var url;
 
         url = APP.utils.getPageURL(MOD.urls.SIMULATION_MONITORING_PAGE, true);
-        console.log(url);
         url += "?";
         url += "sortField=";
         url += MOD.state.sorting.field;

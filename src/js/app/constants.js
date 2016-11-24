@@ -50,7 +50,10 @@
         // Paging defaults.
         paging: {
             itemsPerPage: 25
-        }
+        },
+
+        // Local host.
+        LOCAL_HOST: "localhost:8888"
     };
 
 }(this.APP));

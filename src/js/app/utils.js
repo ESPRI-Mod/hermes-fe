@@ -39,7 +39,7 @@
             }
 
             if (!window.location.host) {
-                host = "localhost:8888";
+                host = APP.constants.LOCAL_HOST;
             } else {
                 host = window.location.host;
             }
@@ -63,13 +63,13 @@
             }
 
             if (!window.location.host) {
-                host = "localhost:8888";
+                host = APP.constants.LOCAL_HOST;
             } else {
                 host = window.location.host;
             }
 
             // If rewriting on the server then omit the page part.
-            if (host !== "localhost:8888" && letServerRewrite === true) {
+            if (host !== APP.constants.LOCAL_HOST && letServerRewrite === true) {
                 url = "{0}://{1}";
             } else {
                 url = "{0}://{1}/static/{2}";
