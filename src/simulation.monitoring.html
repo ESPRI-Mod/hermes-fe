@@ -274,9 +274,9 @@
     </td>
     <td class="text-center" title="<%= APP.utils.renderDate(s.outputStartDate) %> - <%= APP.utils.renderDate(s.outputEndDate) %>">
         <% if (s.ext.executionProgress === 0) { %>
-            --
+            <small>--</small>
         <% } else if (s.ext.executionProgress === 1) { %>
-            100 %
+            <small>100 %</small>
         <% } else { %>
             <span class="progress">
                 <% if (s.executionState === 'running' || s.executionState === 'queued') { %>
@@ -288,7 +288,6 @@
                         <%- numeral(s.ext.executionProgress * 100).format('0') %> %
                     </span>
                 <% } %>
-
                 <span class="progress-bar remaining" style="width: <%- 100 - numeral(s.ext.executionProgress * 100).format('0') %>%;">
                     &nbsp;
                 </span>
