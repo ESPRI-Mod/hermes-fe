@@ -54,7 +54,7 @@
             FETCH_CV: 'cv/fetch',
 
             // Fetch monitoring time slice endpoint.
-            FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice?timeslice={timeslice}',
+            FETCH_TIMESLICE: 'simulation/monitoring/fetch_timeslice?timeslice={timeslice}&sortField={sortField}&sortDirection={sortDirection}',
 
             // Fetch monitoring time slice endpoint.
             FETCH_TIMESLICE_JOBS: 'simulation/monitoring/fetch_timeslice_jobs?timeslice={timeslice}',

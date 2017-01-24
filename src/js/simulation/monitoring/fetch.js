@@ -1,4 +1,4 @@
-(function (APP, MOD, $) {
+(function (APP, MOD, STATE, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -17,7 +17,9 @@
 
         // Set fetch endpoint.
         ep = APP.utils.getEndPoint(MOD.urls.FETCH_TIMESLICE);
-        ep  = ep.replace('{timeslice}', MOD.state.filters[0].cvTerms.current.name);
+        ep  = ep.replace('{timeslice}', STATE.filters[0].cvTerms.current.name);
+        ep  = ep.replace('{sortField}', STATE.sorting.field);
+        ep  = ep.replace('{sortDirection}', STATE.sorting.direction);
 
         // Fetch data from web-service.
         MOD.log("simulations fetching begins");
@@ -54,7 +56,7 @@
 
         // Set fetch endpoint.
         ep = APP.utils.getEndPoint(MOD.urls.FETCH_TIMESLICE_JOBS);
-        ep  = ep.replace('{timeslice}', MOD.state.filters[0].cvTerms.current.name);
+        ep  = ep.replace('{timeslice}', STATE.filters[0].cvTerms.current.name);
 
         // Fetch data from web-service.
         MOD.log("jobs fetching begins");
@@ -74,5 +76,6 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.APP.modules.monitoring.state,
     this.$jq
 ));
