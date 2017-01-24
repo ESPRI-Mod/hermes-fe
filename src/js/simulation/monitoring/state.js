@@ -27,63 +27,56 @@
                 defaultValue: "1W",
                 displayName: 'Start Date',
                 key: 'timeslice',
-                supportsByAll: true
+                globalFilterPosition: 'last'
             },
             {
                 cookieKey: 'accounting-project',
                 cvType: 'accounting_project',
                 defaultValue: "*",
                 displayName: 'Acc. Project',
-                key: 'accountingProject',
-                supportsByAll: true
+                key: 'accountingProject'
             },
             {
                 cookieKey: 'machine',
                 cvType: 'compute_node_machine',
                 defaultValue: "*",
                 displayName: 'Machine',
-                key: 'computeNodeMachine',
-                supportsByAll: true
+                key: 'computeNodeMachine'
             },
             {
                 cookieKey: 'login',
                 cvType: 'compute_node_login',
                 defaultValue: "*",
                 displayName: 'Login',
-                key: 'computeNodeLogin',
-                supportsByAll: true
+                key: 'computeNodeLogin'
             },
             {
                 cookieKey: 'model',
                 cvType: 'model',
                 defaultValue: "*",
                 displayName: 'Tag / Model',
-                key: 'model',
-                supportsByAll: true
+                key: 'model'
             },
             {
                 cookieKey: 'experiment',
                 cvType: 'experiment',
                 defaultValue: "*",
                 displayName: 'Experiment',
-                key: 'experiment',
-                supportsByAll: true
+                key: 'experiment'
             },
             {
                 cookieKey: 'space',
                 cvType: 'simulation_space',
                 defaultValue: "*",
                 displayName: 'Space',
-                key: 'space',
-                supportsByAll: true
+                key: 'space'
             },
             {
                 cookieKey: 'state',
                 cvType: 'simulation_state',
                 defaultValue: "*",
                 displayName: 'State',
-                key: 'executionState',
-                supportsByAll: true
+                key: 'executionState'
             }
         ],
 
@@ -123,7 +116,7 @@
 
         // Sorting related state.
         sorting: {
-            allFields: ['name', 'computeNodeMachine', 'accountingProject', 'computeNodeLogin', 'model', 'space', 'experiment', 'executionStartDate', 'executionEndDate'],
+            allFields: ['name', 'computeNodeMachine', 'accountingProject', 'computeNodeLogin', 'model', 'space', 'experiment'],
             field: MOD.getCookie('sort-field'),
             direction: MOD.getCookie('sort-direction')
         }
@@ -148,7 +141,8 @@
             },
             cookieValue: MOD.getCookie('filter-' + filter.cookieKey),
             urlValue: APP.utils.getURLParam(filter.cookieKey),
-            $view: undefined
+            $view: undefined,
+            globalFilterPosition: "first"
         });
         if (filter.urlValue) {
             hasURLParams = true;

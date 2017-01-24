@@ -8,7 +8,7 @@
 
     // Grid sort field.
     _.each(MOD.jobTypes, function (jobType) {
-        MOD.setCookieDefault('detail-sort-field-' + jobType, 'executionStartDate');
+        MOD.setCookieDefault('detail-sort-field-' + jobType, 'name');
         MOD.setCookieDefault('detail-sort-direction-' + jobType, 'desc');
     });
 

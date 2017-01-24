@@ -138,13 +138,13 @@
             },
 
             // Permalink copy button click.
-            'click #btn-permalink-copy': function (e) {
-                var permalink;
+            // 'click #btn-permalink-copy': function (e) {
+            //     var permalink;
 
-                permalink = document.querySelector('#permalink');
-                permalink.setSelectionRange(0, permalink.value.length + 1);
-                document.execCommand('copy');
-            },
+            //     permalink = document.querySelector('#permalink');
+            //     permalink.setSelectionRange(0, permalink.value.length + 1);
+            //     document.execCommand('copy');
+            // },
 
             // Permalink close button click.
             'click #btn-permalink-close': function (e) {

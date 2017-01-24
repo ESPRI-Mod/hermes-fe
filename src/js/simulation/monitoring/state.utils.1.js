@@ -5,22 +5,6 @@
 
     // Initializes filter cv termsets.
     MOD.initFilterCvTermsets = function () {
-        // Append global filter.
-        _.each(MOD.state.filters, function (f) {
-            if (f.supportsByAll) {
-                f.cvTerms.all.push({
-                    typeof: f.cvType,
-                    displayName: '*',
-                    name: '*',
-                    id: '*',
-                    synonyms: [],
-                    sortKey: "AAA",
-                    text: '*',
-                });
-                f.cvTerms.active.push(f.cvTerms.all[0]);
-            }
-        });
-
         // Push terms into filters.
         _.each(MOD.state.cvTerms, function (term) {
             if (_.has(MOD.state.filterSet, term.typeof)) {
@@ -28,6 +12,27 @@
                 MOD.state.filterSet[term.typeof].cvTerms.active.push(term);
             } else {
                 MOD.logWarning("SUPERFLUOS TERM :: " + term.typeof + " :: " + term.name);
+            }
+        });
+
+        // Set global filter.
+        _.each(MOD.state.filters, function (f) {
+            var term;
+            term = {
+                typeof: f.cvType,
+                displayName: '*',
+                name: '*',
+                id: '*',
+                synonyms: [],
+                sortKey: "AAA",
+                text: f.globalFilterLabel || '*'
+            };
+            if (f.globalFilterPosition === 'last') {
+                f.cvTerms.all.push(term);
+                f.cvTerms.active.push(term);
+            } else {
+                f.cvTerms.all.unshift(term);
+                f.cvTerms.active.unshift(term);
             }
         });
 

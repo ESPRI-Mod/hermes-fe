@@ -20,6 +20,42 @@
         ep  = ep.replace('{timeslice}', STATE.filters[0].cvTerms.current.name);
         ep  = ep.replace('{sortField}', STATE.sorting.field);
         ep  = ep.replace('{sortDirection}', STATE.sorting.direction);
+        if (STATE.filters[1].cvTerms.current.name != '*') {
+            ep += "&";
+            ep += STATE.filters[1].key;
+            ep += "=";
+            ep += STATE.filters[1].cvTerms.current.name;
+        }
+        if (STATE.filters[2].cvTerms.current.name != '*') {
+            ep += "&";
+            ep += STATE.filters[2].key;
+            ep += "=";
+            ep += STATE.filters[2].cvTerms.current.name;
+        }
+        if (STATE.filters[3].cvTerms.current.name != '*') {
+            ep += "&";
+            ep += STATE.filters[3].key;
+            ep += "=";
+            ep += STATE.filters[3].cvTerms.current.name;
+        }
+        if (STATE.filters[4].cvTerms.current.name != '*') {
+            ep += "&";
+            ep += STATE.filters[4].key;
+            ep += "=";
+            ep += STATE.filters[4].cvTerms.current.name;
+        }
+        if (STATE.filters[5].cvTerms.current.name != '*') {
+            ep += "&";
+            ep += STATE.filters[5].key;
+            ep += "=";
+            ep += STATE.filters[5].cvTerms.current.name;
+        }
+        if (STATE.filters[6].cvTerms.current.name != '*') {
+            ep += "&";
+            ep += STATE.filters[6].key;
+            ep += "=";
+            ep += STATE.filters[6].cvTerms.current.name;
+        }
 
         // Fetch data from web-service.
         MOD.log("simulations fetching begins");

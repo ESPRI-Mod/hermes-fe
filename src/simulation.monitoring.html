@@ -162,9 +162,11 @@
                 <input id="permalink" type="text" class="form-control" style="font-size: 12px;" value="<%= MOD.getPersistentURL() %>"/>
                 </span>
                 <span class="input-group-btn">
+                    <!--
                     <button class="btn btn-primary active" id="btn-permalink-copy" title="Copy permalink to clipboard">
                     &nbsp;Copy&nbsp;
                     </button>
+                    -->
                     <button class="btn btn-default" id="btn-permalink-close" title="Close permalink">
                     Close
                     </button>
@@ -234,17 +236,25 @@
     <td class="text-center compute-job-count <%= s.jobs.compute.error.length ? 'bg-danger' : ''%>"
         title="Running = <%= s.jobs.compute.running.length %> | Complete = <%= s.jobs.compute.complete.length %> | Error = <%= s.jobs.compute.error.length %>">
         <small>
-            <%= s.jobs.compute.running.length %> |
-            <%= s.jobs.compute.complete.length %> |
-            <%= s.jobs.compute.error.length %>
+            <% if (s.jobs.all.length === 0) { %>
+                --
+            <% } else { %>
+                <%= s.jobs.compute.running.length %> |
+                <%= s.jobs.compute.complete.length %> |
+                <%= s.jobs.compute.error.length %>
+            <% } %>
         </small>
     </td>
     <td class="text-center post-processing-job-count <%= s.jobs.postProcessing.error.length ? 'bg-danger' : ''%>"
         title="Running = <%= s.jobs.postProcessing.running.length %> | Complete = <%= s.jobs.postProcessing.complete.length %> | Error = <%= s.jobs.postProcessing.error.length %>">
         <small>
-            <%= s.jobs.postProcessing.running.length %> |
-            <%= s.jobs.postProcessing.complete.length %> |
-            <%= s.jobs.postProcessing.error.length %>
+            <% if (s.jobs.all.length === 0) { %>
+                --
+            <% } else { %>
+                <%= s.jobs.postProcessing.running.length %> |
+                <%= s.jobs.postProcessing.complete.length %> |
+                <%= s.jobs.postProcessing.error.length %>
+            <% } %>
         </small>
     </td>
     <td class="text-center">
@@ -273,7 +283,9 @@
         </small>
     </td>
     <td class="text-center" title="<%= APP.utils.renderDate(s.outputStartDate) %> - <%= APP.utils.renderDate(s.outputEndDate) %>">
-        <% if (s.ext.executionProgress === 0) { %>
+        <% if (s.jobs.all.length === 0) { %>
+            <small>--</small>
+        <% } else if (s.ext.executionProgress === 0) { %>
             <small>--</small>
         <% } else if (s.ext.executionProgress === 1) { %>
             <small>100 %</small>

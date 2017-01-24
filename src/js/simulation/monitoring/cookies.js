@@ -5,7 +5,7 @@
 
     // Grid page size.
     MOD.setCookieDefault('page-size', 25);
-    MOD.setCookieDefault('sort-field', 'executionStartDate');
+    MOD.setCookieDefault('sort-field', 'name');
     MOD.setCookieDefault('sort-direction', 'desc');
 
     // Filters.
