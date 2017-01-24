@@ -1,4 +1,4 @@
-(function (APP, MOD, _) {
+(function (APP, MOD, STATE, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -7,51 +7,33 @@
     // @data    Data loaded from remote server.
     MOD.events.on("setup:cvDataLoaded", function (data) {
         // Update module state.
-        MOD.state.cvTerms = APP.utils.parseCVTerms(data.cvTerms);
+        STATE.cvTerms = APP.utils.parseCVTerms(data.cvTerms);
 
         // Initialise filter cv terms sets.
         MOD.initFilterCvTermsets();
 
-        // Fetch timeslice.
-        MOD.fetchTimeSlice();
+        // Fetch simulation timeslice.
+        MOD.fetchSimulationTimeSlice();
     });
 
-    // Timeslice loaded event handler.
+    // Simulation timeslice loaded event handler.
     // @data    Data loaded from remote server.
-    MOD.events.on("state:timesliceLoaded", function (data) {
-        // Map simulations.
-        MOD.log("timeslice simulations = " + data.simulationList.length);
-        data.simulationList = _.map(data.simulationList, MOD.mapSimulation);
-        MOD.log("timeslice simulations mapped");
+    MOD.events.on("state:simulationTimesliceLoaded", function (data) {
+        // Update module level state.
+        STATE.simulationList = _.map(data.simulationList, MOD.mapSimulation);
+        STATE.simulationSet = _.indexBy(STATE.simulationList, "id");
+        STATE.simulationHashSet = _.indexBy(STATE.simulationList, "hashid");
+        STATE.simulationUIDSet = _.indexBy(STATE.simulationList, "uid");
+        MOD.log("simulation timeslice: module state updated");
 
-        // Map jobs.
-        MOD.log("timeslice jobs = " + data.jobList.length);
-        data.jobList = _.map(data.jobList, MOD.mapJob);
-        MOD.log("timeslice jobs mapped");
-
-        // Map job periods.
-        MOD.log("timeslice job periods = " + data.jobPeriodList.length);
-        data.jobPeriodList = _.map(data.jobPeriodList, MOD.mapJobPeriod);
-        MOD.log("timeslice job periods mapped");
+        // Parse jobs.
+        MOD.parse(_.map(data.jobList, MOD.mapJob),
+                  _.map(data.jobPeriodList, MOD.mapJobPeriod));
+        MOD.log("simulation timeslice: parsed");
 
         // Update module state.
-        MOD.state.simulationList = data.simulationList;
-        MOD.state.simulationSet = _.indexBy(data.simulationList, "id");
-        MOD.state.simulationHashSet = _.indexBy(data.simulationList, "hashid");
-        MOD.state.simulationUIDSet = _.indexBy(data.simulationList, "uid");
-        MOD.log("timeslice assigned");
-
-        // Parse timeslice.
-        MOD.parseTimeslice(data.simulationList, data.jobList, data.jobPeriodList);
-        MOD.log("timeslice parsed");
-
-        // Update filtered simulations.
         MOD.updateFilteredSimulationList();
-
-        // Update active filter terms.
         MOD.updateActiveFilterTerms();
-
-        // Update pagination.
         MOD.updatePagination();
 
         // Fire event.
@@ -62,8 +44,24 @@
         }
     });
 
+    // Job timeslice loaded event handler.
+    // @data    Data loaded from remote server.
+    MOD.events.on("state:jobTimesliceLoaded", function (data) {
+        // Parse jobs.
+        MOD.parse(_.map(data.jobList, MOD.mapJob),
+                  _.map(data.jobPeriodList, MOD.mapJobPeriod));
+        MOD.log("job timeslice: parsed");
+
+        // Update module state.
+        MOD.updateFilteredSimulationList();
+        MOD.updateActiveFilterTerms();
+
+        // Fire event.
+        MOD.events.trigger("state:simulationListUpdate", this);
+    });
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.APP.modules.monitoring.state,
     this._
 ));

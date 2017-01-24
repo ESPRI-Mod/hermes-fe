@@ -53,7 +53,7 @@
         MOD.setCookie('filter-' + filter.cookieKey, filter.cvTerms.current.name);
 
         if (filterKey === 'timeslice') {
-            MOD.fetchTimeSlice(true);
+            MOD.fetchSimulationTimeSlice(true);
         } else {
             MOD.events.trigger('selectFilter:updated', filter);
         }

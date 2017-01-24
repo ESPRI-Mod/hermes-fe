@@ -33,7 +33,7 @@
         jList.push(data.job);
 
         // Parse event data.
-        MOD.parseEventData(s, jList, undefined);
+        MOD.parseWSEventData(s, jList, undefined);
 
         // Fire event.
         MOD.events.trigger("state:jobUpdate", _.extend(data, {
@@ -110,7 +110,7 @@
         MOD.state.simulationUIDSet = _.indexBy(MOD.state.simulationList, "uid");
 
         // Parse event data.
-        MOD.parseEventData(data.simulation, data.jobList, data.jobPeriod);
+        MOD.parseWSEventData(data.simulation, data.jobList, data.jobPeriod);
 
         // Update filtered simulations.
         MOD.updateFilteredSimulationList();
@@ -129,8 +129,8 @@
     // Wire upto events streaming over the web-socket channel.
     MOD.events.on("ws:jobComplete", processJobEvent);
     MOD.events.on("ws:jobError", processJobEvent);
-    MOD.events.on("ws:jobStart", processJobEvent);
     MOD.events.on("ws:jobPeriodUpdate", processJobPeriodEvent);
+    MOD.events.on("ws:jobStart", processJobEvent);
     MOD.events.on("ws:simulationComplete", processSimulationEvent);
     MOD.events.on("ws:simulationError", processSimulationEvent);
     MOD.events.on("ws:simulationStart", processSimulationEvent);
