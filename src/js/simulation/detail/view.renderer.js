@@ -15,7 +15,7 @@
         MOD.log("ui initialized");
 
         // Fire events.
-        MOD.events.trigger("ui:initialized");
+        MOD.events.trigger("view:initialized");
         APP.events.trigger("module:initialized", MOD);
     });
 

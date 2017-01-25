@@ -5,9 +5,11 @@
 
     // Parses module state.
     MOD.parse = function (jobList, jobPeriodList) {
+        MOD.events.trigger("simulationTimesliceParsing", this);
+
         // Extend simulations.
         _.each(STATE.simulationList, MOD.extendSimulation);
-        MOD.log("simulations extended");
+        MOD.events.trigger("simulationTimesliceExtended", this);
 
         // Parse data.
         _.each(jobList, function (j) {
@@ -16,15 +18,17 @@
         _.each(jobPeriodList, function (jp) {
             MOD.parseJobPeriod(STATE.simulationSet[jp.simulationID], jp);
         });
-        MOD.log("jobs parsed");
+        MOD.events.trigger("simulationTimesliceJobsParsed", this);
 
         // Set execution end dates.
         _.each(STATE.simulationList, MOD.setSimulationExecutionEndDate);
-        MOD.log("simulations end dates assigned");
+        MOD.events.trigger("simulationTimesliceEndDateAssigned", this);
 
         // Set execution states.
         _.each(STATE.simulationList, MOD.setSimulationExecutionState);
-        MOD.log("simulations compute state assigned");
+        MOD.events.trigger("simulationTimesliceExecutionStateAssigned", this);
+
+        MOD.events.trigger("simulationTimesliceParsed", this);
     };
 
     // Parses web-socket event data.

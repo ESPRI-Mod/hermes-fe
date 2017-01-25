@@ -126,11 +126,11 @@
             MOD.events.on("state:jobSetSorted", this._updateJobCollection, this);
 
             // Simulation update events.
-            MOD.events.on("state:simulationUpdate", this._updateCaption, this);
-            MOD.events.on("state:simulationUpdate", this._updateOverview, this);
-            MOD.events.on("state:simulationUpdate", this._updateJobCollections, this);
-            MOD.events.on("state:simulationUpdate", this._updateJobCounts, this);
-            MOD.events.on("state:simulationUpdate", this._updateNotification, this);
+            MOD.events.on("ws:simulationUpdate", this._updateCaption, this);
+            MOD.events.on("ws:simulationUpdate", this._updateOverview, this);
+            MOD.events.on("ws:simulationUpdate", this._updateJobCollections, this);
+            MOD.events.on("ws:simulationUpdate", this._updateJobCounts, this);
+            MOD.events.on("ws:simulationUpdate", this._updateNotification, this);
 
             // Job update events.
             MOD.events.on("state:jobListUpdate", this._updateOverview, this);
@@ -141,7 +141,7 @@
             MOD.events.on("state:jobListUpdate", this._updateNotification, this);
 
             // Web socket closed event.
-            MOD.events.on("ws:socketClosed", this._displayWebSocketClosedDialog, this);
+            MOD.events.on("ws:closed", this._displayWebSocketClosedDialog, this);
         },
 
         // Backbone: view renderer.

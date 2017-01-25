@@ -7,14 +7,6 @@
     MOD.fetchSimulationTimeSlice = function (triggerBackgroundEvents) {
         var ep;
 
-        // Signal that background processing is starting.
-        if (triggerBackgroundEvents === true) {
-            APP.events.trigger("module:processingStarts", {
-                module: MOD,
-                info: 'Fetching data'
-            });
-        }
-
         // Set fetch endpoint.
         ep = APP.utils.getEndPoint(MOD.urls.FETCH_TIMESLICE);
         ep  = ep.replace('{timeslice}', STATE.filters[0].cvTerms.current.name);
@@ -57,24 +49,32 @@
             ep += STATE.filters[6].cvTerms.current.name;
         }
 
-        // Fetch data from web-service.
-        MOD.log("simulations fetching begins");
-        $.getJSON(ep, function (data) {
-            // Signal that timeslice has been fetched.
-            MOD.log("simulations fetched");
-            MOD.events.trigger("state:simulationTimesliceLoaded", data);
+        // Buffer new web-socket events.
+        MOD.events.trigger("ws:buffering");
 
-            // Signal that background processing has ended.
+        // Signal that background processing is starting.
+        if (triggerBackgroundEvents === true) {
+            APP.events.trigger("module:processingStarts", {
+                module: MOD,
+                info: 'Fetching data'
+            });
+        }
+
+        // Fetch data from web-service.
+        MOD.events.trigger("simulationTimesliceFetching");
+        $.getJSON(ep, function (data) {
+            // Signal.
+            MOD.events.trigger("simulationTimesliceFetched", data);
+
+            // Signal (background processing has ended).
             if (triggerBackgroundEvents === true) {
                 setTimeout(function () {
                     APP.events.trigger("module:processingEnds");
                 }, 250);
             }
 
-            // Fetch full job timeslice (if necessary).
-            if (data.simulationList.length > 300) {
-                MOD.fetchJobTimeSlice(false);
-            }
+            // Fetch associated job timeslice.
+            MOD.fetchJobTimeSlice();
         });
     };
 
@@ -82,7 +82,14 @@
     MOD.fetchJobTimeSlice = function (triggerBackgroundEvents) {
         var ep;
 
-        // Signal that background processing is starting.
+        // Signal if no need to fetch as jobs for
+        // first 300 simulations are always fetched.
+        if (MOD.state.simulationList.length <= 300) {
+            MOD.events.trigger("ws:activating", this);
+            return;
+        }
+
+        // Signal (background processing).
         if (triggerBackgroundEvents === true) {
             APP.events.trigger("module:processingStarts", {
                 module: MOD,
@@ -95,11 +102,10 @@
         ep  = ep.replace('{timeslice}', STATE.filters[0].cvTerms.current.name);
 
         // Fetch data from web-service.
-        MOD.log("jobs fetching begins");
+        MOD.events.trigger("jobTimesliceFetching");
         $.getJSON(ep, function (data) {
             // Signal that timeslice has been fetched.
-            MOD.log("jobs fetched");
-            MOD.events.trigger("state:jobTimesliceLoaded", data);
+            MOD.events.trigger("jobTimesliceFetched", data);
 
             // Signal that background processing has ended.
             if (triggerBackgroundEvents === true) {

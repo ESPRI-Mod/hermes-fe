@@ -31,8 +31,8 @@
                 <%- filter.displayName %>
             </label>
             <select id="filter-selector-<%= filter.key %>"
-                    class="temporary <%= filter.isCustom ? 'custom-filter' : '' %>"
-                    style='width: 60%; font-size:0.9em;'>
+                    class="filter-selector  form-control <%= filter.isCustom ? 'custom-filter' : '' %>"
+                    style='width: 60%; font-size:0.9em;' disabled>
             </select>
         </div>
         <% }); %>
@@ -179,21 +179,21 @@
 <!-- Template: permalink table header row -->
 <script type="underscore/template" id="grid-pager-template">
 <span class='pull-right form-inline <%= paging.count < 2 ? '' : '' %>'>
-    <button type='button' class='btn btn-sm btn-default pagination-first'>
+    <button type='button' class='pagination-control btn btn-sm btn-default pagination-first'>
         <strong class="text-muted"><<</strong>
     </button>
-    <button type='button' class='btn btn-sm btn-default pagination-previous'>
+    <button type='button' class='pagination-control btn btn-sm btn-default pagination-previous'>
         <strong class="text-muted">&nbsp;&lt;&nbsp;</strong>
     </button>
-    <input type='text' class='pagination-info form-control input-sm'
+    <input type='text' class='pagination-control pagination-info form-control input-sm'
            placeholder="Page <%= paging.current ? paging.current.id : '0' %> of <%= paging.count %>">
-    <button type='button' class='btn btn-sm btn-default pagination-next'>
+    <button type='button' class='pagination-control btn btn-sm btn-default pagination-next'>
         <strong class="text-muted">&nbsp;&gt;&nbsp;</strong>
     </button>
-    <button type='button' class='btn btn-sm btn-default pagination-last'>
+    <button type='button' class='pagination-control btn btn-sm btn-default pagination-last'>
         <strong class="text-muted">>></strong>
     </button>
-    <select class="pagination-page-size form-control input-sm">
+    <select class="pagination-control pagination-page-size form-control input-sm">
         <% _.each(MOD.state.pageSizeOptions, function(pageSize) { %>
         <option value="<%= pageSize %>" <%= pageSize == MOD.state.pageSize ? "selected" : "" %>>
             <%= pageSize %> / page
@@ -347,14 +347,14 @@
 <div id="notification-info"
      class="monitoring-state-<%= simulation ? simulation.executionState : 'running' %>"
      style="padding: 12px 17px; margin-bottom: 2px; .border-radius( 5px );">
-    <strong>
+    <strong id="notification-text">
     <% if (simulation) { %>
         <%= eventTimestamp.slice(0, 19) %>&nbsp;::
         <%= eventTypeDescription %>&nbsp;::
         <a href="<%= simulationDetailURL %>" target="_blank"><%= simulation.name %></a>&nbsp;is
         <%= simulation.ext.executionState %>
     <% } else { %>
-        Awaiting simulation events ...
+        Downloading job history ...
     <% } %>
     </strong>
     <strong class='pull-right simulation-stats'>
@@ -419,19 +419,20 @@
 <script src="js/simulation/shared/utils.ws.js"></script>
 <script src="js/simulation/monitoring/init.js"></script>
 <script src="js/simulation/monitoring/cookies.js"></script>
+<script src="js/simulation/monitoring/logger.js"></script>
 <script src="js/simulation/monitoring/state.js"></script>
 <script src="js/simulation/monitoring/state.utils.1.js"></script>
 <script src="js/simulation/monitoring/state.utils.2.js"></script>
 <script src="js/simulation/monitoring/state.utils.3.js"></script>
 <script src="js/simulation/monitoring/fetch.js"></script>
+<script src="js/simulation/monitoring/fetch.events.js"></script>
 <script src="js/simulation/monitoring/data.extender.simulation.js"></script>
 <script src="js/simulation/monitoring/data.parser.js"></script>
 <script src="js/simulation/monitoring/data.mapper.js"></script>
-<script src="js/simulation/monitoring/events.fetch.js"></script>
-<script src="js/simulation/monitoring/events.ui.js"></script>
-<script src="js/simulation/monitoring/events.ws.js"></script>
 <script src="js/simulation/monitoring/view.js"></script>
 <script src="js/simulation/monitoring/view.renderer.js"></script>
+<script src="js/simulation/monitoring/view.events.js"></script>
+<script src="js/simulation/monitoring/ws.events.js"></script>
 
 </body>
 </html>

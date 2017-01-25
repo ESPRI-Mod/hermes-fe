@@ -58,7 +58,7 @@
                     pageNumber <= PAGING.pages.length &&
                     PAGING.current !== PAGING.pages[pageNumber - 1]) {
                     PAGING.current = PAGING.pages[pageNumber - 1];
-                    MOD.events.trigger('state:simulationPageUpdate');
+                    MOD.events.trigger('simulationPageUpdate');
                 }
             },
 
@@ -66,7 +66,7 @@
             'click .pagination-first' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.first(PAGING.pages)) {
                     PAGING.current = _.first(PAGING.pages);
-                    MOD.events.trigger('state:simulationPageUpdate');
+                    MOD.events.trigger('simulationPageUpdate');
                 }
             },
 
@@ -74,7 +74,7 @@
             'click .pagination-previous' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.first(PAGING.pages)) {
                     PAGING.current = PAGING.pages[PAGING.current.id - 2];
-                    MOD.events.trigger('state:simulationPageUpdate');
+                    MOD.events.trigger('simulationPageUpdate');
                 }
             },
 
@@ -82,7 +82,7 @@
             'click .pagination-next' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.last(PAGING.pages)) {
                     PAGING.current = PAGING.pages[PAGING.current.id];
-                    MOD.events.trigger('state:simulationPageUpdate');
+                    MOD.events.trigger('simulationPageUpdate');
                 }
             },
 
@@ -90,7 +90,7 @@
             'click .pagination-last' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.last(PAGING.pages)) {
                     PAGING.current = _.last(PAGING.pages);
-                    MOD.events.trigger('state:simulationPageUpdate');
+                    MOD.events.trigger('simulationPageUpdate');
                 }
             },
 
@@ -161,44 +161,45 @@
         // Backbone: view initializer.
         initialize : function () {
             // UI initialisation events.
-            MOD.events.on("ui:initialized", this._setSortColumn, this);
-            MOD.events.on("ui:initialized", function () {
+            MOD.events.on("view:initialized", this._setSortColumn, this);
+            MOD.events.on("view:initialized", function () {
                 _.each(MOD.state.filters, this._setFilterSelector, this);
             }, this);
 
             // Sorting events.
-            MOD.events.on("state:simulationListSortOrderChanging", this._clearSortColumn, this);
-            MOD.events.on("state:simulationListSortOrderChanged", this._setSortColumn, this);
-            MOD.events.on("state:simulationListSortOrderToggled", this._toggleSortColumn, this);
-            MOD.events.on("state:simulationListSorted", this._updateGrid, this);
-            MOD.events.on("state:simulationListSorted", this._updateGridPager, this);
+            MOD.events.on("simulationListSortOrderChanging", this._clearSortColumn, this);
+            MOD.events.on("simulationListSortOrderChanged", this._setSortColumn, this);
+            MOD.events.on("simulationListSortOrderToggled", this._toggleSortColumn, this);
+            MOD.events.on("simulationListSorted", this._updateGrid, this);
+            MOD.events.on("simulationListSorted", this._updateGridPager, this);
 
             // Pagination events.
-            MOD.events.on("state:simulationPageUpdate", this._updateGrid, this);
-            MOD.events.on("state:simulationPageUpdate", this._updateGridPager, this);
+            MOD.events.on("simulationPageUpdate", this._updateGrid, this);
+            MOD.events.on("simulationPageUpdate", this._updateGridPager, this);
 
             // Filter events.
-            MOD.events.on("state:filterOptionsUpdate", this._setFilterSelector, this);
-            MOD.events.on("state:filtersUpdated", this._updatePermlink, this);
+            MOD.events.on("filterOptionsUpdate", this._setFilterSelector, this);
+            MOD.events.on("filtersUpdated", this._updatePermlink, this);
 
-            // Simulation list filtered event.
-            MOD.events.on("state:simulationListUpdate", this._updateStatisticsInfo, this);
-            MOD.events.on("state:simulationListUpdate", this._updateGrid, this);
-            MOD.events.on("state:simulationListUpdate", this._updateGridPager, this);
+            // Job timeslice updated event.
+            MOD.events.on("jobTimesliceUpdated", this._updateGrid, this);
 
-            // Simulation update events.
-            MOD.events.on("state:simulationUpdate", this._updateNotificationInfo, this);
+            // Simulation timeslice updated event.
+            MOD.events.on("simulationTimesliceUpdated", this._updateStatisticsInfo, this);
+            MOD.events.on("simulationTimesliceUpdated", this._updateGrid, this);
+            MOD.events.on("simulationTimesliceUpdated", this._updateGridPager, this);
 
-            // Job update events.
-            MOD.events.on("state:jobUpdate", this._updateNotificationInfo, this);
-            MOD.events.on("state:jobUpdate", this._updateGridRow, this);
+            // Web-socket events.
+            MOD.events.on("ws:closed", this._displayWebSocketClosedDialog, this);
+            MOD.events.on("ws:activated", this._onWebSocketActivated, this);
+            MOD.events.on("ws:buffered", this._onWebSocketBuffered, this);
+            MOD.events.on("ws:jobUpdate", this._updateNotificationInfo, this);
+            MOD.events.on("ws:jobUpdate", this._updateGridRow, this);
+            MOD.events.on("ws:jobPeriodUpdate", this._updateNotificationInfo, this);
+            MOD.events.on("ws:jobPeriodUpdate", this._updateGridRow, this);
+            MOD.events.on("ws:simulationUpdate", this._updateNotificationInfo, this);
 
-            // Job period update events.
-            MOD.events.on("state:jobPeriodUpdate", this._updateNotificationInfo, this);
-            MOD.events.on("state:jobPeriodUpdate", this._updateGridRow, this);
-
-            // Other events.
-            MOD.events.on("ws:socketClosed", this._displayWebSocketClosedDialog, this);
+            // Inter-monitoring events.
             MOD.events.on("im:postInterMonitorForm", this._openInterMonitoringPage, this);
         },
 
@@ -210,8 +211,8 @@
                 "grid-template",
                 "im-context-menu-template",
                 "ws-close-dialog-template"
-                ], function (template) {
-                APP.utils.renderTemplate(template, MOD.state, this);
+                ], function (templateID) {
+                APP.utils.renderTemplate(templateID, MOD.state, this);
             }, this);
 
             return this;
@@ -296,12 +297,23 @@
         },
 
         _updatePermlink: function () {
-            MOD.log("permalink updated: " + MOD.getPersistentURL());
-            $("#permalink").val(MOD.getPersistentURL());
+            var permalink = MOD.getPersistentURL();
+            $("#permalink").val(permalink);
+            MOD.events.trigger("view:permalinkUpdated", permalink);
         },
 
         _displayWebSocketClosedDialog: function () {
             this.$('#ws-close-dialog').modal('show');
+        },
+
+        _onWebSocketActivated: function () {
+            this.$('#notification-text').text('Awaiting Simulation Events ...');
+            this.$('.filter-selector').attr("disabled", false);
+        },
+
+        _onWebSocketBuffered: function () {
+            this.$('#notification-text').text('Downloading job history ... ');
+            this.$('.filter-selector').attr("disabled", true);
         },
 
         _openInterMonitoringPage: function (urls) {

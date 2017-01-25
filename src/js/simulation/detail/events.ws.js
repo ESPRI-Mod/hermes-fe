@@ -1,10 +1,30 @@
-(function (MOD, _) {
+(function (APP, MOD, $, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     var processJobEvent,
         processSimulationEvent;
+
+    // Wire upto events streaming over the web-socket channel.
+    MOD.events.on("ws:jobComplete", processJobEvent);
+    MOD.events.on("ws:jobError", processJobEvent);
+    MOD.events.on("ws:jobStart", processJobEvent);
+    MOD.events.on("ws:simulationComplete", processSimulationEvent);
+    MOD.events.on("ws:simulationError", processSimulationEvent);
+    MOD.events.on("ws:simulationStart", processSimulationEvent);
+
+    // Event handler: websocket initialized.
+    MOD.events.on("ws:initialized", function () {
+        var ep;
+
+        // Load cv data & fire event.
+        ep = APP.utils.getEndPoint(MOD.urls.FETCH_CV);
+        $.getJSON(ep, function (data) {
+            MOD.log("cv fetched");
+            MOD.events.trigger("cv:dataFetched", data);
+        });
+    });
 
     // Job event handler.
     // @data    Event information received from server.
@@ -50,18 +70,12 @@
         MOD.state.simulation = data.simulation;
 
         // Fire events.
-        MOD.events.trigger("state:simulationUpdate", data);
+        MOD.events.trigger("ws:simulationUpdate", data);
     };
 
-    // Wire upto events streaming over the web-socket channel.
-    MOD.events.on("ws:jobComplete", processJobEvent);
-    MOD.events.on("ws:jobError", processJobEvent);
-    MOD.events.on("ws:jobStart", processJobEvent);
-    MOD.events.on("ws:simulationComplete", processSimulationEvent);
-    MOD.events.on("ws:simulationError", processSimulationEvent);
-    MOD.events.on("ws:simulationStart", processSimulationEvent);
-
 }(
+    this.APP,
     this.APP.modules.monitoring,
+    this.$,
     this._
 ));

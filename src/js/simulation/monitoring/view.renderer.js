@@ -3,8 +3,12 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Event handler: setup complete.
-    MOD.events.on("setup:complete", function () {
+    // Event handler: simulation list initialized.
+    MOD.events.on("simulationTimesliceUpdated", function () {
+        // Escape if already rendered.
+        if (MOD.view) {
+            return;
+        }
 
         // Render main view.
         MOD.view = new MOD.views.MainView();
@@ -12,10 +16,9 @@
 
         // Update DOM.
         $(".app-content").append(MOD.view.$el);
-        MOD.log("ui initialized");
 
         // Fire events.
-        MOD.events.trigger("ui:initialized");
+        MOD.events.trigger("view:initialized");
         APP.events.trigger("module:initialized", MOD);
     });
 

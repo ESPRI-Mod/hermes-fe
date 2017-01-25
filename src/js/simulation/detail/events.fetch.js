@@ -5,7 +5,7 @@
 
     // Controlled vocabularies loaded event handler.
     // @data     Data loaded from remote server.
-    MOD.events.on("setup:cvDataLoaded", function (data) {
+    MOD.events.on("cv:dataFetched", function (data) {
         var ep;
 
         // Update module state.

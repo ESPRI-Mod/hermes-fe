@@ -1,17 +1,18 @@
-(function (APP, MOD, _, moment) {
+(function (APP, MOD, $, _, moment) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Forward declare.
-    var processJobEvent,
-        processJobPeriodEvent,
-        processSimulationEvent;
+    // Event handler: websocket initialized.
+    var onInitializationEvent = function () {
+        $.getJSON(APP.utils.getEndPoint(MOD.urls.FETCH_CV), function (data) {
+            MOD.events.trigger("cv:dataFetched", data);
+        });
+    };
 
-
-    // Job event handler.
+    // Event handler: job start/complete/error.
     // @data    Event information received from server.
-    processJobEvent = function (data) {
+    var onJobEvent = function (data) {
         var s, jList;
 
         // Map event data.
@@ -22,8 +23,8 @@
             return;
         }
 
-        // Log event processing.
-        MOD.log("WS :: job event processing");
+        // Signal.
+        MOD.events.trigger("ws:jobUpdating");
 
         // Update module state.
         s = MOD.state.simulationSet[data.job.simulationID];
@@ -36,14 +37,14 @@
         MOD.parseWSEventData(s, jList, undefined);
 
         // Fire event.
-        MOD.events.trigger("state:jobUpdate", _.extend(data, {
+        MOD.events.trigger("ws:jobUpdate", _.extend(data, {
             simulation: s
         }));
     };
 
     // Job period event handler.
     // @data    Event information received from server.
-    processJobPeriodEvent = function (data) {
+    var onJobPeriodUpdate = function (data) {
         var s, wasParsed;
 
         // Escape if simulation is not in memory.
@@ -51,8 +52,8 @@
             return;
         }
 
-        // Log event processing.
-        MOD.log("WS :: job period event processing");
+        // Signal.
+        MOD.events.trigger("ws:jobPeriodUpdating");
 
         // Parse job period.
         s = MOD.state.simulationUIDSet[data.simulationUID];
@@ -60,15 +61,15 @@
 
         // Fire event.
         if (wasParsed) {
-            MOD.events.trigger("state:jobPeriodUpdate", _.extend(data, {
+            MOD.events.trigger("ws:jobPeriodUpdate", _.extend(data, {
                 simulation: s
             }));
         }
     };
 
-    // Simulation event handler.
+    // Event handler: simulation start/complete/error.
     // @data    Event information received from server.
-    processSimulationEvent = function (data) {
+    var onSimulationEvent = function (data) {
         var relatedSimulation;
 
         // Escape if a later try is already in memory.
@@ -79,8 +80,8 @@
             }
         }
 
-        // Log event processing.
-        MOD.log("WS :: simulation event processing");
+        // Signal.
+        MOD.events.trigger("ws:simulationUpdating");
 
         // Map jobs.
         data.jobList = _.map(data.jobList, MOD.mapJob);
@@ -122,23 +123,24 @@
         MOD.updatePagination(MOD.state.paging.current);
 
         // Fire events.
-        MOD.events.trigger("state:simulationUpdate", data);
-        MOD.events.trigger("state:simulationListUpdate");
+        MOD.events.trigger("ws:simulationUpdate", data);
+        MOD.events.trigger("simulationTimesliceUpdated");
     };
 
-    // Wire upto events streaming over the web-socket channel.
-    MOD.events.on("ws:jobComplete", processJobEvent);
-    MOD.events.on("ws:jobError", processJobEvent);
-    MOD.events.on("ws:jobPeriodUpdate", processJobPeriodEvent);
-    MOD.events.on("ws:jobStart", processJobEvent);
-    MOD.events.on("ws:simulationComplete", processSimulationEvent);
-    MOD.events.on("ws:simulationError", processSimulationEvent);
-    MOD.events.on("ws:simulationStart", processSimulationEvent);
+    // Map events to handlers.
+    MOD.events.on("ws:initialized", onInitializationEvent);
+    MOD.events.on("ws:jobComplete", onJobEvent);
+    MOD.events.on("ws:jobError", onJobEvent);
+    MOD.events.on("ws:jobPeriodUpdate", onJobPeriodUpdate);
+    MOD.events.on("ws:jobStart", onJobEvent);
+    MOD.events.on("ws:simulationComplete", onSimulationEvent);
+    MOD.events.on("ws:simulationError", onSimulationEvent);
+    MOD.events.on("ws:simulationStart", onSimulationEvent);
 
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.$,
     this._,
-    this.moment,
-    this.numeral
+    this.moment
 ));

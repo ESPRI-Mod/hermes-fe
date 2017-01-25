@@ -18,7 +18,7 @@
         MOD.setCookie('filter-' + filter.cookieKey, filter.cvTerms.current.name);
 
         // Fire event.
-        MOD.events.trigger("state:simulationListUpdate");
+        MOD.events.trigger("simulationTimesliceUpdated");
     });
 
     // Apply text filter event handler.
@@ -38,7 +38,7 @@
         MOD.updatePagination();
 
         // Fire event.
-        MOD.events.trigger("state:simulationListUpdate");
+        MOD.events.trigger("simulationTimesliceUpdated");
     });
 
     // Apply filter event handler.
@@ -53,7 +53,7 @@
         MOD.updatePagination();
 
         // Fire event.
-        MOD.events.trigger("state:simulationListUpdate");
+        MOD.events.trigger("simulationTimesliceUpdated");
     });
 
 }(

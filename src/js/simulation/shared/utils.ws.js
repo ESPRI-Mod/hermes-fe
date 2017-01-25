@@ -3,45 +3,27 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Forward declare variables.
-    var buffering = true,
-        buffer = [],
-        dispatchEvent,
-        ws,
-        log,
-        onOpen,
-        onClosed,
-        onMessage,
-        onError;
+    // Flag controlling whether events are buffered or not.
+    var buffering = true;
 
-    // Logging helper function.
-    log = function (msg) {
-        MOD.log("WS :: " + msg);
-    };
+    // Event buffer.
+    var buffer = [];
 
-    // Send a ws event module notification.
-    dispatchEvent = function (ei) {
+    // Web-socket channel.
+    var channel;
+
+    // Sends a ws event module notification.
+    var dispatchEvent = function (ei) {
         MOD.events.trigger("ws:" + ei.eventType, ei);
     };
 
-    // On ws connection opened event handler.
-    onOpen = function () {
-        log("connection opened");
-    };
-
-    // On ws connection closed event handler.
-    onClosed = function () {
-        log("connection closed");
-        MOD.events.trigger("ws:socketClosed");
-    };
-
-    // On ws message received event handler.
-    onMessage = function (e) {
+    // On channel message received event handler.
+    var onMessage = function (e) {
         var ei;
 
-        // Filter out keep-alive pongs.
+        // Skip keep-alive pongs.
         if (e.data === "pong") {
-            log("PONG PONG PONG");
+            MOD.events.trigger("ws:ponged");
             return;
         }
 
@@ -49,16 +31,11 @@
         ei = JSON.parse(e.data);
 
         // Send module notifcation.
-        if (buffering) {
+        if (buffering === true) {
             buffer.push(ei);
         } else {
             dispatchEvent(ei);
         }
-    };
-
-    // On ws error event handler.
-    onError = function (e) {
-        log("ws error :: {0}".replace("{0}", e.data));
     };
 
     // Expose web socket related functions.
@@ -67,28 +44,51 @@
         connect: function (simulationUID) {
             var ep;
 
-            // Create socket.
+            // Create channel.
             ep = APP.utils.getEndPoint(MOD.urls.WS_ALL, APP.constants.protocols.WS);
             if (simulationUID) {
                 ep += "?simulationUID=" + simulationUID;
             }
-            log("binding to :: {0}.".replace('{0}', ep));
-            ws = new WebSocket(ep);
+            channel = new WebSocket(ep);
 
             // Bind socket event listeners.
-            ws.onerror = onError;
-            ws.onopen = onOpen;
-            ws.onclose = onClosed;
-            ws.onmessage = onMessage;
+            channel.onerror = function (e) {
+                MOD.events.trigger("ws:error", e);
+            };
+            channel.onopen = function () {
+                MOD.events.trigger("ws:opened");
+            };
+            channel.onclose = function () {
+                MOD.events.trigger("ws:closed");
+            };
+            channel.onmessage = onMessage;
 
             // Fire event.
-            log("initialized");
-            MOD.events.trigger("ws:initialized");
+            MOD.events.trigger("ws:initialized", ep);
         }
     };
 
-    // UI initialized event handler.
-    MOD.events.on("ui:initialized", function () {
+    // Web socket buffering event handler.
+    MOD.events.on("ws:buffering", function () {
+        // Escape if already buffering.
+        if (buffering === true) {
+            return;
+        };
+
+        // Recomment buffering.
+        buffering = true;
+
+        // Fire event.
+        MOD.events.trigger("ws:buffered");
+    });
+
+    // Web socket activating event handler.
+    MOD.events.on("ws:activating", function () {
+        // Escape if already activated.
+        if (buffering === false) {
+            return;
+        };
+
         // Stop buffering.
         buffering = false;
 
@@ -97,18 +97,31 @@
 
         // Reset buffer.
         buffer = [];
+
+        // Fire event.
+        MOD.events.trigger("ws:activated");
     });
 
-    // Event handler: websocket initialized.
-    MOD.events.on("ws:initialized", function () {
-        var ep;
-
-        // Load cv data & fire event.
-        ep = APP.utils.getEndPoint(MOD.urls.FETCH_CV);
-        $.getJSON(ep, function (data) {
-            MOD.log("cv fetched");
-            MOD.events.trigger("setup:cvDataLoaded", data);
-        });
+    MOD.events.on("ws:activated", function () {
+        MOD.log("WS: channel activated");
+    });
+    MOD.events.on("ws:buffered", function () {
+        MOD.log("WS: events buffered");
+    });
+    MOD.events.on("ws:closed", function () {
+        MOD.log("WS: channel closed");
+    });
+    MOD.events.on("ws:error", function (e) {
+        MOD.log("WS: ERROR !!! {0}".replace("{0}", e.data));
+    });
+    MOD.events.on("ws:initialized", function (ep) {
+        MOD.log("WS: channel initialized: {0}".replace("{0}", ep));
+    });
+    MOD.events.on("ws:opened", function () {
+        MOD.log("WS: channel opened");
+    });
+    MOD.events.on("ws:ponged", function () {
+        MOD.log("WS: PONG PONG PONG");
     });
 
 }(

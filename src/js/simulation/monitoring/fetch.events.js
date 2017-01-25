@@ -3,61 +3,57 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Controlled vocabularies loaded event handler.
-    // @data    Data loaded from remote server.
-    MOD.events.on("setup:cvDataLoaded", function (data) {
+    // Controlled vocabularies fetched event handler.
+    // @data    Data fetched from remote server.
+    MOD.events.on("cv:dataFetched", function (data) {
         // Update module state.
         STATE.cvTerms = APP.utils.parseCVTerms(data.cvTerms);
 
         // Initialise filter cv terms sets.
-        MOD.initFilterCvTermsets();
+        MOD.initFilterCVTermsets();
 
         // Fetch simulation timeslice.
         MOD.fetchSimulationTimeSlice();
     });
 
-    // Simulation timeslice loaded event handler.
-    // @data    Data loaded from remote server.
-    MOD.events.on("state:simulationTimesliceLoaded", function (data) {
-        // Update module level state.
+    // Simulation timeslice fetched event handler.
+    // @data    Data fetched from remote server.
+    MOD.events.on("simulationTimesliceFetched", function (data) {
+        // Update simulations.
         STATE.simulationList = _.map(data.simulationList, MOD.mapSimulation);
         STATE.simulationSet = _.indexBy(STATE.simulationList, "id");
         STATE.simulationHashSet = _.indexBy(STATE.simulationList, "hashid");
         STATE.simulationUIDSet = _.indexBy(STATE.simulationList, "uid");
-        MOD.log("simulation timeslice: module state updated");
+        MOD.events.trigger("simulationTimesliceAssigned", this);
 
         // Parse jobs.
         MOD.parse(_.map(data.jobList, MOD.mapJob),
                   _.map(data.jobPeriodList, MOD.mapJobPeriod));
-        MOD.log("simulation timeslice: parsed");
 
-        // Update module state.
+        // Update related state.
         MOD.updateFilteredSimulationList();
         MOD.updateActiveFilterTerms();
         MOD.updatePagination();
 
         // Fire event.
-        if (MOD.view) {
-            MOD.events.trigger("state:simulationListUpdate", this);
-        } else {
-            MOD.events.trigger("setup:complete", this);
-        }
+        MOD.events.trigger("simulationTimesliceUpdated", this);
     });
 
-    // Job timeslice loaded event handler.
-    // @data    Data loaded from remote server.
-    MOD.events.on("state:jobTimesliceLoaded", function (data) {
+    // Job timeslice fetched event handler.
+    // @data    Data fetched from remote server.
+    MOD.events.on("jobTimesliceFetched", function (data) {
         // Parse jobs.
         MOD.parse(_.map(data.jobList, MOD.mapJob),
                   _.map(data.jobPeriodList, MOD.mapJobPeriod));
-        MOD.log("job timeslice: parsed");
+        MOD.events.trigger("jobTimesliceParsed", this);
 
-        // Update module state.
+        // Update related state.
         MOD.updateFilteredSimulationList();
         MOD.updateActiveFilterTerms();
 
-        // Fire event.
-        MOD.events.trigger("state:simulationListUpdate", this);
+        // Signal.
+        MOD.events.trigger("jobTimesliceUpdated", this);
+        MOD.events.trigger("ws:activating", this);
     });
 }(
     this.APP,

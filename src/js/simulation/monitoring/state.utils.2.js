@@ -85,9 +85,9 @@
         // Update sort fields.
         if (MOD.state.sorting.field === sortField) {
             MOD.state.sorting.direction = (MOD.state.sorting.direction === 'asc' ? 'desc' : 'asc');
-            MOD.events.trigger('state:simulationListSortOrderToggled');
+            MOD.events.trigger('simulationListSortOrderToggled');
         } else {
-            MOD.events.trigger('state:simulationListSortOrderChanging');
+            MOD.events.trigger('simulationListSortOrderChanging');
             MOD.state.sorting.field = sortField;
 
             if (_.contains(['executionStartDate', 'executionEndDate'], sortField)) {
@@ -95,7 +95,7 @@
             } else {
                 MOD.state.sorting.direction = 'asc';
             }
-            MOD.events.trigger('state:simulationListSortOrderChanged');
+            MOD.events.trigger('simulationListSortOrderChanged');
         }
 
         // Update cookies.
@@ -105,7 +105,7 @@
         // Apply new sort field.
         MOD.state.simulationListFiltered = MOD.sortSimulationList(MOD.state.simulationListFiltered);
         MOD.updatePagination();
-        MOD.events.trigger('state:simulationListSorted');
+        MOD.events.trigger('simulationListSorted');
     };
 
     // Sets the paging state.

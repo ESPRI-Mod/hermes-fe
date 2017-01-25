@@ -4,7 +4,7 @@
     "use strict";
 
     // Initializes filter cv termsets.
-    MOD.initFilterCvTermsets = function () {
+    MOD.initFilterCVTermsets = function () {
         // Push terms into filters.
         _.each(MOD.state.cvTerms, function (term) {
             if (_.has(MOD.state.filterSet, term.typeof)) {
@@ -95,11 +95,15 @@
             });
 
             // Fire event.
-            MOD.events.trigger("state:filterOptionsUpdate", filter);
+            if (MOD.view) {
+                MOD.events.trigger("filterOptionsUpdate", filter);
+            }
         });
 
         // Fire event.
-        MOD.events.trigger("state:filtersUpdated");
+        if (MOD.view) {
+            MOD.events.trigger("filtersUpdated");
+        }
     };
 
 }(
