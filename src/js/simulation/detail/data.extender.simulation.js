@@ -5,7 +5,6 @@
 
     // Set simulation job collections.
     MOD.extendSimulation01 = function (s) {
-        s.hasMonitoring = s.accountingProject === 'cmip5' || false;
         s.jobs = {
             all: [],
             compute: {

@@ -88,15 +88,6 @@
         default:
             break;
         }
-
-        // Set flag indicating whether the simulation has a monitoring job.
-        if (s.hasMonitoring === false &&
-            j.typeof === 'p' &&
-            j.isIM === true &&
-            j.executionEndDate &&
-            j.isError === false) {
-            s.hasMonitoring = true;
-        }
     };
 
     // Parses a job period in readiness for further processing.

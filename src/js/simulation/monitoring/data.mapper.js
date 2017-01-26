@@ -13,9 +13,8 @@
             id: i[3],
             isComputeEnd: i[4] === 1,
             isError: i[5] === 1,
-            isIM: i[6] === 1,
-            simulationID: i[8],
-            typeof: i[7],
+            simulationID: i[7],
+            typeof: i[6],
             ext: {}
         };
     };
@@ -50,7 +49,8 @@
             tryID: i[15],
             uid: i[16],
             outputStartDate: i[17],
-            outputEndDate: i[18]
+            outputEndDate: i[18],
+            isIM: i[19] === 1
         };
     };
 

@@ -307,14 +307,14 @@
         <% } %>
     </td>
     <td class="text-center monitoring">
-        <% if (s.hasMonitoring) { %>
+        <% if (s.isIM) { %>
             <span><small><strong>M</strong></small></span>
         <% } else { %>
             --
         <% } %>
     </td>
     <td class="text-center inter-monitoring">
-        <% if (s.hasMonitoring) { %>
+        <% if (s.isIM) { %>
             <input type="checkbox" <% s.ext.isSelectedForIM ? 'checked' : '' %>></input>
         <% } else { %>
             <span >--</span>
