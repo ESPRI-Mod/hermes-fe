@@ -19,42 +19,19 @@
     // Simulation timeslice fetched event handler.
     // @data    Data fetched from remote server.
     MOD.events.on("simulationTimesliceFetched", function (data) {
-        // Update simulations.
+        // Update state.
         STATE.simulationList = _.map(data.simulationList, MOD.mapSimulation);
         STATE.simulationSet = _.indexBy(STATE.simulationList, "id");
         STATE.simulationHashSet = _.indexBy(STATE.simulationList, "hashid");
         STATE.simulationUIDSet = _.indexBy(STATE.simulationList, "uid");
-        MOD.events.trigger("simulationTimesliceAssigned", this);
-
-        // Parse jobs.
-        MOD.parse(_.map(data.jobList, MOD.mapJob),
-                  _.map(data.jobPeriodList, MOD.mapJobPeriod));
-
-        // Update related state.
-        MOD.updateFilteredSimulationList();
-        MOD.updateActiveFilterTerms();
-        MOD.updatePagination();
-
-        // Fire event.
-        MOD.events.trigger("simulationTimesliceUpdated", this);
-    });
-
-    // Job timeslice fetched event handler.
-    // @data    Data fetched from remote server.
-    MOD.events.on("jobTimesliceFetched", function (data) {
-        // Parse jobs.
-        MOD.parse(_.map(data.jobList, MOD.mapJob),
-                  _.map(data.jobPeriodList, MOD.mapJobPeriod));
-        MOD.events.trigger("jobTimesliceParsed", this);
-
-        // Update related state.
-        MOD.updateFilteredSimulationList();
-        MOD.updateActiveFilterTerms();
+        STATE.jobCounts = _.map(data.jobCounts, MOD.mapJobCount);
+        STATE.latestComputeJobs = _.map(data.latestComputeJobs, MOD.mapComputeJob);
+        STATE.jobPeriodList = _.map(data.jobPeriodList, MOD.mapJobPeriod);
 
         // Signal.
-        MOD.events.trigger("jobTimesliceUpdated", this);
-        MOD.events.trigger("ws:activating", this);
+        MOD.events.trigger("simulationTimesliceAssigned", this);
     });
+
 }(
     this.APP,
     this.APP.modules.monitoring,

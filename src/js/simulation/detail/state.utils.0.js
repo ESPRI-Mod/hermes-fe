@@ -128,8 +128,8 @@
 
         // Escape if non-derivable.
         if (s.executionEndDate ||
-            s.jobs.compute.all.length === 0 ||
-            s.jobs.postProcessing.all.length === 0) {
+            s.jobCounts.c.all === 0 ||
+            s.jobCounts.p.all === 0) {
             return;
         }
 
@@ -143,7 +143,6 @@
         // Override compute job execution state when a later job has started.
         var lastJob = _.last(s.jobs.compute.allUnsorted);
         _.each(s.jobs.compute.allUnsorted, function (job) {
-            // Another compute job ran afterwards.
             if (job != lastJob) {
                 if (job.executionState === 'running') {
                     job.executionState = 'complete';

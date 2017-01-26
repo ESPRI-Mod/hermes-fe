@@ -83,6 +83,12 @@
         // Current text filter value.
         textFilter: undefined,
 
+        // Job counts grouped by simulation, job type, job state.
+        jobCounts: [],
+
+        // Latest compute jobs.
+        latestComputeJobs: [],
+
         // Current simulation being processed.
         simulation: null,
 

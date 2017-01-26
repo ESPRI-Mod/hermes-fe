@@ -32,7 +32,7 @@
             </label>
             <select id="filter-selector-<%= filter.key %>"
                     class="filter-selector  form-control <%= filter.isCustom ? 'custom-filter' : '' %>"
-                    style='width: 60%; font-size:0.9em;' disabled>
+                    style='width: 60%; font-size:0.9em;'>
             </select>
         </div>
         <% }); %>
@@ -233,27 +233,27 @@
             <%= s.tryID %>
         </small>
     </td>
-    <td class="text-center compute-job-count <%= s.jobs.compute.error.length ? 'bg-danger' : ''%>"
-        title="Running = <%= s.jobs.compute.running.length %> | Complete = <%= s.jobs.compute.complete.length %> | Error = <%= s.jobs.compute.error.length %>">
+    <td class="text-center compute-job-count <%= s.jobCounts.c.e ? 'bg-danger' : ''%>"
+        title="Running = <%= s.jobCounts.c.r %> | Complete = <%= s.jobCounts.c.c %> | Error = <%= s.jobCounts.c.e %>">
         <small>
-            <% if (s.jobs.all.length === 0) { %>
+            <% if (s.jobCounts.all === 0) { %>
                 --
             <% } else { %>
-                <%= s.jobs.compute.running.length %> |
-                <%= s.jobs.compute.complete.length %> |
-                <%= s.jobs.compute.error.length %>
+                <%= s.jobCounts.c.r %> |
+                <%= s.jobCounts.c.c %> |
+                <%= s.jobCounts.c.e %>
             <% } %>
         </small>
     </td>
-    <td class="text-center post-processing-job-count <%= s.jobs.postProcessing.error.length ? 'bg-danger' : ''%>"
-        title="Running = <%= s.jobs.postProcessing.running.length %> | Complete = <%= s.jobs.postProcessing.complete.length %> | Error = <%= s.jobs.postProcessing.error.length %>">
+    <td class="text-center post-processing-job-count <%= s.jobCounts.p.e ? 'bg-danger' : ''%>"
+        title="Running = <%= s.jobCounts.p.r %> | Complete = <%= s.jobCounts.p.c %> | Error = <%= s.jobCounts.p.e %>">
         <small>
-            <% if (s.jobs.all.length === 0) { %>
+            <% if (s.jobCounts.all === 0) { %>
                 --
             <% } else { %>
-                <%= s.jobs.postProcessing.running.length %> |
-                <%= s.jobs.postProcessing.complete.length %> |
-                <%= s.jobs.postProcessing.error.length %>
+                <%= s.jobCounts.p.r %> |
+                <%= s.jobCounts.p.c %> |
+                <%= s.jobCounts.p.e %>
             <% } %>
         </small>
     </td>
@@ -282,8 +282,8 @@
             <%= s.ext.space %>
         </small>
     </td>
-    <td class="text-center" title="<%= APP.utils.renderDate(s.outputStartDate) %> - <%= APP.utils.renderDate(s.outputEndDate) %>">
-        <% if (s.jobs.all.length === 0) { %>
+    <td class="text-center">
+        <% if (s.jobCounts.all === 0) { %>
             <small>--</small>
         <% } else if (s.ext.executionProgress === 0) { %>
             <small>--</small>
@@ -415,12 +415,12 @@
 <script src="js/simulation/shared/main.js"></script>
 <script src="js/simulation/shared/utils.cv.js"></script>
 <script src="js/simulation/shared/utils.im.js"></script>
-<script src="js/simulation/shared/utils.state.js"></script>
 <script src="js/simulation/shared/utils.ws.js"></script>
 <script src="js/simulation/monitoring/init.js"></script>
 <script src="js/simulation/monitoring/cookies.js"></script>
 <script src="js/simulation/monitoring/logger.js"></script>
 <script src="js/simulation/monitoring/state.js"></script>
+<script src="js/simulation/monitoring/state.utils.0.js"></script>
 <script src="js/simulation/monitoring/state.utils.1.js"></script>
 <script src="js/simulation/monitoring/state.utils.2.js"></script>
 <script src="js/simulation/monitoring/state.utils.3.js"></script>

@@ -53,16 +53,6 @@
         MOD.log("STS: parsed");
     });
 
-    MOD.events.on("jobTimesliceFetching", function () {
-        MOD.log("JTS: fetching begins");
-    });
-    MOD.events.on("jobTimesliceFetched", function () {
-        MOD.log("JTS: fetched");
-    });
-    MOD.events.on("jobTimesliceParsed", function () {
-        MOD.log("JTS: parsed");
-    });
-
 }(
     this.APP,
     this.APP.modules.monitoring,

@@ -89,12 +89,6 @@
         } else {
             MOD.events.trigger('simulationListSortOrderChanging');
             MOD.state.sorting.field = sortField;
-
-            if (_.contains(['executionStartDate', 'executionEndDate'], sortField)) {
-                MOD.state.sorting.direction = 'desc';
-            } else {
-                MOD.state.sorting.direction = 'asc';
-            }
             MOD.events.trigger('simulationListSortOrderChanged');
         }
 

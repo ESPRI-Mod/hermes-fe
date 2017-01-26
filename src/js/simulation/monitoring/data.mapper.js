@@ -3,19 +3,26 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Returns a job object mapped form an array of values.
-    MOD.mapJob = function (i) {
+    // Maps a compute job.
+    MOD.mapComputeJob = function (i) {
         return {
-            executionEndDate: i[0],
-            executionStartDate: i[1],
-            executionState: i[5] === 1 ? 'error' : i[0] ? 'complete' : 'running',
-            executionState1: i[2],
-            id: i[3],
-            isComputeEnd: i[4] === 1,
-            isError: i[5] === 1,
-            simulationID: i[7],
-            typeof: i[6],
-            ext: {}
+            simulationID: i[0],
+            executionState: i[4] === 1 ? 'error' : i[6] ? 'complete' : 'running',
+            isComputeEnd: i[3] === 1,
+            isError: i[4] === 1,
+            typeof: i[1],
+            executionStartDate: i[5],
+            executionEndDate: i[6]
+        };
+    };
+
+    // Returns a job count object mapped form an array of values.
+    MOD.mapJobCount = function (i) {
+        return {
+            simulationID: i[0],
+            jobType: i[1],
+            jobState: i[2],
+            count: i[3]
         };
     };
 

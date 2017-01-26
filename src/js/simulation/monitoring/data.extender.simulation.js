@@ -22,6 +22,21 @@
                 running: []
             }
         };
+        s.jobCounts = {
+            all: 0,
+            c: {
+                all: 0,
+                c: 0,
+                r: 0,
+                e: 0
+            },
+            p: {
+                all: 0,
+                c: 0,
+                r: 0,
+                e: 0
+            }
+        }
     };
 
     // Sets simulation default values.
@@ -39,6 +54,7 @@
                 experiment: undefined,
                 isSelectedForIM: false,
                 isRestart: s.tryID > 1,
+                latestComputeJob: undefined,
                 model: undefined,
                 modelSynonyms: [],
                 name: s.name.trim().toLowerCase(),

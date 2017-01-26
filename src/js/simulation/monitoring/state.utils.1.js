@@ -1,4 +1,4 @@
-(function (APP, MOD, _) {
+(function (APP, MOD, STATE, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -6,17 +6,17 @@
     // Initializes filter cv termsets.
     MOD.initFilterCVTermsets = function () {
         // Push terms into filters.
-        _.each(MOD.state.cvTerms, function (term) {
-            if (_.has(MOD.state.filterSet, term.typeof)) {
-                MOD.state.filterSet[term.typeof].cvTerms.all.push(term);
-                MOD.state.filterSet[term.typeof].cvTerms.active.push(term);
+        _.each(STATE.cvTerms, function (term) {
+            if (_.has(STATE.filterSet, term.typeof)) {
+                STATE.filterSet[term.typeof].cvTerms.all.push(term);
+                STATE.filterSet[term.typeof].cvTerms.active.push(term);
             } else {
                 MOD.logWarning("SUPERFLUOS TERM :: " + term.typeof + " :: " + term.name);
             }
         });
 
         // Set global filter.
-        _.each(MOD.state.filters, function (f) {
+        _.each(STATE.filters, function (f) {
             var term;
             term = {
                 typeof: f.cvType,
@@ -37,7 +37,7 @@
         });
 
         // Set current term.
-        _.each(MOD.state.filters, function (f) {
+        _.each(STATE.filters, function (f) {
             f.cvTerms.current = _.find(f.cvTerms.all, function (term) {
                 return term.name === f.initialValue;
             });
@@ -48,7 +48,7 @@
     MOD.updateSelectFilterValue = function (filterKey, filterOption) {
         var filter;
 
-        filter = _.find(MOD.state.filters, function (f) {
+        filter = _.find(STATE.filters, function (f) {
             return f.key === filterKey;
         });
         filter.cvTerms.current = _.find(filter.cvTerms.all, function (t) {
@@ -66,7 +66,7 @@
 
     // Updates set of active cv terms used to filter simulation list.
     MOD.updateActiveFilterTerms = function () {
-        _.each(MOD.state.filters, function (filter) {
+        _.each(STATE.filters, function (filter) {
             var simulationList,
                 activeTermNames;
 
@@ -77,7 +77,7 @@
 
             // Set target simulation list.
             if (filter.cvTerms.current.name === '*') {
-                simulationList = MOD.state.simulationListFiltered;
+                simulationList = STATE.simulationListFiltered;
             } else {
                 simulationList = MOD.getFilteredSimulationList(filter);
             }
@@ -109,5 +109,6 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.APP.modules.monitoring.state,
     this._
 ));

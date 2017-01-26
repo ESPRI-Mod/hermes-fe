@@ -129,13 +129,13 @@
 
     // Map events to handlers.
     MOD.events.on("ws:initialized", onInitializationEvent);
-    MOD.events.on("ws:jobComplete", onJobEvent);
-    MOD.events.on("ws:jobError", onJobEvent);
-    MOD.events.on("ws:jobPeriodUpdate", onJobPeriodUpdate);
-    MOD.events.on("ws:jobStart", onJobEvent);
-    MOD.events.on("ws:simulationComplete", onSimulationEvent);
-    MOD.events.on("ws:simulationError", onSimulationEvent);
-    MOD.events.on("ws:simulationStart", onSimulationEvent);
+    // MOD.events.on("ws:jobComplete", onJobEvent);
+    // MOD.events.on("ws:jobError", onJobEvent);
+    // MOD.events.on("ws:jobPeriodUpdate", onJobPeriodUpdate);
+    // MOD.events.on("ws:jobStart", onJobEvent);
+    // MOD.events.on("ws:simulationComplete", onSimulationEvent);
+    // MOD.events.on("ws:simulationError", onSimulationEvent);
+    // MOD.events.on("ws:simulationStart", onSimulationEvent);
 
 }(
     this.APP,

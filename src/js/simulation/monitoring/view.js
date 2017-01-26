@@ -181,9 +181,6 @@
             MOD.events.on("filterOptionsUpdate", this._setFilterSelector, this);
             MOD.events.on("filtersUpdated", this._updatePermlink, this);
 
-            // Job timeslice updated event.
-            MOD.events.on("jobTimesliceUpdated", this._updateGrid, this);
-
             // Simulation timeslice updated event.
             MOD.events.on("simulationTimesliceUpdated", this._updateStatisticsInfo, this);
             MOD.events.on("simulationTimesliceUpdated", this._updateGrid, this);
@@ -191,8 +188,6 @@
 
             // Web-socket events.
             MOD.events.on("ws:closed", this._displayWebSocketClosedDialog, this);
-            MOD.events.on("ws:activated", this._onWebSocketActivated, this);
-            MOD.events.on("ws:buffered", this._onWebSocketBuffered, this);
             MOD.events.on("ws:jobUpdate", this._updateNotificationInfo, this);
             MOD.events.on("ws:jobUpdate", this._updateGridRow, this);
             MOD.events.on("ws:jobPeriodUpdate", this._updateNotificationInfo, this);
@@ -304,16 +299,6 @@
 
         _displayWebSocketClosedDialog: function () {
             this.$('#ws-close-dialog').modal('show');
-        },
-
-        _onWebSocketActivated: function () {
-            this.$('#notification-text').text('Awaiting Simulation Events ...');
-            this.$('.filter-selector').attr("disabled", false);
-        },
-
-        _onWebSocketBuffered: function () {
-            this.$('#notification-text').text('Downloading job history ... ');
-            this.$('.filter-selector').attr("disabled", true);
         },
 
         _openInterMonitoringPage: function (urls) {
