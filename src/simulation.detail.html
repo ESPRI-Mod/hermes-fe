@@ -138,10 +138,10 @@
     <%      var jobList, jobTypeCaption; %>
     <%      jobList = MOD.getJobs(jobType); %>
     <%      if (jobList.all.length) { %>
-                <div role="tabpanel" class="tab-pane" id="tab-jobs-<%= jobType %>">
+                <div role="tabpanel" class="tab-pane <%- jobType %>" id="tab-jobs-<%= jobType %>">
                     <%= APP.utils.renderTemplate("template-job-collection", {
                         APP: APP,
-                        hidePPInfo: jobType === 'computing' ,
+                        hidePPInfo: jobType === 'c' ,
                         jobList: jobList,
                         jobType: jobType,
                         jobTypeCaption: MOD.jobTypeDescriptions[jobType],
