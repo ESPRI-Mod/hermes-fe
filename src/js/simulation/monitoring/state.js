@@ -123,8 +123,10 @@
         // Sorting related state.
         sorting: {
             allFields: ['name', 'computeNodeMachine', 'accountingProject', 'computeNodeLogin', 'model', 'space', 'experiment'],
-            field: MOD.getCookie('sort-field'),
-            direction: MOD.getCookie('sort-direction')
+            field: undefined,
+            direction: undefined
+            // field: MOD.getCookie('sort-field'),
+            // direction: MOD.getCookie('sort-direction')
         }
     };
 

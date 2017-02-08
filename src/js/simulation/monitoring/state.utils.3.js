@@ -4,16 +4,16 @@
     "use strict";
 
     // Returns a persistent URL to return to page state at a later date.
-    MOD.getPersistentURL = function () {
+    MOD.getPermalink = function () {
         var url;
 
         url = APP.utils.getPageURL(MOD.urls.SIMULATION_MONITORING_PAGE, true);
         url += "?";
-        url += "sortField=";
-        url += MOD.state.sorting.field;
-        url += "&sortDirection=";
-        url += MOD.state.sorting.direction;
-        url += "&";
+        // url += "sortField=";
+        // url += MOD.state.sorting.field;
+        // url += "&sortDirection=";
+        // url += MOD.state.sorting.direction;
+        // url += "&";
         _.each(MOD.state.filters, function (filter) {
             if (filter.key === "timeslice" ||
                 filter.cvTerms.current.name != filter.defaultValue) {

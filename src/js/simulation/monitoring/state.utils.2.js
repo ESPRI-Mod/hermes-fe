@@ -8,6 +8,10 @@
         var sortField = MOD.state.sorting.field,
             sortDirection = MOD.state.sorting.direction;
 
+        if (_.isUndefined(sortField)) {
+            return simulations;
+        }
+
         if (_.contains(['name', 'accountingProject', 'computeNodeLogin'], sortField)) {
             simulations = _.sortBy(simulations, sortField);
         }
@@ -37,7 +41,7 @@
 
     // Returns collection of filtered simulations.
     // @exclusionFilter     Filter to be excluded when determining result.
-    MOD.getFilteredSimulationList = function (exclusionFilter) {
+    MOD.getFilteredSimulationList = function (exclusionFilter, applySort) {
         var result, filters;
 
         // Exclude simulations without a valid start date.
@@ -68,7 +72,7 @@
         }
 
         // Sort (when not applying exclusions).
-        if (_.isUndefined(exclusionFilter)) {
+        if (applySort === true) {
             result = MOD.sortSimulationList(result);
         }
 
@@ -77,7 +81,7 @@
 
     // Updates collection of filtered simulations.
     MOD.updateFilteredSimulationList = function () {
-        MOD.state.simulationListFiltered = MOD.getFilteredSimulationList();
+        MOD.state.simulationListFiltered = MOD.getFilteredSimulationList(undefined, true);
     };
 
     // Updates filtered simulations sort order.

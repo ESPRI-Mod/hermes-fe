@@ -28,12 +28,7 @@
         });
 
         // Set job periods & signal.
-        var xx = [];
         _.each(STATE.jobPeriodList, function (jp) {
-            if (_.contains(xx, jp.simulationID)) {
-                console.log(777 + " :: " + jp.simulationID)
-            }
-            xx.push(jp.simulationID);
             MOD.parseJobPeriod(STATE.simulationSet[jp.simulationID], jp);
         });
         MOD.events.trigger("simulationTimesliceJobsParsed", this);

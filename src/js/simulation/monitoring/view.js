@@ -1,4 +1,4 @@
-(function (document, APP, MOD, PAGING, _, Backbone, $) {
+(function (document, APP, MOD, STATE, PAGING, _, Backbone, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -112,7 +112,7 @@
 
                 // Construct URL.
                 url = baseURL = APP.utils.getBaseURL();
-                _.each(MOD.state.filters, function (filter) {
+                _.each(STATE.filters, function (filter) {
                     if (filter.cvTerms.current && filter.cvTerms.current.name !== '*') {
                         url += url === baseURL ? '?' : '&';
                         url += filter.key;
@@ -161,9 +161,9 @@
         // Backbone: view initializer.
         initialize : function () {
             // UI initialisation events.
-            MOD.events.on("view:initialized", this._setSortColumn, this);
+            // MOD.events.on("view:initialized", this._setSortColumn, this);
             MOD.events.on("view:initialized", function () {
-                _.each(MOD.state.filters, this._setFilterSelector, this);
+                _.each(STATE.filters, this._setFilterSelector, this);
             }, this);
 
             // Sorting events.
@@ -207,7 +207,7 @@
                 "im-context-menu-template",
                 "ws-close-dialog-template"
                 ], function (templateID) {
-                APP.utils.renderTemplate(templateID, MOD.state, this);
+                APP.utils.renderTemplate(templateID, STATE, this);
             }, this);
 
             return this;
@@ -229,10 +229,10 @@
         },
 
         _setSortColumn: function () {
-            if (MOD.state.sorting.direction === 'asc') {
-                this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).addClass('glyphicon-menu-up');
+            if (STATE.sorting.direction === 'asc') {
+                this.$('.glyphicon.sort-target-' + STATE.sorting.field).addClass('glyphicon-menu-up');
             } else {
-                this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).addClass('glyphicon-menu-down');
+                this.$('.glyphicon.sort-target-' + STATE.sorting.field).addClass('glyphicon-menu-down');
             }
         },
 
@@ -242,8 +242,8 @@
         },
 
         _clearSortColumn: function () {
-            this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).removeClass('glyphicon-menu-up');
-            this.$('.glyphicon.sort-target-' + MOD.state.sorting.field).removeClass('glyphicon-menu-down');
+            this.$('.glyphicon.sort-target-' + STATE.sorting.field).removeClass('glyphicon-menu-up');
+            this.$('.glyphicon.sort-target-' + STATE.sorting.field).removeClass('glyphicon-menu-down');
         },
 
         _updateNotificationInfo: function (ei) {
@@ -251,14 +251,14 @@
                 ei.simulationDetailURL = this._getSimulationDetailURL(ei.simulation.uid);
                 ei.eventTypeDescription = MOD.getEventDescription(ei);
             }
-            ei.simulationList = MOD.state.simulationList;
-            ei.simulationListFiltered = MOD.state.simulationListFiltered;
+            ei.simulationList = STATE.simulationList;
+            ei.simulationListFiltered = STATE.simulationListFiltered;
             this._replaceNode('#notification-info', 'notification-info-template', ei);
         },
 
         _updateStatisticsInfo: function () {
-            this.$('.' + 'total-simulation-count').text(MOD.state.simulationList.length);
-            this.$('.' + 'filtered-simulation-count').text(MOD.state.simulationListFiltered.length);
+            this.$('.' + 'total-simulation-count').text(STATE.simulationList.length);
+            this.$('.' + 'filtered-simulation-count').text(STATE.simulationListFiltered.length);
         },
 
         _updateGridPager: function () {
@@ -276,7 +276,7 @@
         },
 
         _updateGrid: function () {
-            this._replaceNode('tbody', 'grid-body-template', MOD.state);
+            this._replaceNode('tbody', 'grid-body-template', STATE);
         },
 
         _updateGridRow: function (ei) {
@@ -292,7 +292,7 @@
         },
 
         _updatePermlink: function () {
-            var permalink = MOD.getPersistentURL();
+            var permalink = MOD.getPermalink();
             $("#permalink").val(permalink);
             MOD.events.trigger("view:permalinkUpdated", permalink);
         },
@@ -325,7 +325,7 @@
 
         _getSimulation: function (uid) {
             if (_.isUndefined(uid) === false) {
-                return _.find(MOD.state.paging.current.data, function (s) {
+                return _.find(STATE.paging.current.data, function (s) {
                     return s.uid === uid;
                 });
             };
@@ -344,6 +344,7 @@
     this.document,
     this.APP,
     this.APP.modules.monitoring,
+    this.APP.modules.monitoring.state,
     this.APP.modules.monitoring.state.paging,
     this._,
     this.Backbone,

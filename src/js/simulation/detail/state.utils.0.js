@@ -128,8 +128,8 @@
 
         // Escape if non-derivable.
         if (s.executionEndDate ||
-            s.jobCounts.c.all === 0 ||
-            s.jobCounts.p.all === 0) {
+            s.jobs.compute.all.length === 0 ||
+            s.jobs.postProcessing.all.length === 0) {
             return;
         }
 

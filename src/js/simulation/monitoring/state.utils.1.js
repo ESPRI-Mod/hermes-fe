@@ -79,7 +79,7 @@
             if (filter.cvTerms.current.name === '*') {
                 simulationList = STATE.simulationListFiltered;
             } else {
-                simulationList = MOD.getFilteredSimulationList(filter);
+                simulationList = MOD.getFilteredSimulationList(filter, false);
             }
 
             // Set active term names collection.

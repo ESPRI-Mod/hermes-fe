@@ -25,7 +25,6 @@
 
     // Get cookie value.
     APP.getCookie = function (name) {
-        // console.log(Cookies.get());
         name = formatName(name);
         return Cookies.get(name);
     };
