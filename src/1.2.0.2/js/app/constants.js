@@ -39,7 +39,7 @@
 
         // Images.
         images: {
-            logo: "img/site-logo-ipsl.png"
+            logo: APP.version + "/img/site-logo-ipsl.png"
         },
 
         // Logging related.
