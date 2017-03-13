@@ -42,7 +42,7 @@
     // Returns collection of filtered simulations.
     // @exclusionFilter     Filter to be excluded when determining result.
     MOD.getFilteredSimulationList = function (exclusionFilter, applySort) {
-        var result, filters;
+        var re, result, filters;
 
         // Exclude simulations without a valid start date.
         result = _.reject(MOD.state.simulationList, function (s) {
@@ -66,8 +66,9 @@
 
         // Apply text filter.
         if (MOD.state.textFilter) {
+            re = MOD.state.textFilter.replace("*", ".*");
             result = _.filter(result, function (s) {
-                return s.ext.name.includes(MOD.state.textFilter);
+                return s.ext.name.match(re) !== null;
             });
         }
 
