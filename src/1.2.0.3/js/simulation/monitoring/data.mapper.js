@@ -3,8 +3,8 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Maps a compute job.
-    MOD.mapComputeJob = function (i) {
+    // Maps a job.
+    MOD.mapJob = function (i) {
         return {
             simulationID: i[0],
             executionState: i[4] === 1 ? 'error' : i[6] ? 'complete' : 'running',

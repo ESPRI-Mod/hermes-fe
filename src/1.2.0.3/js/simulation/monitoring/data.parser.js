@@ -57,28 +57,6 @@
         MOD.events.trigger("simulationTimesliceUpdated", this);
     });
 
-    // Parses web-socket event data.
-    MOD.parseWSEventData = function (s, jList, jp) {
-        // Extend simulation.
-        MOD.extendSimulation(s);
-
-        // Parse jobs.
-        _.each(jList, function (j) {
-            MOD.parseJob(s, j);
-        });
-
-        // Parse job period.
-        if (APP.utils.isNone(jp) === false) {
-            MOD.parseJobPeriod(s, jp);
-        }
-
-        // Set execution end date.
-        MOD.setSimulationExecutionEndDate(s);
-
-        // Set execution state.
-        MOD.setSimulationExecutionState(s);
-    };
-
 }(
     this.APP,
     this.APP.modules.monitoring,

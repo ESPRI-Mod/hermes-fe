@@ -44,6 +44,7 @@
     MOD.parseJobPeriod = function (s, jp) {
         var startDate, startDateInDays, executionProgress;
 
+        // Escape if infeasible.
         if (APP.utils.isNone(s) || APP.utils.isNone(jp)) return;
 
         // Calculate simulation progress:

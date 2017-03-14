@@ -3,25 +3,8 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Sets simulation job collections.
-    MOD.extendSimulation01 = function (s) {
-        s.jobs = {
-            all: [],
-            compute: {
-                all: [],
-                allUnsorted: [],
-                complete: [],
-                error: [],
-                running: [],
-            },
-            postProcessing: {
-                all: [],
-                allUnsorted: [],
-                complete: [],
-                error: [],
-                running: []
-            }
-        };
+    // Initialize simulation job collections.
+    var initSimulationJobCounts = function (s) {
         s.jobCounts = {
             all: 0,
             c: {
@@ -36,11 +19,11 @@
                 r: 0,
                 e: 0
             }
-        }
+        };
     };
 
-    // Sets simulation default values.
-    MOD.extendSimulation02 = function (s) {
+    // Initialize simulation default values.
+    var initSimulationDefaults = function (s) {
         _.defaults(s, {
             computeNode: s.computeNodeMachine ? s.computeNodeMachine.split("-")[0] : null,
             executionState: null,
@@ -67,8 +50,8 @@
         s.ext.outputTimeSpanInDays = s.ext.outputEndDateInDays - s.ext.outputStartDateInDays;
     };
 
-    // Set simulation cv fields for UI.
-    MOD.extendSimulation03 = function (s) {
+    // Initialize simulation cv fields for UI.
+    var initSimulationCVFields = function (s) {
         var model;
 
         // Update case sensitive CV fields.
@@ -87,11 +70,10 @@
 
     // Extends a simulation in readiness for processing.
     MOD.extendSimulation = function (s) {
-        MOD.extendSimulation01(s);
-        if (_.has(s, 'ext') === false) {
-            MOD.extendSimulation02(s);
-            MOD.extendSimulation03(s);
-        }
+        if (_.has(s, 'ext')) return;
+        initSimulationJobCounts(s);
+        initSimulationDefaults(s);
+        initSimulationCVFields(s);
     };
 
 }(

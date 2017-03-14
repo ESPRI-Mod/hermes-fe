@@ -25,7 +25,7 @@
         STATE.simulationHashSet = _.indexBy(STATE.simulationList, "hashid");
         STATE.simulationUIDSet = _.indexBy(STATE.simulationList, "uid");
         STATE.jobCounts = _.map(data.jobCounts, MOD.mapJobCount);
-        STATE.latestComputeJobs = _.map(data.latestComputeJobs, MOD.mapComputeJob);
+        STATE.latestComputeJobs = _.map(data.latestComputeJobs, MOD.mapJob);
         STATE.jobPeriodList = _.map(data.jobPeriodList, MOD.mapJobPeriod);
 
         // Signal.

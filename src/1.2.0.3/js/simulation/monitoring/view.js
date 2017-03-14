@@ -188,11 +188,11 @@
 
             // Web-socket events.
             MOD.events.on("ws:closed", this._displayWebSocketClosedDialog, this);
-            MOD.events.on("ws:jobUpdate", this._updateNotificationInfo, this);
-            MOD.events.on("ws:jobUpdate", this._updateGridRow, this);
-            MOD.events.on("ws:jobPeriodUpdate", this._updateNotificationInfo, this);
-            MOD.events.on("ws:jobPeriodUpdate", this._updateGridRow, this);
-            MOD.events.on("ws:simulationUpdate", this._updateNotificationInfo, this);
+            MOD.events.on("ws:jobUpdated", this._updateNotificationInfo, this);
+            MOD.events.on("ws:jobUpdated", this._updateGridRow, this);
+            MOD.events.on("ws:jobPeriodUpdated", this._updateNotificationInfo, this);
+            MOD.events.on("ws:jobPeriodUpdated", this._updateGridRow, this);
+            MOD.events.on("ws:simulationUpdated", this._updateNotificationInfo, this);
 
             // Inter-monitoring events.
             MOD.events.on("im:postInterMonitorForm", this._openInterMonitoringPage, this);
