@@ -28,7 +28,6 @@
         MOD.events.trigger("ws:jobUpdating");
 
         // Update job counts.
-        console.log("666 : " + data.eventType);
         if (data.eventType === 'jobStart') {
             s.jobCounts.all += 1;
             s.jobCounts[j.typeof].all += 1;
