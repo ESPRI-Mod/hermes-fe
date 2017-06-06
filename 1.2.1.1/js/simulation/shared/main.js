@@ -76,19 +76,19 @@
 
             // Monitoring endpoints.
             M: {
-                'ccrt': 'https://esgf.extra.cea.fr/thredds/fileServer/work',
                 'idris': 'http://prodn.idris.fr/thredds/fileServer/ipsl_public',
-                'ipsl': 'http://esgf-local.ipsl.fr/thredds/fileServer/ipsl_public',
-                'tgcc': 'https://esgf.extra.cea.fr/thredds/fileServer/work'
+                'ccrt': 'https://vesg.ipsl.upmc.fr/thredds/fileServer/work_thredds',
+                'ipsl': 'https://vesg.ipsl.upmc.fr/thredds/fileServer/work_thredds',
+                'tgcc': 'https://vesg.ipsl.upmc.fr/thredds/fileServer/work_thredds'
             },
 
             // Inter-monitoring endpoints.
             IM: {
                 'httpPostTarget': 'http://webservices2017.ipsl.fr/interMonitoring_fromHermes/index.php',
-                'ccrt': 'http://esgf.extra.cea.fr/thredds/catalog/work',
                 'idris': 'http://prodn.idris.fr/thredds/catalog/ipsl_public',
-                'ipsl': 'http://esgf-local.ipsl.fr/thredds/catalog/ipsl_public',
-                'tgcc': 'http://esgf.extra.cea.fr/thredds/catalog/work'
+                'ccrt': 'https://vesg.ipsl.upmc.fr/thredds/catalog/work',
+                'ipsl': 'https://vesg.ipsl.upmc.fr/thredds/catalog/ipsl_public',
+                'tgcc': 'https://vesg.ipsl.upmc.fr/thredds/catalog/work'
             }
         }
     });
@@ -96,3 +96,5 @@
 }(
     this.APP
 ));
+
+// https://vesg.ipsl.upmc.fr/thredds/fileServer/work_thredds/p86caub/IPSLCM6/DEVT/pdControl/CM6010.2-LR-pdCtrl-02/MONITORING/index.html
