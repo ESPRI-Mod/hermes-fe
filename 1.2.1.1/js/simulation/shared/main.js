@@ -84,7 +84,7 @@
 
             // Inter-monitoring endpoints.
             IM: {
-                'httpPostTarget': 'http://webservices.ipsl.jussieu.fr/monitoring_fromprodiguer/index.php',
+                'httpPostTarget': 'http://webservices2017.ipsl.fr/interMonitoring_fromHermes/index.php',
                 'ccrt': 'http://esgf.extra.cea.fr/thredds/catalog/work',
                 'idris': 'http://prodn.idris.fr/thredds/catalog/ipsl_public',
                 'ipsl': 'http://esgf-local.ipsl.fr/thredds/catalog/ipsl_public',
