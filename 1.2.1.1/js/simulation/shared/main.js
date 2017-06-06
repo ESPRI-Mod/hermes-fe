@@ -77,9 +77,9 @@
             // Monitoring endpoints.
             M: {
                 'idris': 'http://prodn.idris.fr/thredds/fileServer/ipsl_public',
-                'ccrt': 'https://vesg.ipsl.upmc.fr/thredds/fileServer/work_thredds',
-                'ipsl': 'https://vesg.ipsl.upmc.fr/thredds/fileServer/work_thredds',
-                'tgcc': 'https://vesg.ipsl.upmc.fr/thredds/fileServer/work_thredds'
+                'ccrt': 'https://vesg.ipsl.upmc.fr/thredds/fileServer/work',
+                'ipsl': 'https://vesg.ipsl.upmc.fr/thredds/fileServer/work',
+                'tgcc': 'https://vesg.ipsl.upmc.fr/thredds/fileServer/work'
             },
 
             // Inter-monitoring endpoints.
