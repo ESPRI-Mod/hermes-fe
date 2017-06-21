@@ -80,10 +80,11 @@
 
     // Event handler: clear inter monitoring simulation selection.
     MOD.events.on("im:clearInterMonitor", function () {
-        _.each(getSimulationListForIM(), function (simulation) {
+        _.each(MOD.state.simulationListForIM, function (simulation) {
             simulation.ext.isSelectedForIM = false;
         });
-        $("td.inter-monitoring > input").prop("checked", false);
+        MOD.state.simulationListForIM = [];
+        MOD.events.trigger("simulationListForIMCleared");
     });
 
     // Event handler: open inter-monitoring link.
@@ -94,6 +95,13 @@
         if (urls.length) {
             MOD.events.trigger("im:postInterMonitorForm", urls);
         }
+    });
+
+    // Event handler: toggle inter-monitoring link.
+    MOD.events.on("im:toggleInterMonitor", function (s) {
+        s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
+        MOD.state.simulationListForIM = getSimulationListForIM();
+        MOD.events.trigger("simulationListForIMUpdated");
     });
 
 }(

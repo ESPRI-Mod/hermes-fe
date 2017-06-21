@@ -87,7 +87,7 @@
                 'httpPostTarget': 'http://webservices2017.ipsl.fr/interMonitoring_fromHermes/index.php',
                 'idris': 'http://prodn.idris.fr/thredds/catalog/ipsl_public',
                 'ccrt': 'https://vesg.ipsl.upmc.fr/thredds/catalog/work',
-                'ipsl': 'https://vesg.ipsl.upmc.fr/thredds/catalog/ipsl_public',
+                'ipsl': 'https://vesg.ipsl.upmc.fr/thredds/catalog/work',
                 'tgcc': 'https://vesg.ipsl.upmc.fr/thredds/catalog/work'
             }
         }

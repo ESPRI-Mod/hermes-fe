@@ -98,6 +98,9 @@
         // List of filtered simulations.
         simulationListFiltered: [],
 
+        // List of simulations selected for inter-monitoring.
+        simulationListForIM: [],
+
         // Map of simulation id's to simulations.
         simulationSet: {},
 

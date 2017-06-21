@@ -33,18 +33,8 @@
 
                 s = this._getSimulation(this._getSimulationUID(e));
                 if (s) {
-                    s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
+                    MOD.events.trigger("im:toggleInterMonitor", s);
                 }
-            },
-
-            // Open inter-monitoring page.
-            'click #inter-monitoring-context-menu a.open' : function () {
-                MOD.events.trigger("im:openInterMonitor");
-            },
-
-            // Clear inter-monitoring selections.
-            'click #inter-monitoring-context-menu a.clear' : function () {
-                MOD.events.trigger("im:clearInterMonitor");
             },
 
             // Pager: navigate to manually chosen page.
@@ -161,7 +151,7 @@
         // Backbone: view initializer.
         initialize : function () {
             // UI initialisation events.
-            // MOD.events.on("view:initialized", this._setSortColumn, this);
+            MOD.events.on("view:initialized", this._initIMContextMenu, this);
             MOD.events.on("view:initialized", function () {
                 _.each(STATE.filters, this._setFilterSelector, this);
             }, this);
@@ -196,6 +186,8 @@
 
             // Inter-monitoring events.
             MOD.events.on("im:postInterMonitorForm", this._openInterMonitoringPage, this);
+            MOD.events.on("simulationListForIMUpdated", this._onIMSelectionUpdate, this);
+            MOD.events.on("simulationListForIMCleared", this._onIMSelectionClear, this);
         },
 
         // Backbone: view renderer.
@@ -204,13 +196,50 @@
                 "notification-info-template",
                 "filter-panel-template",
                 "grid-template",
-                "im-context-menu-template",
                 "ws-close-dialog-template"
                 ], function (templateID) {
                 APP.utils.renderTemplate(templateID, STATE, this);
             }, this);
 
             return this;
+        },
+
+        _initIMContextMenu: function () {
+            $.contextMenu({
+                selector: 'th.im-context-menu small',
+                trigger: 'left',
+                callback: function(key) {
+                    if (key === 'open') {
+                        MOD.events.trigger("im:openInterMonitor");
+                    } else if (key === 'clear') {
+                        MOD.events.trigger("im:clearInterMonitor");
+                    }
+                },
+                items: {
+                    open: {name: 'Open inter-monitoring'},
+                    clear: {name: 'Clear selections'},
+                }
+            });
+            $('th.im-context-menu small').contextMenu(false);
+        },
+
+        _onIMSelectionUpdate: function () {
+            if (MOD.state.simulationListForIM.length >= 1) {
+                $("th.im-context-menu small")
+                    .addClass('btn-xs btn-info')
+                    .contextMenu(true);
+            } else {
+                $("th.im-context-menu small")
+                    .removeClass('btn-xs btn-info')
+                    .contextMenu(false);
+            }
+        },
+
+        _onIMSelectionClear: function () {
+            $("td.inter-monitoring > input").prop("checked", false);
+            $("th.im-context-menu small")
+                .removeClass('btn-xs btn-info')
+                .contextMenu(false);
         },
 
         _setFilterSelector: function (f) {
