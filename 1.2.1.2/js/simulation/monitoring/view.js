@@ -226,11 +226,11 @@
         _onIMSelectionUpdate: function () {
             if (MOD.state.simulationListForIM.length >= 1) {
                 $("th.im-context-menu small")
-                    .addClass('btn-xs btn-info')
+                    .addClass('btn-sm btn-info')
                     .contextMenu(true);
             } else {
                 $("th.im-context-menu small")
-                    .removeClass('btn-xs btn-info')
+                    .removeClass('btn-sm btn-info')
                     .contextMenu(false);
             }
         },
@@ -238,7 +238,7 @@
         _onIMSelectionClear: function () {
             $("td.inter-monitoring > input").prop("checked", false);
             $("th.im-context-menu small")
-                .removeClass('btn-xs btn-info')
+                .removeClass('btn-sm btn-info')
                 .contextMenu(false);
         },
 
