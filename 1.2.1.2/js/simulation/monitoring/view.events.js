@@ -1,4 +1,4 @@
-(function (APP, MOD) {
+(function (APP, MOD, STATE) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -21,7 +21,7 @@
         MOD.events.trigger("simulationTimesliceUpdated");
     });
 
-    // Apply text filter event handler.
+    // Text filter event handler.
     MOD.events.on("textFilter:updated", function (text) {
         if (MOD.state.textFilter === text.trim().toLowerCase()) return;
 
@@ -41,7 +41,7 @@
         MOD.events.trigger("simulationTimesliceUpdated");
     });
 
-    // Apply filter event handler.
+    // Grid page size change event handler.
     MOD.events.on("state:pageSizeChange", function (pageSize) {
         // Update cookie.
         MOD.setCookie('page-size', pageSize);
@@ -56,7 +56,36 @@
         MOD.events.trigger("simulationTimesliceUpdated");
     });
 
+    // Grid sort field change event handler.
+    MOD.events.on("state:sortFieldChange", function (key) {
+        // Update sort field.
+        STATE.sorting.field = _.find(STATE.sorting.fields, function (i) {
+            return i.key === key;
+        });
+
+        // Update cookie.
+        MOD.setCookie('sort-field', STATE.sorting.field.key);
+
+        // Update sorted simulation collection.
+        MOD.updateSortedSimulationList();
+    });
+
+    // Grid sort direction change event handler.
+    MOD.events.on("state:sortDirectionChange", function (key) {
+        // Update sort direction.
+        STATE.sorting.direction = _.find(STATE.sorting.directions, function (i) {
+            return i.key === key;
+        });
+
+        // Update cookie.
+        MOD.setCookie('sort-direction', STATE.sorting.direction.key);
+
+        // Update sorted simulation collection.
+        MOD.updateSortedSimulationList();
+    });
+
 }(
     this.APP,
-    this.APP.modules.monitoring
+    this.APP.modules.monitoring,
+    this.APP.modules.monitoring.state,
 ));

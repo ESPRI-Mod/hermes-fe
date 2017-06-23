@@ -89,11 +89,14 @@
                 MOD.events.trigger('state:pageSizeChange', $(e.target).val());
             },
 
-            // Sorting: change sort field / order.
-            'click .sort-target' : function (e) {
-                MOD.updateSortedSimulationList(_.find($(e.target).attr('class').split(' '), function (cls) {
-                    return cls.startsWith('sort-target-');
-                }).slice(12));
+            // Sorting: change sort field.
+            'change #sort-field-selector' : function (e) {
+                MOD.events.trigger('state:sortFieldChange', $(e.target).val());
+            },
+
+            // Sorting: change sort direction.
+            'change #sort-direction-selector' : function (e) {
+                MOD.events.trigger('state:sortDirectionChange', $(e.target).val());
             },
 
             // Reopen page when web socket closed.
@@ -157,9 +160,6 @@
             }, this);
 
             // Sorting events.
-            MOD.events.on("simulationListSortOrderChanging", this._clearSortColumn, this);
-            MOD.events.on("simulationListSortOrderChanged", this._setSortColumn, this);
-            MOD.events.on("simulationListSortOrderToggled", this._toggleSortColumn, this);
             MOD.events.on("simulationListSorted", this._updateGrid, this);
             MOD.events.on("simulationListSorted", this._updateGridPager, this);
 
@@ -255,24 +255,6 @@
                 data: f.cvTerms.active
             });
             f.$view.val(f.cvTerms.current.id).trigger("change");
-        },
-
-        _setSortColumn: function () {
-            if (STATE.sorting.direction === 'asc') {
-                this.$('.glyphicon.sort-target-' + STATE.sorting.field).addClass('glyphicon-menu-up');
-            } else {
-                this.$('.glyphicon.sort-target-' + STATE.sorting.field).addClass('glyphicon-menu-down');
-            }
-        },
-
-        _toggleSortColumn: function () {
-            this._clearSortColumn();
-            this._setSortColumn();
-        },
-
-        _clearSortColumn: function () {
-            this.$('.glyphicon.sort-target-' + STATE.sorting.field).removeClass('glyphicon-menu-up');
-            this.$('.glyphicon.sort-target-' + STATE.sorting.field).removeClass('glyphicon-menu-down');
         },
 
         _updateNotificationInfo: function (ei) {

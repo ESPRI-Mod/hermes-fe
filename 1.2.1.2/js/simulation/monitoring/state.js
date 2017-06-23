@@ -3,7 +3,7 @@
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    var hasURLParams;
+    var hasURLParams, key;
 
     // Module state.
     MOD.state = {
@@ -124,22 +124,65 @@
         },
 
         // Sorting related state.
-        sorting: {
-            allFields: ['name', 'computeNodeMachine', 'accountingProject', 'computeNodeLogin', 'model', 'space', 'experiment'],
-            field: undefined,
-            direction: undefined
-            // field: MOD.getCookie('sort-field'),
-            // direction: MOD.getCookie('sort-direction')
-        }
+        sorting : {
+            directions: [
+                {
+                    cookieKey: 'asc',
+                    displayName: 'Asc',
+                    key: 'asc'
+                },
+                {
+                    cookieKey: 'desc',
+                    displayName: 'Desc',
+                    key: 'desc'
+                }
+            ],
+            fields: [
+                {
+                    cookieKey: 'accounting-project',
+                    displayName: 'Acc. Project',
+                    key: 'accountingProject'
+                },
+                {
+                    cookieKey: 'name',
+                    displayName: 'Name',
+                    key: 'name'
+                },
+                {
+                    cookieKey: 'machine',
+                    displayName: 'Machine',
+                    key: 'computeNodeMachine'
+                },
+                {
+                    cookieKey: 'login',
+                    displayName: 'Login',
+                    key: 'computeNodeLogin'
+                },
+                {
+                    cookieKey: 'model',
+                    displayName: 'Tag / Model',
+                    key: 'model'
+                },
+                {
+                    cookieKey: 'experiment',
+                    displayName: 'Experiment',
+                    key: 'experiment'
+                },
+                {
+                    cookieKey: 'space',
+                    displayName: 'Space',
+                    key: 'space'
+                },
+                {
+                    cookieKey: 'execution-start-date',
+                    displayName: 'Start Date',
+                    key: 'executionStartDate'
+                }
+            ],
+            field: APP.utils.getURLParam("sortField") || MOD.getCookie('sort-field'),
+            direction: APP.utils.getURLParam("sortDirection") || MOD.getCookie('sort-direction')
+        },
     };
-
-    // Override state pulled from url parameters.
-    if (APP.utils.getURLParam("sortField")) {
-        MOD.state.sorting.field = APP.utils.getURLParam("sortField");
-    }
-    if (APP.utils.getURLParam("sortDirection")) {
-        MOD.state.sorting.direction = APP.utils.getURLParam("sortDirection");
-    }
 
     // Set filter defaults.
     hasURLParams = false;
@@ -167,6 +210,14 @@
         } else {
             filter.initialValue = filter.cookieValue || filter.defaultValue;
         }
+    });
+
+    // Set sort initial value.
+    MOD.state.sorting.field = _.find(MOD.state.sorting.fields, function (i) {
+        return i.key === MOD.state.sorting.field;
+    });
+    MOD.state.sorting.direction = _.find(MOD.state.sorting.directions, function (i) {
+        return i.key === MOD.state.sorting.direction;
     });
 
     // Set filter map.

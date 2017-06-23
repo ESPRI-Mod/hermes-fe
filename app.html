@@ -50,22 +50,21 @@
             <th colspan="15">
                 <span id="statistics-info" class="form-inline">
                     <label>
-                        &nbsp;&nbsp;Filter by name:&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;Filter by name:&nbsp;&nbsp;
                     </label>
-                    <input id="text-filter" type='text' class='form-control input-sm' style="width: 25%; font-weight: normal;">
+                    <input id="text-filter" type='text' class='form-control input-sm' style="width: 15%; font-weight: normal;">
                 </span>
+                <%= APP.utils.renderTemplate("grid-sorter-template", MOD.state) %>
                 <%= APP.utils.renderTemplate("grid-pager-template", MOD.state) %>
             </th>
         </tr>
         <%= APP.utils.renderTemplate("permalink-template", {MOD: MOD}) %>
         <tr class="hermes-table-header">
-            <th title='Accounting Project' class="text-center sort-target sort-target-accountingProject">
-                <small class='sort-target-accountingProject'>Acc. Project</small>
-                <span class='pull-right sort-target-accountingProject glyphicon' />
+            <th title='Accounting Project' class="text-center">
+                <small>Acc. Project</small>
             </th>
-            <th title='Name' class='sort-target sort-target-name'>
-                <small class='sort-target-name'>Name</small>
-                <span class='pull-right sort-target-name glyphicon' />
+            <th title='Name'>
+                <small>Name</small>
             </th>
             <th title='Try' class="text-center">
                 <small>Try</small>
@@ -76,25 +75,20 @@
             <th title="Post-Processing Jobs (Running | Complete | Error)" class="text-center">
                 <small>Jobs (PP)</small>
             </th>
-            <th title='Node - Machine' class="text-center sort-target sort-target-computeNodeMachine">
-                <small class='sort-target-computeNodeMachine'>Machine</small>
-                <span class='pull-right sort-target-computeNodeMachine glyphicon' />
+            <th title='Node - Machine' class="text-center">
+                <small >Machine</small>
             </th>
-            <th title='Login' class="text-center sort-target sort-target-computeNodeLogin">
-                <small class='sort-target-computeNodeLogin'>Login</small>
-                <span class='pull-right sort-target-computeNodeLogin glyphicon' />
+            <th title='Login' class="text-center">
+                <small>Login</small>
             </th>
-            <th title='Tag / Model' class="text-center sort-target sort-target-model">
-                <small class='sort-target-model'>Tag / Model</small>
-                <span class='pull-right sort-target-model glyphicon' />
+            <th title='Tag / Model' class="text-center">
+                <small >Tag / Model</small>
             </th>
-            <th title='Experiment' class="text-center sort-target sort-target-experiment">
-                <small class='sort-target-experiment'>Experiment</small>
-                <span class='pull-right sort-target-experiment glyphicon' />
+            <th title='Experiment' class="text-center">
+                <small>Experiment</small>
             </th>
-            <th title='Space' class="text-center sort-target sort-target-space">
-                <small class='sort-target-space'>Space</small>
-                <span class='pull-right sort-target-space glyphicon' />
+            <th title='Space' class="text-center">
+                <small >Space</small>
             </th>
             <th title='Output Progress (%)' class="text-center">
                 <small>Output Progress (%)</small>
@@ -178,7 +172,34 @@
 </tr>
 </script>
 
-<!-- Template: permalink table header row -->
+<!-- Template: table sorter -->
+<script type="underscore/template" id="grid-sorter-template">
+<span id="grid-sort-panel" class="form-inline">
+    <label>
+        &nbsp;&nbsp;&nbsp;&nbsp;Sort by:&nbsp;&nbsp;
+    </label>
+    <select id="sort-field-selector"
+            class="form-control input-sm"
+            style='width: 13%; font-size:0.9em; color: #999;'>
+            <% _.each(MOD.state.sorting.fields, function(field) { %>
+            <option value="<%= field.key %>" <%= field.key == MOD.state.sorting.field.key ? "selected" : "" %>>
+                <%= field.displayName %>
+            </option>
+            <% }); %>
+    </select>
+    <select id="sort-direction-selector"
+            class="form-control input-sm"
+            style='width: 7%; font-size:0.9em; color: #999;'>
+            <% _.each(MOD.state.sorting.directions, function(direction) { %>
+            <option value="<%= direction.key %>" <%= direction.key == MOD.state.sorting.direction.key ? "selected" : "" %>>
+                <%= direction.displayName %>
+            </option>
+            <% }); %>
+    </select>
+</span>
+</script>
+
+<!-- Template: table pager -->
 <script type="underscore/template" id="grid-pager-template">
 <span class='pull-right form-inline <%= paging.count < 2 ? '' : '' %>'>
     <button type='button' class='pagination-control btn btn-sm btn-default pagination-first'>

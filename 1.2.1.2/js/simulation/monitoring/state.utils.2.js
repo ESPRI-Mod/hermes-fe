@@ -1,12 +1,12 @@
-(function (APP, MOD, _) {
+(function (APP, MOD, STATE, EVENTS, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Returns sorted collection of simulations.
     MOD.sortSimulationList = function (simulations) {
-        var sortField = MOD.state.sorting.field,
-            sortDirection = MOD.state.sorting.direction;
+        var sortField = STATE.sorting.field.key,
+            sortDirection = STATE.sorting.direction.key;
 
         if (_.isUndefined(sortField)) {
             return simulations;
@@ -28,6 +28,12 @@
             });
         }
 
+        if (sortField === 'executionStartDate') {
+            simulations = _.sortBy(simulations, function (s) {
+                return s.executionStartDate || '--';
+            });
+        }
+
         if (sortField === 'outputStartDate') {
             if (sortDirection === 'desc') {
                 simulations = simulations.reverse();
@@ -45,12 +51,12 @@
         var re, result, filters;
 
         // Exclude simulations without a valid start date.
-        result = _.reject(MOD.state.simulationList, function (s) {
+        result = _.reject(STATE.simulationList, function (s) {
             return _.isNull(s.executionStartDate);
         });
 
         // Apply select filters.
-        filters = MOD.state.filters;
+        filters = STATE.filters;
         if (exclusionFilter) {
             filters = _.without(filters, exclusionFilter);
         }
@@ -65,8 +71,8 @@
         });
 
         // Apply text filter.
-        if (MOD.state.textFilter) {
-            re = MOD.state.textFilter.replace("*", ".*");
+        if (STATE.textFilter) {
+            re = STATE.textFilter.replace("*", ".*");
             result = _.filter(result, function (s) {
                 return s.ext.name.match(re) !== null;
             });
@@ -82,37 +88,27 @@
 
     // Updates collection of filtered simulations.
     MOD.updateFilteredSimulationList = function () {
-        MOD.state.simulationListFiltered = MOD.getFilteredSimulationList(undefined, true);
+        STATE.simulationListFiltered = MOD.getFilteredSimulationList(undefined, true);
     };
 
     // Updates filtered simulations sort order.
-    MOD.updateSortedSimulationList = function (sortField) {
-        // Update sort fields.
-        if (MOD.state.sorting.field === sortField) {
-            MOD.state.sorting.direction = (MOD.state.sorting.direction === 'asc' ? 'desc' : 'asc');
-            MOD.events.trigger('simulationListSortOrderToggled');
-        } else {
-            MOD.events.trigger('simulationListSortOrderChanging');
-            MOD.state.sorting.field = sortField;
-            MOD.events.trigger('simulationListSortOrderChanged');
-        }
-
-        // Update cookies.
-        MOD.setCookie('sort-field', MOD.state.sorting.field);
-        MOD.setCookie('sort-direction', MOD.state.sorting.direction);
-
+    MOD.updateSortedSimulationList = function () {
         // Apply new sort field.
-        MOD.state.simulationListFiltered = MOD.sortSimulationList(MOD.state.simulationListFiltered);
+        STATE.simulationListFiltered = MOD.sortSimulationList(STATE.simulationListFiltered);
+
+        // Update pagination.
         MOD.updatePagination();
-        MOD.events.trigger('simulationListSorted');
+
+        // Notify.
+        EVENTS.trigger('simulationListSorted');
     };
 
     // Sets the paging state.
     MOD.updatePagination = function (currentPage) {
-        var pages, page, paging = MOD.state.paging;
+        var pages, page, paging = STATE.paging;
 
         // Reset pages.
-        pages = APP.utils.getPages(MOD.state.simulationListFiltered, MOD.state.pageSize);
+        pages = APP.utils.getPages(STATE.simulationListFiltered, STATE.pageSize);
         paging.count = pages.length;
         paging.current = pages ? pages[0] : null;
         paging.pages = pages;
@@ -131,5 +127,7 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.APP.modules.monitoring.state,
+    this.APP.modules.monitoring.events,
     this._
 ));
