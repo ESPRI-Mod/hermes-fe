@@ -131,13 +131,10 @@
             },
 
             // Permalink copy button click.
-            // 'click #btn-permalink-copy': function (e) {
-            //     var permalink;
-
-            //     permalink = document.querySelector('#permalink');
-            //     permalink.setSelectionRange(0, permalink.value.length + 1);
-            //     document.execCommand('copy');
-            // },
+            'click #btn-permalink-copy': function (e) {
+                document.querySelector('#permalink').select();
+                document.execCommand('copy');
+            },
 
             // Permalink close button click.
             'click #btn-permalink-close': function (e) {
@@ -162,6 +159,7 @@
             // Sorting events.
             MOD.events.on("simulationListSorted", this._updateGrid, this);
             MOD.events.on("simulationListSorted", this._updateGridPager, this);
+            MOD.events.on("simulationListSorted", this._updatePermlink, this);
 
             // Pagination events.
             MOD.events.on("simulationPageUpdate", this._updateGrid, this);

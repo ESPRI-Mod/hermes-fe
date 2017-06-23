@@ -9,11 +9,8 @@
 
         url = APP.utils.getPageURL(MOD.urls.SIMULATION_MONITORING_PAGE, true);
         url += "?";
-        // url += "sortField=";
-        // url += MOD.state.sorting.field;
-        // url += "&sortDirection=";
-        // url += MOD.state.sorting.direction;
-        // url += "&";
+
+        // Append filter fields.
         _.each(MOD.state.filters, function (filter) {
             if (filter.key === "timeslice" ||
                 filter.cvTerms.current.name != filter.defaultValue) {
@@ -24,7 +21,14 @@
             }
         });
 
-        return url.slice(0, url.length - 1);
+        // Append sort fields.
+        url += "sortField=";
+        url += MOD.state.sorting.field.key;
+        url += "&";
+        url += "sortDirection=";
+        url += MOD.state.sorting.direction.key;
+
+        return url;
     };
 
 }(
