@@ -77,6 +77,9 @@ window.$ = window.$jq = jQuery.noConflict();
                 // Module key.
                 key: key,
 
+                // Module state information.
+                state: {},
+
                 // Module JS templates placeholder.
                 templates: {},
 

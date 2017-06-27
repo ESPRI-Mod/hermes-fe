@@ -1,4 +1,4 @@
-(function (APP, MOD, WebSocket, $, _) {
+(function (APP, MOD, EVENTS, WebSocket, $, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -14,7 +14,7 @@
 
     // Sends a ws event module notification.
     var dispatchEvent = function (ei) {
-        MOD.events.trigger("ws:" + ei.eventType, ei);
+        EVENTS.trigger("ws:" + ei.eventType, ei);
     };
 
     // On channel message received event handler.
@@ -23,7 +23,7 @@
 
         // Skip keep-alive pongs.
         if (e.data === "pong") {
-            MOD.events.trigger("ws:ponged");
+            EVENTS.trigger("ws:ponged");
             return;
         }
 
@@ -53,23 +53,23 @@
 
             // Bind socket event listeners.
             channel.onerror = function (e) {
-                MOD.events.trigger("ws:error", e);
+                EVENTS.trigger("ws:error", e);
             };
             channel.onopen = function () {
-                MOD.events.trigger("ws:opened");
+                EVENTS.trigger("ws:opened");
             };
             channel.onclose = function () {
-                MOD.events.trigger("ws:closed");
+                EVENTS.trigger("ws:closed");
             };
             channel.onmessage = onMessage;
 
             // Fire event.
-            MOD.events.trigger("ws:initialized", ep);
+            EVENTS.trigger("ws:initialized", ep);
         }
     };
 
     // Web socket buffering event handler.
-    MOD.events.on("ws:buffering", function () {
+    EVENTS.on("ws:buffering", function () {
         // Escape if already buffering.
         if (buffering === true) {
             return;
@@ -79,11 +79,11 @@
         buffering = true;
 
         // Fire event.
-        MOD.events.trigger("ws:buffered");
+        EVENTS.trigger("ws:buffered");
     });
 
     // Web socket activating event handler.
-    MOD.events.on("ws:activating", function () {
+    EVENTS.on("ws:activating", function () {
         // Escape if already activated.
         if (buffering === false) {
             return;
@@ -99,34 +99,35 @@
         buffer = [];
 
         // Fire event.
-        MOD.events.trigger("ws:activated");
+        EVENTS.trigger("ws:activated");
     });
 
-    MOD.events.on("ws:activated", function () {
+    EVENTS.on("ws:activated", function () {
         MOD.log("WS: channel activated");
     });
-    MOD.events.on("ws:buffered", function () {
+    EVENTS.on("ws:buffered", function () {
         MOD.log("WS: events buffered");
     });
-    MOD.events.on("ws:closed", function () {
+    EVENTS.on("ws:closed", function () {
         MOD.log("WS: channel closed");
     });
-    MOD.events.on("ws:error", function (e) {
+    EVENTS.on("ws:error", function (e) {
         MOD.log("WS: ERROR !!! {0}".replace("{0}", e.data));
     });
-    MOD.events.on("ws:initialized", function (ep) {
+    EVENTS.on("ws:initialized", function (ep) {
         MOD.log("WS: channel initialized: {0}".replace("{0}", ep));
     });
-    MOD.events.on("ws:opened", function () {
+    EVENTS.on("ws:opened", function () {
         MOD.log("WS: channel opened");
     });
-    MOD.events.on("ws:ponged", function () {
+    EVENTS.on("ws:ponged", function () {
         MOD.log("WS: PONG PONG PONG");
     });
 
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.APP.modules.monitoring.events,
     this.WebSocket,
     this.$,
     this._

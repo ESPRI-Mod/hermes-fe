@@ -1,4 +1,4 @@
-(function (MOD, _) {
+(function (MOD, STATE, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -14,7 +14,7 @@
 
         // Returns filtered collection of cv terms.
         getTermset: function (cvType) {
-            return _.filter(MOD.state.cvTerms, function (term) {
+            return _.filter(STATE.cvTerms, function (term) {
                 return term.typeof === cvType;
             });
         },
@@ -42,5 +42,6 @@
 
 }(
     this.APP.modules.monitoring,
+    this.APP.modules.monitoring.state,
     this._
 ));

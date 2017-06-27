@@ -96,5 +96,3 @@
 }(
     this.APP
 ));
-
-// https://vesg.ipsl.upmc.fr/thredds/fileServer/work_thredds/p86caub/IPSLCM6/DEVT/pdControl/CM6010.2-LR-pdCtrl-02/MONITORING/index.html

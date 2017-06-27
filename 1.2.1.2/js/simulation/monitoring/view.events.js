@@ -1,48 +1,55 @@
-(function (APP, MOD, STATE) {
+(function (APP, MOD, EVENTS, STATE) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
-    // Apply select filter event handler.
-    MOD.events.on("selectFilter:updated", function (filter) {
+    // Cascades updates to managed list of simulations.
+    var cascadeSimulationListUpdate = function () {
         // Update filtered simulations.
         MOD.updateFilteredSimulationList();
 
         // Update active filter terms.
         MOD.updateActiveFilterTerms();
 
+        // Update active monitoring targets.
+        MOD.updateActiveMonitoringTargets();
+
         // Update pagination.
         MOD.updatePagination();
 
+        // Fire event.
+        EVENTS.trigger("simulationTimesliceUpdated");
+    };
+
+    // Simulation timeslice parsed event handler.
+    // @data    Data fetched from remote server.
+    EVENTS.on("simulationTimesliceParsed", function () {
+        // Updated relevant state.
+        cascadeSimulationListUpdate();
+    });
+
+    // Apply select filter event handler.
+    EVENTS.on("selectFilter:updated", function (filter) {
         // Update cookie.
         MOD.setCookie('filter-' + filter.cookieKey, filter.cvTerms.current.name);
 
-        // Fire event.
-        MOD.events.trigger("simulationTimesliceUpdated");
+        // Updated relevant state.
+        cascadeSimulationListUpdate();
     });
 
     // Text filter event handler.
-    MOD.events.on("textFilter:updated", function (text) {
+    EVENTS.on("textFilter:updated", function (text) {
         if (MOD.state.textFilter === text.trim().toLowerCase()) return;
 
         // Update state.
         MOD.state.textFilter = text.trim().toLowerCase();
 
-        // Update filtered simulations.
-        MOD.updateFilteredSimulationList();
-
-        // Update active filter terms.
-        MOD.updateActiveFilterTerms();
-
-        // Update pagination.
-        MOD.updatePagination();
-
-        // Fire event.
-        MOD.events.trigger("simulationTimesliceUpdated");
+        // Updated relevant state.
+        cascadeSimulationListUpdate();
     });
 
     // Grid page size change event handler.
-    MOD.events.on("state:pageSizeChange", function (pageSize) {
+    EVENTS.on("state:pageSizeChange", function (pageSize) {
         // Update cookie.
         MOD.setCookie('page-size', pageSize);
 
@@ -53,11 +60,11 @@
         MOD.updatePagination();
 
         // Fire event.
-        MOD.events.trigger("simulationTimesliceUpdated");
+        EVENTS.trigger("simulationTimesliceUpdated");
     });
 
     // Grid sort field change event handler.
-    MOD.events.on("state:sortFieldChange", function (key) {
+    EVENTS.on("state:sortFieldChange", function (key) {
         // Update sort field.
         STATE.sorting.field = _.find(STATE.sorting.fields, function (i) {
             return i.key === key;
@@ -71,7 +78,7 @@
     });
 
     // Grid sort direction change event handler.
-    MOD.events.on("state:sortDirectionChange", function (key) {
+    EVENTS.on("state:sortDirectionChange", function (key) {
         // Update sort direction.
         STATE.sorting.direction = _.find(STATE.sorting.directions, function (i) {
             return i.key === key;
@@ -84,8 +91,18 @@
         MOD.updateSortedSimulationList();
     });
 
+    // Event handler: toggle inter-monitoring link.
+    EVENTS.on("im:toggle", function () {
+        // Update flag.
+        STATE.monitoredSimulationsOnly = !STATE.monitoredSimulationsOnly;
+
+        // Updated relevant state.
+        cascadeSimulationListUpdate();
+    });
+
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.APP.modules.monitoring.events,
     this.APP.modules.monitoring.state,
 ));

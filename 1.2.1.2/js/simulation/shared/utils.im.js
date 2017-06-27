@@ -1,4 +1,4 @@
-(function (APP, MOD, _, $) {
+(function (APP, MOD, EVENTS, STATE, _, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -7,7 +7,7 @@
 
     // Gets list of simulations for inter-monitoring.
     getSimulationListForIM = function () {
-        return _.filter(MOD.state.simulationList, function (s) {
+        return _.filter(STATE.simulationList, function (s) {
             return s.ext.isSelectedForIM;
         });
     };
@@ -74,39 +74,41 @@
     };
 
     // Event handler: open monitor link.
-    MOD.events.on("im:openMonitor", function (simulation) {
+    EVENTS.on("m:open", function (simulation) {
         APP.utils.openURL(getMonitorURL(simulation), true);
     });
 
     // Event handler: clear inter monitoring simulation selection.
-    MOD.events.on("im:clearInterMonitor", function () {
-        _.each(MOD.state.simulationListForIM, function (simulation) {
+    EVENTS.on("im:clear", function () {
+        _.each(STATE.simulationListForIM, function (simulation) {
             simulation.ext.isSelectedForIM = false;
         });
-        MOD.state.simulationListForIM = [];
-        MOD.events.trigger("simulationListForIMCleared");
+        STATE.simulationListForIM = [];
+        EVENTS.trigger("im:simulationListCleared");
     });
 
     // Event handler: open inter-monitoring link.
-    MOD.events.on("im:openInterMonitor", function () {
+    EVENTS.on("im:open", function () {
         var urls;
 
         urls = _.sortBy(_.map(getSimulationListForIM(), getInterMonitorURL));
         if (urls.length) {
-            MOD.events.trigger("im:postInterMonitorForm", urls);
+            EVENTS.trigger("im:postInterMonitorForm", urls);
         }
     });
 
     // Event handler: toggle inter-monitoring link.
-    MOD.events.on("im:toggleInterMonitor", function (s) {
+    EVENTS.on("im:toggleSimulation", function (s) {
         s.ext.isSelectedForIM = !s.ext.isSelectedForIM;
-        MOD.state.simulationListForIM = getSimulationListForIM();
-        MOD.events.trigger("simulationListForIMUpdated");
+        STATE.simulationListForIM = getSimulationListForIM();
+        EVENTS.trigger("im:simulationListUpdated");
     });
 
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.APP.modules.monitoring.events,
+    this.APP.modules.monitoring.state,
     this._,
     this.$jq
 ));

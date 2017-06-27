@@ -78,6 +78,14 @@
             });
         }
 
+        // Apply monitoring filter.
+        if (STATE.monitoredSimulationsOnly === true) {
+            result = _.filter(result, function (s) {
+                // console.log(s.uid + ' :: ' + s.isIM);
+                return s.isIM === true;
+            });
+        }
+
         // Sort (when not applying exclusions).
         if (applySort === true) {
             result = MOD.sortSimulationList(result);

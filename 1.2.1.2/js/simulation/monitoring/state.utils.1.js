@@ -106,6 +106,13 @@
         }
     };
 
+    // Updates collection of monitoring targets.
+    MOD.updateActiveMonitoringTargets = function () {
+        STATE.simulationListForIMTargets = _.filter(STATE.simulationListFiltered, function (s) {
+            return s.isIM === true;
+        });
+    };
+
 }(
     this.APP,
     this.APP.modules.monitoring,

@@ -45,18 +45,6 @@
         MOD.events.trigger("simulationTimesliceParsed", this);
     });
 
-    // Simulation timeslice fetched event handler.
-    // @data    Data fetched from remote server.
-    MOD.events.on("simulationTimesliceParsed", function () {
-        // Update related state.
-        MOD.updateFilteredSimulationList();
-        MOD.updateActiveFilterTerms();
-        MOD.updatePagination();
-
-        // Signal.
-        MOD.events.trigger("simulationTimesliceUpdated", this);
-    });
-
 }(
     this.APP,
     this.APP.modules.monitoring,

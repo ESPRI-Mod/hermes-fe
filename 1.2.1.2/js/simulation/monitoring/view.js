@@ -1,4 +1,4 @@
-(function (document, APP, MOD, STATE, PAGING, _, Backbone, $) {
+(function (document, APP, MOD, STATE, EVENTS, PAGING, _, Backbone, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -23,7 +23,7 @@
 
                 s = this._getSimulation(this._getSimulationUID(e));
                 if (s) {
-                    MOD.events.trigger("im:openMonitor", s);
+                    EVENTS.trigger("m:open", s);
                 }
             },
 
@@ -33,7 +33,7 @@
 
                 s = this._getSimulation(this._getSimulationUID(e));
                 if (s) {
-                    MOD.events.trigger("im:toggleInterMonitor", s);
+                    EVENTS.trigger("im:toggleSimulation", s);
                 }
             },
 
@@ -48,7 +48,7 @@
                     pageNumber <= PAGING.pages.length &&
                     PAGING.current !== PAGING.pages[pageNumber - 1]) {
                     PAGING.current = PAGING.pages[pageNumber - 1];
-                    MOD.events.trigger('simulationPageUpdate');
+                    EVENTS.trigger('simulationPageUpdate');
                 }
             },
 
@@ -56,7 +56,7 @@
             'click .pagination-first' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.first(PAGING.pages)) {
                     PAGING.current = _.first(PAGING.pages);
-                    MOD.events.trigger('simulationPageUpdate');
+                    EVENTS.trigger('simulationPageUpdate');
                 }
             },
 
@@ -64,7 +64,7 @@
             'click .pagination-previous' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.first(PAGING.pages)) {
                     PAGING.current = PAGING.pages[PAGING.current.id - 2];
-                    MOD.events.trigger('simulationPageUpdate');
+                    EVENTS.trigger('simulationPageUpdate');
                 }
             },
 
@@ -72,7 +72,7 @@
             'click .pagination-next' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.last(PAGING.pages)) {
                     PAGING.current = PAGING.pages[PAGING.current.id];
-                    MOD.events.trigger('simulationPageUpdate');
+                    EVENTS.trigger('simulationPageUpdate');
                 }
             },
 
@@ -80,23 +80,23 @@
             'click .pagination-last' : function () {
                 if (PAGING.pages.length && PAGING.current !== _.last(PAGING.pages)) {
                     PAGING.current = _.last(PAGING.pages);
-                    MOD.events.trigger('simulationPageUpdate');
+                    EVENTS.trigger('simulationPageUpdate');
                 }
             },
 
             // Pager: page-size change.
             'change .pagination-page-size' : function (e) {
-                MOD.events.trigger('state:pageSizeChange', $(e.target).val());
+                EVENTS.trigger('state:pageSizeChange', $(e.target).val());
             },
 
             // Sorting: change sort field.
             'change #sort-field-selector' : function (e) {
-                MOD.events.trigger('state:sortFieldChange', $(e.target).val());
+                EVENTS.trigger('state:sortFieldChange', $(e.target).val());
             },
 
             // Sorting: change sort direction.
             'change #sort-direction-selector' : function (e) {
-                MOD.events.trigger('state:sortDirectionChange', $(e.target).val());
+                EVENTS.trigger('state:sortDirectionChange', $(e.target).val());
             },
 
             // Reopen page when web socket closed.
@@ -144,48 +144,49 @@
             },
 
             'keyup #text-filter': function (e) {
-                MOD.events.trigger('textFilter:updated', $(e.target).val());
+                EVENTS.trigger('textFilter:updated', $(e.target).val());
             }
         },
 
         // Backbone: view initializer.
         initialize : function () {
             // UI initialisation events.
-            MOD.events.on("view:initialized", this._initIMContextMenu, this);
-            MOD.events.on("view:initialized", function () {
+            EVENTS.on("view:initialized", this._initIMContextMenu, this);
+            EVENTS.on("view:initialized", function () {
                 _.each(STATE.filters, this._setFilterSelector, this);
             }, this);
 
             // Sorting events.
-            MOD.events.on("simulationListSorted", this._updateGrid, this);
-            MOD.events.on("simulationListSorted", this._updateGridPager, this);
-            MOD.events.on("simulationListSorted", this._updatePermlink, this);
+            EVENTS.on("simulationListSorted", this._updateGrid, this);
+            EVENTS.on("simulationListSorted", this._updateGridPager, this);
+            EVENTS.on("simulationListSorted", this._updatePermlink, this);
 
             // Pagination events.
-            MOD.events.on("simulationPageUpdate", this._updateGrid, this);
-            MOD.events.on("simulationPageUpdate", this._updateGridPager, this);
+            EVENTS.on("simulationPageUpdate", this._updateGrid, this);
+            EVENTS.on("simulationPageUpdate", this._updateGridPager, this);
 
             // Filter events.
-            MOD.events.on("filterOptionsUpdate", this._setFilterSelector, this);
-            MOD.events.on("filtersUpdated", this._updatePermlink, this);
+            EVENTS.on("filterOptionsUpdate", this._setFilterSelector, this);
+            EVENTS.on("filtersUpdated", this._updatePermlink, this);
 
             // Simulation timeslice updated event.
-            MOD.events.on("simulationTimesliceUpdated", this._updateStatisticsInfo, this);
-            MOD.events.on("simulationTimesliceUpdated", this._updateGrid, this);
-            MOD.events.on("simulationTimesliceUpdated", this._updateGridPager, this);
+            EVENTS.on("simulationTimesliceUpdated", this._updateStatisticsInfo, this);
+            EVENTS.on("simulationTimesliceUpdated", this._updateGrid, this);
+            EVENTS.on("simulationTimesliceUpdated", this._updateGridPager, this);
+            EVENTS.on("simulationTimesliceUpdated", this._updateIMMenu, this);
 
             // Web-socket events.
-            MOD.events.on("ws:closed", this._displayWebSocketClosedDialog, this);
-            MOD.events.on("ws:jobUpdated", this._updateNotificationInfo, this);
-            MOD.events.on("ws:jobUpdated", this._updateGridRow, this);
-            MOD.events.on("ws:jobPeriodUpdated", this._updateNotificationInfo, this);
-            MOD.events.on("ws:jobPeriodUpdated", this._updateGridRow, this);
-            MOD.events.on("ws:simulationUpdated", this._updateNotificationInfo, this);
+            EVENTS.on("ws:closed", this._displayWebSocketClosedDialog, this);
+            EVENTS.on("ws:jobUpdated", this._updateNotificationInfo, this);
+            EVENTS.on("ws:jobUpdated", this._updateGridRow, this);
+            EVENTS.on("ws:jobPeriodUpdated", this._updateNotificationInfo, this);
+            EVENTS.on("ws:jobPeriodUpdated", this._updateGridRow, this);
+            EVENTS.on("ws:simulationUpdated", this._updateNotificationInfo, this);
 
             // Inter-monitoring events.
-            MOD.events.on("im:postInterMonitorForm", this._openInterMonitoringPage, this);
-            MOD.events.on("simulationListForIMUpdated", this._onIMSelectionUpdate, this);
-            MOD.events.on("simulationListForIMCleared", this._onIMSelectionClear, this);
+            EVENTS.on("im:postInterMonitorForm", this._openInterMonitoringPage, this);
+            EVENTS.on("im:simulationListUpdated", this._onIMSelectionUpdate, this);
+            EVENTS.on("im:simulationListCleared", this._onIMSelectionClear, this);
         },
 
         // Backbone: view renderer.
@@ -202,42 +203,54 @@
             return this;
         },
 
+        _updateIMMenu: function () {
+            var $menu = $('th.im-context-menu small');
+            if (STATE.simulationListForIMTargets.length === 0) {
+                $menu.contextMenu(false).removeClass('btn-sm btn-info');
+            } else {
+                $menu.contextMenu(true).addClass('btn-sm btn-info');
+                // $menu.contextMenu()
+            }
+        },
+
         _initIMContextMenu: function () {
             $.contextMenu({
                 selector: 'th.im-context-menu small',
                 trigger: 'left',
-                callback: function(key) {
-                    if (key === 'open') {
-                        MOD.events.trigger("im:openInterMonitor");
-                    } else if (key === 'clear') {
-                        MOD.events.trigger("im:clearInterMonitor");
-                    }
-                },
-                items: {
-                    open: {name: 'Open inter-monitoring'},
-                    clear: {name: 'Clear selections'},
+                build: function($triggerElement, e) {
+                    return {
+                        callback: function(key) {
+                            EVENTS.trigger('im:' + key);
+                        },
+                        items: {
+                            open: {
+                                name: 'Open inter-monitoring',
+                                disabled: STATE.simulationListForIM.length == 0
+                            },
+                            clear: {
+                                name: 'Clear selections',
+                                disabled: STATE.simulationListForIM.length == 0
+                            },
+                            toggle: {
+                                name: (STATE.monitoredSimulationsOnly ? 'Display' : 'Hide') + ' unmonitored simulations',
+                                disabled: false
+                            }
+                        }
+                    };
                 }
             });
-            $('th.im-context-menu small').contextMenu(false);
+
+            this._updateIMMenu();
         },
 
         _onIMSelectionUpdate: function () {
-            if (MOD.state.simulationListForIM.length >= 1) {
-                $("th.im-context-menu small")
-                    .addClass('btn-sm btn-info')
-                    .contextMenu(true);
-            } else {
-                $("th.im-context-menu small")
-                    .removeClass('btn-sm btn-info')
-                    .contextMenu(false);
-            }
+            // TODO - set menu commands enablement state.
+
         },
 
         _onIMSelectionClear: function () {
             $("td.inter-monitoring > input").prop("checked", false);
-            $("th.im-context-menu small")
-                .removeClass('btn-sm btn-info')
-                .contextMenu(false);
+            // TODO - set menu commands enablement state.
         },
 
         _setFilterSelector: function (f) {
@@ -303,7 +316,7 @@
         _updatePermlink: function () {
             var permalink = MOD.getPermalink();
             $("#permalink").val(permalink);
-            MOD.events.trigger("view:permalinkUpdated", permalink);
+            EVENTS.trigger("view:permalinkUpdated", permalink);
         },
 
         _displayWebSocketClosedDialog: function () {
@@ -354,6 +367,7 @@
     this.APP,
     this.APP.modules.monitoring,
     this.APP.modules.monitoring.state,
+    this.APP.modules.monitoring.events,
     this.APP.modules.monitoring.state.paging,
     this._,
     this.Backbone,
