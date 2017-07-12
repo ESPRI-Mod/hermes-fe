@@ -37,12 +37,14 @@
             // ... core fields
             executionEndDate: i[0],
             executionStartDate: i[1],
-            executionState: i[5] === 1 ? 'error' : i[0] ? 'complete' : 'running',
+            executionState: i[5] === 1 ? 'error' :
+                            i[0] ? 'complete' : 'running',
             executionState1: i[2],
             id: i[3],
             isComputeEnd: i[4] === 1,
             isError: i[5] === 1,
             isIM: i[6] === 1,
+            isLate: i[20] === 1,
             simulationID: i[8],
             typeof: i[7],
             // ... non-core fields.

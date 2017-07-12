@@ -90,10 +90,6 @@
         if (s.accountingProject === 'cmip5') {
             s.executionState = 'complete';
 
-        // Queued if no compute jobs have started.
-        } else if (s.jobCounts.c.all === 0) {
-            s.executionState = 'queued';
-
         // Running if latest job is running.
         } else if (s.ext.latestComputeJob.executionState === 'running') {
             s.executionState = 'running';

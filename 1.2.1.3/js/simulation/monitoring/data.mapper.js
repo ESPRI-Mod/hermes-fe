@@ -12,7 +12,8 @@
             isError: i[4] === 1,
             typeof: i[1],
             executionStartDate: i[5],
-            executionEndDate: i[6]
+            executionEndDate: i[6],
+            isLate: i[7] === 1
         };
     };
 

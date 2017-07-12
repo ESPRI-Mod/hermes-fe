@@ -177,6 +177,7 @@
     MOD.events.on("ws:initialized", onInitializationEvent);
     MOD.events.on("ws:jobComplete", onJobEvent);
     MOD.events.on("ws:jobError", onJobEvent);
+    MOD.events.on("ws:jobLate", onJobEvent);
     MOD.events.on("ws:jobPeriodUpdate", onJobPeriodUpdate);
     MOD.events.on("ws:jobStart", onJobEvent);
     MOD.events.on("ws:simulationComplete", onSimulationEvent);
