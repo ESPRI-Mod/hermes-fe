@@ -69,10 +69,10 @@
             <th title='Try' class="text-center">
                 <small>Try</small>
             </th>
-            <th title="Compute Jobs (Running/Late | Complete/Error)" class="text-center">
+            <th title="Compute Jobs (Running | Complete | Late | Error)" class="text-center">
                 <small>Jobs (C)</small>
             </th>
-            <th title="Post-Processing Jobs (Running/Late | Complete/Error)" class="text-center">
+            <th title="Post-Processing Jobs (Running | Complete | Late | Error)" class="text-center">
                 <small>Jobs (PP)</small>
             </th>
             <th title='Node - Machine' class="text-center">
@@ -255,9 +255,9 @@
     <td class="text-center"
         style="<%= s.jobCounts.c.e ? 'color: #333; background-color: pink;' :
                    s.jobCounts.c.l ? 'color: #333; background-color: #F2DEDE;' : ''%>"
-        title="<%= s.jobCounts.c.r + ' RUNNING / ' +
+        title="<%= s.jobCounts.c.r + ' RUNNING | ' +
+                   s.jobCounts.c.c + ' COMPLETE | ' +
                    s.jobCounts.c.l + ' LATE | ' +
-                   s.jobCounts.c.c + ' COMPLETE / ' +
                    s.jobCounts.c.e + ' ERROR' %>" >
         <small>
             <% if (s.jobCounts.all === 0) { %>
@@ -273,9 +273,9 @@
     <td class="text-center"
         style="<%= s.jobCounts.p.e ? 'color: #333; background-color: pink;' :
                    s.jobCounts.p.l ? 'color: #333; background-color: #F2DEDE;' : ''%>"
-        title="<%= s.jobCounts.p.r + ' RUNNING / ' +
+        title="<%= s.jobCounts.p.r + ' RUNNING | ' +
+                   s.jobCounts.p.c + ' COMPLETE | ' +
                    s.jobCounts.p.l + ' LATE | ' +
-                   s.jobCounts.p.c + ' COMPLETE / ' +
                    s.jobCounts.p.e + ' ERROR' %>" >
         <small>
             <% if (s.jobCounts.all === 0) { %>
