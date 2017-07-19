@@ -1,4 +1,4 @@
-(function (APP, MOD, numeral) {
+(function (APP, MOD, moment, numeral) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -34,29 +34,28 @@
     // Maps job info from data returned from server.
     MOD.mapJob = function (i) {
         return {
-            // ... core fields
+            // core fields:
             executionEndDate: i[0],
             executionStartDate: i[1],
-            executionState: i[5] === 1 ? 'error' :
-                            i[0] ? 'complete' : 'running',
             executionState1: i[2],
             id: i[3],
             isComputeEnd: i[4] === 1,
             isError: i[5] === 1,
             isIM: i[6] === 1,
-            isLate: i[20] === 1,
             simulationID: i[8],
             typeof: i[7],
-            // ... non-core fields.
+            // non-core fields:
             accountingProject: APP.utils.isNone(i[9]) ? '--' : i[9],
             jobUID: i[10],
-            postProcessingInfo: i[7] !== 'c' ? mapJobPostProcessingInfo(i) : null,
+            postProcessingInfo: i[7] === 'p' ? mapJobPostProcessingInfo(i) : null,
             postProcessingName: i[15],
             schedulerID: i[16],
             simulationUID: i[19],
             submissionPath: i[17],
             warningDelay: numeral(i[18]),
-            // ... other fields
+            warningLimit: i[21],
+            warningState: i[20] === 1,
+            // work fields:
             duration: null,
             extended: false,
             lateness: null
@@ -74,5 +73,6 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.moment,
     this.numeral
 ));

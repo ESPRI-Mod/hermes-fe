@@ -71,7 +71,7 @@
             cookieKey: 'state',
             cvType: 'simulation_state',
             defaultValue: "*",
-            displayName: 'State',
+            displayName: 'Compute State',
             key: 'executionState'
         }
     ];

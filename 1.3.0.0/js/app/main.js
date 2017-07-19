@@ -8,7 +8,7 @@ window.$ = window.$jq = jQuery.noConflict();
 // app/main.js
 // Application entry point.
 // --------------------------------------------------------
-(function (root, _, Backbone) {
+(function (root, _, Backbone, moment) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -37,10 +37,13 @@ window.$ = window.$jq = jQuery.noConflict();
         title: "HERMES",
 
         // App version.
-        version : "1.2.2.0",
+        version : "1.3.0.0",
 
         // App copyright statement.
         copyrightYear: new Date().getFullYear(),
+
+        // Now for duration calculations.
+        NOW: moment(),
 
         // App Event dispatcher.
         events: _.extend({}, Backbone.Events),
@@ -175,4 +178,9 @@ window.$ = window.$jq = jQuery.noConflict();
         }
     });
 
-}(this, this._, this.Backbone));
+}(
+    this,
+    this._,
+    this.Backbone,
+    this.moment
+));

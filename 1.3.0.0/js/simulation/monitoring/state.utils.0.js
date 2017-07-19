@@ -94,6 +94,10 @@
         } else if (s.ext.latestComputeJob.executionState === 'running') {
             s.executionState = 'running';
 
+        // Late if latest job is late.
+        } else if (s.ext.latestComputeJob.executionState === 'late') {
+            s.executionState = 'late';
+
         // Error if latest job is in error.
         } else if (s.ext.latestComputeJob.executionState === 'error') {
             s.executionState = 'error';

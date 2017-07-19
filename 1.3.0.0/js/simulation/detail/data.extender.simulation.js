@@ -13,6 +13,7 @@
                 complete: [],
                 error: [],
                 jobType: 'c',
+                late: [],
                 running: [],
                 paging: {
                     current: undefined,
@@ -26,6 +27,7 @@
                 complete: [],
                 error: [],
                 jobType: 'p',
+                late: [],
                 running: [],
                 paging: {
                     current: undefined,

@@ -29,6 +29,7 @@
         // Map of execution states to css classes.
         statesCSS : {
             "queued" : 'monitoring-state-queued',
+            "late" : 'monitoring-state-late',
             "running" : 'monitoring-state-running',
             "complete" : 'monitoring-state-complete',
             "error" : 'monitoring-state-error',

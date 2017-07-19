@@ -5,14 +5,14 @@
 <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
-    <link rel="shortcut icon" href="1.2.1.3/img/site-favicon-ipsl.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="1.3.0.0/img/site-favicon-ipsl.png" type="image/x-icon" />
     <title>IPSL - HERMES</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
-    <link href="1.2.1.3/css/app.css" rel="stylesheet" media="screen">
-    <link href="1.2.1.3/css/simulation.detail.css" rel="stylesheet" media="screen">
-    <link href="1.2.1.3/css/simulation.shared.css" rel="stylesheet" media="screen">
+    <link href="1.3.0.0/css/app.css" rel="stylesheet" media="screen">
+    <link href="1.3.0.0/css/simulation.detail.css" rel="stylesheet" media="screen">
+    <link href="1.3.0.0/css/simulation.shared.css" rel="stylesheet" media="screen">
     <link href="ext/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" media="screen">
 </head>
 
@@ -103,13 +103,19 @@
                           </span>
                     </span>
                     <span class="badge"
+                          style="background-color: #F2DEDE; color: #333;">
+                          <span id="tab-job-count-<%= jobType %>-late">
+                            <%- jobList.late.length %>
+                          </span>
+                    </span>
+                    <span class="badge"
                           style="background-color: #DFF0D8; color: #333;">
                           <span id="tab-job-count-<%= jobType %>-complete">
                             <%- jobList.complete.length %>
                           </span>
                     </span>
                     <span class="badge"
-                          style="background-color: #F2DEDE; color: #333;">
+                          style="background-color: pink; color: #333;">
                           <span id="tab-job-count-<%= jobType %>-error">
                             <%- jobList.error.length %>
                           </span>
@@ -429,8 +435,12 @@
         <span class='pull-right sort-target-duration glyphicon' />
     </th>
     <th title='Job warning delay' class='sort-target sort-target-warningDelay text-center'>
-        <small class='sort-target-warningDelay'>Delay Warning</small>
+        <small class='sort-target-warningDelay'>Lateness Delay</small>
         <span class='pull-right sort-target-warningDelay glyphicon' />
+    </th>
+    <th title='Job warning limit' class='sort-target sort-target-warningLimit text-center'>
+        <small class='sort-target-warningLimit'>Lateness Deadline</small>
+        <span class='pull-right sort-target-warningLimit glyphicon' />
     </th>
     <th title='Job lateness' class='sort-target sort-target-lateness text-center'>
         <small class='sort-target-lateness'>Lateness</small>
@@ -446,22 +456,34 @@
         <span>
             <small>
                 <strong>
-                    <%- jobList.all.length %> <%- jobTypeCaption %> Jobs:
+                    <%= jobTypeCaption %> Jobs = <%= jobList.all.length %>:
                 </strong>
             </small>
         </span>
         <span>
-            <span class='monitoring-state-running badge'
-                  style="background-color: #D9EDF7; color: #333;">
-                <small><strong><%- jobList.running.length %> RUNNING</strong></small>
+            <span class='badge'
+                  style='background-color: #D9EDF7; color: #333;'>
+                <small><strong>
+                    <%- jobList.running.length %> RUNNING
+                </strong></small>
             </span>
-            <span class='monitoring-state-complete badge'
-                  style="background-color: #DFF0D8; color: #333;">
-                <small><strong><%- jobList.complete.length %> COMPLETE</strong></small>
+            <span class='badge'
+                  style='background-color: #F2DEDE; color: #333;'>
+                <small><strong>
+                    <%- jobList.late.length %> LATE
+                </strong></small>
             </span>
-            <span class='monitoring-state-error badge'
-                  style="background-color: #F2DEDE; color: #333;">
-                <small><strong><%- jobList.error.length %> ERROR</strong></small>
+            <span class='badge'
+                  style='background-color: #DFF0D8; color: #333;'>
+                <small><strong>
+                    <%- jobList.complete.length %> COMPLETE
+                </strong></small>
+            </span>
+            <span class='badge'
+                  style='background-color: pink; color: #333;'>
+                <small><strong>
+                    <%- jobList.error.length %> ERROR
+                </strong></small>
             </small>
         </span>
         <span class='pull-right'>
@@ -494,9 +516,14 @@
             <%= APP.utils.renderDuration(job.duration) %>
         </small>
     </td>
-    <td class='lateness text-center'>
+    <td class='warningDelay text-center'>
         <small>
             <%= APP.utils.renderDuration(job.warningDelay) %>
+        </small>
+    </td>
+    <td class='warningLimit text-center'>
+        <small>
+            <%= APP.utils.renderDateTime(job.warningLimit) %>
         </small>
     </td>
     <td class='lateness text-center'>
@@ -538,38 +565,38 @@
 <script src="ext/jsExtensions.js"></script>
 
 <!-- JS: Application shell -->
-<script src="1.2.1.3/js/app/main.js"></script>
-<script src="1.2.1.3/js/app/constants.js"></script>
-<script src="1.2.1.3/js/app/cookies.js"></script>
-<script src="1.2.1.3/js/app/init.js"></script>
-<script src="1.2.1.3/js/app/options.js"></script>
-<script src="1.2.1.3/js/app/state.js"></script>
-<script src="1.2.1.3/js/app/templates.js"></script>
-<script src="1.2.1.3/js/app/utils.js"></script>
-<script src="1.2.1.3/js/app/view.content.js"></script>
-<script src="1.2.1.3/js/app/view.header.js"></script>
-<script src="1.2.1.3/js/app/view.footer.js"></script>
-<script src="1.2.1.3/js/app/view.progress.js"></script>
-<script src="1.2.1.3/js/app/view.js"></script>
+<script src="1.3.0.0/js/app/main.js"></script>
+<script src="1.3.0.0/js/app/constants.js"></script>
+<script src="1.3.0.0/js/app/cookies.js"></script>
+<script src="1.3.0.0/js/app/init.js"></script>
+<script src="1.3.0.0/js/app/options.js"></script>
+<script src="1.3.0.0/js/app/state.js"></script>
+<script src="1.3.0.0/js/app/templates.js"></script>
+<script src="1.3.0.0/js/app/utils.js"></script>
+<script src="1.3.0.0/js/app/view.content.js"></script>
+<script src="1.3.0.0/js/app/view.header.js"></script>
+<script src="1.3.0.0/js/app/view.footer.js"></script>
+<script src="1.3.0.0/js/app/view.progress.js"></script>
+<script src="1.3.0.0/js/app/view.js"></script>
 
 <!-- JS: Module = monitoring (one) -->
-<script src="1.2.1.3/js/simulation/shared/main.js"></script>
-<script src="1.2.1.3/js/simulation/shared/utils.cv.js"></script>
-<script src="1.2.1.3/js/simulation/shared/utils.im.js"></script>
-<script src="1.2.1.3/js/simulation/shared/utils.ws.js"></script>
-<script src="1.2.1.3/js/simulation/detail/init.js"></script>
-<script src="1.2.1.3/js/simulation/detail/cookies.js"></script>
-<script src="1.2.1.3/js/simulation/detail/state.js"></script>
-<script src="1.2.1.3/js/simulation/detail/state.utils.0.js"></script>
-<script src="1.2.1.3/js/simulation/detail/state.utils.js"></script>
-<script src="1.2.1.3/js/simulation/detail/data.extender.job.js"></script>
-<script src="1.2.1.3/js/simulation/detail/data.extender.simulation.js"></script>
-<script src="1.2.1.3/js/simulation/detail/data.mapper.js"></script>
-<script src="1.2.1.3/js/simulation/detail/data.parser.js"></script>
-<script src="1.2.1.3/js/simulation/detail/events.fetch.js"></script>
-<script src="1.2.1.3/js/simulation/detail/events.ws.js"></script>
-<script src="1.2.1.3/js/simulation/detail/view.js"></script>
-<script src="1.2.1.3/js/simulation/detail/view.renderer.js"></script>
+<script src="1.3.0.0/js/simulation/shared/main.js"></script>
+<script src="1.3.0.0/js/simulation/shared/utils.cv.js"></script>
+<script src="1.3.0.0/js/simulation/shared/utils.im.js"></script>
+<script src="1.3.0.0/js/simulation/shared/utils.ws.js"></script>
+<script src="1.3.0.0/js/simulation/detail/init.js"></script>
+<script src="1.3.0.0/js/simulation/detail/cookies.js"></script>
+<script src="1.3.0.0/js/simulation/detail/state.js"></script>
+<script src="1.3.0.0/js/simulation/detail/state.utils.0.js"></script>
+<script src="1.3.0.0/js/simulation/detail/state.utils.js"></script>
+<script src="1.3.0.0/js/simulation/detail/data.extender.job.js"></script>
+<script src="1.3.0.0/js/simulation/detail/data.extender.simulation.js"></script>
+<script src="1.3.0.0/js/simulation/detail/data.mapper.js"></script>
+<script src="1.3.0.0/js/simulation/detail/data.parser.js"></script>
+<script src="1.3.0.0/js/simulation/detail/events.fetch.js"></script>
+<script src="1.3.0.0/js/simulation/detail/events.ws.js"></script>
+<script src="1.3.0.0/js/simulation/detail/view.js"></script>
+<script src="1.3.0.0/js/simulation/detail/view.renderer.js"></script>
 
 </body>
 </html>

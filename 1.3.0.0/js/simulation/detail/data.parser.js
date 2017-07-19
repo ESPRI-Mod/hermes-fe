@@ -27,11 +27,8 @@
         MOD.setJobsetPagination(s.jobs.compute, true);
         MOD.setJobsetPagination(s.jobs.postProcessing, true);
 
-        // Set derived execution state.
-        MOD.setSimulationExecutionState(s);
-
-        // Set derived execution end date (necessary if 0100 not sent).
-        MOD.setSimulationExecutionEndDate(s);
+        // Set derived execution information.
+        MOD.setSimulationDerivedInformation(s);
     };
 
 }(

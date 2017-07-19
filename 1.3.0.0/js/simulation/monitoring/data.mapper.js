@@ -1,20 +1,40 @@
-(function (APP, MOD) {
+(function (APP, MOD, moment) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
 
     // Maps a job.
     MOD.mapJob = function (i) {
-        return {
+        var j, lateness;
+
+        j = {
             simulationID: i[0],
-            executionState: i[4] === 1 ? 'error' : i[6] ? 'complete' : 'running',
             isComputeEnd: i[3] === 1,
             isError: i[4] === 1,
             typeof: i[1],
             executionStartDate: i[5],
             executionEndDate: i[6],
-            isLate: i[7] === 1
+            isLate: i[7] === 1,
+            isLateDerived: false,
+            warningLimit: i[8]
         };
+
+        // For unfinished jobs derive lateness indicator (if relevant).
+        if (!j.isError && !j.executionEndDate && !j.isLate) {
+            lateness = APP.NOW.diff(moment(j.warningLimit), 's');
+            if (lateness >= 0) {
+                j.isLateDerived = true;
+            }
+        }
+
+        // Set job execution state.
+        j.executionState = j.isError ? 'error' :
+                           j.executionEndDate ? 'complete' :
+                           j.isLate ? 'late' :
+                           j.isLateDerived ? 'late' :
+                           'running';
+
+        return j;
     };
 
     // Returns a job count object mapped form an array of values.
@@ -64,5 +84,6 @@
 
 }(
     this.APP,
-    this.APP.modules.monitoring
+    this.APP.modules.monitoring,
+    this.moment
 ));

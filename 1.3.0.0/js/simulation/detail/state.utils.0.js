@@ -4,9 +4,7 @@
     "use strict";
 
     var
-        getSimulationComputeState = function (s) {
-            var last;
-
+        getSimulationComputeState = function (s, lastJob) {
             // Complete if cmip5.
             if (s.accountingProject === 'cmip5') {
                 return 'complete';
@@ -18,19 +16,21 @@
             }
 
             // Derive from last compute job.
-            last = _.last(s.jobs.compute.allUnsorted);
-            if (last.executionState === 'running') {
+            if (lastJob.executionState === 'running') {
                 return 'running';
             }
-            if (last.executionState === 'error') {
+            else if (lastJob.executionState === 'late') {
+                return 'late';
+            }
+            else if (lastJob.executionState === 'error') {
                 return 'error';
             }
-            if (last.executionState === 'complete' && last.isComputeEnd) {
+            else if (lastJob.executionState === 'complete' &&
+                     lastJob.isComputeEnd) {
                 return 'complete';
+            } else {
+                return 'queued';
             }
-
-            // Queued otherwise.
-            return 'queued';
         };
 
     // Returns description of a simulation related event.
@@ -122,37 +122,24 @@
         }
     };
 
-    // Sets simulation's execution end date.
-    MOD.setSimulationExecutionEndDate = function (s) {
-        var lastJob;
+    MOD.setSimulationDerivedInformation = function (s) {
+        var lastComputeJob;
 
-        // Escape if non-derivable.
-        if (s.executionEndDate ||
-            s.jobs.compute.all.length === 0 ||
-            s.jobs.postProcessing.all.length === 0) {
-            return;
+        // Set last compute job.
+        if (s.jobs.compute.all.length) {
+            lastComputeJob = _.last(s.jobs.compute.allUnsorted);
         }
 
-        // Derive from last compute job.
-        lastJob = _.last(s.jobs.compute.allUnsorted);
-        s.executionEndDate = lastJob.executionEndDate || lastJob.executionStartDate;
-    };
-
-    // Sets simulation's current execution status.
-    MOD.setSimulationExecutionState = function (s) {
-        // Override compute job execution state when a later job has started.
-        var lastJob = _.last(s.jobs.compute.allUnsorted);
-        _.each(s.jobs.compute.allUnsorted, function (job) {
-            if (job != lastJob) {
-                if (job.executionState === 'running') {
-                    job.executionState = 'complete';
-                    job.executionEndDate = undefined;
-                }
-            }
-        });
+        // Escape if non-derivable.
+        // if (!s.executionEndDate &&
+        //     s.jobs.compute.all.length &&
+        //     s.jobs.postProcessing.all.length) {
+        //     s.executionEndDate = lastJob.executionEndDate ||
+        //                          lastJob.executionStartDate;
+        // }
 
         // Derive simulation execution state.
-        s.executionState = getSimulationComputeState(s);
+        s.executionState = getSimulationComputeState(s, lastComputeJob);
 
         // Map state to CV.
         MOD.cv.setFieldDisplayName(s, 'simulation_state', 'executionState');
@@ -171,6 +158,7 @@
             }
         });
     };
+
 
 }(
     this.APP,

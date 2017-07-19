@@ -3,6 +3,11 @@
 	color: #333;
 }
 
+.monitoring-state-late {
+	background-color: #F2DEDE;
+	color: #333;
+}
+
 .monitoring-state-running {
 	background-color: #D9EDF7;
 	color: #333;
@@ -14,7 +19,7 @@
 }
 
 .monitoring-state-error {
-	background-color: #F2DEDE;
+	background-color: pink;
 	color: #333;
 }
 

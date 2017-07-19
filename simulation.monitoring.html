@@ -5,15 +5,15 @@
 <head>
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
-    <link rel="shortcut icon" href="1.2.1.3/img/site-favicon-ipsl.png" type="image/x-icon" />
+    <link rel="shortcut icon" href="1.3.0.0/img/site-favicon-ipsl.png" type="image/x-icon" />
     <title>IPSL - HERMES</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
     <link href="ext/bootstrap-3.3.7/css/bootstrap.min.css" rel="stylesheet" media="screen">
-    <link href="1.2.1.3/css/app.css" rel="stylesheet" media="screen">
-    <link href="1.2.1.3/css/simulation.monitoring.css" rel="stylesheet" media="screen">
-    <link href="1.2.1.3/css/simulation.shared.css" rel="stylesheet" media="screen">
+    <link href="1.3.0.0/css/app.css" rel="stylesheet" media="screen">
+    <link href="1.3.0.0/css/simulation.monitoring.css" rel="stylesheet" media="screen">
+    <link href="1.3.0.0/css/simulation.shared.css" rel="stylesheet" media="screen">
     <link href="ext/select2-4.0.2/css/select2.min.css" rel="stylesheet" media="screen">
     <link href="ext/select2-4.0.2/css/select2-bootstrap.min.css" rel="stylesheet" media="screen">
     <link href="ext/jquery-contextmenu/jquery.contextMenu.2.5.0.css" rel="stylesheet" media="screen">
@@ -69,10 +69,10 @@
             <th title='Try' class="text-center">
                 <small>Try</small>
             </th>
-            <th title="Compute Jobs (Running | Complete | Error)" class="text-center">
+            <th title="Compute Jobs (Running/Late | Complete/Error)" class="text-center">
                 <small>Jobs (C)</small>
             </th>
-            <th title="Post-Processing Jobs (Running | Complete | Error)" class="text-center">
+            <th title="Post-Processing Jobs (Running/Late | Complete/Error)" class="text-center">
                 <small>Jobs (PP)</small>
             </th>
             <th title='Node - Machine' class="text-center">
@@ -106,36 +106,34 @@
         <tr>
             <td colspan="15">
                 <span>
-                    <span class='monitoring-state-queued badge'
-                          title='QUEUED'
+                    <span class='badge' title='QUEUED'
                           style="background-color: #F5F5F5; color: #333;">
                         <small><strong>&nbsp;QUEUED&nbsp;</strong></small>
                     </span>
-                    <span class='monitoring-state-running badge'
-                          title='RUNNING'
+                    <span class='badge' title='RUNNING'
                           style="background-color: #D9EDF7; color: #333;">
                         <small><strong>&nbsp;RUNNING&nbsp;</strong></small>
                     </span>
-                    <span class='monitoring-state-complete badge'
-                          title='COMPLETE'
+                    <span class='badge' title='LATE'
+                          style="background-color: #F2DEDE; color: #333;">
+                        <small><strong>&nbsp;LATE&nbsp;</strong></small>
+                    </span>
+                    <span class='badge' title='COMPLETE'
                           style="background-color: #DFF0D8; color: #333;">
                         <small><strong>&nbsp;COMPLETE&nbsp;</strong></small>
                     </span>
-                    <span class='monitoring-state-error badge'
-                          title='ERROR'
-                          style="background-color: #F2DEDE; color: #333;">
+                    <span class='badge' title='ERROR'
+                          style="background-color: pink; color: #333;">
                         <small><strong>&nbsp;ERROR&nbsp;</strong></small>
                     </span>
                     <span>
                         &nbsp;&nbsp;&nbsp;
                     </span>
-                    <span class='badge'
-                          title='Monitoring'
+                    <span class='badge' title='Monitoring'
                           style="background-color: #eceeef; color: black;">
                         <small><strong>M = Monitoring</strong></small>
                     </span>
-                    <span class='badge'
-                          title='Inter-Monitoring'
+                    <span class='badge' title='Inter-Monitoring'
                           style="background-color: #eceeef; color: black;">
                         <small><strong>IM = Inter-Monitoring</strong></small>
                     </span>
@@ -254,27 +252,35 @@
             <%= s.tryID %>
         </small>
     </td>
-    <td class="text-center compute-job-count <%= s.jobCounts.c.e ? 'bg-danger' : ''%>"
-        title="Running = <%= s.jobCounts.c.r %> | Complete = <%= s.jobCounts.c.c %> | Error = <%= s.jobCounts.c.e %>">
+    <td class="text-center"
+        style="<%= s.jobCounts.c.e ? 'color: #333; background-color: pink;' :
+                   s.jobCounts.c.l ? 'color: #333; background-color: #F2DEDE;' : ''%>"
+        title="<%= s.jobCounts.c.r + ' RUNNING / ' +
+                   s.jobCounts.c.l + ' LATE | ' +
+                   s.jobCounts.c.c + ' COMPLETE / ' +
+                   s.jobCounts.c.e + ' ERROR' %>" >
         <small>
             <% if (s.jobCounts.all === 0) { %>
                 --
             <% } else { %>
-                <%= s.jobCounts.c.r %> |
-                <%= s.jobCounts.c.c %> |
-                <%= s.jobCounts.c.e %>
+                <%= s.jobCounts.c.r %>/<%= s.jobCounts.c.l %> |
+                <%= s.jobCounts.c.c %>/<%= s.jobCounts.c.e %>
             <% } %>
         </small>
     </td>
-    <td class="text-center post-processing-job-count <%= s.jobCounts.p.e ? 'bg-danger' : ''%>"
-        title="Running = <%= s.jobCounts.p.r %> | Complete = <%= s.jobCounts.p.c %> | Error = <%= s.jobCounts.p.e %>">
+    <td class="text-center"
+        style="<%= s.jobCounts.p.e ? 'color: #333; background-color: pink;' :
+                   s.jobCounts.p.l ? 'color: #333; background-color: #F2DEDE;' : ''%>"
+        title="<%= s.jobCounts.p.r + ' RUNNING / ' +
+                   s.jobCounts.p.l + ' LATE | ' +
+                   s.jobCounts.p.c + ' COMPLETE / ' +
+                   s.jobCounts.p.e + ' ERROR' %>" >
         <small>
             <% if (s.jobCounts.all === 0) { %>
                 --
             <% } else { %>
-                <%= s.jobCounts.p.r %> |
-                <%= s.jobCounts.p.c %> |
-                <%= s.jobCounts.p.e %>
+                <%= s.jobCounts.p.r %>/<%= s.jobCounts.p.l %> |
+                <%= s.jobCounts.p.c %>/<%= s.jobCounts.p.e %>
             <% } %>
         </small>
     </td>
@@ -413,41 +419,41 @@
 <script src="ext/select2-4.0.2/js/select2.min.js"></script>
 
 <!-- JS: Application shell -->
-<script src="1.2.1.3/js/app/main.js"></script>
-<script src="1.2.1.3/js/app/constants.js"></script>
-<script src="1.2.1.3/js/app/cookies.js"></script>
-<script src="1.2.1.3/js/app/init.js"></script>
-<script src="1.2.1.3/js/app/options.js"></script>
-<script src="1.2.1.3/js/app/state.js"></script>
-<script src="1.2.1.3/js/app/templates.js"></script>
-<script src="1.2.1.3/js/app/utils.js"></script>
-<script src="1.2.1.3/js/app/view.content.js"></script>
-<script src="1.2.1.3/js/app/view.header.js"></script>
-<script src="1.2.1.3/js/app/view.footer.js"></script>
-<script src="1.2.1.3/js/app/view.progress.js"></script>
-<script src="1.2.1.3/js/app/view.js"></script>
+<script src="1.3.0.0/js/app/main.js"></script>
+<script src="1.3.0.0/js/app/constants.js"></script>
+<script src="1.3.0.0/js/app/cookies.js"></script>
+<script src="1.3.0.0/js/app/init.js"></script>
+<script src="1.3.0.0/js/app/options.js"></script>
+<script src="1.3.0.0/js/app/state.js"></script>
+<script src="1.3.0.0/js/app/templates.js"></script>
+<script src="1.3.0.0/js/app/utils.js"></script>
+<script src="1.3.0.0/js/app/view.content.js"></script>
+<script src="1.3.0.0/js/app/view.header.js"></script>
+<script src="1.3.0.0/js/app/view.footer.js"></script>
+<script src="1.3.0.0/js/app/view.progress.js"></script>
+<script src="1.3.0.0/js/app/view.js"></script>
 <!-- JS: Module = monitoring (all) -->
-<script src="1.2.1.3/js/simulation/shared/main.js"></script>
-<script src="1.2.1.3/js/simulation/shared/utils.cv.js"></script>
-<script src="1.2.1.3/js/simulation/shared/utils.im.js"></script>
-<script src="1.2.1.3/js/simulation/shared/utils.ws.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/init.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/cookies.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/logger.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/state.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/state.utils.0.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/state.utils.1.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/state.utils.2.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/state.utils.3.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/fetch.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/fetch.events.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/data.extender.simulation.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/data.parser.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/data.mapper.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/view.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/view.renderer.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/view.events.js"></script>
-<script src="1.2.1.3/js/simulation/monitoring/ws.events.js"></script>
+<script src="1.3.0.0/js/simulation/shared/main.js"></script>
+<script src="1.3.0.0/js/simulation/shared/utils.cv.js"></script>
+<script src="1.3.0.0/js/simulation/shared/utils.im.js"></script>
+<script src="1.3.0.0/js/simulation/shared/utils.ws.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/init.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/cookies.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/logger.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/state.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/state.utils.0.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/state.utils.1.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/state.utils.2.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/state.utils.3.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/fetch.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/fetch.events.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/data.extender.simulation.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/data.parser.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/data.mapper.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/view.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/view.renderer.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/view.events.js"></script>
+<script src="1.3.0.0/js/simulation/monitoring/ws.events.js"></script>
 
 </body>
 </html>

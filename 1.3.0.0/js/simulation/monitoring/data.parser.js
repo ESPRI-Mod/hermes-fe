@@ -15,9 +15,11 @@
 
         // Set job counts.
         _.each(STATE.jobCounts, function (jc) {
-            var s = STATE.simulationSet[jc.simulationID];
-            s.jobCounts[jc.jobType][jc.jobState] = jc.count;
+            var s;
+
+            s = STATE.simulationSet[jc.simulationID];
             s.jobCounts[jc.jobType].all += jc.count;
+            s.jobCounts[jc.jobType][jc.jobState] = jc.count;
             s.jobCounts.all += jc.count;
         });
 

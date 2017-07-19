@@ -140,6 +140,7 @@
                 return "--";
             }
             if (_.isUndefined(value)) {
+                return "--";
                 return "N/A";
             }
             if (_.isString(value)) {
