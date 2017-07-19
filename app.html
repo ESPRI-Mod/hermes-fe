@@ -114,13 +114,13 @@
                           style="background-color: #D9EDF7; color: #333;">
                         <small><strong>&nbsp;RUNNING&nbsp;</strong></small>
                     </span>
-                    <span class='badge' title='LATE'
-                          style="background-color: #F2DEDE; color: #333;">
-                        <small><strong>&nbsp;LATE&nbsp;</strong></small>
-                    </span>
                     <span class='badge' title='COMPLETE'
                           style="background-color: #DFF0D8; color: #333;">
                         <small><strong>&nbsp;COMPLETE&nbsp;</strong></small>
+                    </span>
+                    <span class='badge' title='LATE'
+                          style="background-color: #F2DEDE; color: #333;">
+                        <small><strong>&nbsp;LATE&nbsp;</strong></small>
                     </span>
                     <span class='badge' title='ERROR'
                           style="background-color: pink; color: #333;">
@@ -263,8 +263,10 @@
             <% if (s.jobCounts.all === 0) { %>
                 --
             <% } else { %>
-                <%= s.jobCounts.c.r %>/<%= s.jobCounts.c.l %> |
-                <%= s.jobCounts.c.c %>/<%= s.jobCounts.c.e %>
+                <%= s.jobCounts.c.r %> |
+                <%= s.jobCounts.c.c %> |
+                <%= s.jobCounts.c.l %> |
+                <%= s.jobCounts.c.e %>
             <% } %>
         </small>
     </td>
@@ -279,8 +281,10 @@
             <% if (s.jobCounts.all === 0) { %>
                 --
             <% } else { %>
-                <%= s.jobCounts.p.r %>/<%= s.jobCounts.p.l %> |
-                <%= s.jobCounts.p.c %>/<%= s.jobCounts.p.e %>
+                <%= s.jobCounts.p.r %> |
+                <%= s.jobCounts.p.c %> |
+                <%= s.jobCounts.p.l %> |
+                <%= s.jobCounts.p.e %>
             <% } %>
         </small>
     </td>
