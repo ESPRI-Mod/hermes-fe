@@ -23,8 +23,8 @@
         // For unfinished jobs derive lateness indicator.
         if (!j.isError && !j.executionEndDate) {
             lateness = APP.NOW.diff(moment(j.warningLimit), 's');
-            j.lateness = numeral(lateness);
             if (lateness >= 0 && j.warningState === 0) {
+                j.lateness = numeral(lateness);
                 j.warningState = 2;
             }
         }
