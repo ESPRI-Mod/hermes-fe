@@ -54,7 +54,7 @@
             submissionPath: i[17],
             warningDelay: numeral(i[18]),
             warningLimit: i[21],
-            warningState: i[20] === 1,
+            warningState: i[20],
             // work fields:
             duration: null,
             extended: false,
