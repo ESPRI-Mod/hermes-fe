@@ -1,4 +1,4 @@
-(function (APP, MOD, _) {
+(function (APP, MOD, STATE, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -7,14 +7,52 @@
     MOD.getJobs = function (jobType) {
         switch (jobType) {
         case "c":
-            return MOD.state.simulation.jobs.compute;
+            return STATE.simulation.jobs.compute;
         case "p":
-            return MOD.state.simulation.jobs.postProcessing;
+            return STATE.simulation.jobs.postProcessing;
         default:
             return [];
         }
     };
 
+    // Returns description of a simulation related event.
+    MOD.getEventDescription = function (ei) {
+        switch (ei.eventType) {
+        case 'simulationComplete':
+            return "SIMULATION COMPLETED";
+        case 'simulationError':
+            return "SIMULATION ERROR";
+        case 'simulationStart':
+            if (ei.simulation.ext.isRestart === false) {
+                return "SIMULATION STARTED";
+            }
+            return "SIMULATION RESTARTED";
+        case 'jobComplete':
+            if (_.has(MOD.jobTypeDescriptions, ei.job.typeof)) {
+                return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " JOB COMPLETED";
+            } else {
+                return "JOB COMPLETED";
+            }
+        case 'jobError':
+            if (_.has(MOD.jobTypeDescriptions, ei.job.typeof)) {
+                return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " JOB ERROR";
+            } else {
+                return "JOB ERROR";
+            }
+        case 'jobStart':
+            if (_.has(MOD.jobTypeDescriptions, ei.job.typeof)) {
+                return MOD.jobTypeDescriptions[ei.job.typeof].toUpperCase() + " JOB STARTED";
+            } else {
+                return "JOB STARTED";
+            }
+        case 'jobPeriodUpdate':
+            return "OUTPUT PERIOD UPDATED";
+        default:
+            break;
+        }
+    };
+
+    // Sorts jobsets in readiness for rendering.
     MOD.sortJobset = function (jobSet) {
         var field, direction;
 
@@ -23,8 +61,8 @@
         };
 
         // Set sort fields.
-        field = MOD.state.sorting[jobSet.jobType].field;
-        direction = MOD.state.sorting[jobSet.jobType].direction;
+        field = STATE.sorting[jobSet.jobType].field;
+        direction = STATE.sorting[jobSet.jobType].direction;
 
         // Sort by field.
         jobSet.all = _.sortBy(jobSet.all, field);
@@ -39,10 +77,10 @@
         }
     };
 
-    // Sets pagination for a collection of jobs.
+    // Sets jobset pagination.
     MOD.setJobsetPagination = function (jobSet, retainCurrent) {
         var currentPage = jobSet.paging.current,
-            pages = APP.utils.getPages(jobSet.all, MOD.state.pageSize),
+            pages = APP.utils.getPages(jobSet.all, STATE.pageSize),
             page;
 
         // Reset pages.
@@ -66,7 +104,7 @@
         var sortInfo, jobSet;
 
         // Update sort fields.
-        sortInfo = MOD.state.sorting[jobType];
+        sortInfo = STATE.sorting[jobType];
         if (sortInfo.field === sortField) {
             sortInfo.direction = (sortInfo.direction === 'asc' ? 'desc' : 'asc');
             MOD.events.trigger('state:jobSetSortOrderToggled', jobType);
@@ -97,5 +135,6 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.APP.modules.monitoring.state,
     this._
 ));

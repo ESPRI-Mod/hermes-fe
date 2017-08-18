@@ -1,4 +1,4 @@
-(function (APP, MOD, _, Backbone, $) {
+(function (APP, MOD, UTILS, _, Backbone, $) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -22,14 +22,14 @@
             'click .glyphicon-envelope' : function () {
                 var url;
 
-                url = APP.utils.getPageURL(MOD.urls.SIMULATION_MESSAGES_PAGE);
+                url = UTILS.getPageURL(MOD.urls.SIMULATION_MESSAGES_PAGE);
                 url = url.replace("{uid}", MOD.state.simulation.uid);
-                APP.utils.openURL(url, true);
+                UTILS.openURL(url, true);
             },
 
             // Reopen page when web socket closed.
             'click #ws-close-dialog-refresh-page-button' : function () {
-                APP.utils.openURL();
+                UTILS.openURL();
             },
 
             // Pager: navigate to manually chosen page.
@@ -152,7 +152,7 @@
                 "template-tabs",
                 "ws-close-dialog-template"
                 ], function (template) {
-                APP.utils.renderTemplate(template, MOD.state, this);
+                UTILS.renderTemplate(template, MOD.state, this);
             }, this);
             _.each(MOD.jobTypes, function (jobType) {
                 this._setSortColumn(jobType);
@@ -260,7 +260,7 @@
         },
 
         _replaceNode: function (nodeSelector, template, templateData) {
-            this.$(nodeSelector).replaceWith(APP.utils.renderTemplate(template, templateData));
+            this.$(nodeSelector).replaceWith(UTILS.renderTemplate(template, templateData));
         }
     });
 
@@ -281,6 +281,7 @@
 }(
     this.APP,
     this.APP.modules.monitoring,
+    this.APP.utils,
     this._,
     this.Backbone,
     this.$

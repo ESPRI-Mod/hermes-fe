@@ -1,4 +1,4 @@
-(function (APP, MOD, _) {
+(function (MOD, UTILS, _) {
 
     // ECMAScript 5 Strict Mode
     "use strict";
@@ -36,6 +36,7 @@
                 }
             }
         };
+        s.jobsets = [s.jobs.compute, s.jobs.postProcessing];
     };
 
     // Sets simulation default values.
@@ -45,7 +46,7 @@
             executionState: null,
             isError: false,
             ext: {
-                accountingProject: APP.utils.isNone(s.accountingProject) ? "--" : s.accountingProject,
+                accountingProject: UTILS.isNone(s.accountingProject) ? "--" : s.accountingProject,
                 caption: undefined,
                 computeNode: undefined,
                 computeNodeLogin: undefined,
@@ -56,8 +57,8 @@
                 isSelectedForIM: false,
                 model: undefined,
                 modelSynonyms: [],
-                outputEndDateInDays: APP.utils.convertDateToDays(s.outputEndDate),
-                outputStartDateInDays: APP.utils.convertDateToDays(s.outputStartDate),
+                outputEndDateInDays: UTILS.convertDateToDays(s.outputEndDate),
+                outputStartDateInDays: UTILS.convertDateToDays(s.outputStartDate),
                 outputDateRange: s.outputStartDate + "--" + s.outputEndDate,
                 space: undefined,
                 submissionPath: undefined
@@ -94,7 +95,7 @@
     };
 
 }(
-    this.APP,
     this.APP.modules.monitoring,
+    this.APP.utils,
     this._
 ));
