@@ -168,15 +168,15 @@
         convertDateToDays: function (value) {
             var year, month, day, result;
 
+            if (_.isNull(value)) {
+                return 0;
+            }
+
             year = parseInt(value.substring(0, 4), 10);
             month = parseInt(value.substring(5, 7), 10);
             day = parseInt(value.substring(8, 10), 10);
 
-            result = parseInt(year * 365.25, 10) +
-                   DAYS_ELAPSED[month - 1] +
-                   day - 1;
-
-            return result;
+            return parseInt(year * 365.25, 10) + DAYS_ELAPSED[month - 1] + day - 1;
         },
 
         // Renders a time duration field.
